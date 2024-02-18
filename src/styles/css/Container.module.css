@@ -1,0 +1,5 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    --container-size-xl: 1280px;
+  }
+}

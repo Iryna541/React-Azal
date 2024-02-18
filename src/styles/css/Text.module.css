@@ -1,0 +1,14 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    color: hsl(var(--foreground) / 0.75);
+  }
+  &[data-variant="azalio-ui-muted"] {
+    color: hsl(var(--muted-foreground));
+  }
+  &[data-variant="azalio-ui-strong"] {
+    color: hsl(var(--foreground));
+  }
+  &[data-variant="azalio-ui-primary"] {
+    color: hsl(var(--primary-foreground));
+  }
+}

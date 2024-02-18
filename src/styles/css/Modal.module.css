@@ -1,0 +1,16 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    .inner > section {
+      border: 1px solid hsl(var(--border));
+    }
+
+    .header,
+    .body {
+      background: #fff;
+    }
+
+    .header h2 {
+      font-weight: 500;
+    }
+  }
+}

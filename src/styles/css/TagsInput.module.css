@@ -1,0 +1,7 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    .pill {
+      background: hsl(var(--secondary));
+    }
+  }
+}

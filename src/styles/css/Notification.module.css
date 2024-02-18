@@ -1,0 +1,26 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    box-shadow: rgba(76, 76, 100, 0.4) 0px 4px 8px -4px;
+    @mixin dark {
+      background: hsl(var(--secondary));
+    }
+    @mixin light {
+      background: #fff;
+    }
+    .description {
+      color: hsl(var(--muted-foreground));
+    }
+  }
+}
+
+.title {
+  &[data-variant="azalio-ui"] {
+    /* workaround to make the rule more specific */
+    @mixin dark {
+      color: hsl(var(--foreground));
+    }
+    @mixin light {
+      color: hsl(var(--foreground));
+    }
+  }
+}

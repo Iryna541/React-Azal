@@ -1,0 +1,5 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    --loader-color: hsl(var(--primary));
+  }
+}

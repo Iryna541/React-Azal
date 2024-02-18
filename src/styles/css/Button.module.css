@@ -1,0 +1,53 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--primary));
+    --button-color: hsl(var(--primary-foreground));
+    --button-hover: hsl(var(--primary) / 0.9);
+    box-shadow: rgba(76, 76, 100, 0.4) 0px 4px 8px -4px;
+  }
+
+  &[data-variant="azalio-ui-light"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--primary) / 0.1);
+    --button-color: hsl(var(--primary));
+    &:hover {
+      background-color: hsl(var(--primary) / 0.2);
+    }
+  }
+
+  &[data-variant="azalio-ui-secondary"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--secondary));
+    --button-color: hsl(var(--secondary-foreground));
+    &:hover {
+      background-color: hsl(var(--foreground) / 0.1);
+    }
+  }
+
+  &[data-variant="azalio-ui-destructive"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--destructive));
+    --button-color: hsl(var(--destructive-foreground));
+    &:hover {
+      background-color: hsl(var(--destructive) / 0.9);
+    }
+  }
+
+  &[data-variant="azalio-ui-outline"] {
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    --button-bg: white;
+    --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--border));
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.653);
+    }
+  }
+
+  &[data-variant="azalio-ui-ghost"] {
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    --button-bg: hsl(var(--background));
+    --button-hover: hsl(var(--secondary));
+  }
+}
