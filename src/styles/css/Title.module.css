@@ -1,0 +1,6 @@
+.root {
+  font-weight: 600;
+  &[data-variant="azalio-ui-primary"] {
+    color: hsl(var(--primary-foreground));
+  }
+}

@@ -1,0 +1,14 @@
+.tab {
+  --tabs-color: hsl(var(--primary));
+  /* --_tab-hover-color: hsl(var(--secondary)); */
+  --_tab-hover-color: white;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  &[data-active="true"] {
+    color: hsl(var(--primary));
+  }
+}
+
+.list {
+  --_tab-border-color: hsl(var(--secondary));
+}

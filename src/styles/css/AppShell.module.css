@@ -1,0 +1,14 @@
+.header {
+  &[data-variant="azalio-ui"] {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+  }
+}
+
+.navbar {
+  &[data-variant="azalio-ui"] {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border: 0;
+  }
+}

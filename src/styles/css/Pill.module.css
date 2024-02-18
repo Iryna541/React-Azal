@@ -1,0 +1,16 @@
+.root {
+  @mixin light {
+    --_pill-bg: hsl(var(--secondary));
+
+    height: 32px;
+  }
+}
+
+.label {
+  display: flex;
+  align-items: center;
+}
+
+.field {
+  height: 32px !important;
+}

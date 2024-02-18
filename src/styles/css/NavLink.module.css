@@ -1,0 +1,42 @@
+.root {
+  &[data-variant="azalio-ui"] {
+    height: 48px;
+    font-weight: 500;
+    color: hsl(var(--secondary-foreground) / 0.8);
+    background: transparent;
+
+    padding-left: 0;
+    padding-right: 0;
+
+    &[data-active="true"] {
+      color: hsl(var(--secondary-foreground));
+      &::before {
+        height: 48px;
+        width: 12px;
+        background: hsl(var(--primary));
+        content: "";
+        position: absolute;
+        left: -3px;
+        right: 0;
+        border-top-right-radius: var(--mantine-radius-lg);
+        border-bottom-right-radius: var(--mantine-radius-lg);
+      }
+    }
+    &:hover {
+      color: hsl(var(--secondary-foreground));
+    }
+    transition: all 0.2s;
+  }
+
+  &[data-variant="azalio-ui-secondary"] {
+    color: hsl(var(--muted-foreground));
+    border-radius: var(--mantine-radius-md);
+    background: hsl(var(--secondary));
+    font-weight: 600;
+    height: 40px;
+    &:hover {
+      color: hsl(var(--foreground));
+    }
+    transition: all 0.2s;
+  }
+}

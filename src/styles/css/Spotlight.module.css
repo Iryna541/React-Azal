@@ -1,0 +1,12 @@
+.search {
+  border-color: transparent !important;
+}
+
+.action {
+  &[data-selected="true"] {
+    background: hsl(var(--primary));
+    .actionLabel {
+      color: #fff;
+    }
+  }
+}

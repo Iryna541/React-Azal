@@ -1,0 +1,14 @@
+.input {
+  &[data-variant="azalio-ui"] {
+    border: 1px solid;
+    border-color: hsl(var(--border));
+    background: transparent;
+    min-height: 48px;
+    &:focus {
+      border-color: hsl(var(--primary));
+    }
+    &::placeholder {
+      color: hsl(var(--muted-foreground));
+    }
+  }
+}
