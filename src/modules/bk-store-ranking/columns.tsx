@@ -13,6 +13,7 @@ export const columns: ColumnDef<StoreInsights>[] = [
     accessorKey: "store_id",
     header: "Store Id",
   },
+
   {
     accessorKey: "general_managers",
     header: "Manager",
@@ -36,6 +37,10 @@ export const columns: ColumnDef<StoreInsights>[] = [
         </Badge>
       );
     },
+  },
+  {
+    accessorKey: "mgr_profit_ranking",
+    header: "Profit Ranking",
   },
   {
     header: "Details",
