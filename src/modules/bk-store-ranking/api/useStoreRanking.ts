@@ -5,6 +5,7 @@ export interface StoreInsights {
   overall_ranking: string;
   store_id: string;
   general_managers: string;
+  mgr_profit_ranking: string;
   fss_ranking: string;
   insights: string;
   insights_log: string;
