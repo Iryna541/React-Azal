@@ -8,24 +8,4 @@
   overflow: hidden;
   background: hsl(var(--secondary) / 1);
   border-radius: 8px;
-
-  tr {
-    border: 0;
-  }
-
-  th {
-    padding-top: var(--mantine-spacing-xs);
-    padding-bottom: var(--mantine-spacing-xs);
-    border: 0;
-  }
-
-  th:first-child {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-
-  th:last-child {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
 }

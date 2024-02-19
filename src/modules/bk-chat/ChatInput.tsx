@@ -48,8 +48,8 @@ export function ChatInput() {
             <ActionIcon
               loading={isPending}
               size="lg"
-              variant="bk-primary"
               radius={6}
+              variant="azalio-ui-primary"
               mr={3}
               disabled={value.length === 0 || isPending}
               onClick={sendMessage}

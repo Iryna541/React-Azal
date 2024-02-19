@@ -5,7 +5,8 @@ import { RouteObject } from "react-router-dom";
 // import AnalyticsPage from "../pages/askq/analytics";
 // import DashboardPage from "~/pages/askq";
 // import CommunicationPage from "~/pages/askq/communication";
-import { ChatPage } from "~/pages/chat";
+import { BkChatPage } from "~/pages/bk-chat";
+import { BkRankingPage } from "~/pages/bk-ranking";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -14,5 +15,6 @@ export const getRoutes = (): RouteObject[] => [
   // defineRoute("/askq/communication", <CommunicationPage />),
   // defineRoute("/askq/analytics", <AnalyticsPage />),
   // defineRoute("/askq/automations", <AutomationsPage />),
-  defineRoute("/bk-chat", <ChatPage />),
+  defineRoute("/bk-chat", <BkChatPage />),
+  defineRoute("/bk-ranking", <BkRankingPage />),
 ];

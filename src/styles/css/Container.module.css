@@ -1,5 +1,7 @@
 .root {
   &[data-variant="azalio-ui"] {
     --container-size-xl: 1280px;
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
   }
 }
