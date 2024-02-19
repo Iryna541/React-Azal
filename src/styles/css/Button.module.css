@@ -1,10 +1,11 @@
 .root {
+  height: 44px;
+
   &[data-variant="azalio-ui"] {
     font-weight: 500;
     --button-bg: hsl(var(--primary));
     --button-color: hsl(var(--primary-foreground));
     --button-hover: hsl(var(--primary) / 0.9);
-    box-shadow: rgba(76, 76, 100, 0.4) 0px 4px 8px -4px;
   }
 
   &[data-variant="azalio-ui-light"] {

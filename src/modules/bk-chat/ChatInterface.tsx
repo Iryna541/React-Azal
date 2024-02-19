@@ -19,22 +19,25 @@ import { useQueryClient } from "@tanstack/react-query";
 export function ChatInterface() {
   return (
     <ChatProvider>
-      <Group py="sm">
-        <BkLogo width={40} height={40} />
-        <Title order={5} c="#502314">
-          BK University Chatbot
-        </Title>
-      </Group>
-      <Divider color="hsl(var(--bk-background) / 0.1)" />
-      <ScrollArea
-        h="calc(100vh - 135px)"
-        scrollbars="y"
-        // pr="lg"
-        offsetScrollbars={false}
-      >
-        <ChatHistory />
-      </ScrollArea>
-      <ChatInput />
+      <Box style={{ border: "1px solid hsl(var(--border))", borderRadius: 8 }}>
+        <Group px="lg" py="md">
+          <BkLogo width={40} height={40} />
+          <Title order={5} fw={500} fz={16}>
+            BK University Chatbot
+          </Title>
+        </Group>
+        <Divider />
+        <Box p="lg">
+          <ScrollArea
+            h="calc(100vh - 180px)"
+            scrollbars="y"
+            offsetScrollbars={false}
+          >
+            <ChatHistory />
+          </ScrollArea>
+          <ChatInput />
+        </Box>
+      </Box>
     </ChatProvider>
   );
 }
@@ -84,15 +87,7 @@ export function ChatHistory() {
           gap="md"
         >
           <BkLogo height={38} width={38} />
-          <Loader
-            size="md"
-            type="dots"
-            styles={{
-              root: {
-                "--loader-color": "hsl(var(--bk-background))",
-              },
-            }}
-          />
+          <Loader size="md" type="dots" />
         </Group>
       )}
     </>

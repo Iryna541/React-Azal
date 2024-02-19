@@ -8,7 +8,7 @@
       border-color: hsl(var(--primary));
     }
     &::placeholder {
-      color: hsl(var(--muted-foreground));
+      color: hsl(var(--foreground) / 0.5);
     }
   }
 }

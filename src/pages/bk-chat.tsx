@@ -1,9 +1,9 @@
 import { Container } from "@mantine/core";
 import { ChatInterface } from "~/modules/bk-chat/ChatInterface";
 
-export function ChatPage() {
+export function BkChatPage() {
   return (
-    <Container size="sm">
+    <Container size="100%">
       <ChatInterface />
     </Container>
   );

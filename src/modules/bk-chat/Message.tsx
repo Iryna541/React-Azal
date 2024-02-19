@@ -33,10 +33,10 @@ export function Message({ message, shouldAnimate }: MessageProps) {
             style={{
               background: message.isRagResponse
                 ? "hsl(var(--bk-background) / 0.05)"
-                : "hsl(var(--bk-background))",
+                : "hsl(var(--primary))",
               color: !message.isRagResponse
-                ? "hsl(var(--bk-foreground))"
-                : "hsl(var(--bk-background))",
+                ? "hsl(var(--primary-foreground))"
+                : "hsl(var(--foreground))",
               borderRadius: "8px 0px 8px 8px",
             }}
           >

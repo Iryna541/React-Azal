@@ -28,6 +28,7 @@ import {
   Text,
   TextInput,
   Title,
+  TypographyStylesProvider,
   createTheme,
   rem,
 } from "@mantine/core";
@@ -59,19 +60,20 @@ import paginationClasses from "./css/Pagination.module.css";
 import textInputClasses from "./css/TextInput.module.css";
 import titleClasses from "./css/Title.module.css";
 import pillClasses from "./css/Pill.module.css";
+import typographyClasses from "./css/TypographyStylesProvider.module.css";
 
 export const resolver = () => ({
   variables: { "--radius": "0.5rem" },
   light: {
     "--background": "0 0% 100%", // UPDATED
-    "--foreground": "0 0% 45%", // UPDATED
+    "--foreground": "227 30% 18%", // UPDATED
     "--card": "0 0% 100%",
     "--card-foreground": "235 14% 35%",
     "--popover": "0 0% 100%",
     "--popover-foreground": "235 14% 35%",
-    "--primary": "209 100% 50%", // UPDATED
+    "--primary": "220 93% 67%", // UPDATED
     "--primary-foreground": "0 0% 100%", // UPDATED
-    "--secondary": "200 7% 9%", // UPDATED
+    "--secondary": "0 0% 95%", // UPDATED
     "--secondary-foreground": "0 0% 100%", // UPDATED
     "--muted": "210 40% 96.1%",
     "--muted-foreground": "216 27% 72%", // UPDATED
@@ -79,8 +81,8 @@ export const resolver = () => ({
     "--accent-foreground": "222.2 47.4% 11.2%",
     "--destructive": "0 84.2% 60.2%",
     "--destructive-foreground": "210 40% 98%",
-    "--border": " 0 0% 81%", // UPDATED
-    "--input": "0 0% 81%", // UPDATED
+    "--border": "0 0% 94%", // UPDATED
+    "--input": "0 0% 94%", // UPDATED
     "--ring": "218 91% 59%", // UPDATED
     "--bk-background": "15 60% 20%",
     "--bk-foreground": "0 0% 100%",
@@ -89,7 +91,7 @@ export const resolver = () => ({
 });
 
 export const theme = createTheme({
-  fontFamily: "Inter, sans-serif",
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
   defaultRadius: "md",
   shadows: {
     xs: "0 1px 2px 0 rgba(0,0,0,.05)",
@@ -244,6 +246,9 @@ export const theme = createTheme({
     }),
     Pill: Pill.extend({
       classNames: pillClasses,
+    }),
+    TypographyStylesProvider: TypographyStylesProvider.extend({
+      classNames: typographyClasses,
     }),
   },
 });
