@@ -1,13 +1,18 @@
 .root {
   &[data-variant="azalio-ui"] {
     height: 48px;
-    font-weight: 500;
+    font-weight: 600;
     color: hsl(var(--secondary-foreground) / 0.8);
     background: transparent;
-
     padding-left: 0;
     padding-right: 0;
-
+    svg {
+      color: white;
+    }
+    transition: all 0.2s;
+    &:hover {
+      color: hsl(var(--secondary-foreground));
+    }
     &[data-active="true"] {
       color: hsl(var(--secondary-foreground));
       &::before {
@@ -21,11 +26,10 @@
         border-top-right-radius: var(--mantine-radius-lg);
         border-bottom-right-radius: var(--mantine-radius-lg);
       }
+      svg {
+        color: hsl(var(--primary));
+      }
     }
-    &:hover {
-      color: hsl(var(--secondary-foreground));
-    }
-    transition: all 0.2s;
   }
 
   &[data-variant="azalio-ui-secondary"] {
