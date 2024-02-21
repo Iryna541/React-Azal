@@ -19,3 +19,4 @@ artifacts:
   files:
     - dist/**/*
     - Dockerfile
+    - nginx.conf
