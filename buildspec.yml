@@ -18,3 +18,4 @@ artifacts:
   # include all files required to run the application
   files:
     - dist/**/*
+    - Dockerfile
