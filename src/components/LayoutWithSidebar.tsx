@@ -1,13 +1,11 @@
-import { AppShell, Box, Flex, NavLink, ScrollArea, Title } from "@mantine/core";
+import { AppShell, Box, Flex, ScrollArea } from "@mantine/core";
 import { PropsWithChildren, ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { NAVBAR_LINKS } from "./Layout";
+import { Sidebar } from "./Layout";
 
 export function LayoutWithSidebar({
   children,
   sidebar,
 }: PropsWithChildren<{ sidebar: ReactNode }>) {
-  const location = useLocation();
   return (
     <AppShell
       navbar={{
@@ -19,24 +17,7 @@ export function LayoutWithSidebar({
       }}
       padding="sm"
     >
-      <AppShell.Navbar p={28}>
-        <Title order={3} mb="xl" fw={800}>
-          Azalio
-        </Title>
-        {NAVBAR_LINKS.map((link, index) => {
-          const isActive = link.href === location.pathname;
-          return (
-            <NavLink
-              key={index}
-              to={link.href}
-              component={Link}
-              active={isActive}
-              leftSection={link.Icon}
-              label={link.label}
-            />
-          );
-        })}
-      </AppShell.Navbar>
+      <Sidebar />
       <AppShell.Main style={{ background: "hsl(var(--accent))" }}>
         <Flex
           style={{
@@ -52,7 +33,7 @@ export function LayoutWithSidebar({
               flexBasis: 310,
               flexShrink: 0,
               flexGrow: 1,
-              background: "hsl(var(--primary) / 0.075)",
+              background: "#F9F8FD",
               borderTopRightRadius: "var(--mantine-radius-md)",
               borderBottomRightRadius: "var(--mantine-radius-md)",
             }}

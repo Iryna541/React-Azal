@@ -2,7 +2,7 @@ import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ActiveUserResponse, useActiveUser } from "../api/useActiveUser";
 import { useLocation, useNavigate } from "react-router-dom";
 
-type UserData = ActiveUserResponse["user_info"];
+export type UserData = ActiveUserResponse["user_info"];
 
 type AuthState = {
   user: UserData | undefined;
