@@ -1,5 +1,6 @@
-import { Box, Center, Flex, Loader } from "@mantine/core";
-import { AppLogo } from "~/assets/AppLogo";
+import { Box, Center } from "@mantine/core";
+import { Player } from "@lottiefiles/react-lottie-player";
+
 import { useUser } from "../hooks/useUser";
 import { PropsWithChildren } from "react";
 
@@ -9,10 +10,11 @@ export function ProtectedRoute({ children }: PropsWithChildren) {
     <Box pos="relative">
       {loading && (
         <Center h="100vh" style={{ position: "absolute", inset: 0 }}>
-          <Flex direction="column" justify="center" align="center">
-            <AppLogo width={64} height={64} />
-            <Loader mt="xl" size="lg" />
-          </Flex>
+          <Player
+            autoplay
+            src="https://assets4.lottiefiles.com/packages/lf20_eb5cde4g.json"
+            style={{ height: 240, width: 240 }}
+          ></Player>
         </Center>
       )}
       {!loading && <div>{children}</div>}
