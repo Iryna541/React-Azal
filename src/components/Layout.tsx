@@ -1,4 +1,13 @@
-import { AppShell, NavLink, ScrollArea, Title } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Flex,
+  Menu,
+  NavLink,
+  ScrollArea,
+  Text,
+  Title,
+} from "@mantine/core";
 import { PropsWithChildren } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -7,6 +16,10 @@ import {
   IconCommunication,
   IconDashboard,
 } from "~/assets";
+import { useUser } from "~/modules/auth/hooks/useUser";
+import { Avatar } from "./Avatar";
+import { UserData } from "~/modules/auth/contexts/AuthContext";
+import { IconLogout, IconSettings } from "@tabler/icons-react";
 
 const ICON_SIZE = 26;
 
@@ -34,7 +47,6 @@ export const NAVBAR_LINKS = [
 ];
 
 export function Layout({ children }: PropsWithChildren) {
-  const location = useLocation();
   return (
     <AppShell
       navbar={{
@@ -46,7 +58,32 @@ export function Layout({ children }: PropsWithChildren) {
       }}
       padding="sm"
     >
-      <AppShell.Navbar p={28}>
+      <Sidebar />
+      <AppShell.Main style={{ background: "hsl(var(--accent))" }}>
+        <ScrollArea
+          scrollbars="y"
+          h="calc(100vh - 24px)"
+          w="100%"
+          style={{
+            background: "hsl(var(--background))",
+            borderRadius: "var(--mantine-radius-md)",
+          }}
+          p={24}
+        >
+          {children}
+        </ScrollArea>
+      </AppShell.Main>
+    </AppShell>
+  );
+}
+
+export function Sidebar() {
+  const location = useLocation();
+  const { user } = useUser();
+
+  return (
+    <AppShell.Navbar p={28}>
+      <AppShell.Section grow>
         <Title order={3} mb="xl" fw={800}>
           Azalio
         </Title>
@@ -63,21 +100,54 @@ export function Layout({ children }: PropsWithChildren) {
             />
           );
         })}
-      </AppShell.Navbar>
-      <AppShell.Main style={{ background: "hsl(var(--accent))" }}>
-        <ScrollArea
-          scrollbars="y"
-          h="calc(100vh - 24px)"
-          w="100%"
-          style={{
-            background: "hsl(var(--background))",
-            borderRadius: "var(--mantine-radius-md)",
-          }}
-          p={24}
+      </AppShell.Section>
+      <AppShell.Section mx={-12}>
+        {user && <UserMenu user={user} />}
+      </AppShell.Section>
+    </AppShell.Navbar>
+  );
+}
+
+function UserMenu({ user }: { user: UserData }) {
+  return (
+    <Menu
+      styles={{
+        dropdown: {
+          background: "#353a3c",
+          left: 12,
+        },
+        item: {
+          color: "white",
+          height: 40,
+          fontWeight: 600,
+        },
+      }}
+      shadow="md"
+      width={230}
+    >
+      <Menu.Target>
+        <Flex align="center" gap="sm" style={{ cursor: "pointer" }}>
+          <Avatar size="md" fullName={user.name} />
+          <Box>
+            <Title order={6}>{user.name}</Title>
+            <Text w={150} c="white" size="xs" truncate="end">
+              {user.email}
+            </Text>
+          </Box>
+        </Flex>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item
+          leftSection={<IconSettings style={{ width: 16, height: 16 }} />}
         >
-          {children}
-        </ScrollArea>
-      </AppShell.Main>
-    </AppShell>
+          Settings
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<IconLogout style={{ width: 16, height: 16 }} />}
+        >
+          Logout
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 }
