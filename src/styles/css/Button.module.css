@@ -2,14 +2,23 @@
   height: 44px;
 
   &[data-variant="azalio-ui"] {
-    font-weight: 500;
+    font-weight: 600;
     --button-bg: hsl(var(--primary));
     --button-color: hsl(var(--primary-foreground));
     --button-hover: hsl(var(--primary) / 0.9);
   }
 
+  &[data-variant="azalio-ui-dark"] {
+    font-weight: 600;
+    --button-bg: hsl(var(--accent));
+    --button-color: hsl(var(--accent-foreground));
+    &:hover {
+      background-color: hsl(var(--accent) / 0.8);
+    }
+  }
+
   &[data-variant="azalio-ui-light"] {
-    font-weight: 500;
+    font-weight: 600;
     --button-bg: hsl(var(--primary) / 0.1);
     --button-color: hsl(var(--primary));
     &:hover {
@@ -18,7 +27,7 @@
   }
 
   &[data-variant="azalio-ui-secondary"] {
-    font-weight: 500;
+    font-weight: 600;
     --button-bg: hsl(var(--secondary));
     --button-color: hsl(var(--secondary-foreground));
     &:hover {
@@ -27,7 +36,7 @@
   }
 
   &[data-variant="azalio-ui-destructive"] {
-    font-weight: 500;
+    font-weight: 600;
     --button-bg: hsl(var(--destructive));
     --button-color: hsl(var(--destructive-foreground));
     &:hover {
@@ -36,7 +45,7 @@
   }
 
   &[data-variant="azalio-ui-outline"] {
-    font-weight: 500;
+    font-weight: 600;
     color: hsl(var(--foreground));
     --button-bg: white;
     --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--border));
@@ -46,7 +55,7 @@
   }
 
   &[data-variant="azalio-ui-ghost"] {
-    font-weight: 500;
+    font-weight: 600;
     color: hsl(var(--foreground));
     --button-bg: hsl(var(--background));
     --button-hover: hsl(var(--secondary));

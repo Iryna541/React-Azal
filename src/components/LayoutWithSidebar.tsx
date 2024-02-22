@@ -1,39 +1,12 @@
-import { AppShell, NavLink, ScrollArea, Title } from "@mantine/core";
-import { PropsWithChildren } from "react";
+import { AppShell, Box, Flex, NavLink, ScrollArea, Title } from "@mantine/core";
+import { PropsWithChildren, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  IconAnalytics,
-  IconAutomation,
-  IconCommunication,
-  IconDashboard,
-} from "~/assets";
+import { NAVBAR_LINKS } from "./Layout";
 
-const ICON_SIZE = 26;
-
-export const NAVBAR_LINKS = [
-  {
-    label: "Dashboard",
-    href: "/askq",
-    Icon: <IconDashboard height={ICON_SIZE} width={ICON_SIZE} />,
-  },
-  {
-    label: "Analytics",
-    href: "/askq/analytics",
-    Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
-  },
-  {
-    label: "Automations",
-    href: "/askq/automations",
-    Icon: <IconAutomation height={ICON_SIZE} width={ICON_SIZE} />,
-  },
-  {
-    label: "Communication",
-    href: "/askq/communication",
-    Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-  },
-];
-
-export function Layout({ children }: PropsWithChildren) {
+export function LayoutWithSidebar({
+  children,
+  sidebar,
+}: PropsWithChildren<{ sidebar: ReactNode }>) {
   const location = useLocation();
   return (
     <AppShell
@@ -65,18 +38,28 @@ export function Layout({ children }: PropsWithChildren) {
         })}
       </AppShell.Navbar>
       <AppShell.Main style={{ background: "hsl(var(--accent))" }}>
-        <ScrollArea
-          scrollbars="y"
-          h="calc(100vh - 24px)"
-          w="100%"
+        <Flex
           style={{
             background: "hsl(var(--background))",
             borderRadius: "var(--mantine-radius-md)",
           }}
-          p={24}
         >
-          {children}
-        </ScrollArea>
+          <ScrollArea scrollbars="y" h="calc(100vh - 24px)" w="100%" p={24}>
+            {children}
+          </ScrollArea>
+          <Box
+            style={{
+              flexBasis: 310,
+              flexShrink: 0,
+              flexGrow: 1,
+              background: "hsl(var(--primary) / 0.075)",
+              borderTopRightRadius: "var(--mantine-radius-md)",
+              borderBottomRightRadius: "var(--mantine-radius-md)",
+            }}
+          >
+            {sidebar}
+          </Box>
+        </Flex>
       </AppShell.Main>
     </AppShell>
   );

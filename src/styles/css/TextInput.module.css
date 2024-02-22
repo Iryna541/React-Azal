@@ -1,7 +1,8 @@
 .input {
   &[data-variant="azalio-ui"] {
     border: 1px solid;
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--input));
+    box-shadow: var(--mantine-shadow-xs);
     /* background: hsl(var(--background)); */
     &:focus {
       border-color: hsl(var(--primary));

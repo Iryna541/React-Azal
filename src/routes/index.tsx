@@ -7,6 +7,7 @@ import DashboardPage from "~/pages/askq";
 import CommunicationPage from "~/pages/askq/communication";
 import { BkChatPage } from "~/pages/bk-chat";
 import { BkRankingPage } from "~/pages/bk-ranking";
+import LoginPage from "~/pages/auth/Login";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -17,4 +18,6 @@ export const getRoutes = (): RouteObject[] => [
   defineRoute("/askq/automations", <AutomationsPage />),
   defineRoute("/bk-chat", <BkChatPage />),
   defineRoute("/bk-ranking", <BkRankingPage />),
+  /* auth pages */
+  defineRoute("/auth/login", <LoginPage />),
 ];

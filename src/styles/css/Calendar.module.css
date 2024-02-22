@@ -1,0 +1,22 @@
+.day {
+  color: hsl(var(--foreground));
+  font-weight: 500;
+}
+
+.weekday {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+.calendarHeaderControl:first-child {
+  order: 2;
+}
+.calendarHeaderControl:last-child {
+  order: 3;
+}
+
+.calendarHeaderLevel {
+  justify-content: flex-start;
+  font-weight: 600;
+  padding-left: 4px;
+}
