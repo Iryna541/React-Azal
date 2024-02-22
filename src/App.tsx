@@ -5,10 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import "./styles/global.css";
 
 import { getRoutes } from "./routes";
 import { resolver, theme } from "./styles";
+import { Notifications } from "@mantine/notifications";
+import { AuthContextProvider } from "./modules/auth/contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -22,8 +25,11 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <MantineProvider theme={theme} cssVariablesResolver={resolver}>
+          <Notifications position="top-center" />
           <ModalsProvider>
-            <Entry />
+            <AuthContextProvider>
+              <Entry />
+            </AuthContextProvider>
           </ModalsProvider>
         </MantineProvider>
       </BrowserRouter>

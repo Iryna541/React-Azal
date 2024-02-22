@@ -1,5 +1,8 @@
 .root {
   &[data-variant="azalio-ui"] {
+    .title {
+      font-weight: 600;
+    }
     box-shadow: rgba(76, 76, 100, 0.4) 0px 4px 8px -4px;
     @mixin dark {
       background: hsl(var(--secondary));
@@ -8,7 +11,7 @@
       background: #fff;
     }
     .description {
-      color: hsl(var(--muted-foreground));
+      color: hsl(var(--foreground) / 0.65);
     }
   }
 }

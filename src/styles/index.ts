@@ -61,6 +61,8 @@ import textInputClasses from "./css/TextInput.module.css";
 import titleClasses from "./css/Title.module.css";
 import pillClasses from "./css/Pill.module.css";
 import typographyClasses from "./css/TypographyStylesProvider.module.css";
+import calendarClasses from "./css/Calendar.module.css";
+import { Calendar } from "@mantine/dates";
 
 export const resolver = () => ({
   variables: { "--radius": "0.5rem" },
@@ -82,7 +84,7 @@ export const resolver = () => ({
     "--destructive": "0 84.2% 60.2%",
     "--destructive-foreground": "210 40% 98%",
     "--border": "0 0% 94%", // UPDATED
-    "--input": "0 0% 94%", // UPDATED
+    "--input": "0 0% 88%", // UPDATED
     "--ring": "218 91% 59%", // UPDATED
     "--bk-background": "15 60% 20%",
     "--bk-foreground": "0 0% 100%",
@@ -249,6 +251,9 @@ export const theme = createTheme({
     }),
     TypographyStylesProvider: TypographyStylesProvider.extend({
       classNames: typographyClasses,
+    }),
+    Calendar: Calendar.extend({
+      classNames: calendarClasses,
     }),
   },
 });
