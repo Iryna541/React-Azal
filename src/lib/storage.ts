@@ -15,6 +15,11 @@ export const storage = {
       window.localStorage.getItem(`${storagePrefix}company_id`) as string
     );
   },
+  getRoleId: (): string | null => {
+    return JSON.parse(
+      window.localStorage.getItem(`${storagePrefix}role_id`) as string
+    );
+  },
   setCompanyId: (id: string) => {
     window.localStorage.setItem(
       `${storagePrefix}company_id`,
@@ -27,10 +32,19 @@ export const storage = {
       JSON.stringify(accessToken)
     );
   },
+  setRoleId: (roleId: string) => {
+    window.localStorage.setItem(
+      `${storagePrefix}role_id`,
+      JSON.stringify(roleId)
+    );
+  },
   clearToken: () => {
     window.localStorage.removeItem(`${storagePrefix}token`);
   },
   clearCompanyId: () => {
     window.localStorage.removeItem(`${storagePrefix}company_id`);
+  },
+  clearRoleId: () => {
+    window.localStorage.removeItem(`${storagePrefix}role_id`);
   },
 };

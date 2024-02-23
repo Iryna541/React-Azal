@@ -9,13 +9,8 @@ import {
   Title,
 } from "@mantine/core";
 import { PropsWithChildren } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  IconAnalytics,
-  IconAutomation,
-  IconCommunication,
-  IconDashboard,
-} from "~/assets";
+import { Link, useLocation } from "react-router-dom";
+import { IconAnalytics, IconDashboard } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
 import { UserData } from "~/modules/auth/contexts/AuthContext";
@@ -39,16 +34,16 @@ const NAVBAR_LINKS = [
     href: "/askq/analytics",
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
   },
-  {
-    label: "Automations",
-    href: "/askq/automations",
-    Icon: <IconAutomation height={ICON_SIZE} width={ICON_SIZE} />,
-  },
-  {
-    label: "Communication",
-    href: "/askq/communication",
-    Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-  },
+  // {
+  //   label: "Automations",
+  //   href: "/askq/automations",
+  //   Icon: <IconAutomation height={ICON_SIZE} width={ICON_SIZE} />,
+  // },
+  // {
+  //   label: "Communication",
+  //   href: "/askq/communication",
+  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
+  // },
 ];
 
 const NAVBAR_ADMIN_LINKS = [
@@ -127,7 +122,6 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 }
 
 function UserMenu({ user }: { user: UserData }) {
-  const navigate = useNavigate();
   const { refetch } = useUser();
   return (
     <Menu
