@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Badge,
   Box,
   Flex,
   Menu,
@@ -19,11 +20,15 @@ import {
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
 import { UserData } from "~/modules/auth/contexts/AuthContext";
-import { IconLogout, IconSettings } from "@tabler/icons-react";
+import {
+  IconBuildingArch,
+  IconLogout,
+  IconSettings,
+} from "@tabler/icons-react";
 
 const ICON_SIZE = 26;
 
-export const NAVBAR_LINKS = [
+const NAVBAR_LINKS = [
   {
     label: "Dashboard",
     href: "/askq",
@@ -46,7 +51,18 @@ export const NAVBAR_LINKS = [
   },
 ];
 
-export function Layout({ children }: PropsWithChildren) {
+const NAVBAR_ADMIN_LINKS = [
+  {
+    label: "Companies",
+    href: "/admin/companies",
+    Icon: <IconBuildingArch height={ICON_SIZE} width={ICON_SIZE} />,
+  },
+];
+
+export function Layout({
+  children,
+  isAdmin = false,
+}: PropsWithChildren<{ isAdmin?: boolean }>) {
   return (
     <AppShell
       navbar={{
@@ -58,7 +74,7 @@ export function Layout({ children }: PropsWithChildren) {
       }}
       padding="sm"
     >
-      <Sidebar />
+      <Sidebar isAdmin={isAdmin} />
       <AppShell.Main style={{ background: "hsl(var(--accent))" }}>
         <ScrollArea
           scrollbars="y"
@@ -77,17 +93,19 @@ export function Layout({ children }: PropsWithChildren) {
   );
 }
 
-export function Sidebar() {
+export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
   const location = useLocation();
   const { user } = useUser();
+
+  const links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
 
   return (
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
-        <Title order={3} mb="xl" fw={800}>
-          Azalio
+        <Title order={3} fw={800} mb="xl">
+          Azalio {isAdmin ? "Admin" : undefined}
         </Title>
-        {NAVBAR_LINKS.map((link, index) => {
+        {links.map((link, index) => {
           const isActive = link.href === location.pathname;
           return (
             <NavLink
@@ -109,6 +127,7 @@ export function Sidebar() {
 }
 
 function UserMenu({ user }: { user: UserData }) {
+  const { logout } = useUser();
   return (
     <Menu
       styles={{
@@ -143,6 +162,7 @@ function UserMenu({ user }: { user: UserData }) {
           Settings
         </Menu.Item>
         <Menu.Item
+          onClick={logout}
           leftSection={<IconLogout style={{ width: 16, height: 16 }} />}
         >
           Logout
