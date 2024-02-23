@@ -1,7 +1,7 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ActiveUserResponse, useActiveUser } from "../api/useActiveUser";
 import { useLocation, useNavigate } from "react-router-dom";
-import { storage } from "~/lib/storage";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type UserData = ActiveUserResponse["user_info"];
 
@@ -9,28 +9,23 @@ type AuthState = {
   user: UserData | undefined;
   refetch: () => void;
   loading: boolean;
-  logout: () => void;
 };
 
 export const AuthContext = createContext<AuthState>({
   user: undefined,
   refetch: () => {},
-  logout: () => {},
   loading: true,
 });
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const queryClient = useQueryClient();
 
   const [user, setUser] = useState<UserData | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
-  const {
-    data,
-    isError,
-    refetch: refetchUser,
-  } = useActiveUser({
+  const { data, isError } = useActiveUser({
     config: {
       staleTime: Infinity,
       retry: 1,
@@ -48,25 +43,19 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     if (isError) {
       const excludedPaths = ["/auth/login"];
       const isExcluded = excludedPaths.includes(pathname);
-      if (!isExcluded) navigate("/auth/sign-in");
+      if (!isExcluded) navigate("/auth/login");
     }
     // eslint-disable-next-line
   }, [data, isError]);
 
   function refetch() {
-    // setUser(undefined);
+    setUser(undefined);
     setLoading(true);
-    refetchUser();
-  }
-
-  function logout() {
-    storage.clearToken();
-    storage.clearCompanyId();
-    navigate("/auth/login");
+    queryClient.removeQueries({ queryKey: ["me"] });
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, refetch, logout }}>
+    <AuthContext.Provider value={{ user, loading, refetch }}>
       {children}
     </AuthContext.Provider>
   );

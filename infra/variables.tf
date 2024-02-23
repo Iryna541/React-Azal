@@ -37,3 +37,18 @@ variable "elasticbeanstalk_app_name" {
   type        = string
   description = "The name of the Elastic Beanstalk application"
 }
+
+variable "environments" {
+  description = "A map of environments to deploy"
+  type        = map(any)
+  default = {
+    dev = {
+      name_suffix   = "Dev"
+      instance_type = "t2.micro"
+    },
+    test = {
+      name_suffix   = "Test"
+      instance_type = "t2.micro"
+    }
+  }
+}

@@ -18,6 +18,7 @@ import { AppLogo } from "~/assets/AppLogo";
 import { useLogin } from "~/modules/auth/api/useLogin";
 import { storage } from "~/lib/storage";
 import { showSuccessNotification } from "~/utils/notifications";
+import { useUser } from "~/modules/auth/hooks/useUser";
 
 const loginSchema = z.object({
   email: z.string().email().trim(),
@@ -28,11 +29,13 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { refetch } = useUser();
 
   const { mutate: handleLogin, isPending } = useLogin({
     config: {
       onSuccess: (res) => {
         storage.setToken({ accessToken: res.user.access_token });
+        refetch();
         showSuccessNotification("Successfully Logged In!");
         if (res.user.isSuperAdmin) {
           navigate("/admin");
