@@ -10,6 +10,7 @@ export type LoginResponse = {
   user: {
     access_token: string;
     isSuperAdmin: boolean;
+    role_id: number;
   };
 };
 

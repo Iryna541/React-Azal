@@ -41,6 +41,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     }
     // An error means, the user has no JWT or it's expired
     if (isError) {
+      setLoading(false);
       const excludedPaths = ["/auth/login"];
       const isExcluded = excludedPaths.includes(pathname);
       if (!isExcluded) navigate("/auth/login");

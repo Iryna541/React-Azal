@@ -3,7 +3,7 @@ import { Company } from "../api/useCompanies";
 import { Box, Button } from "@mantine/core";
 import { storage } from "~/lib/storage";
 import { useNavigate } from "react-router-dom";
-import { useActiveUser } from "~/modules/auth/api/useActiveUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const columns: ColumnDef<Company>[] = [
   {
@@ -32,9 +32,9 @@ export const columns: ColumnDef<Company>[] = [
   },
 ];
 
-function ActionCell({ row }: CellContext<Company, unknown>) {
+export function ActionCell({ row }: CellContext<Company, unknown>) {
   const navigate = useNavigate();
-  const { refetch } = useActiveUser({ config: { enabled: false } });
+  const queryClient = useQueryClient();
   return (
     <Box>
       <Button
@@ -42,7 +42,7 @@ function ActionCell({ row }: CellContext<Company, unknown>) {
         size="xs"
         onClick={async () => {
           storage.setCompanyId(row.original.company_id.toString());
-          await refetch();
+          queryClient.removeQueries({ queryKey: ["me"] });
           navigate("/askq");
         }}
       >
