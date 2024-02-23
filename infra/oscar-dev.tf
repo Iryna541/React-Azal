@@ -43,7 +43,7 @@ resource "aws_elastic_beanstalk_environment" "eb_dev_env" {
 resource "aws_cloudfront_distribution" "oscar_dev_cf" {
   enabled         = true
   is_ipv6_enabled = true
-  aliases         = ["oscar-dev.azal.io"]
+  aliases         = ["oscar.azal.io"]
 
   origin {
     domain_name = aws_elastic_beanstalk_environment.eb_dev_env.cname
@@ -86,17 +86,17 @@ resource "aws_cloudfront_distribution" "oscar_dev_cf" {
   }
 }
 
-resource "aws_route53_zone" "oscar_dev" {
-  name = "oscar-dev.azal.io"
-}
+# resource "aws_route53_zone" "oscar_dev" {
+#   name = "oscar-dev.azal.io"
+# }
 
-resource "aws_route53_record" "oscar_dev_a" {
-  zone_id = aws_route53_zone.oscar_dev.zone_id
-  name    = "oscar-dev.azal.io"
-  type    = "A"
-  alias {
-    name                   = aws_cloudfront_distribution.oscar_dev_cf.domain_name
-    zone_id                = aws_cloudfront_distribution.oscar_dev_cf.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
+# resource "aws_route53_record" "oscar_dev_a" {
+#   zone_id = aws_route53_zone.oscar_dev.zone_id
+#   name    = "oscar-dev.azal.io"
+#   type    = "A"
+#   alias {
+#     name                   = aws_cloudfront_distribution.oscar_dev_cf.domain_name
+#     zone_id                = aws_cloudfront_distribution.oscar_dev_cf.hosted_zone_id
+#     evaluate_target_health = false
+#   }
+# }

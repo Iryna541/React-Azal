@@ -86,17 +86,17 @@ resource "aws_cloudfront_distribution" "oscar_test_cf" {
   }
 }
 
-resource "aws_route53_zone" "oscar_test" {
-  name = "oscar-test.azal.io"
-}
+# resource "aws_route53_zone" "oscar_test" {
+#   name = "oscar-test.azal.io"
+# }
 
-resource "aws_route53_record" "oscar_test_a" {
-  zone_id = aws_route53_zone.oscar_test.zone_id
-  name    = "oscar-test.azal.io"
-  type    = "A"
-  alias {
-    name                   = aws_cloudfront_distribution.oscar_test_cf.domain_name
-    zone_id                = aws_cloudfront_distribution.oscar_test_cf.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
+# resource "aws_route53_record" "oscar_test_a" {
+#   zone_id = aws_route53_zone.oscar_test.zone_id
+#   name    = "oscar-test.azal.io"
+#   type    = "A"
+#   alias {
+#     name                   = aws_cloudfront_distribution.oscar_test_cf.domain_name
+#     zone_id                = aws_cloudfront_distribution.oscar_test_cf.hosted_zone_id
+#     evaluate_target_health = false
+#   }
+# }

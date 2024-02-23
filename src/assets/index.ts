@@ -6,3 +6,8 @@ export * from "./IconSparkles";
 export * from "./IconSaleTag";
 export * from "./IconBubble";
 export * from "./AppLogo";
+export * from "./IconFirstPlace";
+export * from "./IconSecondPlace";
+export * from "./IconThirdPlace";
+export * from "./IconFourthPlace";
+export * from "./IconFifthPlace";
