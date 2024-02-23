@@ -1,14 +1,18 @@
 import {
+  ActionIcon,
   Badge,
   Box,
   Center,
   Divider,
+  Flex,
   Grid,
   Loader,
   SimpleGrid,
   Stack,
   Tabs,
   Title,
+  Tooltip,
+  TypographyStylesProvider,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import IframeResizer from "iframe-resizer-react";
@@ -17,12 +21,16 @@ import { StoreRankingTable } from "~/modules/bk-store-ranking/StoreRankingTable"
 import { ChatInterface } from "~/modules/bk-chat/ChatInterface";
 import { useBusterIFrame } from "~/modules/askq/api/useBusterIFrame";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
+import { CalenderTable } from "~/components/CalenderTable";
+import { IconBulb } from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
+import { marked } from "marked";
 
 export default function AnalyticsPage() {
   const { data } = useStoreRanking();
   const { data: busterIframeData, isLoading } = useBusterIFrame();
 
-  const topManagersData: ManagerRankingData = (data ?? [])
+  const worstManagersData: ManagerRankingData = (data ?? [])
     .slice(0, 5)
     .map((item, index) => {
       return {
@@ -30,6 +38,20 @@ export default function AnalyticsPage() {
         manager: item.general_managers,
         fss: item.fss_ranking,
         financials: item.mgr_profit_ranking,
+        insights: `## Hey`,
+      };
+    });
+
+  const topManagersData: ManagerRankingData = (data ?? [])
+    .reverse()
+    .slice(0, 5)
+    .map((item, index) => {
+      return {
+        position: index + 1,
+        manager: item.general_managers,
+        fss: item.fss_ranking,
+        financials: item.mgr_profit_ranking,
+        insights: `## Hey`,
       };
     });
 
@@ -72,7 +94,7 @@ export default function AnalyticsPage() {
                 />
                 <ManagerRankingTable
                   title="Top 5 Worst Store Managers"
-                  data={topManagersData}
+                  data={worstManagersData}
                 />
               </SimpleGrid>
               <Box
@@ -101,7 +123,9 @@ export default function AnalyticsPage() {
               </Box>
             </Stack>
           </Tabs.Panel>
-          <Tabs.Panel value="manager">manager</Tabs.Panel>
+          <Tabs.Panel value="manager">
+            <CalenderTable data={datax} />
+          </Tabs.Panel>
         </Tabs>
         <Box mt="xl">
           <ChatInterface />
@@ -116,6 +140,7 @@ type ManagerRankingData = Array<{
   manager: string;
   fss: string;
   financials: string;
+  insights: string;
 }>;
 
 function ManagerRankingTable({
@@ -185,14 +210,38 @@ function ManagerRankingTable({
                 </Badge>
               </Grid.Col>
               <Grid.Col span={2}>
-                <Badge
-                  size="lg"
-                  fw={700}
-                  bg="rgba(63, 221, 120, 0.24)"
-                  c="rgb(63, 221, 120)"
-                >
-                  {parseInt(item.fss) + parseInt(item.financials)}
-                </Badge>
+                <Flex align="center" justify="end" gap={6}>
+                  <Badge
+                    size="lg"
+                    fw={700}
+                    bg="rgba(63, 221, 120, 0.24)"
+                    c="rgb(63, 221, 120)"
+                  >
+                    {parseInt(item.fss) + parseInt(item.financials)}
+                  </Badge>
+                  <Tooltip label="Overview">
+                    <ActionIcon
+                      size="xs"
+                      variant="light"
+                      onClick={() => {
+                        const content = marked.parse(item.insights) as string;
+                        modals.open({
+                          size: "lg",
+                          title: `${item.manager} - Overview`,
+                          children: (
+                            <TypographyStylesProvider>
+                              <div
+                                dangerouslySetInnerHTML={{ __html: content }}
+                              ></div>
+                            </TypographyStylesProvider>
+                          ),
+                        });
+                      }}
+                    >
+                      <IconBulb size={14} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
               </Grid.Col>
             </Grid>
           );
@@ -201,3 +250,434 @@ function ManagerRankingTable({
     </Box>
   );
 }
+
+const datax = [
+  {
+    manager: "Tiffanie",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+    ],
+    friday: [
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "Carousel",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "Jawad",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "XXXWXdf",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+];

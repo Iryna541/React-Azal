@@ -15,3 +15,7 @@
 .thead tr th {
   border-color: hsl(var(--foreground) / 0.075);
 }
+
+.tbody tr td {
+  vertical-align: top;
+}
