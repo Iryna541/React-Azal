@@ -9,7 +9,7 @@ import {
   Title,
 } from "@mantine/core";
 import { PropsWithChildren } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   IconAnalytics,
   IconAutomation,
@@ -24,6 +24,7 @@ import {
   IconLogout,
   IconSettings,
 } from "@tabler/icons-react";
+import { storage } from "~/lib/storage";
 
 const ICON_SIZE = 26;
 
@@ -126,7 +127,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 }
 
 function UserMenu({ user }: { user: UserData }) {
-  const { logout } = useUser();
+  const navigate = useNavigate();
+  const { refetch } = useUser();
   return (
     <Menu
       styles={{
@@ -161,7 +163,11 @@ function UserMenu({ user }: { user: UserData }) {
           Settings
         </Menu.Item>
         <Menu.Item
-          onClick={logout}
+          onClick={() => {
+            storage.clearToken();
+            storage.clearCompanyId();
+            refetch();
+          }}
           leftSection={<IconLogout style={{ width: 16, height: 16 }} />}
         >
           Logout

@@ -12,6 +12,7 @@ import { getRoutes } from "./routes";
 import { resolver, theme } from "./styles";
 import { Notifications } from "@mantine/notifications";
 import { AuthContextProvider } from "./modules/auth/contexts/AuthContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ export default function App() {
           <ModalsProvider>
             <AuthContextProvider>
               <Entry />
+              <ReactQueryDevtools />
             </AuthContextProvider>
           </ModalsProvider>
         </MantineProvider>

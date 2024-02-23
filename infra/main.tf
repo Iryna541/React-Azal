@@ -199,95 +199,6 @@ resource "aws_elastic_beanstalk_application" "eb_app" {
   name = var.elasticbeanstalk_app_name
 }
 
-resource "aws_elastic_beanstalk_environment" "eb_dev_env" {
-  name                = "${var.elasticbeanstalk_app_name}-Dev"
-  application         = aws_elastic_beanstalk_application.eb_app.name
-  solution_stack_name = "64bit Amazon Linux 2023 v4.2.1 running Docker"
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "LoadBalancerType"
-    value     = "application"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
-    name      = "StreamLogs"
-    value     = true
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
-    name      = "RetentionInDays"
-    value     = "7"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
-    name      = "DeleteOnTerminate"
-    value     = true
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "IamInstanceProfile"
-    value     = "aws-elasticbeanstalk-ec2-role"
-  }
-
-  setting {
-    namespace = "aws:ec2:instances"
-    name      = "InstanceTypes"
-    value     = "t2.micro"
-  }
-}
-
-# Cloudfront Distribution
-resource "aws_cloudfront_distribution" "mycf" {
-  enabled         = true
-  is_ipv6_enabled = true
-  aliases         = ["oscar-dev.azal.io"]
-
-  origin {
-    domain_name = aws_elastic_beanstalk_environment.eb_dev_env.cname
-    origin_id   = "EBEnv"
-
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
-  }
-
-
-  default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "EBEnv"
-    forwarded_values {
-      query_string = false
-      cookies {
-        forward = "none"
-      }
-    }
-    viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
-  }
-
-  viewer_certificate {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:859989146907:certificate/c718c337-971e-4a3f-9f4a-1e6689d5909f"
-    ssl_support_method  = "sni-only"
-  }
-
-  restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
-  }
-}
-
 # Create CodePipeline
 resource "aws_codepipeline" "codepipeline" {
   name     = var.codepipeline_project_name
@@ -342,6 +253,35 @@ resource "aws_codepipeline" "codepipeline" {
       configuration = {
         ApplicationName = aws_elastic_beanstalk_application.eb_app.name
         EnvironmentName = aws_elastic_beanstalk_environment.eb_dev_env.name
+      }
+    }
+  }
+
+  stage {
+    name = "Test"
+
+    # Manual approval action
+    action {
+      name      = "Approve"
+      category  = "Approval"
+      owner     = "AWS"
+      provider  = "Manual"
+      version   = "1"
+      run_order = 1
+    }
+
+    # Deployment action to Elastic Beanstalk Test Environment
+    action {
+      name            = "Deploy-Test"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ElasticBeanstalk"
+      input_artifacts = ["build_output"]
+      version         = "1"
+      run_order       = 2
+      configuration = {
+        ApplicationName = aws_elastic_beanstalk_application.eb_app.name
+        EnvironmentName = aws_elastic_beanstalk_environment.eb_test_env.name
       }
     }
   }
