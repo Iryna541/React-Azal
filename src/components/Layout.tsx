@@ -1,6 +1,5 @@
 import {
   AppShell,
-  Badge,
   Box,
   Flex,
   Menu,
@@ -93,7 +92,7 @@ export function Layout({
   );
 }
 
-export function Sidebar({ isAdmin }: { isAdmin: boolean }) {
+export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const location = useLocation();
   const { user } = useUser();
 
