@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
       };
     });
 
-  const topManagersData: ManagerRankingData = (data ?? [])
+  const topManagersData: ManagerRankingData = [...(data ?? [])]
     .reverse()
     .slice(0, 5)
     .map((item, index) => {
@@ -54,6 +54,8 @@ export default function AnalyticsPage() {
         insights: `## Hey`,
       };
     });
+
+  console.log(data);
 
   return (
     <ProtectedRoute>
