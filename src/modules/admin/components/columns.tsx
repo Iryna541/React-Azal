@@ -3,7 +3,6 @@ import { Company } from "../api/useCompanies";
 import { Box, Button } from "@mantine/core";
 import { storage } from "~/lib/storage";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "~/modules/auth/hooks/useUser";
 import { useActiveUser } from "~/modules/auth/api/useActiveUser";
 
 export const columns: ColumnDef<Company>[] = [
