@@ -7,6 +7,14 @@
   &[data-active="true"] {
     color: hsl(var(--primary));
   }
+
+  &[data-variant="pills"] {
+    &[data-active="true"] {
+      color: hsl(var(--primary-foreground));
+    }
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--mantine-radius-md);
+  }
 }
 
 .list {

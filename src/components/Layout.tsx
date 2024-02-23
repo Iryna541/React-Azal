@@ -49,7 +49,7 @@ const NAVBAR_LINKS = [
 const NAVBAR_ADMIN_LINKS = [
   {
     label: "Companies",
-    href: "/admin/companies",
+    href: "/admin",
     Icon: <IconBuildingArch height={ICON_SIZE} width={ICON_SIZE} />,
   },
 ];
