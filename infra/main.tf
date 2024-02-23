@@ -245,7 +245,7 @@ resource "aws_elastic_beanstalk_environment" "eb_dev_env" {
 resource "aws_cloudfront_distribution" "mycf" {
   enabled         = true
   is_ipv6_enabled = true
-  aliases         = ["fe-v2-dev.azal.io"]
+  aliases         = ["oscar-dev.azal.io"]
 
   origin {
     domain_name = aws_elastic_beanstalk_environment.eb_dev_env.cname
