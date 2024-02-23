@@ -95,35 +95,33 @@ export function CompanyListingTable({ data }: CompanyListingTableProps) {
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
               return (
-                <>
-                  <Table.Tr
-                    key={row.id}
-                    onClick={() => {
-                      row.getIsExpanded()
-                        ? row.toggleExpanded(false)
-                        : row.toggleExpanded(true);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <Table.Td
-                        fw={500}
-                        c="hsl(var(--foreground) / 0.8)"
-                        key={cell.id}
-                        style={{
-                          width: cell.column.getSize(),
-                          minWidth: cell.column.getSize(),
-                          maxWidth: cell.column.getSize(),
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Td>
-                    ))}
-                  </Table.Tr>
-                </>
+                <Table.Tr
+                  key={row.id}
+                  onClick={() => {
+                    row.getIsExpanded()
+                      ? row.toggleExpanded(false)
+                      : row.toggleExpanded(true);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <Table.Td
+                      fw={500}
+                      c="hsl(var(--foreground) / 0.8)"
+                      key={cell.id}
+                      style={{
+                        width: cell.column.getSize(),
+                        minWidth: cell.column.getSize(),
+                        maxWidth: cell.column.getSize(),
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Table.Td>
+                  ))}
+                </Table.Tr>
               );
             })
           ) : (

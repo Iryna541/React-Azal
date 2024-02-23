@@ -80,6 +80,7 @@ export default function LoginPage() {
               <Stack>
                 <TextInput
                   label="Email"
+                  name="az-email"
                   placeholder="Enter your Email"
                   leftSection={<IconAt size={16} />}
                   withAsterisk
@@ -87,6 +88,7 @@ export default function LoginPage() {
                 />
                 <PasswordInput
                   label="Password"
+                  name="az-password"
                   leftSection={<IconLock size={16} />}
                   placeholder="Enter your password"
                   withAsterisk

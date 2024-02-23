@@ -1,7 +1,6 @@
 .root {
-  height: 44px;
-
   &[data-variant="azalio-ui"] {
+    height: 44px;
     font-weight: 600;
     --button-bg: hsl(var(--primary));
     --button-color: hsl(var(--primary-foreground));
@@ -9,6 +8,8 @@
   }
 
   &[data-variant="azalio-ui-dark"] {
+    height: 44px;
+
     font-weight: 600;
     --button-bg: hsl(var(--accent));
     --button-color: hsl(var(--accent-foreground));
@@ -18,6 +19,8 @@
   }
 
   &[data-variant="azalio-ui-light"] {
+    height: 44px;
+
     font-weight: 600;
     --button-bg: hsl(var(--primary) / 0.1);
     --button-color: hsl(var(--primary));
@@ -27,6 +30,8 @@
   }
 
   &[data-variant="azalio-ui-secondary"] {
+    height: 44px;
+
     font-weight: 600;
     --button-bg: hsl(var(--secondary));
     --button-color: hsl(var(--secondary-foreground));
@@ -36,6 +41,8 @@
   }
 
   &[data-variant="azalio-ui-destructive"] {
+    height: 44px;
+
     font-weight: 600;
     --button-bg: hsl(var(--destructive));
     --button-color: hsl(var(--destructive-foreground));
@@ -45,6 +52,8 @@
   }
 
   &[data-variant="azalio-ui-outline"] {
+    height: 44px;
+
     font-weight: 600;
     color: hsl(var(--foreground));
     --button-bg: white;
@@ -55,6 +64,8 @@
   }
 
   &[data-variant="azalio-ui-ghost"] {
+    height: 44px;
+
     font-weight: 600;
     color: hsl(var(--foreground));
     --button-bg: hsl(var(--background));

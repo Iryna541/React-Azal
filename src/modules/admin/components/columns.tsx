@@ -1,6 +1,10 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Company } from "../api/useCompanies";
-import { Box } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
+import { storage } from "~/lib/storage";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "~/modules/auth/hooks/useUser";
+import { useActiveUser } from "~/modules/auth/api/useActiveUser";
 
 export const columns: ColumnDef<Company>[] = [
   {
@@ -25,8 +29,26 @@ export const columns: ColumnDef<Company>[] = [
   },
   {
     header: "Action",
-    cell: () => {
-      return <Box></Box>;
-    },
+    cell: ActionCell,
   },
 ];
+
+function ActionCell({ row }: CellContext<Company, unknown>) {
+  const navigate = useNavigate();
+  const { refetch } = useActiveUser({ config: { enabled: false } });
+  return (
+    <Box>
+      <Button
+        variant="subtle"
+        size="xs"
+        onClick={async () => {
+          storage.setCompanyId(row.original.company_id.toString());
+          await refetch();
+          navigate("/askq");
+        }}
+      >
+        View as Customer
+      </Button>
+    </Box>
+  );
+}
