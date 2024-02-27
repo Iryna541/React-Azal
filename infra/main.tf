@@ -176,6 +176,11 @@ resource "aws_codebuild_project" "codebuild" {
     image           = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type            = "LINUX_CONTAINER"
     privileged_mode = true
+
+    environment_variable {
+      name  = "VITE_API_BASE_URL"
+      value = "https://dev-be.azal.io/api"
+    }
   }
 
   logs_config {
@@ -226,7 +231,8 @@ resource "aws_codepipeline" "codepipeline" {
   }
 
   stage {
-    name = "Build"
+    name = "Development"
+
     action {
       name             = "Build"
       category         = "Build"
@@ -235,14 +241,12 @@ resource "aws_codepipeline" "codepipeline" {
       input_artifacts  = ["source_output"]
       output_artifacts = ["build_output"]
       version          = "1"
+      run_order        = 1
       configuration = {
         ProjectName = "Azalio-FE-V2"
       }
     }
-  }
 
-  stage {
-    name = "Development"
     action {
       name            = "Development"
       category        = "Deploy"
@@ -250,6 +254,7 @@ resource "aws_codepipeline" "codepipeline" {
       provider        = "ElasticBeanstalk"
       input_artifacts = ["build_output"]
       version         = "1"
+      run_order       = 2
       configuration = {
         ApplicationName = aws_elastic_beanstalk_application.eb_app.name
         EnvironmentName = aws_elastic_beanstalk_environment.eb_dev_env.name
@@ -270,18 +275,139 @@ resource "aws_codepipeline" "codepipeline" {
       run_order = 1
     }
 
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output_test"]
+      version          = "1"
+      run_order        = 2
+      configuration = {
+        ProjectName = "Azalio-FE-V2"
+        EnvironmentVariables = jsonencode([
+          {
+            name  = "VITE_API_BASE_URL"
+            value = "https://test-be.azal.io/api"
+            type  = "PLAINTEXT"
+          }
+        ])
+      }
+    }
+
     # Deployment action to Elastic Beanstalk Test Environment
     action {
       name            = "Deploy-Test"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ElasticBeanstalk"
-      input_artifacts = ["build_output"]
+      input_artifacts = ["build_output_test"]
       version         = "1"
-      run_order       = 2
+      run_order       = 3
       configuration = {
         ApplicationName = aws_elastic_beanstalk_application.eb_app.name
         EnvironmentName = aws_elastic_beanstalk_environment.eb_test_env.name
+      }
+    }
+  }
+
+  stage {
+    name = "Demo"
+
+    # Manual approval action
+    action {
+      name      = "Approve"
+      category  = "Approval"
+      owner     = "AWS"
+      provider  = "Manual"
+      version   = "1"
+      run_order = 1
+    }
+
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output_demo"]
+      version          = "1"
+      run_order        = 2
+      configuration = {
+        ProjectName = "Azalio-FE-V2"
+        EnvironmentVariables = jsonencode([
+          {
+            name  = "VITE_API_BASE_URL"
+            value = "https://demo-be.azal.io/api"
+            type  = "PLAINTEXT"
+          }
+        ])
+      }
+    }
+
+    # Deployment action to Elastic Beanstalk Demo Environment
+    action {
+      name            = "Deploy-Demo"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ElasticBeanstalk"
+      input_artifacts = ["build_output_demo"]
+      version         = "1"
+      run_order       = 3
+      configuration = {
+        ApplicationName = aws_elastic_beanstalk_application.eb_app.name
+        EnvironmentName = aws_elastic_beanstalk_environment.eb_demo_env.name
+      }
+    }
+  }
+
+  stage {
+    name = "Production"
+
+    # Manual approval action
+    action {
+      name      = "Approve"
+      category  = "Approval"
+      owner     = "AWS"
+      provider  = "Manual"
+      version   = "1"
+      run_order = 1
+    }
+
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output_prod"]
+      version          = "1"
+      run_order        = 2
+      configuration = {
+        ProjectName = "Azalio-FE-V2"
+        EnvironmentVariables = jsonencode([
+          {
+            name  = "VITE_API_BASE_URL"
+            value = "https://app-be.azal.io/api"
+            type  = "PLAINTEXT"
+          }
+        ])
+      }
+    }
+
+    # Deployment action to Elastic Beanstalk Demo Environment
+    action {
+      name            = "Deploy-Prod"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ElasticBeanstalk"
+      input_artifacts = ["build_output_prod"]
+      version         = "1"
+      run_order       = 3
+      configuration = {
+        ApplicationName = aws_elastic_beanstalk_application.eb_app.name
+        EnvironmentName = aws_elastic_beanstalk_environment.eb_prod_env.name
       }
     }
   }
