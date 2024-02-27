@@ -3,7 +3,7 @@ import Axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { storage } from "./storage";
 
 export const axios = Axios.create({
-  baseURL: "https://demo-be.azal.io/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
