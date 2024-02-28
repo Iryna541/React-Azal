@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { PropsWithChildren } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IconAnalytics, IconDashboard } from "~/assets";
+import { IconAnalytics, IconBubble, IconDashboard } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
 import { UserData } from "~/modules/auth/contexts/AuthContext";
@@ -33,6 +33,11 @@ const NAVBAR_LINKS = [
     label: "Analytics",
     href: "/askq/analytics",
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
+  },
+  {
+    label: "OscarGPT",
+    href: "/oscar-gpt",
+    Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
   },
   // {
   //   label: "Automations",

@@ -8,9 +8,9 @@ import {
   Title,
 } from "@mantine/core";
 import { useState } from "react";
-import { ManagerPlanTable } from "~/modules/bk-manager-plan/ManagerPlanTable";
-import { StoreRankingTable } from "~/modules/bk-store-ranking/StoreRankingTable";
-import useStoreRanking from "~/modules/bk-store-ranking/api/useStoreRanking";
+import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan/BkManagerPlanTable";
+import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
+import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 
 export function BkRankingPage() {
   const { data } = useStoreRanking();
@@ -51,9 +51,9 @@ export function BkRankingPage() {
           </Title> */}
         </Box>
         <Divider />
-        {data && tab === "store" && <StoreRankingTable data={data} />}
+        {data && tab === "store" && <BkStoreRankingTable data={data} />}
         {managerData && tab === "manager" && (
-          <ManagerPlanTable data={managerData ?? []} />
+          <BkManagerPlanTable data={managerData ?? []} />
         )}
       </ScrollArea>
     </Container>

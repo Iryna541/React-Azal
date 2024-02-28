@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export function PublicRoute({ children }: PropsWithChildren) {
   const navigate = useNavigate();
   const { user, loading } = useUser();
-  console.log(user, loading);
   useEffect(() => {
     if (user) {
       navigate("/askq");

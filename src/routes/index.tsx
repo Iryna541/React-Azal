@@ -10,6 +10,7 @@ import { BkRankingPage } from "~/pages/bk-ranking";
 import LoginPage from "~/pages/auth/Login";
 import AdminCompanyListingPage from "~/pages/admin/company-listing";
 import { storage } from "~/lib/storage";
+import OscarGptPage from "~/pages/oscar-gpt";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -21,8 +22,12 @@ export const getRoutes = (): RouteObject[] => {
     defineRoute("/askq/communication", <CommunicationPage />),
     defineRoute("/askq/analytics", <AnalyticsPage />),
     defineRoute("/askq/automations", <AutomationsPage />),
+
+    defineRoute("/oscar-gpt", <OscarGptPage />),
+
     defineRoute("/bk-chat", <BkChatPage />),
     defineRoute("/bk-ranking", <BkRankingPage />),
+
     /* auth pages */
     defineRoute("/auth/login", <LoginPage />),
 
