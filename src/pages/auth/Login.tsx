@@ -41,11 +41,9 @@ export default function LoginPage() {
         showSuccessNotification("Successfully Logged In!");
         if (res.user.isSuperAdmin) {
           storage.setRoleId("1");
-
           navigate("/admin");
         } else {
           storage.setRoleId(res.user.role_id.toString());
-
           navigate("/askq");
         }
       },

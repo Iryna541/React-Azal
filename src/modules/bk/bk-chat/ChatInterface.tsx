@@ -16,7 +16,7 @@ import { BkLogo } from "./BkLogo";
 import { IconMessageCircle } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-export function ChatInterface() {
+export function BkChatInterface() {
   return (
     <ChatProvider>
       <Box style={{ border: "1px solid hsl(var(--border))", borderRadius: 8 }}>
@@ -29,7 +29,7 @@ export function ChatInterface() {
         <Divider />
         <Box p="lg">
           <ScrollArea
-            h="calc(100vh - 180px)"
+            h="calc(100vh - 280px)"
             scrollbars="y"
             offsetScrollbars={false}
           >
@@ -50,7 +50,7 @@ export function ChatHistory() {
   return (
     <>
       {messages.length === 0 && (
-        <Center h="calc(100vh - 250px)" maw={400} mx="auto">
+        <Center h="calc(100vh - 300px)" maw={400} mx="auto">
           <Stack align="center">
             <IconMessageCircle size={64} />
             <Text ta="center" fw={500}>

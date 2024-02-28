@@ -10,6 +10,7 @@ export type ActiveUserResponse = {
     role_id: number;
     role_title: string;
     color: string;
+    company_id: number;
   };
 };
 

@@ -24,15 +24,11 @@ import { StoreInsights } from "./api/useStoreRanking";
 import { useState } from "react";
 import { marked } from "marked";
 
-interface StoreRankingTableProps {
+interface BkStoreRankingTableProps {
   data: StoreInsights[];
 }
 
-export function StoreRankingTable({ data }: StoreRankingTableProps) {
-  data = data.sort((a, b) => {
-    return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
-  });
-  console.log(data);
+export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);

@@ -25,9 +25,7 @@ export type UseStoreRankingOptions = {
   config?: UseQueryOptions<GetStoreRankingResponse>;
 };
 
-export default function useStoreRanking({
-  config,
-}: UseStoreRankingOptions = {}) {
+export function useStoreRanking({ config }: UseStoreRankingOptions = {}) {
   return useQuery({
     queryKey: ["bk-store-ranking"],
     queryFn: getStoreRanking,

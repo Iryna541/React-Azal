@@ -15,7 +15,7 @@ import { Group, Pagination, Table, Text } from "@mantine/core";
 import { ManagerPlan, columns } from "./columns";
 import { useState } from "react";
 
-export function ManagerPlanTable({ data }: { data: ManagerPlan[] }) {
+export function BkManagerPlanTable({ data }: { data: ManagerPlan[] }) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);

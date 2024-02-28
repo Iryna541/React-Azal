@@ -328,7 +328,438 @@ const columns = [
   },
 ];
 
-export function CalenderTable({ data }) {
+const data = [
+  {
+    manager: "Tiffanie",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+    ],
+    friday: [
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "Carousel",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "Jawad",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+  {
+    manager: "XXXWXdf",
+    monday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    tuesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    Wednesday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    thursday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+    ],
+    friday: [
+      {
+        store: "store -1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    saturday: [
+      {
+        store: "store-3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+    sunday: [
+      {
+        store: "store-1",
+        task: "Solve xyz issue",
+        time: "Morning",
+      },
+      {
+        store: "store -2",
+        task: "Solve xyz issue",
+        time: "Evening",
+      },
+      {
+        store: "store -3",
+        task: "Solve xyz issue",
+        time: "Afternoon",
+      },
+    ],
+  },
+];
+
+export function CalenderTable() {
   const PAGE_SIZE = 12;
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]);
