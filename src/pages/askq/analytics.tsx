@@ -11,7 +11,6 @@ import {
 import { Layout } from "~/components/Layout";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
-import { BkChatInterface } from "~/modules/bk/bk-chat/ChatInterface";
 import { useBusterIFrame } from "~/modules/askq/api/useBusterIFrame";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import { CalenderTable } from "~/components/CalenderTable";
@@ -140,9 +139,6 @@ function BkSetup() {
           <CalenderTable />
         </Tabs.Panel>
       </Tabs>
-      <Box mt="xl">
-        <BkChatInterface />
-      </Box>
     </>
   );
 }

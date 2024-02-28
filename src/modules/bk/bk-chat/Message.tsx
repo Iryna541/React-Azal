@@ -8,15 +8,16 @@ import {
 import { RevealingText } from "./RevealingText";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { BkLogo } from "./BkLogo";
 import { Message as IMessage } from "./ChatContext";
+import { ReactNode } from "react";
 
 export interface MessageProps {
   message: IMessage;
   shouldAnimate: boolean;
+  logo: ReactNode;
 }
 
-export function Message({ message, shouldAnimate }: MessageProps) {
+export function Message({ logo, message, shouldAnimate }: MessageProps) {
   const messageHtml = DOMPurify.sanitize(marked(message.text) as string);
   return (
     <Group
@@ -75,7 +76,7 @@ export function Message({ message, shouldAnimate }: MessageProps) {
             alt="Sender's Avatar"
           />
         ) : (
-          <BkLogo height={38} width={38} />
+          <div>{logo}</div>
         )}
       </Box>
     </Group>

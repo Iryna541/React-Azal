@@ -11,6 +11,7 @@ type Document = {
 
 export type UseChatPayload = {
   query: string;
+  type: "bk" | "dunkin";
 };
 
 export type UseChatResponse = {
@@ -19,15 +20,17 @@ export type UseChatResponse = {
   answer: string;
 };
 
-export const getChatResponse = async (body: UseChatPayload) => {
+export const getChatResponse = async ({ type, ...body }: UseChatPayload) => {
   const searchParams = new URLSearchParams();
   searchParams.set("query", body.query);
-  return axios
-    .post(
-      "https://azalio-rag.cosmos.staging.delineate.pro/bk-rag",
-      searchParams.toString()
-    )
-    .then((res) => res.data);
+
+  let ragUrl = "https://azalio-rag.cosmos.staging.delineate.pro/bk-rag";
+  if (type === "dunkin") {
+    ragUrl =
+      "https://azalio-rag-salema.cosmos.staging.delineate.pro/salema-rag";
+  }
+
+  return axios.post(ragUrl, searchParams.toString()).then((res) => res.data);
 };
 
 type UseSignUpMutationOptions = {

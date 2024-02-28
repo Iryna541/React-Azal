@@ -3,8 +3,9 @@ import { useChat } from "./api/useChat";
 import { ActionIcon, Group, TextInput } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useChatContext } from "./ChatContext";
+import { ChatInterfaceProps } from "./ChatInterface";
 
-export function ChatInput() {
+export function ChatInput({ type }: { type: ChatInterfaceProps["type"] }) {
   const [value, setValue] = useState("");
 
   const { addMessage } = useChatContext();
@@ -21,24 +22,25 @@ export function ChatInput() {
     },
   });
 
-  const sendMessage = () => {
+  const sendMessage = (type: ChatInterfaceProps["type"]) => {
     addMessage({
       text: value,
       isRagResponse: false,
       createdAt: new Date().getTime(),
     });
-    getChatResponse({ query: value });
+    getChatResponse({ query: value, type });
   };
 
   return (
     <>
       <Group justify="center">
         <TextInput
+          styles={{ input: { height: 48 } }}
           value={value}
           onChange={(event) => setValue(event.currentTarget.value)}
           onKeyDown={(event) => {
             if (event.key === "Enter" && value.length > 0 && !isPending) {
-              sendMessage();
+              sendMessage(type);
               setValue("");
             }
           }}
@@ -52,7 +54,7 @@ export function ChatInput() {
               variant="azalio-ui-primary"
               mr={3}
               disabled={value.length === 0 || isPending}
-              onClick={sendMessage}
+              onClick={() => sendMessage(type)}
             >
               <IconSend size={16} />
             </ActionIcon>
