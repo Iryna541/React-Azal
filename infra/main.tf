@@ -179,7 +179,7 @@ resource "aws_codebuild_project" "codebuild" {
 
     environment_variable {
       name  = "VITE_API_BASE_URL"
-      value = "https://dev-be.azal.io/api"
+      value = "https://demo-be.azal.io/api"
     }
   }
 

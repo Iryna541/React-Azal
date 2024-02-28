@@ -233,31 +233,31 @@ function DunkinSetup() {
           <Stack gap={40}>
             <SimpleGrid cols={2} spacing="xl">
               <DunkinTopStoreRanking
-                title="Top 5 Best Stores by Net Sales"
+                title="Top 3 Best Stores by Net Sales"
                 data={topStoresByNetSalesData.slice(0, 3)}
               />
               <DunkinTopStoreRanking
-                title="Top 5 Worst Stores by Net Sales"
+                title="Top 3 Worst Stores by Net Sales"
                 data={topStoresByNetSalesData.reverse().slice(0, 3)}
               />
             </SimpleGrid>
             <SimpleGrid cols={2} spacing="xl">
               <DunkinTopStoreRanking
-                title="Top 5 Best Stores by Avg Weekly Ticket Count"
+                title="Top 3 Best Stores by Avg Weekly Ticket Count"
                 data={topStoresByAvgWeeklyTicketCount.slice(0, 3)}
               />
               <DunkinTopStoreRanking
-                title="Top 5 Worst Stores by Avg Weekly Ticket Count"
+                title="Top 3 Worst Stores by Avg Weekly Ticket Count"
                 data={topStoresByAvgWeeklyTicketCount.reverse().slice(0, 3)}
               />
             </SimpleGrid>
             <SimpleGrid cols={2} spacing="xl">
               <DunkinTopStoreRanking
-                title="Top 5 Best Stores by Avg Ticket Size"
+                title="Top 3 Best Stores by Avg Ticket Size"
                 data={topStoresByAvgTicketSize.slice(0, 3)}
               />
               <DunkinTopStoreRanking
-                title="Top 5 Worst Stores by Avg Ticket Size"
+                title="Top 3 Worst Stores by Avg Ticket Size"
                 data={topStoresByAvgTicketSize.reverse().slice(0, 3)}
               />
             </SimpleGrid>
