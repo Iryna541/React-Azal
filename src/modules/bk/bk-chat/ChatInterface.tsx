@@ -12,37 +12,43 @@ import {
 import { Message } from "./Message";
 import { ChatInput } from "./ChatInput";
 import { ChatProvider, useChatContext } from "./ChatContext";
-import { BkLogo } from "./BkLogo";
 import { IconMessageCircle } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { ReactNode } from "react";
 
-export function BkChatInterface() {
+export interface ChatInterfaceProps {
+  logo: ReactNode;
+  title: string;
+  type: "dunkin" | "bk";
+}
+
+export function BkChatInterface({ logo, title, type }: ChatInterfaceProps) {
   return (
     <ChatProvider>
       <Box style={{ border: "1px solid hsl(var(--border))", borderRadius: 8 }}>
         <Group px="lg" py="md">
-          <BkLogo width={40} height={40} />
-          <Title order={5} fw={500} fz={16}>
-            BK University Chatbot
+          {logo}
+          <Title order={5} fw={700} fz={16}>
+            {title}
           </Title>
         </Group>
         <Divider />
         <Box p="lg">
           <ScrollArea
-            h="calc(100vh - 280px)"
+            h="calc(100vh - 300px)"
             scrollbars="y"
             offsetScrollbars={false}
           >
-            <ChatHistory />
+            <ChatHistory logo={logo} />
           </ScrollArea>
-          <ChatInput />
+          <ChatInput type={type} />
         </Box>
       </Box>
     </ChatProvider>
   );
 }
 
-export function ChatHistory() {
+export function ChatHistory({ logo }: { logo: ReactNode }) {
   const queryClient = useQueryClient();
   const { messages } = useChatContext();
   const isPending = !!queryClient.isMutating({ mutationKey: ["bk-chat"] });
@@ -70,6 +76,7 @@ export function ChatHistory() {
             currentTime.getTime() - messageCreatedAt.getTime() < 2000;
           return (
             <Message
+              logo={logo}
               key={index}
               shouldAnimate={shouldAnimate}
               message={message}
@@ -86,7 +93,7 @@ export function ChatHistory() {
           align="center"
           gap="md"
         >
-          <BkLogo height={38} width={38} />
+          {logo}
           <Loader size="md" type="dots" />
         </Group>
       )}
