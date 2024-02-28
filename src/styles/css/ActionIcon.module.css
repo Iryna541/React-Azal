@@ -1,10 +1,10 @@
 .root {
   &[data-variant="azalio-ui"] {
     transition: all 0.15s;
-    background: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
     &:hover {
-      background: #fff;
+      background: hsl(var(--primary) / 0.2);
     }
   }
 

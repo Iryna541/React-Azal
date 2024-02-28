@@ -1,4 +1,17 @@
-import { Box, Title, Grid, Stack, Badge } from "@mantine/core";
+import {
+  Box,
+  Title,
+  Grid,
+  Stack,
+  Badge,
+  ActionIcon,
+  Flex,
+  Tooltip,
+  TypographyStylesProvider,
+} from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconBulb } from "@tabler/icons-react";
+import { marked } from "marked";
 
 export type DunkinStoreRankingData = Array<{
   store_rank: string;
@@ -6,6 +19,7 @@ export type DunkinStoreRankingData = Array<{
   rank_net_sales: string;
   rank_average_weekly_ticket_count: string;
   rank_average_ticket_size: string;
+  bullet_points: string;
 }>;
 
 export function DunkinTopStoreRanking({
@@ -37,6 +51,23 @@ export function DunkinTopStoreRanking({
       </Grid>
       <Stack gap="xs">
         {data.map((item) => {
+          const handleOpenModal = () => {
+            const content = marked.parse(item.bullet_points);
+
+            modals.open({
+              title: "AI Insights",
+              children: (
+                <TypographyStylesProvider>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: content as string,
+                    }}
+                  ></div>
+                </TypographyStylesProvider>
+              ),
+            });
+          };
+
           return (
             <Grid
               c="hsl(var(--foreground) / 0.65)"
@@ -73,15 +104,22 @@ export function DunkinTopStoreRanking({
                   {item.rank_average_weekly_ticket_count}
                 </Badge>
               </Grid.Col>
-              <Grid.Col span={2}>
-                <Badge
-                  size="lg"
-                  fw={700}
-                  bg="rgba(63, 221, 120, 0.24)"
-                  c="rgb(63, 221, 120)"
-                >
-                  {item.rank_average_ticket_size}
-                </Badge>
+              <Grid.Col span={3}>
+                <Flex w="100%" align="center" justify="space-between">
+                  <Badge
+                    size="lg"
+                    fw={700}
+                    bg="rgba(63, 221, 120, 0.24)"
+                    c="rgb(63, 221, 120)"
+                  >
+                    {item.rank_average_ticket_size}
+                  </Badge>
+                  <Tooltip label="AI Insights">
+                    <ActionIcon onClick={handleOpenModal}>
+                      <IconBulb size={16} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Flex>
               </Grid.Col>
             </Grid>
           );
