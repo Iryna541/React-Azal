@@ -10,6 +10,7 @@ export interface DunkinStoreRankingData {
   total_rank_points: string;
   store_rank: string;
   insights: string;
+  bullet_points: string;
 }
 
 export type GetDunkinStoreRankingResponse = DunkinStoreRankingData[];

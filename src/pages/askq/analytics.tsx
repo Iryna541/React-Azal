@@ -159,6 +159,7 @@ function DunkinSetup() {
         rank_net_sales: item.rank_net_sales,
         rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
         rank_average_ticket_size: item.rank_average_ticket_size,
+        bullet_points: item.bullet_points,
       };
     });
 
@@ -178,6 +179,7 @@ function DunkinSetup() {
         rank_net_sales: item.rank_net_sales,
         rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
         rank_average_ticket_size: item.rank_average_ticket_size,
+        bullet_points: item.bullet_points,
       };
     });
 
@@ -195,6 +197,7 @@ function DunkinSetup() {
         rank_net_sales: item.rank_net_sales,
         rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
         rank_average_ticket_size: item.rank_average_ticket_size,
+        bullet_points: item.bullet_points,
       };
     });
 

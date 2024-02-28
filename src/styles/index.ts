@@ -235,7 +235,7 @@ export const theme = createTheme({
       classNames: notificationClasses,
     }),
     Modal: Modal.extend({
-      defaultProps: { variant: "azalio-ui", overlayProps: { blur: 8 } },
+      defaultProps: { variant: "azalio-ui" },
       classNames: modalClasses,
     }),
     TagsInput: TagsInput.extend({
