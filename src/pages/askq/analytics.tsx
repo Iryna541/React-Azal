@@ -29,10 +29,15 @@ import { DunkinStoreRankingTable } from "~/modules/dunkin/dunkin-store-ranking/D
 
 export default function AnalyticsPage() {
   const { user } = useUser();
+
+  let height = 700;
+  if (user?.company_id === 212) height = 1100;
+
   return (
     <ProtectedRoute>
       <Layout>
         <Title order={3}>Analytics</Title>
+        <BusterIframe h={height} />
         {user?.company_id === 211 && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
       </Layout>
@@ -40,9 +45,35 @@ export default function AnalyticsPage() {
   );
 }
 
+function BusterIframe({ h }: { h: number }) {
+  const { data: busterIframeData, isLoading } = useBusterIFrame();
+
+  return (
+    <Box m={-20} py={20}>
+      {busterIframeData && (
+        <IframeResizer
+          width="100%"
+          height={h}
+          style={{
+            border: 0,
+            width: "1px",
+            minWidth: "100%",
+            overflow: "hidden",
+          }}
+          src={busterIframeData.iframe}
+        ></IframeResizer>
+      )}
+      {isLoading && (
+        <Center h={700}>
+          <Loader size="lg" type="dots" />
+        </Center>
+      )}
+    </Box>
+  );
+}
+
 function BkSetup() {
   const { data } = useStoreRanking();
-  const { data: busterIframeData, isLoading } = useBusterIFrame();
 
   const worstManagersData: BkManagerRankingData = (data ?? [])
     .slice(0, 5)
@@ -71,27 +102,6 @@ function BkSetup() {
 
   return (
     <>
-      <Box m={-20} py={20}>
-        {busterIframeData && (
-          <IframeResizer
-            width="100%"
-            height={700}
-            style={{
-              border: 0,
-              width: "1px",
-              minWidth: "100%",
-              overflow: "hidden",
-            }}
-            src={busterIframeData.iframe}
-          ></IframeResizer>
-        )}
-        {isLoading && (
-          <Center h={700}>
-            <Loader size="lg" type="dots" />
-          </Center>
-        )}
-      </Box>
-
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
@@ -144,8 +154,6 @@ function BkSetup() {
 }
 
 function DunkinSetup() {
-  const { data: busterIframeData, isLoading } = useBusterIFrame();
-
   const { data } = useDunkinStoreRanking();
 
   const topStoresByNetSalesData: DunkinStoreRankingData = [...(data ?? [])]
@@ -203,27 +211,6 @@ function DunkinSetup() {
 
   return (
     <Box>
-      <Box m={-20} py={20}>
-        {busterIframeData && (
-          <IframeResizer
-            width="100%"
-            height={1100}
-            style={{
-              border: 0,
-              width: "1px",
-              minWidth: "100%",
-              overflow: "hidden",
-            }}
-            src={busterIframeData.iframe}
-          ></IframeResizer>
-        )}
-        {isLoading && (
-          <Center h={700}>
-            <Loader size="lg" type="dots" />
-          </Center>
-        )}
-      </Box>
-
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>

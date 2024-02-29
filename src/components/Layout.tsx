@@ -18,6 +18,7 @@ import {
   IconBuildingArch,
   IconLogout,
   IconSettings,
+  // IconUsers,
 } from "@tabler/icons-react";
 import { storage } from "~/lib/storage";
 
@@ -40,9 +41,9 @@ const NAVBAR_LINKS = [
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
   },
   // {
-  //   label: "Automations",
-  //   href: "/askq/automations",
-  //   Icon: <IconAutomation height={ICON_SIZE} width={ICON_SIZE} />,
+  //   label: "Organization",
+  //   href: "/organization",
+  //   Icon: <IconUsers height={ICON_SIZE} width={ICON_SIZE} />,
   // },
   // {
   //   label: "Communication",
