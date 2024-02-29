@@ -45,11 +45,6 @@ const NAVBAR_LINKS = [
   //   href: "/organization",
   //   Icon: <IconUsers height={ICON_SIZE} width={ICON_SIZE} />,
   // },
-  // {
-  //   label: "Communication",
-  //   href: "/askq/communication",
-  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-  // },
 ];
 
 const NAVBAR_ADMIN_LINKS = [
