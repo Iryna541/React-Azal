@@ -26,6 +26,8 @@ import {
 } from "~/modules/dunkin/dunkin-top-store-ranking/DunkinTopStoreRanking";
 import useDunkinStoreRanking from "~/modules/dunkin/dunkin-store-ranking/api/useDunkinStoreRanking";
 import { DunkinStoreRankingTable } from "~/modules/dunkin/dunkin-store-ranking/DunkinStoreRankingTable";
+import { R365StoreRankingTable } from "~/modules/restaurant365/store-ranking/R365StoreRankingTable";
+import { useR365StoreRanking } from "~/modules/restaurant365/store-ranking/api/useR365StoreRanking";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -40,6 +42,7 @@ export default function AnalyticsPage() {
         <BusterIframe h={height} />
         {user?.company_id === 211 && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
+        {user?.company_id === 213 && <R365Setup />}
       </Layout>
     </ProtectedRoute>
   );
@@ -68,6 +71,29 @@ function BusterIframe({ h }: { h: number }) {
           <Loader size="lg" type="dots" />
         </Center>
       )}
+    </Box>
+  );
+}
+
+function R365Setup() {
+  const { data } = useR365StoreRanking();
+  return (
+    <Box
+      style={{
+        border: "1px solid hsl(var(--border))",
+        borderRadius: 8,
+      }}
+    >
+      <Box px="lg" py="md">
+        <Title order={5} fw={500} fz={16}>
+          Store Leaderboard
+        </Title>
+        <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+          Which locations are doing better?
+        </Title>
+      </Box>
+      <Divider />
+      {data && <R365StoreRankingTable data={data} />}
     </Box>
   );
 }

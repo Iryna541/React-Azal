@@ -8,16 +8,8 @@
     }
   }
 
-  &[data-variant="azalio-ui-primary"] {
-    transition: all 0.15s;
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    &:hover {
-      background: hsl(var(--primary) / 0.8);
-    }
-    &:disabled {
-      background: hsl(var(--primary) / 0.5);
-    }
+  &[data-variant="azalio-ui-white"] {
+    background: hsl(var(--background));
   }
 
   &[data-variant="bk-primary"] {
