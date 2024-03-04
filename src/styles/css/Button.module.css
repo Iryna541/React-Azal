@@ -1,6 +1,9 @@
 .root {
+  &[data-size="xs"] {
+    height: 36px;
+  }
+
   &[data-variant="azalio-ui"] {
-    height: 44px;
     font-weight: 600;
     --button-bg: hsl(var(--primary));
     --button-color: hsl(var(--primary-foreground));
