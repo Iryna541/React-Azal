@@ -101,21 +101,10 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
 
-  const worstManagersData: BkManagerRankingData = (data ?? [])
-    .slice(0, 5)
-    .map((item, index) => {
-      return {
-        position: index + 1,
-        manager: item.general_managers,
-        fss: item.fss_ranking,
-        financials: item.mgr_profit_ranking,
-        insights: ``,
-      };
-    });
-
-  const topManagersData: BkManagerRankingData = [...(data ?? [])]
-    .reverse()
-    .slice(0, 5)
+  const sortedManagersData: BkManagerRankingData = (data ?? [])
+    .sort((a, b) => {
+      return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
+    })
     .map((item, index) => {
       return {
         position: index + 1,
@@ -138,11 +127,11 @@ function BkSetup() {
             <SimpleGrid cols={2}>
               <BkManagerRankingTable
                 title="Top 5 Best Store Managers"
-                data={topManagersData}
+                data={sortedManagersData.slice(0, 5)}
               />
               <BkManagerRankingTable
                 title="Top 5 Worst Store Managers"
-                data={worstManagersData}
+                data={sortedManagersData.reverse().slice(0, 5)}
               />
             </SimpleGrid>
             <Box
