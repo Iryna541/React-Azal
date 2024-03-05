@@ -316,7 +316,7 @@ function ZenoSetup() {
         />
         <ZenoTopRankingTable
           title="Top 3 Best Stores by Net Sales"
-          data={sortedManagersData.slice(0, 5)}
+          data={sortedManagersData.reverse().slice(0, 5)}
         />
       </SimpleGrid>
       <Box
