@@ -17,7 +17,7 @@ import { UserData } from "~/modules/auth/contexts/AuthContext";
 import {
   IconBuildingArch,
   IconLogout,
-  IconSettings,
+  // IconSettings,
   // IconUsers,
 } from "@tabler/icons-react";
 import { storage } from "~/lib/storage";
