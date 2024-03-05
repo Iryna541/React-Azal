@@ -90,7 +90,7 @@ export function BkManagerRankingTable({
                 </Badge>
               </Grid.Col>
               <Grid.Col span={2}>
-                <Flex align="center" justify="end" gap={6}>
+                <Flex align="center" justify="space-between" gap="lg">
                   <Badge
                     size="lg"
                     fw={700}
@@ -101,7 +101,8 @@ export function BkManagerRankingTable({
                   </Badge>
                   <Tooltip label="Overview">
                     <ActionIcon
-                      size="xs"
+                      size="sm"
+                      h={26}
                       variant="light"
                       onClick={() => {
                         const content = marked.parse(item.insights) as string;
