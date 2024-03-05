@@ -28,12 +28,18 @@ import useDunkinStoreRanking from "~/modules/dunkin/dunkin-store-ranking/api/use
 import { DunkinStoreRankingTable } from "~/modules/dunkin/dunkin-store-ranking/DunkinStoreRankingTable";
 import { R365StoreRankingTable } from "~/modules/restaurant365/store-ranking/R365StoreRankingTable";
 import { useR365StoreRanking } from "~/modules/restaurant365/store-ranking/api/useR365StoreRanking";
+import {
+  StoreInsights,
+  useZenoStoreRanking,
+} from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
+import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
+import { ZenoTopRankingTable } from "~/modules/restaurant365/zeno-ranking/zeno-top-ranking-table/ZenoTopRankingTable";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
 
   let height = 700;
-  if (user?.company_id === 212) height = 1100;
+  if (user?.company_id === 212 || user?.company_id === 214) height = 1100;
 
   return (
     <ProtectedRoute>
@@ -43,6 +49,7 @@ export default function AnalyticsPage() {
         {user?.company_id === 211 && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
         {user?.company_id === 213 && <R365Setup />}
+        {user?.company_id === 214 && <ZenoSetup />}
       </Layout>
     </ProtectedRoute>
   );
@@ -290,5 +297,46 @@ function DunkinSetup() {
         </Tabs.Panel>
       </Tabs>
     </Box>
+  );
+}
+
+function ZenoSetup() {
+  const { data } = useZenoStoreRanking();
+
+  const sortedManagersData: StoreInsights[] = (data ?? []).sort((a, b) => {
+    return parseInt(a.total_net_sales_rank) - parseInt(b.total_net_sales_rank);
+  });
+
+  return (
+    <Stack gap="xl">
+      <SimpleGrid cols={2} spacing="xl">
+        <ZenoTopRankingTable
+          title="Top 5 Best Stores by Net Sales"
+          data={sortedManagersData.slice(0, 5)}
+        />
+        <ZenoTopRankingTable
+          title="Top 3 Best Stores by Net Sales"
+          data={sortedManagersData.slice(0, 5)}
+        />
+      </SimpleGrid>
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Box px="lg" py="md">
+          <Title order={5} fw={500} fz={16}>
+            Store Leaderboard
+          </Title>
+          <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+            Which locations are doing better?
+          </Title>
+        </Box>
+        <Divider />
+
+        {data && <ZenoStoreRankingTable data={data} />}
+      </Box>
+    </Stack>
   );
 }
