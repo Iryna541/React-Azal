@@ -118,7 +118,7 @@ function BkSetup() {
         manager: item.general_managers,
         fss: item.fss_ranking,
         financials: item.mgr_profit_ranking,
-        insights: ``,
+        insights: item.bullet_points,
       };
     });
 

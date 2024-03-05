@@ -11,6 +11,7 @@ export interface StoreInsights {
   insights_log: string;
   cta: string;
   cta_logs: string;
+  bullet_points: string;
 }
 
 export type GetStoreRankingResponse = StoreInsights[];
