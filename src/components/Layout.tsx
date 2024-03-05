@@ -152,11 +152,11 @@ function UserMenu({ user }: { user: UserData }) {
         </Flex>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
+        {/* <Menu.Item
           leftSection={<IconSettings style={{ width: 16, height: 16 }} />}
         >
           Settings
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item
           onClick={() => {
             storage.clearToken();
