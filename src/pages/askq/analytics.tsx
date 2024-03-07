@@ -13,7 +13,6 @@ import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanki
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
 import { useBusterIFrame } from "~/modules/askq/api/useBusterIFrame";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
-import { CalenderTable } from "~/components/CalenderTable";
 import {
   BkManagerRankingData,
   BkManagerRankingTable,
@@ -34,6 +33,8 @@ import {
 } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
 import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
 import { ZenoTopRankingTable } from "~/modules/restaurant365/zeno-ranking/zeno-top-ranking-table/ZenoTopRankingTable";
+import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
+import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -107,6 +108,7 @@ function R365Setup() {
 
 function BkSetup() {
   const { data } = useStoreRanking();
+  const { data: managerData } = useBkManagerPlan();
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -127,7 +129,7 @@ function BkSetup() {
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
-          {/* <Tabs.Tab value="manager">Manager</Tabs.Tab> */}
+          <Tabs.Tab value="manager">Manager</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap="xl">
@@ -168,7 +170,7 @@ function BkSetup() {
           </Stack>
         </Tabs.Panel>
         <Tabs.Panel value="manager">
-          <CalenderTable />
+          {managerData && <BkManagerPlanTable data={managerData} />}
         </Tabs.Panel>
       </Tabs>
     </>
