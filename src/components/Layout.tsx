@@ -16,6 +16,7 @@ import { Avatar } from "./Avatar";
 import { UserData } from "~/modules/auth/contexts/AuthContext";
 import {
   IconBuildingArch,
+  IconLock,
   IconLogout,
   // IconSettings,
   // IconUsers,
@@ -29,16 +30,19 @@ const NAVBAR_LINKS = [
     label: "Dashboard",
     href: "/askq",
     Icon: <IconDashboard height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: true,
   },
   {
     label: "Analytics",
     href: "/askq/analytics",
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
   },
   {
     label: "OscarGPT",
     href: "/oscar-gpt",
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
   },
   // {
   //   label: "Organization",
@@ -52,6 +56,7 @@ const NAVBAR_ADMIN_LINKS = [
     label: "Companies",
     href: "/admin",
     Icon: <IconBuildingArch height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
   },
 ];
 
@@ -103,6 +108,24 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
         </Title>
         {links.map((link, index) => {
           const isActive = link.href === location.pathname;
+          const isLocked = link.isLocked;
+
+          if (isLocked) {
+            return (
+              <Flex align="center">
+                <NavLink
+                  key={index}
+                  to={link.href}
+                  component={Link}
+                  active={isActive}
+                  leftSection={link.Icon}
+                  label={link.label}
+                  disabled
+                />
+                <IconLock style={{ opacity: 0.5 }} width={24} height={24} />
+              </Flex>
+            );
+          }
           return (
             <NavLink
               key={index}
