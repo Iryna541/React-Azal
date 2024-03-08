@@ -35,6 +35,8 @@ import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/Zeno
 import { ZenoTopRankingTable } from "~/modules/restaurant365/zeno-ranking/zeno-top-ranking-table/ZenoTopRankingTable";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
+import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
+import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -179,6 +181,7 @@ function BkSetup() {
 
 function DunkinSetup() {
   const { data } = useDunkinStoreRanking();
+  const { data: managerData } = useDunkinManagerPlan();
 
   const topStoresByNetSalesData: DunkinStoreRankingData = [...(data ?? [])]
     .sort((a, b) => {
@@ -238,6 +241,7 @@ function DunkinSetup() {
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
+          <Tabs.Tab value="manager">Manager</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
@@ -296,6 +300,10 @@ function DunkinSetup() {
               {data && <DunkinStoreRankingTable data={data} />}
             </Box>
           </Stack>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="manager">
+        {managerData && <DunkinManagerPlanTable data={managerData} />}
         </Tabs.Panel>
       </Tabs>
     </Box>
