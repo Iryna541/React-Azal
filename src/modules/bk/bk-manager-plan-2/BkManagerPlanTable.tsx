@@ -16,18 +16,17 @@ import {
   Pagination,
   Table,
   Text,
-  TypographyStylesProvider,
 } from "@mantine/core";
 import { columns } from "./columns"; // You need to update or create this based on the ManagerPlan data structure
 import { ManagerPlanResponse } from "./api/useBkManagerPlan"; // Update the import based on actual file structure
 import { useState } from "react";
-import { marked } from "marked";
 
 interface BkManagerPlanTableProps {
   data: ManagerPlanResponse;
 }
 
 export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
+  console.log(data);
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -95,6 +94,7 @@ export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
                           )}
                     </Table.Th>
                     <Table.Th>StoreId</Table.Th>
+                    <Table.Th>DayPart</Table.Th>
                     <Table.Th>Area of Concern</Table.Th>
                   </>
                 );
@@ -162,25 +162,38 @@ export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
                           </Table.Td>
                         </Table.Tr>
                         {item.area_of_concern.map((item) => {
-                          const content = marked.parse(
-                            item.slice(1).trim()
-                          ) as string;
+                         const parts = item.split('**');
+                         const result = parts.map((part, index) => {
+                           if (index % 2 === 1) {
+                        
+                             const modifiedPart = part.replace(/-\d+/, '').toUpperCase();
+                             return  modifiedPart ;
+                           }
+                           return part;
+                         });
+                          const substringAfterColon = item.split(/:\s*/)[1];
+                          console.log(result[1]);
                           return (
                             <Table.Tr>
+                              <Table.Td
+                                style={{
+                                  maxWidth: 250,
+                                  border: "1px solid hsl(var(--border))",
+                                  
+                                }}
+                              >
+                              <Text fw={700}>  {result[1]}</Text>
+                                 
+                              </Table.Td>
                               <Table.Td
                                 style={{
                                   border: "1px solid hsl(var(--border))",
                                 }}
                               >
-                                <TypographyStylesProvider>
-                                  <div
-                                    dangerouslySetInnerHTML={{
-                                      __html: content,
-                                    }}
-                                  ></div>
-                                </TypographyStylesProvider>
+                               {substringAfterColon}
                               </Table.Td>
                             </Table.Tr>
+                            
                           );
                         })}
                       </>
