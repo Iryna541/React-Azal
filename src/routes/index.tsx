@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { RouteObject, Navigate } from "react-router-dom";
 
 import AnalyticsPage from "../pages/askq/analytics";
-import DashboardPage from "~/pages/askq";
+// import DashboardPage from "~/pages/askq";
 import LoginPage from "~/pages/auth/Login";
 import AdminCompanyListingPage from "~/pages/admin/company-listing";
 import { storage } from "~/lib/storage";
@@ -15,7 +15,7 @@ export const getRoutes = (): RouteObject[] => {
   const roleId = storage.getRoleId();
   const isSuperAdmin = roleId === "1";
   return [
-    defineRoute("/askq", <DashboardPage />),
+    defineRoute("/askq", <Navigate to="/askq/analytics" />),
     defineRoute("/askq/analytics", <AnalyticsPage />),
     defineRoute("/oscar-gpt", <OscarGptPage />),
     defineRoute("/auth/login", <LoginPage />),

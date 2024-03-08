@@ -203,7 +203,7 @@ function DunkinSetup() {
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
-          <Tabs.Tab value="manager">Manager</Tabs.Tab>
+          {/* <Tabs.Tab value="manager">Manager</Tabs.Tab> */}
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
