@@ -183,47 +183,9 @@ function DunkinSetup() {
   const { data } = useDunkinStoreRanking();
   const { data: managerData } = useDunkinManagerPlan();
 
-  const topStoresByNetSalesData: DunkinStoreRankingData = [...(data ?? [])]
+  const topStores: DunkinStoreRankingData = [...(data ?? [])]
     .sort((a, b) => {
-      return parseInt(a.rank_net_sales) - parseInt(b.rank_net_sales);
-    })
-    .map((item) => {
-      return {
-        store_rank: item.store_rank,
-        store_id: item.store_id,
-        rank_net_sales: item.rank_net_sales,
-        rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
-        rank_average_ticket_size: item.rank_average_ticket_size,
-        bullet_points: item.bullet_points,
-      };
-    });
-
-  const topStoresByAvgWeeklyTicketCount: DunkinStoreRankingData = [
-    ...(data ?? []),
-  ]
-    .sort((a, b) => {
-      return (
-        parseInt(a.rank_average_weekly_ticket_count) -
-        parseInt(b.rank_average_weekly_ticket_count)
-      );
-    })
-    .map((item) => {
-      return {
-        store_rank: item.store_rank,
-        store_id: item.store_id,
-        rank_net_sales: item.rank_net_sales,
-        rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
-        rank_average_ticket_size: item.rank_average_ticket_size,
-        bullet_points: item.bullet_points,
-      };
-    });
-
-  const topStoresByAvgTicketSize: DunkinStoreRankingData = [...(data ?? [])]
-    .sort((a, b) => {
-      return (
-        parseInt(a.rank_average_ticket_size) -
-        parseInt(b.rank_average_ticket_size)
-      );
+      return parseInt(a.store_rank) - parseInt(b.store_rank);
     })
     .map((item) => {
       return {
@@ -247,32 +209,12 @@ function DunkinSetup() {
           <Stack gap={40}>
             <SimpleGrid cols={2} spacing="xl">
               <DunkinTopStoreRanking
-                title="Top 3 Best Stores by Net Sales"
-                data={topStoresByNetSalesData.slice(0, 3)}
+                title="Top 5 Best Stores"
+                data={topStores.slice(0, 5)}
               />
               <DunkinTopStoreRanking
-                title="Top 3 Worst Stores by Net Sales"
-                data={topStoresByNetSalesData.reverse().slice(0, 3)}
-              />
-            </SimpleGrid>
-            <SimpleGrid cols={2} spacing="xl">
-              <DunkinTopStoreRanking
-                title="Top 3 Best Stores by Avg Weekly Ticket Count"
-                data={topStoresByAvgWeeklyTicketCount.slice(0, 3)}
-              />
-              <DunkinTopStoreRanking
-                title="Top 3 Worst Stores by Avg Weekly Ticket Count"
-                data={topStoresByAvgWeeklyTicketCount.reverse().slice(0, 3)}
-              />
-            </SimpleGrid>
-            <SimpleGrid cols={2} spacing="xl">
-              <DunkinTopStoreRanking
-                title="Top 3 Best Stores by Avg Ticket Size"
-                data={topStoresByAvgTicketSize.slice(0, 3)}
-              />
-              <DunkinTopStoreRanking
-                title="Top 3 Worst Stores by Avg Ticket Size"
-                data={topStoresByAvgTicketSize.reverse().slice(0, 3)}
+                title="Top 5 Worst Stores"
+                data={topStores.reverse().slice(0, 5)}
               />
             </SimpleGrid>
             <Box
@@ -303,7 +245,7 @@ function DunkinSetup() {
         </Tabs.Panel>
 
         <Tabs.Panel value="manager">
-        {managerData && <DunkinManagerPlanTable data={managerData} />}
+          {managerData && <DunkinManagerPlanTable data={managerData} />}
         </Tabs.Panel>
       </Tabs>
     </Box>
