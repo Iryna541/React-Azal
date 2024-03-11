@@ -26,7 +26,6 @@ interface BkManagerPlanTableProps {
 }
 
 export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
-  console.log(data);
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -172,7 +171,7 @@ export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
                            return part;
                          });
                           const substringAfterColon = item.split(/:\s*/)[1];
-                          console.log(result[1]);
+                       
                           return (
                             <Table.Tr>
                               <Table.Td

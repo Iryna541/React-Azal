@@ -38,6 +38,7 @@ import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManage
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
 import { DonutChart } from "~/modules/bk/bk-charts/DonutChart";
+import { ColumnChart } from "~/modules/bk/bk-charts/ColumnChart";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -121,6 +122,33 @@ function BkSetup() {
       stores:[["4", "42", "43", "68", "77", "78", "984", "2755", "2847", "3197"], ["4451", "4490", "4870", "5329", "5777", "5891"], ["8296", "13518", "16754"],["22872"], ["23205"]],
     }, 
   ];
+  const columnData=[
+    {
+      name: "Guest Satisfaction (ACR)",
+      starRating: 3.5,
+      stores:["4", "42", "43", "68", "77", "78", "984", "2755", "2847", "3197"]
+    },
+    {
+      name: "Window Time (SOS)",
+      starRating: 3.3,
+      stores:["4451", "4490", "4870", "5329", "5777", "5891"]
+    },
+    {
+      name: "Avg. Training Rate",
+      starRating: 4.6,
+      stores:["8296", "13518", "16754"]
+    },
+    {
+      name: "Turnover Rate",
+      starRating: 4.4,
+      stores:["22872"]
+    },
+    {
+      name: "Brand Standards",
+      starRating: 3.8,
+      stores:["23205"]
+    }
+  ];
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -140,6 +168,7 @@ function BkSetup() {
     <>
       <Tabs variant="pills" radius="xs" defaultValue="store">
       {donutData && <DonutChart data={donutData} />}
+      {columnData && <ColumnChart data={columnData} />}
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
           <Tabs.Tab value="manager">Manager</Tabs.Tab>

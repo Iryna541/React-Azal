@@ -3,7 +3,6 @@ import Chart from "react-apexcharts";
 
 import {
   Box,
-
 } from "@mantine/core";
 
 import { DonutChartData } from "./api/useDonutChart";
