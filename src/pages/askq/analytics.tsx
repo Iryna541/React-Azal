@@ -37,6 +37,7 @@ import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlan
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
+import { DonutChart } from "~/modules/bk/bk-charts/DonutChart";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -111,6 +112,15 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
+  const  donutData  = [
+    {
+      series: [10, 6, 3, 1, 1],
+      chartOptions: {
+        labels: ["4.0 - 5.0", "3.8 - 3.9", "3.0 - 3.7", "2.0 - 2.9", "0.0 - 2.0"]
+      },
+      stores:[["4", "42", "43", "68", "77", "78", "984", "2755", "2847", "3197"], ["4451", "4490", "4870", "5329", "5777", "5891"], ["8296", "13518", "16754"],["22872"], ["23205"]],
+    }, 
+  ];
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -129,6 +139,7 @@ function BkSetup() {
   return (
     <>
       <Tabs variant="pills" radius="xs" defaultValue="store">
+      {donutData && <DonutChart data={donutData} />}
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
           <Tabs.Tab value="manager">Manager</Tabs.Tab>
@@ -182,6 +193,7 @@ function BkSetup() {
 function DunkinSetup() {
   const { data } = useDunkinStoreRanking();
   const { data: managerData } = useDunkinManagerPlan();
+  
 
   const topStores: DunkinStoreRankingData = [...(data ?? [])]
     .sort((a, b) => {
@@ -240,12 +252,14 @@ function DunkinSetup() {
               </Box>
               <Divider />
               {data && <DunkinStoreRankingTable data={data} />}
+       
             </Box>
           </Stack>
         </Tabs.Panel>
 
         <Tabs.Panel value="manager">
           {managerData && <DunkinManagerPlanTable data={managerData} />}
+          
         </Tabs.Panel>
       </Tabs>
     </Box>

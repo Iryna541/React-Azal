@@ -26,7 +26,6 @@ interface DunkinManagerPlanTableProps {
 }
 
 export function DunkinManagerPlanTable({ data }: DunkinManagerPlanTableProps) {
-  console.log(data);
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
