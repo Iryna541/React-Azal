@@ -1,41 +1,11 @@
 import { ChartTooltipProps, DonutChart } from "@mantine/charts";
 import { Box, Flex, Paper, Stack, Text, Title } from "@mantine/core";
 
-export default function FSSScoreOverviewChart() {
-  const data = [
-    {
-      name: "Above 4.0",
-      value: 10,
-      color: "green.5",
-      stores: [
-        "4",
-        "42",
-        "43",
-        "68",
-        "77",
-        "78",
-        "984",
-        "2755",
-        "2847",
-        "3197",
-      ],
-    },
-    {
-      name: "3.8 - 3.9",
-      value: 6,
-      color: "lime.4",
-      stores: ["78", "984", "2755", "2847", "3197"],
-    },
-    {
-      name: "3.0 - 3.7",
-      value: 3,
-      color: "yellow.4",
-      stores: ["78", "984", "2755", "2847", "3197"],
-    },
-    { name: "2.0 - 2.9", value: 1, color: "orange.5", stores: ["78", "984"] },
-    { name: "Below 2.0", value: 1, color: "red.5", stores: ["2755"] },
-  ];
-
+export default function FSSScoreOverviewChart({
+  data,
+}: {
+  data: Array<{ name: string; value: number; color: string; stores: number[] }>;
+}) {
   return (
     <Flex h="80%" align="center" justify="center">
       <DonutChart
@@ -99,3 +69,37 @@ function ChartTooltip({ payload }: ChartTooltipProps) {
     </Paper>
   );
 }
+
+// const data = [
+//   {
+//     name: "Above 4.0",
+//     value: 10,
+//     color: "green.5",
+//     stores: [
+//       "4",
+//       "42",
+//       "43",
+//       "68",
+//       "77",
+//       "78",
+//       "984",
+//       "2755",
+//       "2847",
+//       "3197",
+//     ],
+//   },
+//   {
+//     name: "3.8 - 3.9",
+//     value: 6,
+//     color: "lime.4",
+//     stores: ["78", "984", "2755", "2847", "3197"],
+//   },
+//   {
+//     name: "3.0 - 3.7",
+//     value: 3,
+//     color: "yellow.4",
+//     stores: ["78", "984", "2755", "2847", "3197"],
+//   },
+//   { name: "2.0 - 2.9", value: 1, color: "orange.5", stores: ["78", "984"] },
+//   { name: "Below 2.0", value: 1, color: "red.5", stores: ["2755"] },
+// ];
