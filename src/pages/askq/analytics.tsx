@@ -2,12 +2,16 @@ import {
   Box,
   Center,
   Divider,
+  Flex,
   Loader,
+  Paper,
   SimpleGrid,
   Stack,
   Tabs,
+  Text,
   Title,
 } from "@mantine/core";
+import { BarChart, ChartTooltipProps, DonutChart } from "@mantine/charts";
 import { Layout } from "~/components/Layout";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
@@ -37,8 +41,9 @@ import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlan
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
-import { DonutChart } from "~/modules/bk/bk-charts/DonutChart";
-import { ColumnChart } from "~/modules/bk/bk-charts/ColumnChart";
+import { IconStarFilled } from "@tabler/icons-react";
+// import { DonutChart } from "~/modules/bk/bk-charts/DonutChart";
+// import { ColumnChart } from "~/modules/bk/bk-charts/ColumnChart";
 
 export default function AnalyticsPage() {
   const { user } = useUser();
@@ -50,7 +55,8 @@ export default function AnalyticsPage() {
     <ProtectedRoute>
       <Layout>
         <Title order={3}>Analytics</Title>
-        <BusterIframe h={height} />
+        {/* <BusterIframe h={height} /> */}
+        {user?.company_id !== 211 && <BusterIframe h={height} />}
         {user?.company_id === 211 && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
         {user?.company_id === 213 && <R365Setup />}
@@ -113,43 +119,6 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
-  const  donutData  = [
-    {
-      series: [10, 6, 3, 1, 1],
-      chartOptions: {
-        labels: ["4.0 - 5.0", "3.8 - 3.9", "3.0 - 3.7", "2.0 - 2.9", "0.0 - 2.0"]
-      },
-      stores:[["4", "42", "43", "68", "77", "78", "984", "2755", "2847", "3197"], ["4451", "4490", "4870", "5329", "5777", "5891"], ["8296", "13518", "16754"],["22872"], ["23205"]],
-    }, 
-  ];
-  const columnData=[
-    {
-      name: "Guest Satisfaction (ACR)",
-      starRating: 3.5,
-      stores:["4", "42", "43", "68", "77", "78", "984", "2755", "2847", "3197"]
-    },
-    {
-      name: "Window Time (SOS)",
-      starRating: 3.3,
-      stores:["4451", "4490", "4870", "5329", "5777", "5891"]
-    },
-    {
-      name: "Avg. Training Rate",
-      starRating: 4.6,
-      stores:["8296", "13518", "16754"]
-    },
-    {
-      name: "Turnover Rate",
-      starRating: 4.4,
-      stores:["22872"]
-    },
-    {
-      name: "Brand Standards",
-      starRating: 3.8,
-      stores:["23205"]
-    }
-  ];
-
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
       return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
@@ -166,9 +135,8 @@ function BkSetup() {
 
   return (
     <>
+      <BKCharts />
       <Tabs variant="pills" radius="xs" defaultValue="store">
-      {donutData && <DonutChart data={donutData} />}
-      {columnData && <ColumnChart data={columnData} />}
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
           <Tabs.Tab value="manager">Manager</Tabs.Tab>
@@ -222,7 +190,6 @@ function BkSetup() {
 function DunkinSetup() {
   const { data } = useDunkinStoreRanking();
   const { data: managerData } = useDunkinManagerPlan();
-  
 
   const topStores: DunkinStoreRankingData = [...(data ?? [])]
     .sort((a, b) => {
@@ -281,14 +248,12 @@ function DunkinSetup() {
               </Box>
               <Divider />
               {data && <DunkinStoreRankingTable data={data} />}
-       
             </Box>
           </Stack>
         </Tabs.Panel>
 
         <Tabs.Panel value="manager">
           {managerData && <DunkinManagerPlanTable data={managerData} />}
-          
         </Tabs.Panel>
       </Tabs>
     </Box>
@@ -334,4 +299,230 @@ function ZenoSetup() {
       </Box>
     </Stack>
   );
+}
+
+function BKCharts() {
+  const data = [
+    {
+      month: "Guest Satisfaction (ACR)",
+      Avg: 3.5,
+      stores: [
+        "4",
+        "42",
+        "43",
+        "68",
+        "77",
+        "78",
+        "984",
+        "2755",
+        "2847",
+        "3197",
+      ],
+    },
+    {
+      month: "Window Time (SOS)",
+      Avg: 3.3,
+      stores: ["4451", "4490", "4870", "5329", "5777", "5891"],
+    },
+    {
+      month: "Avg. Training Rate",
+      Avg: 4.6,
+      stores: ["8296", "13518", "16754"],
+    },
+    { month: "Turnover Rate", Avg: 4.4, stores: ["22872"] },
+    { month: "Brand Standards", Avg: 3.8, stores: ["23205"] },
+  ];
+
+  const data2 = [
+    {
+      name: "Above 4.0",
+      value: 10,
+      color: "green.5",
+      stores: [
+        "4",
+        "42",
+        "43",
+        "68",
+        "77",
+        "78",
+        "984",
+        "2755",
+        "2847",
+        "3197",
+      ],
+    },
+    {
+      name: "3.8 - 3.9",
+      value: 6,
+      color: "lime.4",
+      stores: ["78", "984", "2755", "2847", "3197"],
+    },
+    {
+      name: "3.0 - 3.7",
+      value: 3,
+      color: "yellow.4",
+      stores: ["78", "984", "2755", "2847", "3197"],
+    },
+    { name: "2.0 - 2.9", value: 1, color: "orange.5", stores: ["78", "984"] },
+    { name: "Below 2.0", value: 1, color: "red.5", stores: ["2755"] },
+  ];
+
+  return (
+    <SimpleGrid cols={3} my="lg">
+      <Paper>
+        <Box px="lg" py="md">
+          <Title order={5} fw={500} fz={16}>
+            FSS Score Overview
+          </Title>
+          <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+            Detailed Store Performance Breakdown{" "}
+          </Title>
+        </Box>
+        <Divider />
+        <Flex h="80%" align="center" justify="center">
+          <DonutChart
+            size={200}
+            thickness={32}
+            paddingAngle={2}
+            withLabels
+            withLabelsLine
+            chartLabel={"3.9 Avg. Rating"}
+            pieProps={{
+              dataKey: "value",
+              fontSize: 12,
+              fontWeight: 600,
+              label: {
+                fontWeight: 600,
+                fill: "hsl(var(--foreground))",
+              },
+              legendType: "square",
+            }}
+            data={data2}
+            tooltipDataSource="all"
+            tooltipAnimationDuration={500}
+            tooltipProps={{
+              content: ({ payload }) => {
+                return <ChartTooltip2 payload={payload} />;
+              },
+            }}
+          />
+          <Stack gap="xs">
+            {data2.map((item) => {
+              return (
+                <Flex align="center" gap="xs">
+                  <Box h={8} w={8} bg={item.color}></Box>
+                  <Text c="hsl(var(--foreground))" fw={600} size="xs">
+                    {item.name}
+                  </Text>
+                </Flex>
+              );
+            })}
+          </Stack>
+        </Flex>
+      </Paper>
+      <Paper>
+        <Box px="lg" py="md">
+          <Title order={5} fw={500} fz={16}>
+            FSS Breakdown by Category
+          </Title>
+          <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+            Identify Top Performers by Category
+          </Title>
+        </Box>
+        <Divider />
+        <BarChart
+          p="md"
+          pt="xl"
+          yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
+          h={300}
+          data={data}
+          tooltipAnimationDuration={200}
+          dataKey="month"
+          tooltipProps={{
+            content: ({ label, payload }) => (
+              <ChartTooltip label={label} payload={payload} />
+            ),
+          }}
+          barProps={{
+            barSize: 36,
+          }}
+          series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
+        />
+      </Paper>
+    </SimpleGrid>
+  );
+}
+
+function ChartTooltip2({ payload }: ChartTooltipProps) {
+  console.log(payload);
+  return (
+    <Paper px="md" py="xs" withBorder shadow="md" radius="md">
+      {payload?.map((item) => {
+        const stores = item.payload.stores.join(", ");
+        return (
+          <Box>
+            <Title fz={14} order={6} fw={600} mb={2}>
+              {payload![0].name}
+            </Title>
+            <Text size="sm" fw={500}>
+              {stores}
+            </Text>
+          </Box>
+        );
+      })}
+    </Paper>
+  );
+}
+
+function ChartTooltip({ label, payload }: ChartTooltipProps) {
+  if (!payload) return null;
+  return (
+    <Paper px="md" py="xs" withBorder shadow="md" radius="md">
+      <Title fz={14} order={6} fw={600} mb={2}>
+        {label}
+      </Title>
+      {payload.map((item, index) => {
+        const storeBreakdown = item.payload.stores.map((store: string) => {
+          return (
+            <Flex justify="space-between">
+              <Text size="sm" fw={500}>
+                {store}
+              </Text>
+              <Text size="sm">
+                <span style={{ marginRight: 2 }}>{getRandomFloatString()}</span>
+                <IconStarFilled
+                  height={14}
+                  width={14}
+                  style={{ color: "#FAC84E" }}
+                />
+              </Text>
+            </Flex>
+          );
+        });
+        return (
+          <Box key={index}>
+            <Text key={item.name} fz="sm">
+              Average Rating: {item.value}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+            <Divider my="xs" />
+            <Title fw={500} order={6} fz={14}>
+              Breakdown by Stores
+            </Title>
+            <Stack gap={3}>{storeBreakdown}</Stack>
+          </Box>
+        );
+      })}
+    </Paper>
+  );
+}
+
+function getRandomFloatString(): string {
+  const randomFloat = Math.random() * (5.0 - 3.0) + 3.0;
+  const formattedString = randomFloat.toFixed(1);
+  return formattedString;
 }

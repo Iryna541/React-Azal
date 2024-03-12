@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StoreInsights } from "./api/useStoreRanking";
-import { ActionIcon, Badge, Text } from "@mantine/core";
-import { IconInfoCircleFilled } from "@tabler/icons-react";
+import { ActionIcon, Badge, Text, Tooltip } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
   IconFifthPlace,
   IconFirstPlace,
@@ -31,14 +31,21 @@ export const columns: ColumnDef<StoreInsights>[] = [
       return value;
     },
   },
-  {
-    accessorKey: "store_id",
-    header: "Store Id",
-  },
-
+  // {
+  //   accessorKey: "store_id",
+  //   header: "Store Id",
+  // },
   {
     accessorKey: "general_managers",
     header: "Manager",
+    cell: (cell) => {
+      const value = cell.getValue() as string;
+      return (
+        <Tooltip label={cell.row.original.store_id}>
+          <Text size="sm">{value}</Text>
+        </Tooltip>
+      );
+    },
   },
   {
     accessorKey: "fss_ranking",
@@ -72,9 +79,7 @@ export const columns: ColumnDef<StoreInsights>[] = [
         <ActionIcon
           onClick={() => row.toggleExpanded(!expanded ? true : false)}
         >
-          <Text c="hsl(var(--foreground) / 0.75)">
-            <IconInfoCircleFilled />
-          </Text>
+          {expanded ? <IconChevronUp /> : <IconChevronDown />}
         </ActionIcon>
       );
     },
