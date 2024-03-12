@@ -41,6 +41,7 @@ import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChar
 import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 import { FinancialOverview } from "~/modules/bk/bk-charts-2/FinancialOverview";
+import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 // import { DonutChart } from "~/modules/bk/bk-charts/DonutChart";
 // import { ColumnChart } from "~/modules/bk/bk-charts/ColumnChart";
 
@@ -301,28 +302,46 @@ function ZenoSetup() {
 }
 
 function BKCharts() {
+  const { data } = useBkAnalyticsCharts();
+  console.log(data);
   return (
     <SimpleGrid cols={3} my="lg">
-      <TitleBox
-        title="FSS Score Overview"
-        subtitle="Detailed Store Performance Breakdown"
-      >
-        <FSSScoreOverviewChart />
-      </TitleBox>
+      {data?.chart1 && (
+        <TitleBox
+          title="FSS Score Overview"
+          subtitle="Detailed Store Performance Breakdown"
+        >
+          <FSSScoreOverviewChart
+            data={data.chart1.map((item) => ({
+              ...item,
+              value: item.values,
+            }))}
+          />
+        </TitleBox>
+      )}
 
-      <TitleBox
-        title="FSS Breakdown by Category"
-        subtitle="Identify Top Performers by Category"
-      >
-        <FSSBreakdownChart />
-      </TitleBox>
+      {data?.chart2 && (
+        <TitleBox
+          title="FSS Breakdown by Category"
+          subtitle="Identify Top Performers by Category"
+        >
+          <FSSBreakdownChart
+            data={data.chart2.map((item) => ({
+              ...item,
+              Avg: item.AVG,
+            }))}
+          />
+        </TitleBox>
+      )}
 
-      <TitleBox
-        title="Financial Overview"
-        subtitle="Profit and Labor Analysis by Store"
-      >
-        <FinancialOverview />
-      </TitleBox>
+      {data?.chart3 && (
+        <TitleBox
+          title="Financial Overview"
+          subtitle="Profit and Labor Analysis by Store"
+        >
+          <FinancialOverview data={data.chart3} />
+        </TitleBox>
+      )}
     </SimpleGrid>
   );
 }
