@@ -29,7 +29,7 @@ import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/Dun
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
 import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChartBig } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
-import { FinancialOverview } from "~/modules/bk/bk-charts-2/FinancialOverview";
+import { FinancialOverviewBig } from "~/modules/bk/bk-charts-2/FinancialOverview";
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 
 export default function InsightsPage() {
@@ -259,7 +259,7 @@ function ZenoSetup() {
 function BKCharts() {
   const { data } = useBkAnalyticsCharts();
   return (
-    <SimpleGrid cols={2} my="lg">
+    <SimpleGrid cols={1} my="lg">
       {data?.chart1 && (
         <TitleBox
           title="FSS Score Overview"
@@ -288,14 +288,14 @@ function BKCharts() {
         </TitleBox>
       )} */}
 
-      {data?.chart3 && (
+      {/* {data?.chart3 && (
         <TitleBox
           title="Financial Overview"
           subtitle="Profit and Labor Analysis by Store"
         >
           <FinancialOverview data={data.chart3} />
         </TitleBox>
-      )}
+      )} */}
     </SimpleGrid>
   );
 }
@@ -303,15 +303,20 @@ function BKCharts() {
 function BKChartsBig() {
   const { data } = useBkAnalyticsCharts();
   return (
-    <Box my="lg">
-      {data?.chart2 && (
-        <FSSBreakdownChartBig
-          data={data.chart2.map((item) => ({
-            ...item,
-            Avg: item.AVG,
-          }))}
-        />
-      )}
-    </Box>
+    <>
+      <Box my="lg">
+        {data?.chart3 && <FinancialOverviewBig data={data.chart3} />}
+      </Box>
+      <Box my="lg">
+        {data?.chart2 && (
+          <FSSBreakdownChartBig
+            data={data.chart2.map((item) => ({
+              ...item,
+              Avg: item.AVG,
+            }))}
+          />
+        )}
+      </Box>
+    </>
   );
 }

@@ -7,9 +7,9 @@ import {
   Divider,
   Stack,
   Text,
-  SimpleGrid,
   ScrollArea,
   Table,
+  Grid,
 } from "@mantine/core";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -114,108 +114,108 @@ export function FSSBreakdownChartBig({
     FSSBreakdownDataRow | undefined
   >(undefined);
   return (
-    <SimpleGrid cols={2}>
-      <TitleBox
-        title="FSS Breakdown by Category"
-        subtitle="Identify Top Performers by Category"
-      >
-        <BarChart
-          p="md"
-          pt="xl"
-          yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
-          h={360}
-          data={data}
-          tooltipAnimationDuration={200}
-          dataKey="name"
-          withTooltip={true}
-          barProps={{
-            barSize: 36,
-            style: {
-              cursor: "pointer",
-            },
-          }}
-          tooltipProps={{
-            content: ({ payload }) => {
-              return (
-                <UpdateFSSBreakdownChartOnHover
-                  payload={payload}
-                  setSelectedData={setSelectedData}
-                />
-              );
-            },
-          }}
-          series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
-        />
-      </TitleBox>
-
-      <ScrollArea
-        h={444}
-        py="md"
-        px="lg"
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: "var(--mantine-radius-md)",
-          display: "flex",
-          alignItems: "center",
-          justifyItems: "center",
-        }}
-      >
-        {selectedData ? (
-          <Stack gap="xs">
-            <Box>
-              <Title order={5} fw={500} mb={2}>
-                {selectedData.name}
-              </Title>
-              <Flex gap={2}>
-                <Text>Average Rating: </Text>
-                <Text fw={600}>
-                  <span style={{ marginRight: 2 }}>{selectedData.Avg}</span>
-                  <IconStarFilled
-                    height={14}
-                    width={14}
-                    style={{ color: "#FAC84E" }}
+    <Grid>
+      <Grid.Col span={7}>
+        <TitleBox
+          title="FSS Breakdown by Category"
+          subtitle="Identify Top Performers by Category"
+        >
+          <BarChart
+            p="md"
+            pt="xl"
+            yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
+            h={360}
+            data={data}
+            tooltipAnimationDuration={200}
+            dataKey="name"
+            withTooltip={true}
+            barProps={{
+              barSize: 36,
+              style: {
+                cursor: "pointer",
+              },
+            }}
+            tooltipProps={{
+              content: ({ payload }) => {
+                return (
+                  <UpdateFSSBreakdownChartOnHover
+                    payload={payload}
+                    setSelectedData={setSelectedData}
                   />
-                </Text>
-              </Flex>
-            </Box>
-            <Title fw={600} order={6} fz={14}>
-              Breakdown by Stores
-            </Title>
-            <Table
-              variant="azalio-rounded"
-              stickyHeader
-              data={{
-                head: ["Store Id", "Rating"],
-                body: selectedData.stores.map((store) => [
-                  store.store_id,
-                  <Flex key={store.store_id} gap="xs" align="center">
-                    <span style={{ marginRight: 2 }}>{store.rating}</span>
+                );
+              },
+            }}
+            series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
+          />
+        </TitleBox>
+      </Grid.Col>
+      <Grid.Col span={5}>
+        <ScrollArea
+          h={444}
+          py="md"
+          px="lg"
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: "var(--mantine-radius-md)",
+          }}
+        >
+          {selectedData ? (
+            <Stack gap="xs">
+              <Box>
+                <Title order={5} fw={500} mb={2}>
+                  {selectedData.name}
+                </Title>
+                <Flex gap={2}>
+                  <Text>Average Rating: </Text>
+                  <Text fw={600}>
+                    <span style={{ marginRight: 2 }}>{selectedData.Avg}</span>
                     <IconStarFilled
                       height={14}
                       width={14}
                       style={{ color: "#FAC84E" }}
                     />
-                  </Flex>,
-                ]),
-              }}
-            />
-          </Stack>
-        ) : (
-          <Flex align="center" justify="center" h={400}>
-            <Stack gap="sm" maw={400} align="center" ta="center">
-              <IconSearch size={32} />
-              <Title order={4} fw={500}>
-                Explore Detailed Performance Insights
+                  </Text>
+                </Flex>
+              </Box>
+              <Title fw={600} order={6} fz={14}>
+                Breakdown by Stores
               </Title>
-              <Text>
-                Hover over any FSS category bar to unveil a detailed breakdown
-                by store.
-              </Text>
+              <Table
+                variant="azalio-rounded"
+                stickyHeader
+                data={{
+                  head: ["Store Id", "Rating"],
+                  body: selectedData.stores.map((store) => [
+                    store.store_id,
+                    <Flex key={store.store_id} gap="xs" align="center">
+                      <span style={{ marginRight: 2 }}>{store.rating}</span>
+                      <IconStarFilled
+                        height={14}
+                        width={14}
+                        style={{ color: "#FAC84E" }}
+                      />
+                    </Flex>,
+                  ]),
+                }}
+              />
             </Stack>
-          </Flex>
-        )}
-      </ScrollArea>
-    </SimpleGrid>
+          ) : (
+            <Flex align="center" justify="center" h={400}>
+              <Stack gap="sm" maw={400} align="center" ta="center">
+                <IconSearch size={32} />
+                <Title order={5} fw={500}>
+                  Explore Detailed Performance Insights
+                </Title>
+                <Text size="sm">
+                  Hover over any FSS category bar to unveil a detailed breakdown
+                  by store.
+                </Text>
+              </Stack>
+            </Flex>
+          )}
+        </ScrollArea>
+      </Grid.Col>
+    </Grid>
   );
 }
 
