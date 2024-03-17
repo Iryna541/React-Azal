@@ -34,7 +34,7 @@ export default function FSSScoreOverviewChart({
           },
         }}
       />
-      <Stack gap="xs">
+      <Stack gap="xs" ml="xl">
         {data.map((item) => {
           return (
             <Flex key={item.name} align="center" gap="xs">
