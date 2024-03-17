@@ -204,7 +204,7 @@ export function FSSBreakdownChartBig({
               <Stack gap="sm" maw={400} align="center" ta="center">
                 <IconSearch size={32} />
                 <Title order={5} fw={500}>
-                  Explore Detailed Performance Insights
+                  Explore Detailed FSS Breakdown
                 </Title>
                 <Text size="sm">
                   Hover over any FSS category bar to unveil a detailed breakdown
