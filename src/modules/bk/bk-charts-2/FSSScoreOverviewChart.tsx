@@ -37,7 +37,7 @@ export default function FSSScoreOverviewChart({
       <Stack gap="xs">
         {data.map((item) => {
           return (
-            <Flex align="center" gap="xs">
+            <Flex key={item.name} align="center" gap="xs">
               <Box h={8} w={8} bg={item.color}></Box>
               <Text c="hsl(var(--foreground))" fw={600} size="xs">
                 {item.name}

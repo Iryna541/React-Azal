@@ -131,7 +131,7 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
                     ))}
                   </Table.Tr>
                   {row.getIsExpanded() && (
-                    <Table.Tr>
+                    <Table.Tr key="exapanded">
                       <Table.Td colSpan={5}>
                         <TypographyStylesProvider>
                           <div

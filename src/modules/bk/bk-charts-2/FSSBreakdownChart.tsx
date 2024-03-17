@@ -1,18 +1,33 @@
 import { BarChart, ChartTooltipProps } from "@mantine/charts";
-import { Paper, Title, Flex, Box, Divider, Stack, Text } from "@mantine/core";
-import { IconStarFilled } from "@tabler/icons-react";
+import {
+  Paper,
+  Title,
+  Flex,
+  Box,
+  Divider,
+  Stack,
+  Text,
+  SimpleGrid,
+  ScrollArea,
+  Table,
+} from "@mantine/core";
+import { IconSearch, IconStarFilled } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import TitleBox from "~/components/TitleBox";
+
+interface FSSBreakdownDataRow {
+  name: string;
+  Avg: number;
+  stores: Array<{
+    rating: number;
+    store_id: number;
+  }>;
+}
 
 export function FSSBreakdownChart({
   data,
 }: {
-  data: Array<{
-    name: string;
-    Avg: number;
-    stores: Array<{
-      rating: number;
-      store_id: number;
-    }>;
-  }>;
+  data: Array<FSSBreakdownDataRow>;
 }) {
   return (
     <BarChart
@@ -90,52 +105,133 @@ function ChartTooltip({ label, payload }: ChartTooltipProps) {
   );
 }
 
-// const data = [
-//   {
-//     name: "Guest Satisfaction (ACR)",
-//     Avg: 3.5,
-//     stores: [
-//       { store_id: "4", rating: 4.5 },
-//       { store_id: "42", rating: 4.3 },
-//       { store_id: "43", rating: 4.7 },
-//       { store_id: "68", rating: 4.3 },
-//       { store_id: "77", rating: 4.6 },
-//       { store_id: "78", rating: 3.5 },
-//       { store_id: "984", rating: 3.5 },
-//       { store_id: "2755", rating: 4.1 },
-//       { store_id: "2847", rating: 3.9 },
-//       { store_id: "3197", rating: 4.2 },
-//     ],
-//   },
-//   {
-//     name: "Window Time (SOS)",
-//     Avg: 3.3,
-//     stores: [
-//       { store_id: "4451", rating: 4.9 },
-//       { store_id: "4490", rating: 3.9 },
-//       { store_id: "4870", rating: 4.0 },
-//       { store_id: "5329", rating: 4.6 },
-//       { store_id: "5777", rating: 3.2 },
-//       { store_id: "5891", rating: 3.9 },
-//     ],
-//   },
-//   {
-//     name: "Avg. Training Rate",
-//     Avg: 4.6,
-//     stores: [
-//       { store_id: "8296", rating: 4.5 },
-//       { store_id: "13518", rating: 4.5 },
-//       { store_id: "16754", rating: 4.3 },
-//     ],
-//   },
-//   {
-//     name: "Turnover Rate",
-//     Avg: 4.4,
-//     stores: [{ store_id: "22872", rating: 4.8 }],
-//   },
-//   {
-//     name: "Brand Standards",
-//     Avg: 3.8,
-//     stores: [{ store_id: "23205", rating: 4.4 }],
-//   },
-// ];
+export function FSSBreakdownChartBig({
+  data,
+}: {
+  data: Array<FSSBreakdownDataRow>;
+}) {
+  const [selectedData, setSelectedData] = useState<
+    FSSBreakdownDataRow | undefined
+  >(undefined);
+  return (
+    <SimpleGrid cols={2}>
+      <TitleBox
+        title="FSS Breakdown by Category"
+        subtitle="Identify Top Performers by Category"
+      >
+        <BarChart
+          p="md"
+          pt="xl"
+          yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
+          h={360}
+          data={data}
+          tooltipAnimationDuration={200}
+          dataKey="name"
+          withTooltip={true}
+          barProps={{
+            barSize: 36,
+            style: {
+              cursor: "pointer",
+            },
+          }}
+          tooltipProps={{
+            content: ({ payload }) => {
+              return (
+                <UpdateFSSBreakdownChartOnHover
+                  payload={payload}
+                  setSelectedData={setSelectedData}
+                />
+              );
+            },
+          }}
+          series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
+        />
+      </TitleBox>
+
+      <ScrollArea
+        h={444}
+        py="md"
+        px="lg"
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: "var(--mantine-radius-md)",
+          display: "flex",
+          alignItems: "center",
+          justifyItems: "center",
+        }}
+      >
+        {selectedData ? (
+          <Stack gap="xs">
+            <Box>
+              <Title order={5} fw={500} mb={2}>
+                {selectedData.name}
+              </Title>
+              <Flex gap={2}>
+                <Text>Average Rating: </Text>
+                <Text fw={600}>
+                  <span style={{ marginRight: 2 }}>{selectedData.Avg}</span>
+                  <IconStarFilled
+                    height={14}
+                    width={14}
+                    style={{ color: "#FAC84E" }}
+                  />
+                </Text>
+              </Flex>
+            </Box>
+            <Title fw={600} order={6} fz={14}>
+              Breakdown by Stores
+            </Title>
+            <Table
+              variant="azalio-rounded"
+              stickyHeader
+              data={{
+                head: ["Store Id", "Rating"],
+                body: selectedData.stores.map((store) => [
+                  store.store_id,
+                  <Flex key={store.store_id} gap="xs" align="center">
+                    <span style={{ marginRight: 2 }}>{store.rating}</span>
+                    <IconStarFilled
+                      height={14}
+                      width={14}
+                      style={{ color: "#FAC84E" }}
+                    />
+                  </Flex>,
+                ]),
+              }}
+            />
+          </Stack>
+        ) : (
+          <Flex align="center" justify="center" h={400}>
+            <Stack gap="sm" maw={400} align="center" ta="center">
+              <IconSearch size={32} />
+              <Title order={4} fw={500}>
+                Explore Detailed Performance Insights
+              </Title>
+              <Text>
+                Hover over any FSS category bar to unveil a detailed breakdown
+                by store.
+              </Text>
+            </Stack>
+          </Flex>
+        )}
+      </ScrollArea>
+    </SimpleGrid>
+  );
+}
+
+function UpdateFSSBreakdownChartOnHover({
+  payload,
+  setSelectedData,
+}: ChartTooltipProps & {
+  setSelectedData: React.Dispatch<
+    React.SetStateAction<FSSBreakdownDataRow | undefined>
+  >;
+}) {
+  useEffect(() => {
+    if (payload && payload.length > 0) {
+      setSelectedData(payload[0].payload);
+    }
+    // eslint-disable-next-line
+  }, [payload]);
+  return null;
+}

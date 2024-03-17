@@ -79,7 +79,7 @@ export const resolver = () => ({
     "--secondary-foreground": "0 0% 100%", // UPDATED
     "--muted": "210 40% 96.1%",
     "--muted-foreground": "216 27% 72%", // UPDATED
-    "--accent": "200 7% 9%", // UPDATED
+    "--accent": "217 58% 23%", // UPDATED
     "--accent-foreground": "0 0 100%", // UPDATED
     "--destructive": "0 84.2% 60.2%",
     "--destructive-foreground": "210 40% 98%",
