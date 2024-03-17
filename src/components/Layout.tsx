@@ -10,7 +10,12 @@ import {
 } from "@mantine/core";
 import { PropsWithChildren } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IconAnalytics, IconBubble, IconDashboard } from "~/assets";
+import {
+  IconAnalytics,
+  IconAutomation,
+  IconBubble,
+  IconDashboard,
+} from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
 import { UserData } from "~/modules/auth/contexts/AuthContext";
@@ -33,6 +38,12 @@ const NAVBAR_LINKS = [
     isLocked: true,
   },
   {
+    label: "Insights",
+    href: "/askq/insights",
+    Icon: <IconAutomation />,
+    isLocked: false,
+  },
+  {
     label: "Analytics",
     href: "/askq/analytics",
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
@@ -44,11 +55,6 @@ const NAVBAR_LINKS = [
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
-  // {
-  //   label: "Organization",
-  //   href: "/organization",
-  //   Icon: <IconUsers height={ICON_SIZE} width={ICON_SIZE} />,
-  // },
 ];
 
 const NAVBAR_ADMIN_LINKS = [
@@ -83,9 +89,9 @@ export function Layout({
           w="100%"
           style={{
             background: "hsl(var(--background))",
-            borderRadius: "var(--mantine-radius-md)",
+            borderRadius: "var(--mantine-radius-lg)",
           }}
-          p={24}
+          p={32}
         >
           {children}
         </ScrollArea>
@@ -104,7 +110,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
         <Title order={3} fw={800} mb="xl">
-          Azalio {isAdmin ? "Admin" : undefined}
+          Oscar AI
         </Title>
         {links.map((link, index) => {
           const isActive = link.href === location.pathname;
@@ -112,7 +118,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
           if (isLocked) {
             return (
-              <Flex align="center">
+              <Flex key={index} align="center">
                 <NavLink
                   key={index}
                   to={link.href}

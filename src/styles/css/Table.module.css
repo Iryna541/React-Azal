@@ -2,20 +2,42 @@
   &[data-variant="azalio-ui"] {
     --table-border-color: hsl(var(--border));
   }
-}
 
-.thead {
-  overflow: hidden;
-  background: hsl(var(--secondary) / 1);
-  border-radius: 8px;
-  color: hsl(var(--foreground) / 0.65);
-  border-bottom: 2px solid hsl(var(--foreground) / 0.075);
-}
+  .thead {
+    overflow: hidden;
+    background: hsl(var(--secondary) / 1);
+    border-radius: 8px;
+    color: hsl(var(--foreground) / 0.65);
+    border-bottom: 2px solid hsl(var(--foreground) / 0.075);
 
-.thead tr th {
-  border-color: hsl(var(--foreground) / 0.075);
-}
+    tr th {
+      border-color: hsl(var(--foreground) / 0.075);
+    }
+  }
 
-.tbody tr td {
-  vertical-align: top;
+  .tbody tr td {
+    vertical-align: top;
+  }
+
+  &[data-variant="azalio-rounded"] {
+    --table-border-color: hsl(var(--border));
+
+    .thead {
+      border: 0;
+
+      tr {
+        border: 0;
+      }
+
+      th:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+
+      th:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+  }
 }

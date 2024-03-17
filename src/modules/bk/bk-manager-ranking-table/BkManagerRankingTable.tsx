@@ -51,9 +51,10 @@ export function BkManagerRankingTable({
         <Grid.Col span={2}>Total</Grid.Col>
       </Grid>
       <Stack gap="xs">
-        {data.map((item) => {
+        {data.map((item, index) => {
           return (
             <Grid
+              key={index}
               // bg="hsl(var(--secondary))"
               c="hsl(var(--foreground) / 0.65)"
               fw={700}
