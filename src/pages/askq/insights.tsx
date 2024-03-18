@@ -22,8 +22,7 @@ import {
 } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
 import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
 import { ZenoTopRankingTable } from "~/modules/restaurant365/zeno-ranking/zeno-top-ranking-table/ZenoTopRankingTable";
-import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
-import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
+
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
@@ -31,6 +30,8 @@ import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChartBig } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 import { FinancialOverviewBig } from "~/modules/bk/bk-charts-2/FinancialOverview";
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
+import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
+import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -73,6 +74,7 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
+
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
       return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
