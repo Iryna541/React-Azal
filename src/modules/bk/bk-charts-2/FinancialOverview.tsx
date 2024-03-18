@@ -110,6 +110,11 @@ export function FinancialOverviewBig({
 }: {
   data: Array<FinancialOverviewRow>;
 }) {
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   const [selectedData, setSelectedData] = useState<
     FinancialOverviewRow | undefined
   >(undefined);
@@ -166,20 +171,21 @@ export function FinancialOverviewBig({
               <Title order={5} fw={500}>
                 Store {selectedData.store_id}
               </Title>
-              <Text>
-                act_vs_budget_managers_profits:{" "}
-                {selectedData.act_vs_budget_managers_profits}
-              </Text>
 
-              <Stack gap={6}>
-                <Title mt="sm" order={6} fw={500}>
-                  Labour Data
-                </Title>
+              <Stack gap="sm" mt="xl">
+                <Flex justify="space-between">
+                  <Text size="sm">Manager's Profit:</Text>
+                  <Text size="sm" fw={600}>
+                    {USDollar.format(
+                      selectedData.act_vs_budget_managers_profits
+                    )}
+                  </Text>
+                </Flex>
 
                 <Divider />
 
                 <Flex justify="space-between">
-                  <Text size="sm">adj_theoretical_gp:</Text>
+                  <Text size="sm">Theoretical Gross Profit:</Text>
                   <Text size="sm" fw={600}>
                     {selectedData.adj_theoretical_gp_percent} %
                   </Text>
@@ -188,7 +194,7 @@ export function FinancialOverviewBig({
                 <Divider />
 
                 <Flex justify="space-between">
-                  <Text size="sm">actual_gp:</Text>
+                  <Text size="sm">Actual Gross Profit:</Text>
                   <Text size="sm" fw={600}>
                     {selectedData.actual_gp_percent} %
                   </Text>
@@ -197,27 +203,27 @@ export function FinancialOverviewBig({
                 <Divider />
 
                 <Flex justify="space-between">
-                  <Text size="sm">act_vs_adj_theor:</Text>
+                  <Text size="sm">Gross Profit Variation:</Text>
                   <Text size="sm" fw={600}>
-                    {selectedData.act_vs_adj_theor}
+                    {selectedData.act_vs_adj_theor} %
                   </Text>
                 </Flex>
 
                 <Divider />
 
                 <Flex justify="space-between">
-                  <Text size="sm">actual_total_labor:</Text>
+                  <Text size="sm">Actual Labor Cost:</Text>
                   <Text size="sm" fw={600}>
-                    {selectedData.actual_total_labor}
+                    {USDollar.format(selectedData.actual_total_labor)}
                   </Text>
                 </Flex>
 
                 <Divider />
 
                 <Flex justify="space-between">
-                  <Text size="sm">budgeted_total_labor:</Text>
+                  <Text size="sm">Budgeted Labor Cost:</Text>
                   <Text size="sm" fw={600}>
-                    {selectedData.budgeted_total_labor}
+                    {USDollar.format(selectedData.budgeted_total_labor)}
                   </Text>
                 </Flex>
               </Stack>
