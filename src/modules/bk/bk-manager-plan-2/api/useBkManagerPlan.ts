@@ -4,8 +4,8 @@ import axios from "axios";
 export type ManagerPlanRow = {
   managers_name: string;
   subRows: Array<{
-    store_id: string;
-    area_of_concern: Array<string>;
+    shift: string;
+    insights: string;
   }>;
 };
 
