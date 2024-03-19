@@ -9,6 +9,7 @@ import OscarGptPage from "~/pages/oscar-gpt";
 import OrganizationPage from "~/pages/organization";
 import InsightsPage from "~/pages/askq/insights";
 import AnalyticsPage from "~/pages/askq/analytics";
+import CommunicationPage from "~/pages/communication";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -19,6 +20,7 @@ export const getRoutes = (): RouteObject[] => {
     defineRoute("/askq", <Navigate to="/askq/insights" />),
     defineRoute("/askq/analytics", <AnalyticsPage />),
     defineRoute("/askq/insights", <InsightsPage />),
+    defineRoute("/communication", <CommunicationPage />),
     defineRoute("/oscar-gpt", <OscarGptPage />),
     defineRoute("/auth/login", <LoginPage />),
     defineRoute("/organization", <OrganizationPage />),

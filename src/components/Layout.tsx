@@ -49,6 +49,12 @@ const NAVBAR_LINKS = [
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
+  // {
+  //   label: "Communication",
+  //   href: "/communication",
+  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
+  //   isLocked: false,
+  // },
   {
     label: "OscarGPT",
     href: "/oscar-gpt",
