@@ -8,6 +8,11 @@
       --badge-bg: hsl(var(--secondary));
       --badge-color: hsl(var(--secondary-foreground));
     }
-    font-weight: 400;
+    font-weight: 500;
+  }
+
+  &[data-variant="azalio-ui-secondary"] {
+    --badge-bg: hsl(var(--secondary));
+    --badge-color: hsl(var(--foreground) / 0.5);
   }
 }
