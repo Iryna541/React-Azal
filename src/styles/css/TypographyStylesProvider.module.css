@@ -13,7 +13,7 @@
     font-size: 20px;
   }
 
-  strong {
+  em > strong {
     background-position: top left;
     background-repeat: no-repeat;
     background-size: 100% auto;
