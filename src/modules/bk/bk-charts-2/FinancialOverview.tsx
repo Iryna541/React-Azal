@@ -174,7 +174,7 @@ export function FinancialOverviewBig({
 
               <Stack gap="sm" mt="xl">
                 <Flex justify="space-between">
-                  <Text size="sm">Manager's Profit:</Text>
+                  <Text size="sm">Actual vs. Budgeted Manager's Profit:</Text>
                   <Text size="sm" fw={600}>
                     {USDollar.format(
                       selectedData.act_vs_budget_managers_profits
