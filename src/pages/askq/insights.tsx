@@ -164,7 +164,7 @@ function DunkinSetup() {
     });
 
   return (
-    <Box>
+    <Box mt="lg">
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
