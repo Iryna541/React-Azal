@@ -164,7 +164,7 @@ export function DunkinManagerPlanTable({ data }: DunkinManagerPlanTableProps) {
                             }}
                    
                           >
-                            {item.managers_plan}
+                            {item.insights}
                           </Table.Td>
                         </Table.Tr>
    

@@ -5,7 +5,7 @@ export type ManagerPlanRow = {
   store_id: string;
   subRows: Array<{
     shift: string;
-    managers_plan: string;
+    insights: string;
   }>;
 };
 
