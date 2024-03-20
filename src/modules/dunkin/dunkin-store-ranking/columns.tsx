@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DunkinStoreRankingData } from "./api/useDunkinStoreRanking";
-import { ActionIcon, Text } from "@mantine/core";
-import { IconInfoCircleFilled } from "@tabler/icons-react";
+import { ActionIcon } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
   IconFifthPlace,
   IconFirstPlace,
@@ -57,9 +57,7 @@ export const columns: ColumnDef<DunkinStoreRankingData>[] = [
         <ActionIcon
           onClick={() => row.toggleExpanded(!expanded ? true : false)}
         >
-          <Text c="hsl(var(--foreground) / 0.75)">
-            <IconInfoCircleFilled />
-          </Text>
+          {expanded ? <IconChevronUp /> : <IconChevronDown />}
         </ActionIcon>
       );
     },
