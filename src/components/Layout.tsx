@@ -14,6 +14,7 @@ import {
   IconAnalytics,
   IconAutomation,
   IconBubble,
+  IconCommunication,
   IconDashboard,
 } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
@@ -49,12 +50,12 @@ const NAVBAR_LINKS = [
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
-  // {
-  //   label: "Communication",
-  //   href: "/communication",
-  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-  //   isLocked: false,
-  // },
+  {
+    label: "Communication",
+    href: "/communication",
+    Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
+  },
   {
     label: "OscarGPT",
     href: "/oscar-gpt",
@@ -122,6 +123,10 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
           const isActive = link.href === location.pathname;
           const isLocked = link.isLocked;
 
+          // not showing the communication tab to other customers
+          if (user?.company_id !== 210 && link.label === "Communication")
+            return null;
+
           if (isLocked) {
             return (
               <Flex key={index} align="center">
@@ -138,6 +143,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
               </Flex>
             );
           }
+
           return (
             <NavLink
               key={index}

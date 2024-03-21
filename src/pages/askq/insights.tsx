@@ -35,11 +35,12 @@ import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManage
 
 export default function InsightsPage() {
   const { user } = useUser();
+  console.log(user);
   return (
     <ProtectedRoute>
       <Layout>
         <Title order={3}>Insights</Title>
-        {user?.company_id === 211 && <BkSetup />}
+        {(user?.company_id === 211 || user?.company_id === 210) && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
         {user?.company_id === 213 && <R365Setup />}
         {user?.company_id === 214 && <ZenoSetup />}
