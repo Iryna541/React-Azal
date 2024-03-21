@@ -1,0 +1,6 @@
+.root {
+  .input:checked + .track {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+  }
+}

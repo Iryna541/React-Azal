@@ -22,6 +22,7 @@ import {
   Popover,
   SegmentedControl,
   Select,
+  Switch,
   Table,
   Tabs,
   TagsInput,
@@ -32,6 +33,7 @@ import {
   createTheme,
   rem,
 } from "@mantine/core";
+import { Calendar } from "@mantine/dates";
 
 import accordionClasses from "./css/Accordion.module.css";
 import actionIconClasses from "./css/ActionIcon.module.css";
@@ -62,7 +64,7 @@ import titleClasses from "./css/Title.module.css";
 import pillClasses from "./css/Pill.module.css";
 import typographyClasses from "./css/TypographyStylesProvider.module.css";
 import calendarClasses from "./css/Calendar.module.css";
-import { Calendar } from "@mantine/dates";
+import switchClasses from "./css/Switch.module.css";
 
 export const resolver = () => ({
   variables: { "--radius": "0.5rem" },
@@ -254,6 +256,9 @@ export const theme = createTheme({
     }),
     Calendar: Calendar.extend({
       classNames: calendarClasses,
+    }),
+    Switch: Switch.extend({
+      classNames: switchClasses,
     }),
   },
 });
