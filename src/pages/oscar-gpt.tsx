@@ -14,14 +14,13 @@ export default function OscarGptPage() {
         <Title order={3} mb="lg">
           OscarGPT
         </Title>
-        {user?.company_id === 211 ||
-          (user?.company_id === 210 && (
-            <BkChatInterface
-              type="bk"
-              logo={<BkLogo width={40} height={40} />}
-              title="BK University Chatbot"
-            />
-          ))}
+        {(user?.company_id === 211 || user?.company_id === 210) && (
+          <BkChatInterface
+            type="bk"
+            logo={<BkLogo width={40} height={40} />}
+            title="BK University Chatbot"
+          />
+        )}
         {user?.company_id === 212 && (
           <BkChatInterface
             type="dunkin"
