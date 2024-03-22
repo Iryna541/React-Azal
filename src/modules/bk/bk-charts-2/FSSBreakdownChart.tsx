@@ -12,8 +12,10 @@ import {
   Grid,
 } from "@mantine/core";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import html2canvas from "html2canvas";
+import { useEffect, useRef, useState } from "react";
 import TitleBox from "~/components/TitleBox";
+import { useInsightsContext } from "~/modules/askq/insightsContext";
 
 interface FSSBreakdownDataRow {
   name: string;
@@ -110,12 +112,27 @@ export function FSSBreakdownChartBig({
 }: {
   data: Array<FSSBreakdownDataRow>;
 }) {
+
+  const boxRef = useRef(null);
+
+  const { submit,addInsight,setSubmit } = useInsightsContext();
+  useEffect(() => {
+    if (submit && boxRef.current) {
+      html2canvas(boxRef.current).then(canvas => {
+        const base64image = canvas.toDataURL("image/png");
+        addInsight({ base64: base64image });
++        setSubmit(false);
+    
+      });
+    }
+  }, [submit, addInsight]);
+
   const [selectedData, setSelectedData] = useState<
     FSSBreakdownDataRow | undefined
   >(undefined);
   return (
     <Grid>
-      <Grid.Col span={7}>
+      <Grid.Col ref={boxRef} span={7}>
         <TitleBox
           title="FSS Breakdown by Category"
           subtitle="Identify Top Performers by Category"
