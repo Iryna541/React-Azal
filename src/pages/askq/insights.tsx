@@ -1,4 +1,14 @@
-import { Box, Divider, SimpleGrid, Stack, Tabs, Title } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Divider,
+  Flex,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
@@ -32,14 +42,36 @@ import { FinancialOverviewBig } from "~/modules/bk/bk-charts-2/FinancialOverview
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
+import { useCurrentDateRange } from "~/modules/common/api/useCurrentDateRange";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(LocalizedFormat);
 
 export default function InsightsPage() {
   const { user } = useUser();
-  console.log(user);
+  const { data: currentDateRange } = useCurrentDateRange();
+  console.log(currentDateRange);
+
+  const dateInformation = currentDateRange
+    ? currentDateRange[0].data_frequency === "Weekly"
+      ? `${dayjs(new Date(currentDateRange[0].week_start_date)).format("LL")} — ${dayjs(new Date(currentDateRange[0].week_end_date)).format("LL")}`
+      : `${dayjs(new Date(currentDateRange[0].date)).format("LL")}`
+    : null;
+
   return (
     <ProtectedRoute>
       <Layout>
-        <Title order={3}>Insights</Title>
+        <Flex align="center" justify="space-between" gap="sm">
+          <Title order={3}>Insights</Title>
+          <Tooltip
+            position="bottom"
+            label={`You're viewing insights for ${dateInformation}`}
+          >
+            <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
+              {dateInformation}
+            </Badge>
+          </Tooltip>
+        </Flex>
         {(user?.company_id === 211 || user?.company_id === 210) && <BkSetup />}
         {user?.company_id === 212 && <DunkinSetup />}
         {user?.company_id === 213 && <R365Setup />}
