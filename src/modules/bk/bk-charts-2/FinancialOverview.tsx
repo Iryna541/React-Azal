@@ -11,8 +11,10 @@ import {
   Stack,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import html2canvas from "html2canvas";
+import { useEffect, useRef, useState } from "react";
 import TitleBox from "~/components/TitleBox";
+import { useInsightsContext } from "~/modules/askq/insightsContext";
 
 interface FinancialOverviewRow {
   store_id: string;
@@ -28,9 +30,12 @@ export function FinancialOverview({
   data,
 }: {
   data: Array<FinancialOverviewRow>;
-}) {
+})
+ {
+  
   return (
     <BarChart
+
       p="md"
       pt="xl"
       yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
@@ -114,18 +119,31 @@ export function FinancialOverviewBig({
     style: "currency",
     currency: "USD",
   });
+  const boxRef = useRef(null);
 
+  const { submit,addInsight,setSubmit } = useInsightsContext();
+  useEffect(() => {
+    if (submit && boxRef.current) {
+      html2canvas(boxRef.current).then(canvas => {
+        const base64image = canvas.toDataURL("image/png");
+        addInsight({ base64: base64image });
+        setSubmit(false);
+    
+      });
+    }
+  }, [submit, addInsight]);
   const [selectedData, setSelectedData] = useState<
     FinancialOverviewRow | undefined
   >(undefined);
   return (
     <Grid>
-      <Grid.Col span={7}>
+      <Grid.Col ref={boxRef}  span={7}>
         <TitleBox
           title="Financial Overview"
           subtitle="Profit and Labor Analysis by Store"
         >
           <BarChart
+   
             p="md"
             pt="xl"
             yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
