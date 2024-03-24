@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StoreInsights } from "./api/useR365StoreRanking"; // Adjusted import for the new hook
-import { ActionIcon, Badge, Text } from "@mantine/core";
-import { IconInfoCircleFilled } from "@tabler/icons-react";
+import { ActionIcon, Badge } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
   IconFifthPlace,
   IconFirstPlace,
@@ -12,7 +12,7 @@ import {
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
-    accessorKey: "total_net_sales_rank",
+    accessorKey: "overall_ranking",
     header: "Position",
     cell: ({ getValue }) => {
       const value = getValue() as string;
@@ -33,6 +33,14 @@ export const columns: ColumnDef<StoreInsights>[] = [
   {
     accessorKey: "store_id",
     header: "Store ID",
+  },
+  {
+    accessorKey: "total_net_sales_rank",
+    header: "Net sales rank",
+  },
+  {
+    accessorKey: "labor_cost_rank",
+    header: "Labor cost rank",
   },
   {
     accessorKey: "location",
@@ -65,12 +73,9 @@ export const columns: ColumnDef<StoreInsights>[] = [
       const expanded = row.getIsExpanded();
       return (
         <ActionIcon
-          variant="azalio-ui-white"
           onClick={() => row.toggleExpanded(!expanded ? true : false)}
         >
-          <Text c="hsl(var(--foreground) / 0.75)">
-            <IconInfoCircleFilled />
-          </Text>
+          {expanded ? <IconChevronUp /> : <IconChevronDown />}
         </ActionIcon>
       );
     },

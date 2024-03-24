@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StoreInsights } from "./api/useZenoStoreRanking";
-import { ActionIcon, Badge, Text } from "@mantine/core";
-import { IconInfoCircleFilled } from "@tabler/icons-react";
+import { ActionIcon, Badge } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
   IconFifthPlace,
   IconFirstPlace,
@@ -69,12 +69,9 @@ export const columns: ColumnDef<StoreInsights>[] = [
       const expanded = row.getIsExpanded();
       return (
         <ActionIcon
-          variant="azalio-ui-white"
           onClick={() => row.toggleExpanded(!expanded ? true : false)}
         >
-          <Text c="hsl(var(--foreground) / 0.75)">
-            <IconInfoCircleFilled />
-          </Text>
+          {expanded ? <IconChevronUp /> : <IconChevronDown />}
         </ActionIcon>
       );
     },

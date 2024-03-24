@@ -6,6 +6,8 @@ export interface StoreInsights {
   location: string;
   total_net_sales_rank: string;
   insights: string;
+  labor_cost_rank: string;
+  overall_ranking: string;
 }
 
 export type GetR365StoreRankingResponse = StoreInsights[];
