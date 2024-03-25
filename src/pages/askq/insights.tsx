@@ -61,14 +61,12 @@ import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
- 
+
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
       ? `${dayjs(new Date(currentDateRange[0].week_start_date)).format("LL")} — ${dayjs(new Date(currentDateRange[0].week_end_date)).format("LL")}`
       : `${dayjs(new Date(currentDateRange[0].date)).format("LL")}`
     : null;
-
-
 
   return (
     <ProtectedRoute>
@@ -88,11 +86,11 @@ export default function InsightsPage() {
           {(user?.company_id === 211 || user?.company_id === 210) && (
             <BkSetup />
           )}
-          {(user?.company_id === 212 || user?.company_id ===215) && <DunkinSetup />}
+          {(user?.company_id === 212 || user?.company_id === 215) && (
+            <DunkinSetup />
+          )}
           {user?.company_id === 213 && <R365Setup />}
           {user?.company_id === 214 && <ZenoSetup />}
-
-
         </InsightsProvider>
       </Layout>
     </ProtectedRoute>
@@ -292,7 +290,7 @@ function ZenoSetup() {
   });
 
   useEffect(() => {
-    if (managerData ) {
+    if (managerData) {
       setStoreId(managerData?.stores[0].id.toString());
     }
   }, [managerData]);
@@ -306,7 +304,9 @@ function ZenoSetup() {
     }
   };
 
-  const { data: insightsData,isLoading } = useZenoInsightTable({ storeId: storeId });
+  const { data: insightsData, isLoading } = useZenoInsightTable({
+    storeId: storeId,
+  });
 
   // const sortedManagersData: StoreInsights[] = (data ?? []).sort((a, b) => {
   //   return parseInt(a.total_net_sales_rank) - parseInt(b.total_net_sales_rank);
@@ -333,30 +333,29 @@ function ZenoSetup() {
         <Flex justify="space-between">
           <Box px="lg" py="md">
             <Title order={5} fw={500} fz={16}>
-              Store Leaderboard
+              Weekly highlights
             </Title>
             <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              Which locations are doing better?
+              Weekly highlights for all your stores
             </Title>
           </Box>
-          
+
           <Select
-            label="Choose a Store"
+            p="md"
+            size="sm"
             placeholder="Pick value"
             data={selectData}
             value={storeId}
             onChange={handleChange}
             defaultValue="React"
-
           />
         </Flex>
         <Divider />
         {isLoading && (
-        <Center h={500}>
-        <Loader size="lg" />
-      </Center>
-     
-      )}
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
         {insightsData?.insights_data && (
           <ZenoInsightTable data={insightsData.insights_data} />
         )}
