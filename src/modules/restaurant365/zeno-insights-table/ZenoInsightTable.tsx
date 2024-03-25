@@ -15,6 +15,7 @@ import {
 import {
   Group,
   Pagination,
+  ScrollArea,
   Table,
   Text,
 
@@ -76,6 +77,7 @@ export function ZenoInsightTable({ data }: ZenoInsightTableProps) {
 
   return (
     <>
+      <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
       <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -149,6 +151,8 @@ export function ZenoInsightTable({ data }: ZenoInsightTableProps) {
           )}
         </Table.Tbody>
       </Table>
+      </ScrollArea>
+
       <Group
         justify="space-between"
         px="xs"

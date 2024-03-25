@@ -21,7 +21,7 @@ export default function OscarGptPage() {
             title="BK University Chatbot"
           />
         )}
-        {user?.company_id === 212 && (
+        {(user?.company_id === 212 || user?.company_id===215) && (
           <BkChatInterface
             type="dunkin"
             logo={<DunkinIcon width={120} height={40} />}

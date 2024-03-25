@@ -111,7 +111,15 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const location = useLocation();
   const { user } = useUser();
 
-  const links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
+  let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
+
+  links = links.map((link) => {
+    if (link.label === "OscarGPT" && user?.company_id === 214) {
+      return { ...link, isLocked: true };
+    }
+   
+    return link;
+  })
 
   return (
     <AppShell.Navbar p={28}>
@@ -127,7 +135,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
           if (user?.company_id !== 210 && link.label === "Communication")
             return null;
 
-          if (isLocked) {
+          if (isLocked ) {
             return (
               <Flex key={index} align="center">
                 <NavLink
