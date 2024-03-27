@@ -112,20 +112,18 @@ export function FSSBreakdownChartBig({
 }: {
   data: Array<FSSBreakdownDataRow>;
 }) {
-
   const boxRef = useRef(null);
-
-  const { submit,addInsight,setSubmit } = useInsightsContext();
+  const { submit,addPhoto,setSubmit } = useInsightsContext();
   useEffect(() => {
     if (submit && boxRef.current) {
       html2canvas(boxRef.current).then(canvas => {
         const base64image = canvas.toDataURL("image/png");
-        addInsight({ base64: base64image });
-+        setSubmit(false);
+        addPhoto({ photo: base64image});
++       setSubmit(false);
     
       });
     }
-  }, [submit, addInsight]);
+  }, [submit, addPhoto]);
 
   const [selectedData, setSelectedData] = useState<
     FSSBreakdownDataRow | undefined

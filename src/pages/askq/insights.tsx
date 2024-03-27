@@ -11,6 +11,7 @@ import {
   Select,
   Loader,
   Center,
+  Button,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
@@ -57,6 +58,8 @@ import {
 import html2canvas from "html2canvas";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
+import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
+
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -123,7 +126,7 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
-  // const { insights, submit } = useInsightsContext();
+  const { setSubmit,addPhoto,setStoreId,setEmailText } = useInsightsContext();
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -141,15 +144,14 @@ function BkSetup() {
 
   const boxRef = useRef(null);
 
-  // const handleTakeScreenshot = () => {
-  //   setSubmit(true);
-  // };
-
-  // console.log("insights", insights, submit);
+  const handleTakeScreenshot = () => {
+    openSendScreenshotModal({ addPhoto, setSubmit, setStoreId,setEmailText })
+  };
+  
 
   return (
     <>
-      {/* <Button mt={20} onClick={handleTakeScreenshot}>Take Screenshot</Button> */}
+      <Button mt={20} onClick={handleTakeScreenshot}>Send reports by email</Button>
       <Box ref={boxRef}>
         <BKCharts />
         <BKChartsBig />
@@ -385,18 +387,17 @@ function ZenoSetup() {
 
 function BKCharts() {
   const { data } = useBkAnalyticsCharts();
-
   const boxRef = useRef(null);
-  const { submit, addInsight, setSubmit } = useInsightsContext();
+  const { submit, addPhoto, setSubmit } = useInsightsContext();
   useEffect(() => {
     if (submit && boxRef.current) {
       html2canvas(boxRef.current).then((canvas) => {
         const base64image = canvas.toDataURL("image/png");
-        addInsight({ base64: base64image });
+        addPhoto({ photo: base64image});
         setSubmit(false);
       });
     } // eslint-disable-next-line
-  }, [submit, addInsight]);
+  }, [submit, addPhoto]);
 
   return (
     <SimpleGrid ref={boxRef} cols={1} my="lg">
