@@ -60,15 +60,14 @@ import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/Ze
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
 
-
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
-      ? `${dayjs(new Date(currentDateRange[0].week_start_date)).format("LL")} — ${dayjs(new Date(currentDateRange[0].week_end_date)).format("LL")}`
-      : `${dayjs(new Date(currentDateRange[0].date)).format("LL")}`
+      ? `${dayjs(currentDateRange[0].week_start_date).format("LL")} — ${dayjs(currentDateRange[0].week_end_date).format("LL")}`
+      : `${dayjs(currentDateRange[0].date).format("LL")}`
     : null;
 
   return (
@@ -126,7 +125,8 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
-  const { setSubmit,addPhoto,setStoreId,setEmailText } = useInsightsContext();
+  const { setSubmit, addPhoto, setStoreId, setEmailText } =
+    useInsightsContext();
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -145,13 +145,14 @@ function BkSetup() {
   const boxRef = useRef(null);
 
   const handleTakeScreenshot = () => {
-    openSendScreenshotModal({ addPhoto, setSubmit, setStoreId,setEmailText })
+    openSendScreenshotModal({ addPhoto, setSubmit, setStoreId, setEmailText });
   };
-  
 
   return (
     <>
-      <Button mt={20} onClick={handleTakeScreenshot}>Send reports by email</Button>
+      <Button mt={20} onClick={handleTakeScreenshot}>
+        Send reports by email
+      </Button>
       <Box ref={boxRef}>
         <BKCharts />
         <BKChartsBig />
@@ -393,7 +394,7 @@ function BKCharts() {
     if (submit && boxRef.current) {
       html2canvas(boxRef.current).then((canvas) => {
         const base64image = canvas.toDataURL("image/png");
-        addPhoto({ photo: base64image});
+        addPhoto({ photo: base64image });
         setSubmit(false);
       });
     } // eslint-disable-next-line
