@@ -53,10 +53,10 @@ export default function FSSScoreOverviewChart({
 function ChartTooltip({ payload }: ChartTooltipProps) {
   return (
     <Paper px="md" py="xs" withBorder shadow="md" radius="md">
-      {payload?.map((item) => {
+      {payload?.map((item,idx) => {
         const stores = item.payload.stores.join(", ");
         return (
-          <Box>
+          <Box key={idx}>
             <Title fz={14} order={6} fw={600} mb={2}>
               {payload![0].name}
             </Title>

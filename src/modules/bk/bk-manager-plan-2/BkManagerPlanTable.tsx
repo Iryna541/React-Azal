@@ -145,11 +145,11 @@ export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
                     );
                   })}
                 </Table.Tr>
-                {subrows.map((item) => {
+                {subrows.map((item,idx) => {
                    const messageHtml = DOMPurify.sanitize(marked(item.insights) as string);
                   return (
                     <>
-                      <Table.Tr>
+                      <Table.Tr key={idx}>
                         <Table.Td
                           style={{
                             minWidth: 180,
