@@ -23,7 +23,7 @@ function base64ToBlob(base64:string, mimeType = '') {
   }
 
 export const sendStoreRankingToEmail = async (body: Insight) => {
-    console.log("body",body);
+  console.log("body",body);
     const formData = new FormData();
     body.photo.forEach((base64String) => {
       const imageBlob = base64ToBlob(base64String, 'image/png');

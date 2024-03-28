@@ -11,8 +11,8 @@ import {
   Stack,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import html2canvas from "html2canvas";
-import { useEffect, useRef, useState } from "react";
+
+import { useEffect, useState } from "react";
 import TitleBox from "~/components/TitleBox";
 import { useInsightsContext } from "~/modules/askq/insightsContext";
 
@@ -119,25 +119,15 @@ export function FinancialOverviewBig({
     style: "currency",
     currency: "USD",
   });
-  const boxRef = useRef(null);
 
-  const { submit,addPhoto,setSubmit } = useInsightsContext();
-  useEffect(() => {
-    if (submit && boxRef.current) {
-      html2canvas(boxRef.current).then(canvas => {
-        const base64image = canvas.toDataURL("image/png");
-        addPhoto({ photo: base64image});
-        setSubmit(false);
-    
-      });
-    }
-  }, [submit, addPhoto]);
+  const {boxref3 } = useInsightsContext();
+ 
   const [selectedData, setSelectedData] = useState<
     FinancialOverviewRow | undefined
   >(undefined);
   return (
     <Grid>
-      <Grid.Col ref={boxRef}  span={7}>
+      <Grid.Col ref={boxref3}  span={7}>
         <TitleBox
           title="Financial Overview"
           subtitle="Profit and Labor Analysis by Store"
