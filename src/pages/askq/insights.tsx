@@ -124,8 +124,14 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
-  const { setSubmit, addPhoto, setStoreId, setEmailText,handleSubmit,submit } =
-    useInsightsContext();
+  const {
+    setSubmit,
+    addPhoto,
+    setStoreId,
+    setEmailText,
+    handleSubmit,
+    submit,
+  } = useInsightsContext();
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -146,25 +152,31 @@ function BkSetup() {
   const handleTakeScreenshot = () => {
     openSendScreenshotModal({ addPhoto, setSubmit, setStoreId, setEmailText });
   };
-  
-   if(submit){
-  handleSubmit();
-   }
+
+  if (submit) {
+    handleSubmit();
+  }
 
   return (
     <>
-      <Button mt={20} onClick={handleTakeScreenshot}>
-        Send reports by email
-      </Button>
-      <Box ref={boxRef}>
-        <BKCharts />
-        <BKChartsBig />
+      <Box pos="relative">
+        <Box ref={boxRef}>
+          <BKCharts />
+          <BKChartsBig />
+        </Box>
+        <Button
+          style={{ position: "absolute", top: 0, right: 12 }}
+          mt={20}
+          onClick={handleTakeScreenshot}
+        >
+          Send reports by email
+        </Button>
       </Box>
 
       <Tabs variant="pills" radius="xs" defaultValue="store">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
-          <Tabs.Tab value="manager">Manager</Tabs.Tab>
+          <Tabs.Tab value="manager">DTL</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap="xl">
@@ -392,8 +404,7 @@ function ZenoSetup() {
 function BKCharts() {
   const { data } = useBkAnalyticsCharts();
 
-  const {boxref1 } = useInsightsContext();
-
+  const { boxref1 } = useInsightsContext();
 
   return (
     <SimpleGrid ref={boxref1} cols={1} my="lg">
