@@ -41,7 +41,7 @@ import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/u
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
 import TitleBox from "~/components/TitleBox";
-import { FSSBreakdownChartBig } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
+import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 import { FinancialOverviewBig } from "~/modules/bk/bk-charts-2/FinancialOverview";
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
@@ -169,7 +169,7 @@ function BkSetup() {
           mt={20}
           onClick={handleTakeScreenshot}
         >
-          Send reports by email
+          Send charts by email
         </Button>
       </Box>
 
@@ -407,7 +407,7 @@ function BKCharts() {
   const { boxref1 } = useInsightsContext();
 
   return (
-    <SimpleGrid ref={boxref1} cols={1} my="lg">
+    <SimpleGrid ref={boxref1} cols={2} my="lg">
       {data?.chart1 && (
         <TitleBox
           title="FSS Score Overview"
@@ -422,7 +422,7 @@ function BKCharts() {
         </TitleBox>
       )}
 
-      {/* {data?.chart2 && (
+      {data?.chart2 && (
         <TitleBox
           title="FSS Breakdown by Category"
           subtitle="Identify Top Performers by Category"
@@ -434,7 +434,7 @@ function BKCharts() {
             }))}
           />
         </TitleBox>
-      )} */}
+      )}
 
       {/* {data?.chart3 && (
         <TitleBox
@@ -455,7 +455,7 @@ function BKChartsBig() {
       <Box my="lg">
         {data?.chart3 && <FinancialOverviewBig data={data.chart3} />}
       </Box>
-      <Box my="lg">
+      {/* <Box my="lg">
         {data?.chart2 && (
           <FSSBreakdownChartBig
             data={data.chart2.map((item) => ({
@@ -464,7 +464,7 @@ function BKChartsBig() {
             }))}
           />
         )}
-      </Box>
+      </Box> */}
     </>
   );
 }

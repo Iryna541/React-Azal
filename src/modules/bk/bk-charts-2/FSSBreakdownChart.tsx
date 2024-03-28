@@ -11,6 +11,7 @@ import {
   Table,
   Grid,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
 
 import { useEffect, useState } from "react";
@@ -38,22 +39,64 @@ export function FSSBreakdownChart({
       yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
       h={300}
       data={data}
-      tooltipAnimationDuration={200}
+      // tooltipAnimationDuration={200}
       dataKey="name"
-      tooltipProps={{
-        content: ({ label, payload }) => (
-          <ChartTooltip label={label} payload={payload} />
-        ),
-      }}
+      // tooltipProps={{
+      //   content: ({ label, payload }) => (
+      //     <ChartTooltip label={label} payload={payload} />
+      //   ),
+      // }}
+      withTooltip={false}
       barProps={{
         barSize: 36,
+        style: {
+          cursor: "pointer",
+        },
+        onClick: (data) => {
+          console.log(data);
+          modals.open({
+            title: data.name,
+            children: (
+              <Stack gap={4}>
+                <Flex justify="space-between">
+                  <Text size="sm" fw={600}>
+                    Store Id
+                  </Text>
+                  <Text size="sm" fw={600}>
+                    Rating
+                  </Text>
+                </Flex>
+                <Divider h={2} />
+                {data.stores.map(
+                  (store: { store_id: string; rating: number }) => {
+                    return (
+                      <Flex justify="space-between">
+                        <Text size="sm">{store.store_id}</Text>
+                        <Text size="sm" fw={600}>
+                          <span style={{ marginRight: 2 }}>
+                            {store.rating.toFixed(1)}
+                          </span>
+                          <IconStarFilled
+                            height={14}
+                            width={14}
+                            style={{ color: "#FAC84E" }}
+                          />
+                        </Text>
+                      </Flex>
+                    );
+                  }
+                )}
+              </Stack>
+            ),
+          });
+        },
       }}
       series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
     />
   );
 }
 
-function ChartTooltip({ label, payload }: ChartTooltipProps) {
+export function ChartTooltip({ label, payload }: ChartTooltipProps) {
   if (!payload) return null;
   return (
     <Paper px="md" py="xs" withBorder shadow="md" radius="md">
