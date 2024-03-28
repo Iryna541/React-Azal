@@ -15,6 +15,7 @@ import { modals } from "@mantine/modals";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
 
 import { useEffect, useState } from "react";
+import { LabelList } from "recharts";
 import TitleBox from "~/components/TitleBox";
 import { useInsightsContext } from "~/modules/askq/insightsContext";
 
@@ -36,7 +37,12 @@ export function FSSBreakdownChart({
     <BarChart
       p="md"
       pt="xl"
-      yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
+      yAxisProps={{
+        domain: [0, 5],
+        tickCount: 10,
+        interval: 1,
+      }}
+      barChartProps={{ margin: { top: 20 } }}
       h={300}
       data={data}
       // tooltipAnimationDuration={200}
@@ -52,8 +58,15 @@ export function FSSBreakdownChart({
         style: {
           cursor: "pointer",
         },
+        children: (
+          <LabelList
+            dataKey="Avg"
+            position="top"
+            offset={10}
+            style={{ fontSize: 12, fontWeight: 600 }}
+          />
+        ),
         onClick: (data) => {
-          console.log(data);
           modals.open({
             title: data.name,
             children: (
