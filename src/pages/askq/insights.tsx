@@ -55,7 +55,6 @@ import {
   InsightsProvider,
   useInsightsContext,
 } from "~/modules/askq/insightsContext";
-import html2canvas from "html2canvas";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
@@ -125,7 +124,7 @@ function R365Setup() {
 function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
-  const { setSubmit, addPhoto, setStoreId, setEmailText } =
+  const { setSubmit, addPhoto, setStoreId, setEmailText,handleSubmit,submit } =
     useInsightsContext();
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
@@ -147,6 +146,10 @@ function BkSetup() {
   const handleTakeScreenshot = () => {
     openSendScreenshotModal({ addPhoto, setSubmit, setStoreId, setEmailText });
   };
+  
+   if(submit){
+  handleSubmit();
+   }
 
   return (
     <>
@@ -388,20 +391,12 @@ function ZenoSetup() {
 
 function BKCharts() {
   const { data } = useBkAnalyticsCharts();
-  const boxRef = useRef(null);
-  const { submit, addPhoto, setSubmit } = useInsightsContext();
-  useEffect(() => {
-    if (submit && boxRef.current) {
-      html2canvas(boxRef.current).then((canvas) => {
-        const base64image = canvas.toDataURL("image/png");
-        addPhoto({ photo: base64image });
-        setSubmit(false);
-      });
-    } // eslint-disable-next-line
-  }, [submit, addPhoto]);
+
+  const {boxref1 } = useInsightsContext();
+
 
   return (
-    <SimpleGrid ref={boxRef} cols={1} my="lg">
+    <SimpleGrid ref={boxref1} cols={1} my="lg">
       {data?.chart1 && (
         <TitleBox
           title="FSS Score Overview"
