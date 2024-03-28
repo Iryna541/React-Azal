@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
 
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import TitleBox from "~/components/TitleBox";
 import { useInsightsContext } from "~/modules/askq/insightsContext";
 
@@ -112,7 +112,7 @@ export function FSSBreakdownChartBig({
 }: {
   data: Array<FSSBreakdownDataRow>;
 }) {
-  const {boxref2 } = useInsightsContext();
+  const { boxref2 } = useInsightsContext();
 
   const [selectedData, setSelectedData] = useState<
     FSSBreakdownDataRow | undefined

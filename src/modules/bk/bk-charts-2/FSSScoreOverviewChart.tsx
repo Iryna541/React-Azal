@@ -52,14 +52,39 @@ export default function FSSScoreOverviewChart({
 
 function ChartTooltip({ payload }: ChartTooltipProps) {
   return (
-    <Paper px="md" py="xs" withBorder shadow="md" radius="md">
-      {payload?.map((item,idx) => {
-        const stores = item.payload.stores.join(", ");
+    <Paper
+      px="md"
+      py="xs"
+      withBorder
+      shadow="md"
+      radius="md"
+      pos="relative"
+      bg="white"
+    >
+      {payload?.map((item, idx) => {
+        const stores = item.payload.stores.map(
+          (item: { store_id: string; score: string }) => {
+            return (
+              <Flex>
+                <Text miw={100}>{item.store_id}</Text>
+                <Text>{item.score}</Text>
+              </Flex>
+            );
+          }
+        );
         return (
           <Box key={idx}>
             <Title fz={14} order={6} fw={600} mb={2}>
               {payload![0].name}
             </Title>
+            <Flex mb={4}>
+              <Text size="sm" fw={600} miw={100}>
+                Store Id
+              </Text>
+              <Text size="sm" fw={600}>
+                Rating
+              </Text>
+            </Flex>
             <Text size="sm" fw={500}>
               {stores}
             </Text>

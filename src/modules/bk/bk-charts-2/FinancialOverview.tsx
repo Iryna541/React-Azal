@@ -1,18 +1,8 @@
 import { BarChart, ChartTooltipProps } from "@mantine/charts";
-import {
-  Paper,
-  Title,
-  Box,
-  Divider,
-  Text,
-  Flex,
-  Grid,
-  ScrollArea,
-  Stack,
-} from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Paper, Title, Box, Divider, Text, Flex, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 
-import { useEffect, useState } from "react";
+import { Bar, Cell, LabelList } from "recharts";
 import TitleBox from "~/components/TitleBox";
 import { useInsightsContext } from "~/modules/askq/insightsContext";
 
@@ -30,12 +20,9 @@ export function FinancialOverview({
   data,
 }: {
   data: Array<FinancialOverviewRow>;
-})
- {
-  
+}) {
   return (
     <BarChart
-
       p="md"
       pt="xl"
       yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
@@ -118,158 +105,120 @@ export function FinancialOverviewBig({
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    maximumFractionDigits: 0,
   });
 
-  const {boxref3 } = useInsightsContext();
- 
-  const [selectedData, setSelectedData] = useState<
-    FinancialOverviewRow | undefined
-  >(undefined);
+  const { boxref3 } = useInsightsContext();
+
   return (
-    <Grid>
-      <Grid.Col ref={boxref3}  span={7}>
-        <TitleBox
-          title="Financial Overview"
-          subtitle="Profit and Labor Analysis by Store"
-        >
-          <BarChart
-   
-            p="md"
-            pt="xl"
-            yAxisProps={{ domain: [0, 5], tickCount: 10, interval: 1 }}
-            h={300}
-            data={data}
-            tooltipAnimationDuration={200}
-            dataKey="store_id"
-            tooltipProps={{
-              content: ({ payload }) => {
+    <Box ref={boxref3}>
+      <TitleBox
+        title="Financial Overview"
+        subtitle="Profit and Labor Analysis by Store"
+      >
+        <BarChart
+          valueFormatter={(value) => USDollar.format(value)}
+          p="md"
+          pt="xl"
+          h={300}
+          data={data}
+          withTooltip={false}
+          tooltipAnimationDuration={200}
+          dataKey="store_id"
+          barChartProps={{ margin: { top: 16, left: 16 } }}
+          series={[]}
+          children={
+            <Bar
+              dataKey="act_vs_budget_managers_profits"
+              fill={"green"}
+              barSize={40}
+              onClick={(data) => {
+                console.log(data);
+                modals.open({
+                  title: "Store " + data.store_id,
+                  children: (
+                    <Stack gap="sm">
+                      <Flex justify="space-between">
+                        <Text size="sm">
+                          Actual vs. Budgeted Manager's Profit:
+                        </Text>
+                        <Text size="sm" fw={600}>
+                          {USDollar.format(data.act_vs_budget_managers_profits)}
+                        </Text>
+                      </Flex>
+
+                      <Divider />
+
+                      <Flex justify="space-between">
+                        <Text size="sm">Theoretical Gross Profit:</Text>
+                        <Text size="sm" fw={600}>
+                          {data.adj_theoretical_gp_percent} %
+                        </Text>
+                      </Flex>
+
+                      <Divider />
+
+                      <Flex justify="space-between">
+                        <Text size="sm">Actual Gross Profit:</Text>
+                        <Text size="sm" fw={600}>
+                          {data.actual_gp_percent} %
+                        </Text>
+                      </Flex>
+
+                      <Divider />
+
+                      <Flex justify="space-between">
+                        <Text size="sm">Gross Profit Variation:</Text>
+                        <Text size="sm" fw={600}>
+                          {data.act_vs_adj_theor} %
+                        </Text>
+                      </Flex>
+
+                      <Divider />
+
+                      <Flex justify="space-between">
+                        <Text size="sm">Actual Labor Cost:</Text>
+                        <Text size="sm" fw={600}>
+                          {USDollar.format(data.actual_total_labor)}
+                        </Text>
+                      </Flex>
+
+                      <Divider />
+
+                      <Flex justify="space-between">
+                        <Text size="sm">Budgeted Labor Cost:</Text>
+                        <Text size="sm" fw={600}>
+                          {USDollar.format(data.budgeted_total_labor)}
+                        </Text>
+                      </Flex>
+                    </Stack>
+                  ),
+                });
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              {data.map((entry, index) => {
                 return (
-                  <UpdateFinancialOverviewChartOnHover
-                    payload={payload}
-                    setSelectedData={setSelectedData}
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      entry.act_vs_budget_managers_profits >= 0
+                        ? "#82C91E"
+                        : "#FA5252"
+                    }
                   />
                 );
-              },
-            }}
-            barProps={{
-              barSize: 36,
-            }}
-            series={[
-              {
-                name: "act_vs_budget_managers_profits",
-                color: "red",
-                label: "Act vs Budg't Managers Profits",
-              },
-            ]}
-          />
-        </TitleBox>
-      </Grid.Col>
-      <Grid.Col span={5}>
-        <ScrollArea
-          h={384}
-          py="md"
-          px="lg"
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: "var(--mantine-radius-md)",
-          }}
-        >
-          {selectedData ? (
-            <Box>
-              <Title order={5} fw={500}>
-                Store {selectedData.store_id}
-              </Title>
-
-              <Stack gap="sm" mt="xl">
-                <Flex justify="space-between">
-                  <Text size="sm">Actual vs. Budgeted Manager's Profit:</Text>
-                  <Text size="sm" fw={600}>
-                    {USDollar.format(
-                      selectedData.act_vs_budget_managers_profits
-                    )}
-                  </Text>
-                </Flex>
-
-                <Divider />
-
-                <Flex justify="space-between">
-                  <Text size="sm">Theoretical Gross Profit:</Text>
-                  <Text size="sm" fw={600}>
-                    {selectedData.adj_theoretical_gp_percent} %
-                  </Text>
-                </Flex>
-
-                <Divider />
-
-                <Flex justify="space-between">
-                  <Text size="sm">Actual Gross Profit:</Text>
-                  <Text size="sm" fw={600}>
-                    {selectedData.actual_gp_percent} %
-                  </Text>
-                </Flex>
-
-                <Divider />
-
-                <Flex justify="space-between">
-                  <Text size="sm">Gross Profit Variation:</Text>
-                  <Text size="sm" fw={600}>
-                    {selectedData.act_vs_adj_theor} %
-                  </Text>
-                </Flex>
-
-                <Divider />
-
-                <Flex justify="space-between">
-                  <Text size="sm">Actual Labor Cost:</Text>
-                  <Text size="sm" fw={600}>
-                    {USDollar.format(selectedData.actual_total_labor)}
-                  </Text>
-                </Flex>
-
-                <Divider />
-
-                <Flex justify="space-between">
-                  <Text size="sm">Budgeted Labor Cost:</Text>
-                  <Text size="sm" fw={600}>
-                    {USDollar.format(selectedData.budgeted_total_labor)}
-                  </Text>
-                </Flex>
-              </Stack>
-            </Box>
-          ) : (
-            <Flex align="center" justify="center" h={350}>
-              <Stack gap="sm" maw={400} align="center" ta="center">
-                <IconSearch size={32} />
-
-                <Title order={5} fw={500}>
-                  Explore Detailed Overview
-                </Title>
-                <Text size="sm">
-                  Hover over each store in the chart below to reveal a breakdown
-                  of profit margins and labor costs.
-                </Text>
-              </Stack>
-            </Flex>
-          )}
-        </ScrollArea>
-      </Grid.Col>
-    </Grid>
+              })}
+              <LabelList
+                dataKey="act_vs_budget_managers_profits"
+                position="top"
+                offset={10}
+                style={{ fontSize: 12 }}
+              />
+            </Bar>
+          }
+        />
+      </TitleBox>
+    </Box>
   );
-}
-
-function UpdateFinancialOverviewChartOnHover({
-  payload,
-  setSelectedData,
-}: ChartTooltipProps & {
-  setSelectedData: React.Dispatch<
-    React.SetStateAction<FinancialOverviewRow | undefined>
-  >;
-}) {
-  useEffect(() => {
-    if (payload && payload.length > 0) {
-      setSelectedData(payload[0].payload);
-    }
-    // eslint-disable-next-line
-  }, [payload]);
-  return null;
 }
