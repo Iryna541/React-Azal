@@ -4,7 +4,7 @@ import { ManagerPlanRow } from "./api/useBkManagerPlan";
 export const columns: ColumnDef<ManagerPlanRow>[] = [
   {
     accessorKey: "managers_name",
-    header: "Manager",
+    header: "DTL",
     size: 120,
   },
 ];

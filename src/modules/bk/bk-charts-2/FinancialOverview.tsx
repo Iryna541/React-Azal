@@ -121,17 +121,25 @@ export function FinancialOverviewBig({
           p="md"
           pt="xl"
           h={300}
-          data={data}
+          data={data.map((item) => {
+            return {
+              ...item,
+              formatted_value: USDollar.format(
+                item.act_vs_budget_managers_profits
+              ),
+            };
+          })}
           withTooltip={false}
           tooltipAnimationDuration={200}
           dataKey="store_id"
           barChartProps={{ margin: { top: 16, left: 16 } }}
+          yAxisProps={{ padding: { bottom: 40 } }}
           series={[]}
           children={
             <Bar
               dataKey="act_vs_budget_managers_profits"
               fill={"green"}
-              barSize={40}
+              barSize={32}
               onClick={(data) => {
                 console.log(data);
                 modals.open({
@@ -210,10 +218,10 @@ export function FinancialOverviewBig({
                 );
               })}
               <LabelList
-                dataKey="act_vs_budget_managers_profits"
+                dataKey="formatted_value"
                 position="top"
                 offset={10}
-                style={{ fontSize: 12 }}
+                style={{ fontSize: 12, fontWeight: 600 }}
               />
             </Bar>
           }
