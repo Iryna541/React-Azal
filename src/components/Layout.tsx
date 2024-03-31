@@ -28,6 +28,7 @@ import {
   // IconUsers,
 } from "@tabler/icons-react";
 import { storage } from "~/lib/storage";
+import { BkLogo } from "~/modules/bk/bk-chat/BkLogo";
 
 const ICON_SIZE = 26;
 
@@ -117,16 +118,22 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     if (link.label === "OscarGPT" && user?.company_id === 214) {
       return { ...link, isLocked: true };
     }
-   
+
     return link;
-  })
+  });
 
   return (
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
-        <Title order={3} fw={800} mb="xl">
-          Oscar AI
-        </Title>
+        {user?.company_id === 211 ? (
+          <Box mb="md">
+            <BkLogo width={48} height={48} />
+          </Box>
+        ) : (
+          <Title order={3} fw={800} mb="xl">
+            Oscar AI
+          </Title>
+        )}
         {links.map((link, index) => {
           const isActive = link.href === location.pathname;
           const isLocked = link.isLocked;
@@ -135,7 +142,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
           if (user?.company_id !== 210 && link.label === "Communication")
             return null;
 
-          if (isLocked ) {
+          if (isLocked) {
             return (
               <Flex key={index} align="center">
                 <NavLink
