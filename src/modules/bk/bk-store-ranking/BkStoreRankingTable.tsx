@@ -13,6 +13,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
+  Button,
+  Flex,
   Group,
   Pagination,
   Table,
@@ -21,8 +23,10 @@ import {
 } from "@mantine/core";
 import { columns } from "./columns";
 import { StoreInsights } from "./api/useStoreRanking";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { marked } from "marked";
+import html2canvas from "html2canvas";
+import { openSendInsightModal } from "./SendInsightsModal";
 
 interface BkStoreRankingTableProps {
   data: StoreInsights[];
@@ -67,6 +71,18 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
       sorting,
     },
   });
+
+  const boxRef = useRef(null);
+
+  const handleTakeScreenshot = () => {
+    if (boxRef.current) {
+      html2canvas(boxRef.current).then((canvas) => {
+        const base64image = canvas.toDataURL("image/png");
+        const photoStrings = [base64image];
+        openSendInsightModal({ photo: photoStrings });
+      });
+    }
+  };
 
   return (
     <>
@@ -133,13 +149,18 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
                   {row.getIsExpanded() && (
                     <Table.Tr key="exapanded">
                       <Table.Td colSpan={5}>
-                        <TypographyStylesProvider>
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: content as string,
-                            }}
-                          ></div>
-                        </TypographyStylesProvider>
+                        <Flex>
+                          <TypographyStylesProvider ref={boxRef}>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: content as string,
+                              }}
+                            ></div>
+                          </TypographyStylesProvider>
+                          <Button w={100} onClick={handleTakeScreenshot}>
+                            Send
+                          </Button>
+                        </Flex>
                       </Table.Td>
                     </Table.Tr>
                   )}
