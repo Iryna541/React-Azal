@@ -1,5 +1,7 @@
 FROM node:alpine as builder
 WORKDIR /app
+RUN npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+RUN npm config set "//npm.fontawesome.com/:_authToken" "D2086F15-75EA-42B1-B6A2-19E387DA3759"
 COPY package*.json ./
 RUN npm install
 COPY . .
