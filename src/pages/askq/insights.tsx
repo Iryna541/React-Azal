@@ -12,6 +12,7 @@ import {
   Loader,
   Center,
   Button,
+  Text,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
@@ -58,6 +59,8 @@ import {
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
+import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
+import { modals } from "@mantine/modals";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -79,7 +82,7 @@ export default function InsightsPage() {
               position="bottom"
               label={`You're viewing insights for ${dateInformation}`}
             >
-              <Badge variant="azalio-ui-secondary" size="md" fw={700}>
+              <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
                 {dateInformation}
               </Badge>
             </Tooltip>
@@ -174,10 +177,24 @@ function BkSetup() {
       </Box>
 
       <Tabs variant="pills" radius="xs" defaultValue="store">
-        <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
-          <Tabs.Tab value="manager">DTL</Tabs.Tab>
-        </Tabs.List>
+        <Flex align="center" justify="space-between">
+          <Tabs.List mb="lg">
+            <Tabs.Tab value="store">Store</Tabs.Tab>
+            <Tabs.Tab value="manager">DTL</Tabs.Tab>
+          </Tabs.List>
+          <Button
+            onClick={() => {
+              modals.open({
+                size: "xl",
+                title: <Text>Send by email</Text>,
+                centered: true,
+                children: <SendInsightModal photo={[]} />,
+              });
+            }}
+          >
+            Send Rankings by Email
+          </Button>
+        </Flex>
         <Tabs.Panel value="store">
           <Stack gap="xl">
             <SimpleGrid cols={2}>

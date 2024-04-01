@@ -1,4 +1,4 @@
-import { Box, Center, Loader, Title } from "@mantine/core";
+import { Badge, Box, Center, Flex, Loader, Title } from "@mantine/core";
 import IframeResizer from "iframe-resizer-react";
 import { Layout } from "~/components/Layout";
 import { useBusterIFrame } from "~/modules/askq/api/useBusterIFrame";
@@ -14,7 +14,12 @@ export default function AnalyticsPage() {
   return (
     <ProtectedRoute>
       <Layout>
-        <Title order={3}>Analytics</Title>
+        <Flex align="center" gap="md">
+          <Title order={3}>Analytics</Title>
+          <Badge fw={600} size="lg">
+            Beta
+          </Badge>
+        </Flex>
         <BusterIframe h={height} />
       </Layout>
     </ProtectedRoute>

@@ -2,6 +2,7 @@ import {
   AppShell,
   Box,
   Flex,
+  Image,
   Menu,
   NavLink,
   ScrollArea,
@@ -126,9 +127,16 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
         {user?.company_id === 211 ? (
-          <Box mb="md">
+          <Flex mb="md" gap="md">
             <BkLogo width={48} height={48} />
-          </Box>
+            <Image
+              src="/russ.jpg"
+              h={48}
+              p={2}
+              bg="white"
+              style={{ borderRadius: 4 }}
+            />
+          </Flex>
         ) : (
           <Title order={3} fw={800} mb="xl">
             Oscar AI
