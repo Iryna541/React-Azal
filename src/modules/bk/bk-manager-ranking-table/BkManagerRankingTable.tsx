@@ -4,7 +4,6 @@ import {
   Grid,
   Stack,
   Badge,
-  Flex,
   Tooltip,
   ActionIcon,
   TypographyStylesProvider,
@@ -91,7 +90,7 @@ export function BkManagerRankingTable({
                 </Badge>
               </Grid.Col>
               <Grid.Col span={2}>
-                <Flex align="center" justify="space-between" gap="lg">
+                <Box pos="relative">
                   <Badge
                     size="lg"
                     fw={700}
@@ -102,6 +101,8 @@ export function BkManagerRankingTable({
                   </Badge>
                   <Tooltip label="Overview">
                     <ActionIcon
+                      pos="absolute"
+                      style={{ top: 0, right: 0 }}
                       size="sm"
                       h={26}
                       variant="light"
@@ -123,7 +124,7 @@ export function BkManagerRankingTable({
                       <IconBulb size={14} />
                     </ActionIcon>
                   </Tooltip>
-                </Flex>
+                </Box>
               </Grid.Col>
             </Grid>
           );
