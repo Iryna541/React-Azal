@@ -15,7 +15,7 @@ import { modals } from "@mantine/modals";
 import { IconSearch, IconStarFilled } from "@tabler/icons-react";
 
 import { useEffect, useState } from "react";
-import { LabelList } from "recharts";
+import { Bar, Cell, LabelList } from "recharts";
 import TitleBox from "~/components/TitleBox";
 import { useInsightsContext } from "~/modules/askq/insightsContext";
 
@@ -33,6 +33,12 @@ export function FSSBreakdownChart({
 }: {
   data: Array<FSSBreakdownDataRow>;
 }) {
+  data = data.map((item) => {
+    return {
+      ...item,
+      formatted_value: item.Avg.toFixed(1),
+    };
+  });
   return (
     <BarChart
       p="md"
@@ -53,58 +59,72 @@ export function FSSBreakdownChart({
       //   ),
       // }}
       withTooltip={false}
-      barProps={{
-        barSize: 36,
-        style: {
-          cursor: "pointer",
-        },
-        children: (
+      series={
+        [
+          // { name: "Avg", color: "blue", label: "Average Rating" }
+        ]
+      }
+      children={
+        <Bar
+          dataKey="Avg"
+          fill={"green"}
+          barSize={32}
+          onClick={(data) => {
+            modals.open({
+              title: data.name,
+              children: (
+                <Stack gap={4}>
+                  <Flex justify="space-between">
+                    <Text size="sm" fw={600}>
+                      Store Id
+                    </Text>
+                    <Text size="sm" fw={600}>
+                      Rating
+                    </Text>
+                  </Flex>
+                  <Divider h={2} />
+                  {data.stores.map(
+                    (store: { store_id: string; rating: number }) => {
+                      return (
+                        <Flex justify="space-between">
+                          <Text size="sm">{store.store_id}</Text>
+                          <Text size="sm" fw={600}>
+                            <span style={{ marginRight: 2 }}>
+                              {store.rating.toFixed(1)}
+                            </span>
+                            <IconStarFilled
+                              height={14}
+                              width={14}
+                              style={{ color: "#FAC84E" }}
+                            />
+                          </Text>
+                        </Flex>
+                      );
+                    }
+                  )}
+                </Stack>
+              ),
+            });
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          {data.map((entry, index) => {
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={entry.Avg >= 3.9 ? "#82C91E" : "#FA5252"}
+              />
+            );
+          })}
+
           <LabelList
-            dataKey="Avg"
+            dataKey="formatted_value"
             position="top"
             offset={10}
             style={{ fontSize: 12, fontWeight: 600 }}
           />
-        ),
-        onClick: (data) => {
-          modals.open({
-            title: data.name,
-            children: (
-              <Stack gap={4}>
-                <Flex justify="space-between">
-                  <Text size="sm" fw={600}>
-                    Store Id
-                  </Text>
-                  <Text size="sm" fw={600}>
-                    Rating
-                  </Text>
-                </Flex>
-                <Divider h={2} />
-                {data.stores.map(
-                  (store: { store_id: string; rating: number }) => {
-                    return (
-                      <Flex justify="space-between">
-                        <Text size="sm">{store.store_id}</Text>
-                        <Text size="sm" fw={600}>
-                          <span style={{ marginRight: 2 }}>
-                            {store.rating.toFixed(1)}
-                          </span>
-                          <IconStarFilled
-                            height={14}
-                            width={14}
-                            style={{ color: "#FAC84E" }}
-                          />
-                        </Text>
-                      </Flex>
-                    );
-                  }
-                )}
-              </Stack>
-            ),
-          });
-        },
-      }}
-      series={[{ name: "Avg", color: "blue", label: "Average Rating" }]}
+        </Bar>
+      }
     />
   );
 }

@@ -116,7 +116,10 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
 
   links = links.map((link) => {
-    if (link.label === "OscarGPT" && user?.company_id === 214) {
+    if (
+      link.label === "OscarGPT" &&
+      (user?.company_id === 214 || user?.company_id === 216)
+    ) {
       return { ...link, isLocked: true };
     }
 

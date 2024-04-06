@@ -6,7 +6,10 @@ export type AnalyticsChartsResponse = {
     name: string;
     color: string;
     values: number;
-    stores: Array<number>;
+    stores: Array<{
+      score: number;
+      store_id: number;
+    }>;
   }>;
   chart2: Array<{
     name: string;
