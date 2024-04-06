@@ -4,8 +4,28 @@ import { Box, Flex, Paper, Stack, Text, Title } from "@mantine/core";
 export default function FSSScoreOverviewChart({
   data,
 }: {
-  data: Array<{ name: string; value: number; color: string; stores: number[] }>;
+  data: Array<{
+    name: string;
+    value: number;
+    color: string;
+    stores: { store_id: number; score: number }[];
+  }>;
 }) {
+  let avg = 0,
+    cnt = 0;
+
+  for (let i = 0; i < data.length; ++i) {
+    let sum = 0;
+    for (let j = 0; j < data[i].stores.length; ++j) {
+      sum += data[i].stores[j].score;
+    }
+    if (data[i].stores.length > 0) {
+      avg += sum / data[i].stores.length;
+      cnt++;
+    }
+  }
+  avg /= cnt;
+
   return (
     <Flex h="80%" align="center" justify="center">
       <DonutChart
@@ -14,7 +34,7 @@ export default function FSSScoreOverviewChart({
         paddingAngle={2}
         withLabels
         withLabelsLine
-        chartLabel={"3.9 Avg. Rating"}
+        chartLabel={`${avg.toFixed(1)} Avg. Rating`}
         pieProps={{
           dataKey: "value",
           fontSize: 12,

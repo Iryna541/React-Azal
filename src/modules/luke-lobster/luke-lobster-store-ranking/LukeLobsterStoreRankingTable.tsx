@@ -13,8 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  Button,
-  Flex,
   Group,
   Pagination,
   Table,
@@ -22,17 +20,17 @@ import {
   TypographyStylesProvider,
 } from "@mantine/core";
 import { columns } from "./columns";
-import { StoreInsights } from "./api/useStoreRanking";
-import { useRef, useState } from "react";
+import { LukeLobsterStoreRankingData } from "./api/useLukeLobsterStoreRanking";
+import { useState } from "react";
 import { marked } from "marked";
-import html2canvas from "html2canvas";
-import { openSendInsightModal } from "./SendInsightsModal";
 
-interface BkStoreRankingTableProps {
-  data: StoreInsights[];
+interface LukeLobsterStoreRankingTableProps {
+  data: LukeLobsterStoreRankingData[];
 }
 
-export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
+export function LukeLobsterStoreRankingTable({
+  data,
+}: LukeLobsterStoreRankingTableProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -72,18 +70,6 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
     },
   });
 
-  const boxRef = useRef(null);
-
-  const handleTakeScreenshot = () => {
-    if (boxRef.current) {
-      html2canvas(boxRef.current).then((canvas) => {
-        const base64image = canvas.toDataURL("image/png");
-        const photoStrings = [base64image];
-        openSendInsightModal({ photo: photoStrings });
-      });
-    }
-  };
-
   return (
     <>
       <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
@@ -121,12 +107,12 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
                   <Table.Tr
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    // onClick={() => {
-                    //   row.getIsExpanded()
-                    //     ? row.toggleExpanded(false)
-                    //     : row.toggleExpanded(true);
-                    // }}
-                    // style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      row.getIsExpanded()
+                        ? row.toggleExpanded(false)
+                        : row.toggleExpanded(true);
+                    }}
+                    style={{ cursor: "pointer" }}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <Table.Td
@@ -147,20 +133,15 @@ export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
                     ))}
                   </Table.Tr>
                   {row.getIsExpanded() && (
-                    <Table.Tr key="exapanded">
+                    <Table.Tr>
                       <Table.Td colSpan={5}>
-                        <Flex>
-                          <TypographyStylesProvider ref={boxRef}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: content as string,
-                              }}
-                            ></div>
-                          </TypographyStylesProvider>
-                          <Button w={100} onClick={handleTakeScreenshot}>
-                            Send
-                          </Button>
-                        </Flex>
+                        <TypographyStylesProvider>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: content as string,
+                            }}
+                          ></div>
+                        </TypographyStylesProvider>
                       </Table.Td>
                     </Table.Tr>
                   )}

@@ -50,7 +50,9 @@ import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManage
 import { useCurrentDateRange } from "~/modules/common/api/useCurrentDateRange";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import UTC from "dayjs/plugin/utc";
 dayjs.extend(LocalizedFormat);
+dayjs.extend(UTC);
 import { useEffect, useRef, useState } from "react";
 import {
   InsightsProvider,
@@ -61,6 +63,12 @@ import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table
 import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
 import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
+import {
+  LukeLobsterStoreRankingData,
+  useLukeLobsterStoreRanking,
+} from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
+import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
+import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -68,8 +76,8 @@ export default function InsightsPage() {
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
-      ? `${dayjs(currentDateRange[0].week_start_date).format("LL")} — ${dayjs(currentDateRange[0].week_end_date).format("LL")}`
-      : `${dayjs(currentDateRange[0].date).format("LL")}`
+      ? `${dayjs.utc(currentDateRange[0].week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0].week_end_date).format("LL")}`
+      : `${dayjs.utc(currentDateRange[0].date).format("LL")}`
     : null;
 
   return (
@@ -95,6 +103,7 @@ export default function InsightsPage() {
           )}
           {user?.company_id === 213 && <R365Setup />}
           {user?.company_id === 214 && <ZenoSetup />}
+          {user?.company_id === 216 && <LukeLobsterSetup />}
         </InsightsProvider>
       </Layout>
     </ProtectedRoute>
@@ -452,15 +461,6 @@ function BKCharts() {
           />
         </TitleBox>
       )}
-
-      {/* {data?.chart3 && (
-        <TitleBox
-          title="Financial Overview"
-          subtitle="Profit and Labor Analysis by Store"
-        >
-          <FinancialOverview data={data.chart3} />
-        </TitleBox>
-      )} */}
     </SimpleGrid>
   );
 }
@@ -483,5 +483,66 @@ function BKChartsBig() {
         )}
       </Box> */}
     </>
+  );
+}
+
+function LukeLobsterSetup() {
+  const { data } = useLukeLobsterStoreRanking();
+  const topStores: LukeLobsterStoreRankingData[] = [...(data ?? [])].sort(
+    (a, b) => {
+      return parseInt(a.store_rank) - parseInt(b.store_rank);
+    }
+  );
+
+  console.log(topStores);
+
+  return (
+    <Box mt="lg">
+      <Tabs variant="pills" radius="xs" defaultValue="store">
+        <Tabs.List mb="lg">
+          <Tabs.Tab value="store">Store</Tabs.Tab>
+          {/* <Tabs.Tab value="manager">Manager</Tabs.Tab> */}
+        </Tabs.List>
+        <Tabs.Panel value="store">
+          <Stack gap={40}>
+            <SimpleGrid cols={2} spacing="xl">
+              <LukeLobsterTopStoreRanking
+                title="Top 5 Stores"
+                data={topStores.slice(0, 5)}
+              />
+              <LukeLobsterTopStoreRanking
+                title="Bottom 5 Stores"
+                data={topStores.reverse().slice(0, 5)}
+              />
+            </SimpleGrid>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={500} fz={16}>
+                  Store Leaderboard
+                </Title>
+                <Title
+                  component="p"
+                  order={6}
+                  fz={14}
+                  fw={500}
+                  size="sm"
+                  lh={1.5}
+                >
+                  Which locations are doing better?
+                </Title>
+              </Box>
+              <Divider />
+              {data && <LukeLobsterStoreRankingTable data={data} />}
+            </Box>
+          </Stack>
+        </Tabs.Panel>
+        {/* <Tabs.Panel value="manager"></Tabs.Panel> */}
+      </Tabs>
+    </Box>
   );
 }
