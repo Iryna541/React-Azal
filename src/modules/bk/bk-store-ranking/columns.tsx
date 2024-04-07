@@ -1,6 +1,14 @@
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { StoreInsights } from "./api/useStoreRanking";
-import { ActionIcon, Badge, Flex, Stack, Text, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Divider,
+  Flex,
+  Stack,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import {
   IconChevronDown,
   IconChevronUp,
@@ -15,7 +23,10 @@ import {
 } from "~/assets";
 import { modals } from "@mantine/modals";
 import { useQueryClient } from "@tanstack/react-query";
-import { AnalyticsChartsResponse } from "../bk-charts-2/api/useBkAnalyticsCharts";
+import {
+  AnalyticsChartsResponse,
+  useBkAnalyticsCharts,
+} from "../bk-charts-2/api/useBkAnalyticsCharts";
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
@@ -62,6 +73,7 @@ export const columns: ColumnDef<StoreInsights>[] = [
   {
     accessorKey: "mgr_profit_ranking",
     header: "Financial Ranking",
+    cell: FinancialRankingCell,
   },
   {
     header: "Details",
@@ -102,6 +114,30 @@ function FSSRankingCell(cell: CellContext<StoreInsights, unknown>) {
   );
 }
 
+function FinancialRankingCell(cell: CellContext<StoreInsights, unknown>) {
+  const storeId = cell.row.original.store_id;
+  return (
+    <Badge
+      size="md"
+      h={32}
+      w={40}
+      c="hsl(var(--foreground) / 0.8)"
+      bg="hsl(var(--secondary))"
+      fw={600}
+      fz={14}
+      style={{ borderRadius: 4, cursor: "pointer" }}
+      onClick={() => {
+        modals.open({
+          title: "Financial Ranking Details",
+          children: <FinancialModalContent storeId={storeId} />,
+        });
+      }}
+    >
+      {cell.getValue() as string}
+    </Badge>
+  );
+}
+
 function ModalContent({ storeId }: { storeId: string }) {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData([
@@ -127,6 +163,7 @@ function ModalContent({ storeId }: { storeId: string }) {
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
   }
+
   return (
     <Stack>
       <Flex justify="space-between">
@@ -155,6 +192,82 @@ function ModalContent({ storeId }: { storeId: string }) {
         <Text fw={600}>
           {storeRatings.brand_standards}{" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
+        </Text>
+      </Flex>
+    </Stack>
+  );
+}
+
+function FinancialModalContent({ storeId }: { storeId: string }) {
+  const isMystores = true;
+  const { data: example } = useBkAnalyticsCharts({
+    isMystores: true,
+  });
+
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData([
+    ["bk-analytics-charts", isMystores],
+  ]) as AnalyticsChartsResponse;
+
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+  const filteredData =
+    example?.chart3?.filter((item) => item.store_id === storeId) || [];
+
+  return (
+    <Stack gap="sm">
+      <Flex justify="space-between">
+        <Text size="sm">Actual vs. Budgeted Manager's Profit:</Text>
+        <Text size="sm" fw={600}>
+          {USDollar.format(filteredData[0]?.act_vs_budget_managers_profits)}
+        </Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex justify="space-between">
+        <Text size="sm">Theoretical Gross Profit:</Text>
+        <Text size="sm" fw={600}>
+          {filteredData[0]?.adj_theoretical_gp_percent} %
+        </Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex justify="space-between">
+        <Text size="sm">Actual Gross Profit:</Text>
+        <Text size="sm" fw={600}>
+          {filteredData[0]?.actual_gp_percent} %
+        </Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex justify="space-between">
+        <Text size="sm">Gross Profit Variation:</Text>
+        <Text size="sm" fw={600}>
+          {filteredData[0]?.act_vs_adj_theor} %
+        </Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex justify="space-between">
+        <Text size="sm">Actual Labor Cost:</Text>
+        <Text size="sm" fw={600}>
+          {USDollar.format(filteredData[0]?.actual_total_labor)}
+        </Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex justify="space-between">
+        <Text size="sm">Budgeted Labor Cost:</Text>
+        <Text size="sm" fw={600}>
+          {USDollar.format(filteredData[0]?.budgeted_total_labor)}
         </Text>
       </Flex>
     </Stack>

@@ -30,20 +30,26 @@ export type AnalyticsChartsResponse = {
   }>;
 };
 
-export async function getBkAnalyticsCharts(): Promise<AnalyticsChartsResponse> {
-  return axios.get("/analytics/getAnalyticsCharts").then((res) => res.data);
+export async function getBkAnalyticsCharts(
+  isMystores: boolean
+): Promise<AnalyticsChartsResponse> {
+  return axios
+    .get(`/analytics/getAnalyticsCharts?isMyStores=${isMystores}`)
+    .then((res) => res.data);
 }
 
 export type UseBkAnalyticsChartsOptions = {
   config?: UseQueryOptions<AnalyticsChartsResponse>;
+  isMystores?: boolean;
 };
 
 export function useBkAnalyticsCharts({
   config,
+  isMystores = false,
 }: UseBkAnalyticsChartsOptions = {}) {
   return useQuery({
-    queryKey: ["bk-analytics-charts"],
-    queryFn: getBkAnalyticsCharts,
+    queryKey: ["bk-analytics-charts", isMystores],
+    queryFn: () => getBkAnalyticsCharts(isMystores),
     ...config,
   });
 }

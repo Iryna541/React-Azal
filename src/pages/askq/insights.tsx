@@ -43,7 +43,7 @@ import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/Dun
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
 import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
-import { FinancialOverviewBig } from "~/modules/bk/bk-charts-2/FinancialOverview";
+
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
@@ -73,6 +73,7 @@ import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
+  const [isMystores, setIsMystores] = useState(false);
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
@@ -80,23 +81,37 @@ export default function InsightsPage() {
       : `${dayjs.utc(currentDateRange[0].date).format("LL")}`
     : null;
 
+  const handleSelectChange = (value: any) => {
+    console.log("Selected Value: ", value); // Optional: log the selected value
+    value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
+  };
+
   return (
     <ProtectedRoute>
       <Layout>
         <InsightsProvider>
-          <Flex align="center" gap="sm" mb="lg">
-            <Title order={3}>Insights</Title>
-            <Tooltip
-              position="bottom"
-              label={`You're viewing insights for ${dateInformation}`}
-            >
-              <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
-                {dateInformation}
-              </Badge>
-            </Tooltip>
+          <Flex align="center" gap="sm" mb="lg" justify={"space-between"}>
+            <Flex align="center" gap="sm" mb="lg">
+              <Title order={3}>Insights</Title>
+              <Tooltip
+                position="bottom"
+                label={`You're viewing insights for ${dateInformation}`}
+              >
+                <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
+                  {dateInformation}
+                </Badge>
+              </Tooltip>
+            </Flex>
+            <Select
+              label="Select Option"
+              placeholder="Pick value"
+              data={["All Stores", "My Stores"]}
+              defaultValue="All Stores"
+              onChange={handleSelectChange}
+            />
           </Flex>
           {(user?.company_id === 211 || user?.company_id === 210) && (
-            <BkSetup />
+            <BkSetup isMystores={isMystores} />
           )}
           {(user?.company_id === 212 || user?.company_id === 215) && (
             <DunkinSetup />
@@ -133,7 +148,11 @@ function R365Setup() {
   );
 }
 
-function BkSetup() {
+interface BkSetupProps {
+  isMystores: boolean;
+}
+
+function BkSetup({ isMystores }: BkSetupProps) {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
   const {
@@ -144,6 +163,12 @@ function BkSetup() {
     handleSubmit,
     submit,
   } = useInsightsContext();
+
+  const [selectedStore, isSelectedStore] = useState("");
+  const stores =
+    data?.map((item) => {
+      return item.store_id;
+    }) || [];
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -169,12 +194,16 @@ function BkSetup() {
     handleSubmit();
   }
 
+  const handleSelectChange = (value: any) => {
+    isSelectedStore(value);
+  };
+
   return (
     <>
       <Box pos="relative">
         <Box ref={boxRef}>
-          <BKCharts />
-          <BKChartsBig />
+          <BKCharts isMystores={isMystores} />
+          {/* <BKChartsBig /> */}
         </Box>
         <Button
           style={{ position: "absolute", top: 0, right: 12 }}
@@ -222,23 +251,38 @@ function BkSetup() {
                 borderRadius: 8,
               }}
             >
-              <Box px="lg" py="md">
-                <Title order={5} fw={500} fz={16}>
-                  Store Leaderboard
-                </Title>
-                <Title
-                  component="p"
-                  order={6}
-                  fz={14}
-                  fw={500}
-                  size="sm"
-                  lh={1.5}
-                >
-                  Which locations are doing better?
-                </Title>
-              </Box>
+              <Flex justify={"space-between"}>
+                <Box px="lg" py="md">
+                  <Title order={5} fw={500} fz={16}>
+                    Store Leaderboard
+                  </Title>
+                  <Title
+                    component="p"
+                    order={6}
+                    fz={14}
+                    fw={500}
+                    size="sm"
+                    lh={1.5}
+                  >
+                    Which locations are doing better?
+                  </Title>
+                </Box>
+                <Select
+                  label="Filter stores"
+                  placeholder="Pick value"
+                  data={["All Stores", "My Stores", ...stores]}
+                  defaultValue="All Stores"
+                  m={"sm"}
+                  onChange={handleSelectChange}
+                />
+              </Flex>
               <Divider />
-              {data && <BkStoreRankingTable data={data} />}
+              {data && (
+                <BkStoreRankingTable
+                  data={data}
+                  selectedStore={selectedStore}
+                />
+              )}
             </Box>
           </Stack>
         </Tabs.Panel>
@@ -427,8 +471,8 @@ function ZenoSetup() {
   );
 }
 
-function BKCharts() {
-  const { data } = useBkAnalyticsCharts();
+function BKCharts({ isMystores }: BkSetupProps) {
+  const { data } = useBkAnalyticsCharts({ isMystores });
 
   const { boxref1 } = useInsightsContext();
 
@@ -465,26 +509,27 @@ function BKCharts() {
   );
 }
 
-function BKChartsBig() {
-  const { data } = useBkAnalyticsCharts();
-  return (
-    <>
-      <Box my="lg">
-        {data?.chart3 && <FinancialOverviewBig data={data.chart3} />}
-      </Box>
-      {/* <Box my="lg">
-        {data?.chart2 && (
-          <FSSBreakdownChartBig
-            data={data.chart2.map((item) => ({
-              ...item,
-              Avg: item.AVG,
-            }))}
-          />
-        )}
-      </Box> */}
-    </>
-  );
-}
+// function BKChartsBig() {
+//   const { data } = useBkAnalyticsCharts();
+
+//   return (
+//     <>
+//       <Box my="lg">
+//         {data?.chart3 && <FinancialOverviewBig data={data.chart3} />}
+//       </Box>
+//       {/* <Box my="lg">
+//         {data?.chart2 && (
+//           <FSSBreakdownChartBig
+//             data={data.chart2.map((item) => ({
+//               ...item,
+//               Avg: item.AVG,
+//             }))}
+//           />
+//         )}
+//       </Box> */}
+//     </>
+//   );
+// }
 
 function LukeLobsterSetup() {
   const { data } = useLukeLobsterStoreRanking();
