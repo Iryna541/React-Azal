@@ -31,15 +31,28 @@ import { openSendInsightModal } from "./SendInsightsModal";
 interface BkStoreRankingTableProps {
   data: StoreInsights[];
 }
+interface BkStoreRankingSelectedStoreProps {
+  selectedStore: string;
+}
 
-export function BkStoreRankingTable({ data }: BkStoreRankingTableProps) {
+type CombinedProps = BkStoreRankingTableProps &
+  BkStoreRankingSelectedStoreProps;
+
+export function BkStoreRankingTable({ data, selectedStore }: CombinedProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
+  const filteredData = selectedStore
+    ? data.filter((item) => {
+        if (selectedStore === "All Stores") return data;
+        return item.store_id === selectedStore;
+      })
+    : data;
+
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
