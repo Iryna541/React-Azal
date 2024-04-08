@@ -11,6 +11,10 @@ import {
 import { modals } from "@mantine/modals";
 import { IconBulb } from "@tabler/icons-react";
 import { marked } from "marked";
+import {
+  FinancialModalContent,
+  ModalContent,
+} from "../bk-store-ranking/columns";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -18,6 +22,7 @@ export type BkManagerRankingData = Array<{
   fss: string;
   financials: string;
   insights: string;
+  storeId: string;
 }>;
 
 interface BkManagerRankingTableProps {
@@ -75,6 +80,13 @@ export function BkManagerRankingTable({
                   fw={700}
                   bg="rgba(255, 138, 2,0.2)"
                   c="rgb(255, 138, 2)"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    modals.open({
+                      title: "FSS Ranking Details",
+                      children: <ModalContent storeId={item.storeId} />,
+                    });
+                  }}
                 >
                   {item.fss}
                 </Badge>
@@ -85,6 +97,15 @@ export function BkManagerRankingTable({
                   fw={700}
                   bg="rgba(0, 132, 255, 0.2)"
                   c="rgb(0, 132, 255)"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    modals.open({
+                      title: "Financial Ranking Details",
+                      children: (
+                        <FinancialModalContent storeId={item.storeId} />
+                      ),
+                    });
+                  }}
                 >
                   {item.financials}
                 </Badge>

@@ -34,7 +34,7 @@ export async function getBkAnalyticsCharts(
   isMystores: boolean
 ): Promise<AnalyticsChartsResponse> {
   return axios
-    .get(`/analytics/getAnalyticsCharts?isMyStores=${isMystores}`)
+    .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}`)
     .then((res) => res.data);
 }
 

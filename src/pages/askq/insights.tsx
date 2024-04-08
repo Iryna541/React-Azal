@@ -181,6 +181,7 @@ function BkSetup({ isMystores }: BkSetupProps) {
         fss: item.fss_ranking,
         financials: item.mgr_profit_ranking,
         insights: item.bullet_points,
+        storeId: item.store_id,
       };
     });
 
