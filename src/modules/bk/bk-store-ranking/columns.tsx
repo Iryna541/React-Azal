@@ -22,11 +22,8 @@ import {
   IconThirdPlace,
 } from "~/assets";
 import { modals } from "@mantine/modals";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  AnalyticsChartsResponse,
-  useBkAnalyticsCharts,
-} from "../bk-charts-2/api/useBkAnalyticsCharts";
+
+import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
@@ -138,11 +135,11 @@ function FinancialRankingCell(cell: CellContext<StoreInsights, unknown>) {
   );
 }
 
-function ModalContent({ storeId }: { storeId: string }) {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData([
-    "bk-analytics-charts",
-  ]) as AnalyticsChartsResponse;
+export function ModalContent({ storeId }: { storeId: string }) {
+  const { data: data } = useBkAnalyticsCharts({
+    isMystores: false,
+  });
+
   const storeRatings = {
     acr: 0,
     sos: 0,
@@ -198,16 +195,10 @@ function ModalContent({ storeId }: { storeId: string }) {
   );
 }
 
-function FinancialModalContent({ storeId }: { storeId: string }) {
-  const isMystores = true;
-  const { data: example } = useBkAnalyticsCharts({
-    isMystores: true,
+export function FinancialModalContent({ storeId }: { storeId: string }) {
+  const { data: data } = useBkAnalyticsCharts({
+    isMystores: false,
   });
-
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData([
-    ["bk-analytics-charts", isMystores],
-  ]) as AnalyticsChartsResponse;
 
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -215,7 +206,7 @@ function FinancialModalContent({ storeId }: { storeId: string }) {
     maximumFractionDigits: 0,
   });
   const filteredData =
-    example?.chart3?.filter((item) => item.store_id === storeId) || [];
+    data?.chart3?.filter((item) => item.store_id === storeId) || [];
 
   return (
     <Stack gap="sm">
