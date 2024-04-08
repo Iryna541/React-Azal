@@ -69,6 +69,7 @@ import {
 } from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
 import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
+import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -154,6 +155,8 @@ interface BkSetupProps {
 
 function BkSetup({ isMystores }: BkSetupProps) {
   const { data } = useStoreRanking();
+  const { data: managers } = useGetManagers();
+
   const { data: managerData } = useBkManagerPlan();
   const {
     setSubmit,
@@ -164,11 +167,13 @@ function BkSetup({ isMystores }: BkSetupProps) {
     submit,
   } = useInsightsContext();
 
-  const [selectedStore, isSelectedStore] = useState("");
-  const stores =
-    data?.map((item) => {
-      return item.store_id;
+  const [selectedStore, setSelectedStore] = useState("");
+  const managerList =
+    managers?.users?.map((item) => {
+      return item.name;
     }) || [];
+
+  console.log("managerList:", managerList);
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -196,7 +201,7 @@ function BkSetup({ isMystores }: BkSetupProps) {
   }
 
   const handleSelectChange = (value: any) => {
-    isSelectedStore(value);
+    setSelectedStore(value);
   };
 
   return (
@@ -271,7 +276,7 @@ function BkSetup({ isMystores }: BkSetupProps) {
                 <Select
                   label="Filter stores"
                   placeholder="Pick value"
-                  data={["All Stores", "My Stores", ...stores]}
+                  data={["All Stores", "My Stores", ...managerList]}
                   defaultValue="All Stores"
                   m={"sm"}
                   onChange={handleSelectChange}

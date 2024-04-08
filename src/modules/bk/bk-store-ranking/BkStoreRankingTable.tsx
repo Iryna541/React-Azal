@@ -27,6 +27,7 @@ import { useRef, useState } from "react";
 import { marked } from "marked";
 import html2canvas from "html2canvas";
 import { openSendInsightModal } from "./SendInsightsModal";
+import { useGetManagers } from "./api/useGetManagers";
 
 interface BkStoreRankingTableProps {
   data: StoreInsights[];
@@ -43,6 +44,10 @@ export function BkStoreRankingTable({ data, selectedStore }: CombinedProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const { data: managers } = useGetManagers();
+  console.log("managers:", managers.users);
+  console.log("selectedStore:", selectedStore);
+  const managerNames = new Set(managers.users.map((manager) => manager.name));
 
   const filteredData = selectedStore
     ? data.filter((item) => {
