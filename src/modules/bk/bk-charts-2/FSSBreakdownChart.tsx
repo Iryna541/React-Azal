@@ -39,6 +39,15 @@ export function FSSBreakdownChart({
       formatted_value: item.Avg.toFixed(1),
     };
   });
+
+  function getColor(avg: number) {
+    if (avg >= 4.0) return "#51CF66";
+    else if (avg >= 3.8 && avg < 4.0) return "#a9e34b";
+    else if (avg >= 3.0 && avg < 3.8) return "#ffd43b";
+    else if (avg >= 2.0 && avg < 3) return "#ff922b";
+    return "#ff6b6b";
+  }
+
   return (
     <BarChart
       p="md"
@@ -109,19 +118,23 @@ export function FSSBreakdownChart({
           style={{ cursor: "pointer" }}
         >
           {data.map((entry, index) => {
-            return (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.Avg >= 3.9 ? "#82C91E" : "#FA5252"}
-              />
-            );
+            return <Cell key={`cell-${index}`} fill={getColor(entry.Avg)} />;
           })}
-
           <LabelList
             dataKey="formatted_value"
             position="top"
             offset={10}
             style={{ fontSize: 12, fontWeight: 600 }}
+          />
+          <LabelList
+            dataKey="score"
+            position="center"
+            offset={10}
+            fill="white"
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+            }}
           />
         </Bar>
       }

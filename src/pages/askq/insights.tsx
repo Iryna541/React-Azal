@@ -15,7 +15,10 @@ import {
   Text,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
-import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
+import {
+  GetStoreRankingResponse,
+  useStoreRanking,
+} from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import {
@@ -40,12 +43,7 @@ import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/Zeno
 
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
 import { DunkinManagerPlanTable } from "~/modules/dunkin/dunkin-manager-plan/DunkinManagerPlanTable";
-import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
-import TitleBox from "~/components/TitleBox";
-import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 
-import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
-import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { useBkManagerPlan } from "~/modules/bk/bk-manager-plan-2/api/useBkManagerPlan";
 import { useCurrentDateRange } from "~/modules/common/api/useCurrentDateRange";
 import dayjs from "dayjs";
@@ -53,14 +51,10 @@ import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import UTC from "dayjs/plugin/utc";
 dayjs.extend(LocalizedFormat);
 dayjs.extend(UTC);
-import { useEffect, useRef, useState } from "react";
-import {
-  InsightsProvider,
-  useInsightsContext,
-} from "~/modules/askq/insightsContext";
+import { useEffect, useState } from "react";
+import { InsightsProvider } from "~/modules/askq/insightsContext";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
-import { openSendScreenshotModal } from "~/modules/bk/bk-charts-2/sendScreenshotModal";
 import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
 import {
@@ -70,22 +64,17 @@ import {
 import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
+import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
-  const [isMystores, setIsMystores] = useState(false);
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
       ? `${dayjs.utc(currentDateRange[0].week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0].week_end_date).format("LL")}`
       : `${dayjs.utc(currentDateRange[0].date).format("LL")}`
     : null;
-
-  const handleSelectChange = (value: any) => {
-    console.log("Selected Value: ", value); // Optional: log the selected value
-    value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
-  };
 
   return (
     <ProtectedRoute>
@@ -103,16 +92,9 @@ export default function InsightsPage() {
                 </Badge>
               </Tooltip>
             </Flex>
-            <Select
-              label="Select Option"
-              placeholder="Pick value"
-              data={["All Stores", "My Stores"]}
-              defaultValue="All Stores"
-              onChange={handleSelectChange}
-            />
           </Flex>
           {(user?.company_id === 211 || user?.company_id === 210) && (
-            <BkSetup isMystores={isMystores} />
+            <BkSetup />
           )}
           {(user?.company_id === 212 || user?.company_id === 215) && (
             <DunkinSetup />
@@ -149,31 +131,41 @@ function R365Setup() {
   );
 }
 
-interface BkSetupProps {
-  isMystores: boolean;
-}
-
-function BkSetup({ isMystores }: BkSetupProps) {
+function BkSetup() {
   const { data } = useStoreRanking();
+  const { data: managerData } = useBkManagerPlan();
+
   const { data: managers } = useGetManagers();
 
-  const { data: managerData } = useBkManagerPlan();
-  const {
-    setSubmit,
-    addPhoto,
-    setStoreId,
-    setEmailText,
-    handleSubmit,
-    submit,
-  } = useInsightsContext();
+  const managerNames =
+    managers?.users
+      .filter((user) => user.role_title === "Manager")
+      .map((user) => user.name) ?? [];
 
-  const [selectedStore, setSelectedStore] = useState("");
-  const managerList =
-    managers?.users?.map((item) => {
-      return item.name;
-    }) || [];
+  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  console.log("managerList:", managerList);
+  useEffect(() => {
+    if (data) {
+      setFilteredData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (selectedOption === "All Stores") {
+      if (data) setFilteredData(data);
+      return;
+    }
+    const selectedManagerStores = managers?.users
+      .find((user) => user.name === selectedOption)
+      ?.regions.map((region) => region.region_title);
+
+    const filteredStoreRanking = data?.filter((item) =>
+      selectedManagerStores?.includes(item.store_id)
+    );
+    if (filteredStoreRanking) setFilteredData(filteredStoreRanking);
+    // eslint-disable-next-line
+  }, [selectedOption]);
 
   const sortedManagersData: BkManagerRankingData = (data ?? [])
     .sort((a, b) => {
@@ -190,113 +182,91 @@ function BkSetup({ isMystores }: BkSetupProps) {
       };
     });
 
-  const boxRef = useRef(null);
-
-  const handleTakeScreenshot = () => {
-    openSendScreenshotModal({ addPhoto, setSubmit, setStoreId, setEmailText });
-  };
-
-  if (submit) {
-    handleSubmit();
-  }
-
+  // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
-    setSelectedStore(value);
+    setSelectedOption(value);
   };
 
   return (
-    <>
-      <Box pos="relative">
-        <Box ref={boxRef}>
-          <BKCharts isMystores={isMystores} />
-          {/* <BKChartsBig /> */}
-        </Box>
+    <Tabs variant="pills" radius="xs" defaultValue="store">
+      <Flex align="center" justify="space-between">
+        <Tabs.List mb="lg">
+          <Tabs.Tab value="store">Store</Tabs.Tab>
+          <Tabs.Tab value="manager">DTL</Tabs.Tab>
+        </Tabs.List>
         <Button
-          style={{ position: "absolute", top: 0, right: 12 }}
-          mt={20}
-          onClick={handleTakeScreenshot}
+          onClick={() => {
+            modals.open({
+              size: "xl",
+              title: <Text>Send by email</Text>,
+              centered: true,
+              children: <SendInsightModal photo={[]} />,
+            });
+          }}
         >
-          Send charts by email
+          Send Rankings by Email
         </Button>
-      </Box>
-
-      <Tabs variant="pills" radius="xs" defaultValue="store">
-        <Flex align="center" justify="space-between">
-          <Tabs.List mb="lg">
-            <Tabs.Tab value="store">Store</Tabs.Tab>
-            <Tabs.Tab value="manager">DTL</Tabs.Tab>
-          </Tabs.List>
-          <Button
-            onClick={() => {
-              modals.open({
-                size: "xl",
-                title: <Text>Send by email</Text>,
-                centered: true,
-                children: <SendInsightModal photo={[]} />,
-              });
+      </Flex>
+      <Tabs.Panel value="store">
+        <Stack gap="xl">
+          <SimpleGrid cols={2}>
+            <BkManagerRankingTable
+              title="Weekly Top 5 Store Managers"
+              data={sortedManagersData.slice(0, 5)}
+            />
+            <BkManagerRankingTable
+              title="Weekly Bottom 5 Store Managers"
+              data={sortedManagersData.reverse().slice(0, 5)}
+            />
+          </SimpleGrid>
+          <Box
+            style={{
+              border: "1px solid hsl(var(--border))",
+              borderRadius: 8,
             }}
           >
-            Send Rankings by Email
-          </Button>
-        </Flex>
-        <Tabs.Panel value="store">
-          <Stack gap="xl">
-            <SimpleGrid cols={2}>
-              <BkManagerRankingTable
-                title="Top 5 Best Store Managers"
-                data={sortedManagersData.slice(0, 5)}
+            <Flex justify={"space-between"}>
+              <Box px="lg" py="md">
+                <Title order={5} fw={500} fz={16}>
+                  Store Leaderboard
+                </Title>
+                <Title
+                  component="p"
+                  order={6}
+                  fz={14}
+                  fw={500}
+                  size="sm"
+                  lh={1.5}
+                >
+                  Which locations are doing better?
+                </Title>
+              </Box>
+              <Select
+                label="Filter stores"
+                placeholder="Pick value"
+                data={["All Stores", ...managerNames]}
+                defaultValue="All Stores"
+                m={"sm"}
+                onChange={handleSelectChange}
               />
-              <BkManagerRankingTable
-                title="Top 5 Worst Store Managers"
-                data={sortedManagersData.reverse().slice(0, 5)}
+            </Flex>
+            <Divider />
+            {data && (
+              <BkStoreRankingTable
+                data={filteredData.filter(
+                  (item) =>
+                    parseInt(item.overall_ranking) > 5 &&
+                    parseInt(item.overall_ranking) <= 16
+                )}
               />
-            </SimpleGrid>
-            <Box
-              style={{
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-              }}
-            >
-              <Flex justify={"space-between"}>
-                <Box px="lg" py="md">
-                  <Title order={5} fw={500} fz={16}>
-                    Store Leaderboard
-                  </Title>
-                  <Title
-                    component="p"
-                    order={6}
-                    fz={14}
-                    fw={500}
-                    size="sm"
-                    lh={1.5}
-                  >
-                    Which locations are doing better?
-                  </Title>
-                </Box>
-                <Select
-                  label="Filter stores"
-                  placeholder="Pick value"
-                  data={["All Stores", "My Stores", ...managerList]}
-                  defaultValue="All Stores"
-                  m={"sm"}
-                  onChange={handleSelectChange}
-                />
-              </Flex>
-              <Divider />
-              {data && (
-                <BkStoreRankingTable
-                  data={data}
-                  selectedStore={selectedStore}
-                />
-              )}
-            </Box>
-          </Stack>
-        </Tabs.Panel>
-        <Tabs.Panel value="manager">
-          {managerData && <BkManagerPlanTable data={managerData} />}
-        </Tabs.Panel>
-      </Tabs>
-    </>
+            )}
+          </Box>
+        </Stack>
+      </Tabs.Panel>
+      <Tabs.Panel value="manager">
+        {managerData && <BkManagerPlanTable data={managerData} />}
+      </Tabs.Panel>
+    </Tabs>
   );
 }
 
@@ -476,66 +446,6 @@ function ZenoSetup() {
     </Stack>
   );
 }
-
-function BKCharts({ isMystores }: BkSetupProps) {
-  const { data } = useBkAnalyticsCharts({ isMystores });
-
-  const { boxref1 } = useInsightsContext();
-
-  return (
-    <SimpleGrid ref={boxref1} cols={2} my="lg">
-      {data?.chart1 && (
-        <TitleBox
-          title="FSS Score Overview"
-          subtitle="Detailed Store Performance Breakdown"
-        >
-          <FSSScoreOverviewChart
-            data={data.chart1.map((item) => ({
-              ...item,
-              value: item.values,
-            }))}
-          />
-        </TitleBox>
-      )}
-
-      {data?.chart2 && (
-        <TitleBox
-          title="FSS Breakdown by Category"
-          subtitle="Identify Top Performers by Category"
-        >
-          <FSSBreakdownChart
-            data={data.chart2.map((item) => ({
-              ...item,
-              Avg: item.AVG,
-            }))}
-          />
-        </TitleBox>
-      )}
-    </SimpleGrid>
-  );
-}
-
-// function BKChartsBig() {
-//   const { data } = useBkAnalyticsCharts();
-
-//   return (
-//     <>
-//       <Box my="lg">
-//         {data?.chart3 && <FinancialOverviewBig data={data.chart3} />}
-//       </Box>
-//       {/* <Box my="lg">
-//         {data?.chart2 && (
-//           <FSSBreakdownChartBig
-//             data={data.chart2.map((item) => ({
-//               ...item,
-//               Avg: item.AVG,
-//             }))}
-//           />
-//         )}
-//       </Box> */}
-//     </>
-//   );
-// }
 
 function LukeLobsterSetup() {
   const { data } = useLukeLobsterStoreRanking();
