@@ -145,6 +145,8 @@ export function ModalContent({ storeId }: { storeId: string }) {
     sos: 0,
     training_rate: 0,
     brand_standards: 0,
+    glv: 0,
+    retention: 0,
   };
   if (data) {
     storeRatings.acr = data.chart2[0].stores.find(
@@ -159,10 +161,21 @@ export function ModalContent({ storeId }: { storeId: string }) {
     storeRatings.brand_standards = data.chart2[3].stores.find(
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
+    storeRatings.glv = storeRatings.training_rate = data.chart2[2].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.rating;
+    storeRatings.retention = storeRatings.training_rate =
+      data.chart2[2].stores.find(
+        (item) => item.store_id === parseInt(storeId)
+      )!.rating;
   }
 
   return (
     <Stack>
+      <Flex justify="space-between">
+        <Text>FSS Score</Text>
+        <Text fw={600}>17 </Text>
+      </Flex>
       <Flex justify="space-between">
         <Text>ACR</Text>
         <Text fw={600}>
@@ -190,6 +203,20 @@ export function ModalContent({ storeId }: { storeId: string }) {
           {storeRatings.brand_standards}{" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
         </Text>
+      </Flex>
+      <Flex justify="space-between">
+        <Text>Retention</Text>
+        <Text fw={600}>
+          {storeRatings.retention}{" "}
+          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
+        </Text>{" "}
+      </Flex>
+      <Flex justify="space-between">
+        <Text>GLV</Text>
+        <Text fw={600}>
+          {storeRatings.glv}{" "}
+          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
+        </Text>{" "}
       </Flex>
     </Stack>
   );

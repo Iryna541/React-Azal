@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { axios } from "~/lib/axios";
 
-export interface Managers {
+export type GetManagersResponse = {
   users: Array<{
     id: number;
     name: string;
@@ -28,7 +28,7 @@ export interface Managers {
       name: string;
       type: string;
       color: string;
-      role_title: any;
+      role_title: string;
       is_partner?: boolean;
     }>;
     status: string;
@@ -39,9 +39,7 @@ export interface Managers {
     page_size: number;
     total_records: number;
   };
-}
-
-export type GetManagersResponse = Managers[];
+};
 
 export async function getManagers(): Promise<GetManagersResponse> {
   return axios

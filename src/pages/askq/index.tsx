@@ -3,6 +3,8 @@ import {
   Badge,
   Box,
   Flex,
+  Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -13,6 +15,18 @@ import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
 import { Calendar } from "@mantine/dates";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import { IconBubble, IconSaleTag, IconSparkles } from "~/assets";
+import { useUser } from "~/modules/auth/hooks/useUser";
+import { Layout } from "~/components/Layout";
+import {
+  InsightsProvider,
+  useInsightsContext,
+} from "~/modules/askq/insightsContext";
+import TitleBox from "~/components/TitleBox";
+import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
+import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
+import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const stats = [
   {
@@ -51,112 +65,176 @@ const stats = [
 ];
 
 export default function DashboardPage() {
+  const { user } = useUser();
   return (
     <ProtectedRoute>
-      <LayoutWithSidebar
-        sidebar={
-          <Box p={24}>
-            <Calendar weekdayFormat="ddd" />
-          </Box>
-        }
-      >
-        <Box>
-          <Title order={3}>Good Morning!</Title>
-          <Stack align="center" mt="xl">
-            <IconSparkles height={50} width={50} />
-            <Box>
-              <Title order={3}>What would you like to do with your data?</Title>
-              <Text mt="xs">
-                Ask our database a question about your data and get a response
-                in seconds!
-              </Text>
-            </Box>
-            <TextInput
-              w="100%"
-              placeholder="Let's learn more about your business. Ask a question about your data."
-              rightSection={
-                <ActionIcon
-                  size="lg"
-                  radius={6}
-                  variant="azalio-ui-light"
-                  mr={3}
-                >
-                  <IconSend size={16} />
-                </ActionIcon>
-              }
-              rightSectionWidth={40}
-              styles={{
-                input: {
-                  height: 48,
-                },
-              }}
-            />
-          </Stack>
-          <Box mt="xl">
-            <Text>
-              You have the opportunity to save <Badge>$51,062</Badge> across
-              your 10 locations
-            </Text>
-            <Stack mt="md">
-              {stats.map((item, index) => {
-                return (
-                  <Flex
-                    p="lg"
-                    gap="lg"
-                    key={index}
-                    bg={item.backgroundColor}
-                    style={{ borderRadius: 8 }}
-                  >
-                    <Flex
-                      bg={item.iconBackgroundColor}
-                      h={108}
-                      w={108}
-                      align="center"
-                      justify="center"
-                      style={{
-                        flexBasis: 108,
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        borderRadius: 8,
-                      }}
-                      c={item.iconColor}
-                    >
-                      {item.icon}
-                    </Flex>
-                    <Box>
-                      <Flex gap="sm" align="center">
-                        <Title order={4}>{item.title}</Title>
-                        <Badge
-                          bg={item.buttonColor}
-                          c="white"
-                          size="md"
-                          fw={700}
-                          styles={{
-                            root: {
-                              height: 24,
-                              borderRadius: 4,
-                              paddingLeft: 6,
-                              paddingRight: 6,
-                            },
-                            label: {
-                              fontSize: 14,
-                            },
-                          }}
-                        >
-                          {item.value}
-                        </Badge>
-                      </Flex>
-                      <Text mt="xs" fw={500}>
-                        {item.description}
-                      </Text>
-                    </Box>
-                  </Flex>
-                );
-              })}
-            </Stack>
-          </Box>
-        </Box>
-      </LayoutWithSidebar>
+      {user?.company_id === 211 ? (
+        <InsightsProvider>
+          <RussSetup />
+        </InsightsProvider>
+      ) : (
+        <Navigate to="/askq/insights" />
+      )}
     </ProtectedRoute>
+  );
+}
+
+function RussSetup() {
+  const [isMystores, setIsMystores] = useState(false);
+
+  const { data } = useBkAnalyticsCharts({ isMystores });
+  const { boxref1 } = useInsightsContext();
+
+  // eslint-disable-next-line
+  const handleSelectChange = (value: any) => {
+    console.log("Selected Value: ", value); // Optional: log the selected value
+    value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
+  };
+
+  return (
+    <Layout>
+      <Flex justify="space-between">
+        <Title order={3}>Dashboard</Title>
+        <Select
+          placeholder="Pick value"
+          data={["All Stores", "My Stores"]}
+          defaultValue="All Stores"
+          onChange={handleSelectChange}
+        />
+      </Flex>
+      <SimpleGrid ref={boxref1} cols={2} my="lg">
+        {data?.chart1 && (
+          <TitleBox
+            title="FSS Score Overview"
+            subtitle="Detailed Store Performance Breakdown"
+          >
+            <FSSScoreOverviewChart
+              data={data.chart1.map((item) => ({
+                ...item,
+                value: item.values,
+              }))}
+            />
+          </TitleBox>
+        )}
+
+        {data?.chart2 && (
+          <TitleBox
+            title="FSS Breakdown by Category"
+            subtitle="Identify Top Performers by Category"
+          >
+            <FSSBreakdownChart
+              data={data.chart2.map((item) => ({
+                ...item,
+                Avg: item.AVG,
+              }))}
+            />
+          </TitleBox>
+        )}
+      </SimpleGrid>
+    </Layout>
+  );
+}
+
+export function FallbackUI() {
+  return (
+    <LayoutWithSidebar
+      sidebar={
+        <Box p={24}>
+          <Calendar weekdayFormat="ddd" />
+        </Box>
+      }
+    >
+      <Box>
+        <Title order={3}>Good Morning!</Title>
+        <Stack align="center" mt="xl">
+          <IconSparkles height={50} width={50} />
+          <Box>
+            <Title order={3}>What would you like to do with your data?</Title>
+            <Text mt="xs">
+              Ask our database a question about your data and get a response in
+              seconds!
+            </Text>
+          </Box>
+          <TextInput
+            w="100%"
+            placeholder="Let's learn more about your business. Ask a question about your data."
+            rightSection={
+              <ActionIcon size="lg" radius={6} variant="azalio-ui-light" mr={3}>
+                <IconSend size={16} />
+              </ActionIcon>
+            }
+            rightSectionWidth={40}
+            styles={{
+              input: {
+                height: 48,
+              },
+            }}
+          />
+        </Stack>
+        <Box mt="xl">
+          <Text>
+            You have the opportunity to save <Badge>$51,062</Badge> across your
+            10 locations
+          </Text>
+          <Stack mt="md">
+            {stats.map((item, index) => {
+              return (
+                <Flex
+                  p="lg"
+                  gap="lg"
+                  key={index}
+                  bg={item.backgroundColor}
+                  style={{ borderRadius: 8 }}
+                >
+                  <Flex
+                    bg={item.iconBackgroundColor}
+                    h={108}
+                    w={108}
+                    align="center"
+                    justify="center"
+                    style={{
+                      flexBasis: 108,
+                      flexGrow: 0,
+                      flexShrink: 0,
+                      borderRadius: 8,
+                    }}
+                    c={item.iconColor}
+                  >
+                    {item.icon}
+                  </Flex>
+                  <Box>
+                    <Flex gap="sm" align="center">
+                      <Title order={4}>{item.title}</Title>
+                      <Badge
+                        bg={item.buttonColor}
+                        c="white"
+                        size="md"
+                        fw={700}
+                        styles={{
+                          root: {
+                            height: 24,
+                            borderRadius: 4,
+                            paddingLeft: 6,
+                            paddingRight: 6,
+                          },
+                          label: {
+                            fontSize: 14,
+                          },
+                        }}
+                      >
+                        {item.value}
+                      </Badge>
+                    </Flex>
+                    <Text mt="xs" fw={500}>
+                      {item.description}
+                    </Text>
+                  </Box>
+                </Flex>
+              );
+            })}
+          </Stack>
+        </Box>
+      </Box>
+    </LayoutWithSidebar>
   );
 }

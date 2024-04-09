@@ -123,6 +123,10 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
       return { ...link, isLocked: true };
     }
 
+    if (link.label === "Dashboard" && user?.company_id === 211) {
+      return { ...link, isLocked: false };
+    }
+
     return link;
   });
 

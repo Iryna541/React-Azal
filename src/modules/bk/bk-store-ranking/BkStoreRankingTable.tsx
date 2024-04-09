@@ -27,37 +27,33 @@ import { useRef, useState } from "react";
 import { marked } from "marked";
 import html2canvas from "html2canvas";
 import { openSendInsightModal } from "./SendInsightsModal";
-import { useGetManagers } from "./api/useGetManagers";
+// import { useGetManagers } from "./api/useGetManagers";
 
 interface BkStoreRankingTableProps {
   data: StoreInsights[];
 }
-interface BkStoreRankingSelectedStoreProps {
-  selectedStore: string;
-}
 
-type CombinedProps = BkStoreRankingTableProps &
-  BkStoreRankingSelectedStoreProps;
+type CombinedProps = BkStoreRankingTableProps;
 
-export function BkStoreRankingTable({ data, selectedStore }: CombinedProps) {
+export function BkStoreRankingTable({ data }: CombinedProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const { data: managers } = useGetManagers();
-  console.log("managers:", managers.users);
-  console.log("selectedStore:", selectedStore);
-  const managerNames = new Set(managers.users.map((manager) => manager.name));
+  // const { data: managers } = useGetManagers();
+  // console.log("managers:", managers.users);
+  // console.log("selectedStore:", selectedStore);
+  // const managerNames = new Set(managers.users.map((manager) => manager.name));
 
-  const filteredData = selectedStore
-    ? data.filter((item) => {
-        if (selectedStore === "All Stores") return data;
-        return item.store_id === selectedStore;
-      })
-    : data;
+  // const filteredData = selectedStore
+  //   ? data.filter((item) => {
+  //       if (selectedStore === "All Stores") return data;
+  //       return item.store_id === selectedStore;
+  //     })
+  //   : data;
 
   const table = useReactTable({
-    data: filteredData,
+    data,
     columns,
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
