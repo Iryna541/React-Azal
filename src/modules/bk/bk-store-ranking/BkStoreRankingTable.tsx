@@ -161,7 +161,7 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                     ))}
                   </Table.Tr>
                   {row.getIsExpanded() && (
-                    <Table.Tr key="exapanded">
+                    <Table.Tr key="exapanded" px={"sm"}>
                       <Table.Td colSpan={5}>
                         <Flex>
                           <TypographyStylesProvider ref={boxRef}>
@@ -171,7 +171,7 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                               }}
                             ></div>
                           </TypographyStylesProvider>
-                          <Button w={100} onClick={handleTakeScreenshot}>
+                          <Button w={120} onClick={handleTakeScreenshot}>
                             Send
                           </Button>
                         </Flex>

@@ -135,6 +135,8 @@ function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
 
+  console.log("store data:", data);
+
   const { data: managers } = useGetManagers();
 
   const managerNames =
@@ -144,12 +146,12 @@ function BkSetup() {
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (data) {
-      setFilteredData(data);
-    }
-  }, [data]);
+  console.log("filteredData:", filteredData);
+  // useEffect(() => {
+  //   if (data) {
+  //     setFilteredData(data);
+  //   }
+  // }, [data]);
 
   useEffect(() => {
     if (selectedOption === "All Stores") {
@@ -163,6 +165,7 @@ function BkSetup() {
     const filteredStoreRanking = data?.filter((item) =>
       selectedManagerStores?.includes(item.store_id)
     );
+
     if (filteredStoreRanking) setFilteredData(filteredStoreRanking);
     // eslint-disable-next-line
   }, [selectedOption]);
