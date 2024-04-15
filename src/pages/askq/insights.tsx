@@ -220,6 +220,7 @@ function BkSetup() {
             <BkManagerRankingTable
               title="Weekly Bottom 5 Store Managers"
               data={sortedManagersData.reverse().slice(0, 5)}
+              isRed
             />
           </SimpleGrid>
           <Box

@@ -36,11 +36,13 @@ export type BkManagerRankingData = Array<{
 interface BkManagerRankingTableProps {
   title: string;
   data: BkManagerRankingData;
+  isRed?: boolean;
 }
 
 export function BkManagerRankingTable({
   title,
   data,
+  isRed = false,
 }: BkManagerRankingTableProps) {
   return (
     <Box>
@@ -135,8 +137,12 @@ export function BkManagerRankingTable({
                   <Badge
                     size="lg"
                     fw={700}
-                    bg="rgba(63, 221, 120, 0.24)"
-                    c="rgb(63, 221, 120)"
+                    bg={
+                      !isRed
+                        ? "rgba(63, 221, 120, 0.24)"
+                        : "rgba(255, 107, 107, 0.25)"
+                    }
+                    c={!isRed ? "rgb(63, 221, 120)" : "#FF6B6B"}
                   >
                     {parseInt(item.fss) + parseInt(item.financials)}
                   </Badge>
