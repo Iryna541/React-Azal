@@ -46,10 +46,6 @@ export const columns: ColumnDef<StoreInsights>[] = [
       return value;
     },
   },
-  // {
-  //   accessorKey: "store_id",
-  //   header: "Store Id",
-  // },
   {
     accessorKey: "general_managers",
     header: "Manager",
@@ -61,6 +57,10 @@ export const columns: ColumnDef<StoreInsights>[] = [
         </Tooltip>
       );
     },
+  },
+  {
+    accessorKey: "store_id",
+    header: "Store Id",
   },
   {
     accessorKey: "fss_ranking",

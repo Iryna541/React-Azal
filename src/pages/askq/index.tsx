@@ -80,6 +80,7 @@ export default function DashboardPage() {
 }
 
 function RussSetup() {
+  const { user } = useUser();
   const [isMystores, setIsMystores] = useState(false);
 
   const { data } = useBkAnalyticsCharts({ isMystores });
@@ -94,7 +95,7 @@ function RussSetup() {
   return (
     <Layout>
       <Flex justify="space-between">
-        <Title order={3}>Dashboard</Title>
+        <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
         <Select
           placeholder="Pick value"
           data={["All Stores", "My Stores"]}

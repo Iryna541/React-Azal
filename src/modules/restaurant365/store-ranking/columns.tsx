@@ -34,10 +34,7 @@ export const columns: ColumnDef<StoreInsights>[] = [
     accessorKey: "store_id",
     header: "Store ID",
   },
-  {
-    accessorKey: "total_net_sales_rank",
-    header: "Net sales rank",
-  },
+
   {
     accessorKey: "labor_cost_rank",
     header: "Labor cost rank",
@@ -47,8 +44,8 @@ export const columns: ColumnDef<StoreInsights>[] = [
     header: "Location",
   },
   {
-    accessorKey: "total_net_sales_rank",
-    header: "Sales Rank",
+    accessorKey: "net_sales_rank",
+    header: "Net Sales Rank",
     cell: ({ getValue }) => {
       return (
         <Badge
