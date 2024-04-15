@@ -7,6 +7,7 @@ import {
   Tooltip,
   ActionIcon,
   TypographyStylesProvider,
+  Text,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconBulb } from "@tabler/icons-react";
@@ -15,6 +16,13 @@ import {
   FinancialModalContent,
   ModalContent,
 } from "../bk-store-ranking/columns";
+import {
+  IconFifthPlace,
+  IconFirstPlace,
+  IconFourthPlace,
+  IconSecondPlace,
+  IconThirdPlace,
+} from "~/assets";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -56,6 +64,13 @@ export function BkManagerRankingTable({
       </Grid>
       <Stack gap="xs">
         {data.map((item, index) => {
+          const managerFstName = item?.manager?.split(" ") || "";
+          let placeIcon = null;
+          if (item.position === 1) placeIcon = <IconFirstPlace />;
+          else if (item.position === 2) placeIcon = <IconSecondPlace />;
+          else if (item.position === 3) placeIcon = <IconThirdPlace />;
+          else if (item.position === 4) placeIcon = <IconFourthPlace />;
+          else if (item.position === 5) placeIcon = <IconFifthPlace />;
           return (
             <Grid
               key={index}
@@ -70,9 +85,14 @@ export function BkManagerRankingTable({
                 borderRadius: 4,
               }}
             >
-              <Grid.Col span={2}>{item.position}</Grid.Col>
+              <Grid.Col span={2}>
+                {placeIcon ? placeIcon : item.position}
+              </Grid.Col>
               <Grid.Col span={4} c="hsl(var(--foreground))">
-                {item.manager}
+                <Stack>
+                  {managerFstName[0]}
+                  <Text size="sm">{item.storeId}</Text>
+                </Stack>
               </Grid.Col>
               <Grid.Col span={2}>
                 <Badge
