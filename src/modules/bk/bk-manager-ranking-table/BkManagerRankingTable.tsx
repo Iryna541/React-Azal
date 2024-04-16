@@ -122,7 +122,7 @@ export function BkManagerRankingTable({
                       alt={`${managerFstName[0]}'s Profile Picture`} // Accessible description
                     />
                   ) : (
-                    <IconUserCircle size={40} />
+                    <IconUserCircle size={40} stroke={1.25} />
                   )}
                   <Stack gap={0}>
                     {managerFstName[0]}
