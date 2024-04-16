@@ -134,7 +134,10 @@ function R365Setup() {
 
 function BkSetup() {
   const { data } = useStoreRanking();
-  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
+
+  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
+    data || []
+  );
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dtlSelectedOption, setDtlSelectedOption] = useState<string | null>(
     null
@@ -158,7 +161,7 @@ function BkSetup() {
   }, [data]);
 
   useEffect(() => {
-    if (selectedOption === "All Stores") {
+    if (selectedOption === "All Stores" || !selectedOption) {
       if (data) setFilteredData(data);
       return;
     }
@@ -167,8 +170,12 @@ function BkSetup() {
       ?.regions.map((region) => region.region_title);
 
     const filteredStoreRanking = data?.filter((item) =>
-      selectedManagerStores?.includes(item.store_id)
+      selectedManagerStores?.includes(item.store_id.toString())
     );
+
+    console.log("data:", data);
+
+    console.log("selectedManagerStores:", filteredStoreRanking);
 
     if (filteredStoreRanking) setFilteredData(filteredStoreRanking);
     // eslint-disable-next-line
