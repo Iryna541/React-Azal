@@ -12,7 +12,7 @@ import {
   Image,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconBulb } from "@tabler/icons-react";
+import { IconBulb, IconUserCircle } from "@tabler/icons-react";
 import { marked } from "marked";
 import {
   FinancialModalContent,
@@ -101,22 +101,30 @@ export function BkManagerRankingTable({
                 {placeIcon ? placeIcon : item.position}
               </Grid.Col>
               <Grid.Col span={4} c="hsl(var(--foreground))">
-                <Flex gap={"xs"}>
-                  {managerProfilePic?.profile_url && (
+                <Flex gap={"xs"} style={{ alignItems: "center" }}>
+                  {managerProfilePic?.profile_url ? (
                     <Image
                       style={{
                         width: "40px",
                         height: "40px",
-                        borderRadius: "50%", // Circular image
-                        border: "2px solid rgba(255, 255, 255, 0.8)", // White border for light background contrast
-                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Subtle shadow
-                        objectFit: "cover", // Ensures the image covers the area without distorting aspect ratio
+                        borderRadius: "50%", // Ensures the image is circular
+                        border: "2px solid rgba(255, 255, 255, 0.8)", // White border for contrast
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Adds subtle depth
+                        objectFit: "cover", // Covers the area without distortion
+                        backgroundPosition: "center",
+                        flexShrink: 0,
+                        flexBasis: 40,
                       }}
-                      src={managerProfilePic?.profile_url}
-                      alt={`${managerFstName[0]}'s Profile Picture`} // Descriptive alt text for accessibility
+                      src={
+                        managerProfilePic?.profile_url ||
+                        "path_to_default_image.jpg"
+                      } // Provide a default image path if profile_url is empty
+                      alt={`${managerFstName[0]}'s Profile Picture`} // Accessible description
                     />
+                  ) : (
+                    <IconUserCircle size={40} />
                   )}
-                  <Stack gap={"xs"}>
+                  <Stack gap={0}>
                     {managerFstName[0]}
                     <Text size="sm">{item.storeId}</Text>
                   </Stack>

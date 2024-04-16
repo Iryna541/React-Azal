@@ -134,7 +134,13 @@ function R365Setup() {
 
 function BkSetup() {
   const { data } = useStoreRanking();
-  const { data: managerData } = useBkManagerPlan();
+
+  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [dtlSelectedOption, setDtlSelectedOption] = useState<string | null>(
+    null
+  );
+  const { data: managerData } = useBkManagerPlan({ type: dtlSelectedOption });
 
   const { data: managers } = useGetManagers();
 
@@ -144,10 +150,6 @@ function BkSetup() {
     managers?.users
       .filter((user) => user.role_title === "Manager")
       .map((user) => user.name) ?? [];
-
-  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
   // useEffect(() => {
   //   if (data) {
   //     setFilteredData(data);
@@ -271,7 +273,12 @@ function BkSetup() {
         </Stack>
       </Tabs.Panel>
       <Tabs.Panel value="manager">
-        {managerData && <BkManagerPlanTable data={managerData} />}
+        {managerData && (
+          <BkManagerPlanTable
+            data={managerData}
+            setDtlSelectedOption={setDtlSelectedOption}
+          />
+        )}
       </Tabs.Panel>
     </Tabs>
   );
