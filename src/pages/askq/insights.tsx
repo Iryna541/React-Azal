@@ -65,6 +65,7 @@ import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobste
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
+import { useGetManagersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -135,9 +136,9 @@ function BkSetup() {
   const { data } = useStoreRanking();
   const { data: managerData } = useBkManagerPlan();
 
-  console.log("store data:", data);
-
   const { data: managers } = useGetManagers();
+
+  const { data: managersPic } = useGetManagersPic();
 
   const managerNames =
     managers?.users
@@ -146,7 +147,7 @@ function BkSetup() {
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  console.log("filteredData:", filteredData);
+
   // useEffect(() => {
   //   if (data) {
   //     setFilteredData(data);
@@ -216,11 +217,13 @@ function BkSetup() {
             <BkManagerRankingTable
               title="Weekly Top 5 Store Managers"
               data={sortedManagersData.slice(0, 5)}
+              managersPic={managersPic}
             />
             <BkManagerRankingTable
               title="Weekly Bottom 5 Store Managers"
               data={sortedManagersData.reverse().slice(0, 5)}
               isRed
+              managersPic={managersPic}
             />
           </SimpleGrid>
           <Box
