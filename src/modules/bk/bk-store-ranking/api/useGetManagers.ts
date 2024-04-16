@@ -44,7 +44,7 @@ export type GetManagersResponse = {
 export async function getManagers(): Promise<GetManagersResponse> {
   return axios
     .get(
-      "/organisation/getUsers?page_size=25&page_no=1&is_active=null&name_sort=1"
+      "/organisation/getUsers?page_size=50&page_no=1&is_active=null&name_sort=1"
     )
     .then((res) => res.data);
 }
