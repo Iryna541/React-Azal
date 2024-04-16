@@ -134,12 +134,12 @@ function R365Setup() {
 
 function BkSetup() {
   const { data } = useStoreRanking();
-
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dtlSelectedOption, setDtlSelectedOption] = useState<string | null>(
     null
   );
+
   const { data: managerData } = useBkManagerPlan({ type: dtlSelectedOption });
 
   const { data: managers } = useGetManagers();
@@ -150,11 +150,12 @@ function BkSetup() {
     managers?.users
       .filter((user) => user.role_title === "Manager")
       .map((user) => user.name) ?? [];
-  // useEffect(() => {
-  //   if (data) {
-  //     setFilteredData(data);
-  //   }
-  // }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      setFilteredData(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (selectedOption === "All Stores") {
