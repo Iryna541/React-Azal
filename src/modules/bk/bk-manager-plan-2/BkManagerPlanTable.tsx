@@ -14,6 +14,7 @@ import {
 import {
   Group,
   Pagination,
+  Select,
   Table,
   Text,
   TypographyStylesProvider,
@@ -26,9 +27,13 @@ import { marked } from "marked";
 
 interface BkManagerPlanTableProps {
   data: ManagerPlanResponse;
+  setDtlSelectedOption: (value: string | null) => void; // Correct type for the setter function
 }
 
-export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
+export function BkManagerPlanTable({
+  data,
+  setDtlSelectedOption,
+}: BkManagerPlanTableProps) {
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -66,154 +71,169 @@ export function BkManagerPlanTable({ data }: BkManagerPlanTableProps) {
     },
   });
 
+  const handleSelectChange = (value: any) => {
+    setDtlSelectedOption(value);
+  };
+
   return (
     <>
-    <Table
-      horizontalSpacing="lg"
-      withColumnBorders
-      verticalSpacing="xs"
-      withRowBorders
-    >
-      <Table.Thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <Table.Tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
+      <Select
+        label="Filter"
+        placeholder="Pick value"
+        data={["All", "Exclude_Top_5"]}
+        defaultValue="All"
+        m={"sm"}
+        w={"15%"}
+        onChange={handleSelectChange}
+      />
+      <Table
+        horizontalSpacing="lg"
+        withColumnBorders
+        verticalSpacing="xs"
+        withRowBorders
+      >
+        <Table.Thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Table.Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <>
+                    <Table.Th
+                      key={header.id}
+                      style={{
+                        width: header.column.getSize(),
+                        minWidth: header.column.getSize(),
+                        maxWidth: header.column.getSize(),
+                      }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </Table.Th>
+
+                    <Table.Th>Day Part</Table.Th>
+                    <Table.Th>Insights</Table.Th>
+                  </>
+                );
+              })}
+            </Table.Tr>
+          ))}
+        </Table.Thead>
+        <Table.Tbody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => {
+              const subrows = row.original.subRows;
               return (
                 <>
-                  <Table.Th
-                    key={header.id}
-                    style={{
-                      width: header.column.getSize(),
-                      minWidth: header.column.getSize(),
-                      maxWidth: header.column.getSize(),
+                  <Table.Tr
+                    key={row.id}
+                    onClick={() => {
+                      row.getIsExpanded()
+                        ? row.toggleExpanded(false)
+                        : row.toggleExpanded(true);
                     }}
+                    style={{ cursor: "pointer" }}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </Table.Th>
-               
-                  <Table.Th>Day Part</Table.Th>
-                  <Table.Th>Insights</Table.Th>
-                </>
-              );
-            })}
-          </Table.Tr>
-        ))}
-      </Table.Thead>
-      <Table.Tbody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => {
-            const subrows = row.original.subRows;
-            return (
-              <>
-                <Table.Tr
-                  key={row.id}
-                  onClick={() => {
-                    row.getIsExpanded()
-                      ? row.toggleExpanded(false)
-                      : row.toggleExpanded(true);
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  {row.getVisibleCells().map((cell) => {
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <Table.Td
+                          rowSpan={subrows.length + 1}
+                          fw={500}
+                          c="hsl(var(--foreground) / 0.8)"
+                          key={cell.id}
+                          style={{
+                            width: cell.column.getSize(),
+                            minWidth: cell.column.getSize(),
+                            maxWidth: cell.column.getSize(),
+                            border: "1px solid hsl(var(--border))",
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </Table.Td>
+                      );
+                    })}
+                  </Table.Tr>
+                  {subrows.map((item, idx) => {
+                    const markdown = (
+                      item.insights as unknown as { insight: string }[]
+                    )
+                      .map((el) => el.insight)
+                      .join("\n");
+
+                    const messageHtml = DOMPurify.sanitize(
+                      marked(markdown) as string
+                    );
+
                     return (
-                      <Table.Td
-                        rowSpan={
-                          
-                          subrows.length +
-                          1
-                        }
-                        fw={500}
-                        c="hsl(var(--foreground) / 0.8)"
-                        key={cell.id}
-                        style={{
-                          width: cell.column.getSize(),
-                          minWidth: cell.column.getSize(),
-                          maxWidth: cell.column.getSize(),
-                          border: "1px solid hsl(var(--border))",
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Td>
+                      <>
+                        <Table.Tr key={idx}>
+                          <Table.Td
+                            style={{
+                              minWidth: 180,
+                              border: "1px solid hsl(var(--border))",
+                            }}
+                          >
+                            <Text fw={700}>{item.shift}</Text>
+                          </Table.Td>
+                          <Table.Td
+                            style={{
+                              minWidth: 180,
+                              border: "1px solid hsl(var(--border))",
+                            }}
+                          >
+                            <TypographyStylesProvider p="0" m="0">
+                              <div
+                                style={{ fontSize: 14 }}
+                                dangerouslySetInnerHTML={{
+                                  __html: messageHtml,
+                                }}
+                              />
+                            </TypographyStylesProvider>
+                          </Table.Td>
+                        </Table.Tr>
+                      </>
                     );
                   })}
-                </Table.Tr>
-                {subrows.map((item,idx) => {
-                   const messageHtml = DOMPurify.sanitize(marked(item.insights) as string);
-                  return (
-                    <>
-                      <Table.Tr key={idx}>
-                        <Table.Td
-                          style={{
-                            minWidth: 180,
-                            border: "1px solid hsl(var(--border))",
-                          }}
-                 
-                        >
-                         <Text fw={700}>
-                         {item.shift}
-                         </Text>
-                        </Table.Td>
-                        <Table.Td
-                          style={{
-                            minWidth: 180,
-                            border: "1px solid hsl(var(--border))",
-                          }}
-                 
-                        >
-                          <TypographyStylesProvider p="0" m="0">
-                            <div
-                              style={{ fontSize: 14 }}
-                             dangerouslySetInnerHTML={{ __html: messageHtml }}
-                            />
-                          </TypographyStylesProvider>
-                        </Table.Td>
-                      </Table.Tr>
- 
-                    </>
-                  );
-                })}
-              </>
-            );
-          })
-        ) : (
-          <Table.Tr>
-            <Table.Td colSpan={columns.length} className="h-24 text-center">
-              No results.
-            </Table.Td>
-          </Table.Tr>
-        )}
-      </Table.Tbody>
-    </Table>
-    <Group
-      justify="space-between"
-      px="xs"
-      py="sm"
-      style={{ borderTop: "1px solid hsl(var(--border))" }}
-    >
-      <Text size="sm">
-        {" "}
-        {table.getState().pagination.pageIndex * PAGE_SIZE + 1} -{" "}
-        {Math.min(
-          (table.getState().pagination.pageIndex + 1) * PAGE_SIZE,
-          table.getFilteredRowModel().rows.length
-        )}{" "}
-        / {table.getFilteredRowModel().rows.length}
-      </Text>
-      <Pagination
-        size="sm"
-        boundaries={1}
-        total={table.getPageCount()}
-        onChange={(value) => table.setPageIndex(value - 1)}
-      />
-    </Group>
-  </>
+                </>
+              );
+            })
+          ) : (
+            <Table.Tr>
+              <Table.Td colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </Table.Td>
+            </Table.Tr>
+          )}
+        </Table.Tbody>
+      </Table>
+      <Group
+        justify="space-between"
+        px="xs"
+        py="sm"
+        style={{ borderTop: "1px solid hsl(var(--border))" }}
+      >
+        <Text size="sm">
+          {" "}
+          {table.getState().pagination.pageIndex * PAGE_SIZE + 1} -{" "}
+          {Math.min(
+            (table.getState().pagination.pageIndex + 1) * PAGE_SIZE,
+            table.getFilteredRowModel().rows.length
+          )}{" "}
+          / {table.getFilteredRowModel().rows.length}
+        </Text>
+        <Pagination
+          size="sm"
+          boundaries={1}
+          total={table.getPageCount()}
+          onChange={(value) => table.setPageIndex(value - 1)}
+        />
+      </Group>
+    </>
   );
 }
