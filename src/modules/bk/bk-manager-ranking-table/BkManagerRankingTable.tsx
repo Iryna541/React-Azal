@@ -8,6 +8,8 @@ import {
   ActionIcon,
   TypographyStylesProvider,
   Text,
+  Flex,
+  Image,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconBulb } from "@tabler/icons-react";
@@ -23,6 +25,7 @@ import {
   IconSecondPlace,
   IconThirdPlace,
 } from "~/assets";
+import { GetManagersPicResponse } from "./api/useGetManagerManagersPic";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -36,12 +39,14 @@ export type BkManagerRankingData = Array<{
 interface BkManagerRankingTableProps {
   title: string;
   data: BkManagerRankingData;
+  managersPic?: GetManagersPicResponse;
   isRed?: boolean;
 }
 
 export function BkManagerRankingTable({
   title,
   data,
+  managersPic,
   isRed = false,
 }: BkManagerRankingTableProps) {
   return (
@@ -66,6 +71,11 @@ export function BkManagerRankingTable({
       </Grid>
       <Stack gap="xs">
         {data.map((item, index) => {
+          const managerProfilePic = managersPic?.users.find(
+            (manager) =>
+              manager.name === item.manager && manager.role_title === "RGM"
+          );
+
           const managerFstName = item?.manager?.split(" ") || "";
           let placeIcon = null;
           if (item.position === 1) placeIcon = <IconFirstPlace />;
@@ -91,10 +101,26 @@ export function BkManagerRankingTable({
                 {placeIcon ? placeIcon : item.position}
               </Grid.Col>
               <Grid.Col span={4} c="hsl(var(--foreground))">
-                <Stack>
-                  {managerFstName[0]}
-                  <Text size="sm">{item.storeId}</Text>
-                </Stack>
+                <Flex gap={"xs"}>
+                  {managerProfilePic?.profile_url && (
+                    <Image
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%", // Circular image
+                        border: "2px solid rgba(255, 255, 255, 0.8)", // White border for light background contrast
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Subtle shadow
+                        objectFit: "cover", // Ensures the image covers the area without distorting aspect ratio
+                      }}
+                      src={managerProfilePic?.profile_url}
+                      alt={`${managerFstName[0]}'s Profile Picture`} // Descriptive alt text for accessibility
+                    />
+                  )}
+                  <Stack gap={"xs"}>
+                    {managerFstName[0]}
+                    <Text size="sm">{item.storeId}</Text>
+                  </Stack>
+                </Flex>
               </Grid.Col>
               <Grid.Col span={2}>
                 <Badge
