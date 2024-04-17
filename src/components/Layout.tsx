@@ -6,6 +6,7 @@ import {
   Menu,
   NavLink,
   ScrollArea,
+  Stack,
   Text,
   Title,
 } from "@mantine/core";
@@ -134,16 +135,21 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
         {user?.company_id === 211 ? (
-          <Flex mb="md" gap="md">
-            <BkLogo width={48} height={48} />
-            <Image
-              src="/russ.jpg"
-              h={48}
-              p={2}
-              bg="white"
-              style={{ borderRadius: 4 }}
-            />
-          </Flex>
+          <Stack>
+            <Flex gap="md">
+              <BkLogo width={48} height={48} />
+              <Image
+                src="/russ.jpg"
+                h={44}
+                p={2}
+                bg="white"
+                style={{ borderRadius: 4 }}
+              />
+            </Flex>
+            <Title order={3} fw={800} mb="xl">
+              Oscar AI
+            </Title>
+          </Stack>
         ) : (
           <Title order={3} fw={800} mb="xl">
             Oscar AI

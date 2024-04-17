@@ -173,10 +173,6 @@ function BkSetup() {
       selectedManagerStores?.includes(item.store_id.toString())
     );
 
-    console.log("data:", data);
-
-    console.log("selectedManagerStores:", filteredStoreRanking);
-
     if (filteredStoreRanking) setFilteredData(filteredStoreRanking);
     // eslint-disable-next-line
   }, [selectedOption]);

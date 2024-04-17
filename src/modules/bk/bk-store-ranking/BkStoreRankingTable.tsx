@@ -40,6 +40,8 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [isLoading, setIsLoading] = useState(false);
+
   // const { data: managers } = useGetManagers();
   // console.log("managers:", managers.users);
   // console.log("selectedStore:", selectedStore);
@@ -90,11 +92,18 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
 
   const handleTakeScreenshot = () => {
     if (boxRef.current) {
-      html2canvas(boxRef.current).then((canvas) => {
-        const base64image = canvas.toDataURL("image/png");
-        const photoStrings = [base64image];
-        openSendInsightModal({ photo: photoStrings });
-      });
+      setIsLoading(true);
+      html2canvas(boxRef.current)
+        .then((canvas) => {
+          const base64image = canvas.toDataURL("image/png");
+          const photoStrings = [base64image];
+          openSendInsightModal({ photo: photoStrings });
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Screenshot failed", error);
+          setIsLoading(false); // End loading if there's an error
+        });
     }
   };
 
@@ -171,7 +180,14 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                               }}
                             ></div>
                           </TypographyStylesProvider>
-                          <Button w={120} onClick={handleTakeScreenshot}>
+                          <Button
+                            w={120}
+                            style={{}}
+                            py={"sm"}
+                            px={"md"}
+                            onClick={handleTakeScreenshot}
+                            loading={isLoading}
+                          >
                             Send
                           </Button>
                         </Flex>

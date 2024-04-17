@@ -80,7 +80,7 @@ export function BkManagerPlanTable({
       <Select
         label="Filter"
         placeholder="Pick value"
-        data={["All", "Exclude_Top_5"]}
+        data={["All", "Exclude Top 5"]}
         defaultValue="All"
         m={"sm"}
         w={"15%"}
