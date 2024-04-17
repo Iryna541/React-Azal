@@ -2,6 +2,7 @@ import { Box, Button, Select, Text, TextInput } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
 import { sendStoreRankingToEmail } from "~/modules/askq/api/useSendStoreRankingToEmail";
+import { useGetStores } from "./api/useGetStores";
 
 interface Option {
   value: string;
@@ -16,12 +17,19 @@ export default function SendInsightModal({ photo }: SendInsightModalProps) {
   const [option, setOption] = useState("");
   const [emailText, setEmailTextState] = useState("");
 
-  const options: Option[] = [
-    { value: "BK#4", label: "BK#4" },
-    { value: "BK#42", label: "BK#42" },
-    { value: "BK#78", label: "BK#78" },
-    { value: "BK#77", label: "BK#77" },
-  ];
+  const { data: stores } = useGetStores();
+
+  // const options: Option[] = [
+  //   { value: "BK#4", label: "BK#4" },
+  //   { value: "BK#42", label: "BK#42" },
+  //   { value: "BK#78", label: "BK#78" },
+  //   { value: "BK#77", label: "BK#77" },
+  // ];
+
+  const options: Option[] =
+    stores?.stores.map((item): Option => {
+      return { value: item.title, label: item.title };
+    }) || [];
 
   const handleChange = (value: string | null) => {
     if (value === null) {

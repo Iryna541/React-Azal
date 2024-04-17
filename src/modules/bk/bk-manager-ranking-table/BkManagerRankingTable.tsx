@@ -26,6 +26,7 @@ import {
   IconThirdPlace,
 } from "~/assets";
 import { GetManagersPicResponse } from "./api/useGetManagerManagersPic";
+import UserProfileIcon from "~/assets/UserProfile";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -122,7 +123,7 @@ export function BkManagerRankingTable({
                       alt={`${managerFstName[0]}'s Profile Picture`} // Accessible description
                     />
                   ) : (
-                    <IconUserCircle size={40} stroke={1.25} />
+                    <UserProfileIcon />
                   )}
                   <Stack gap={0}>
                     {managerFstName[0]}
