@@ -12,7 +12,7 @@ import {
   Image,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconBulb, IconUserCircle } from "@tabler/icons-react";
+import { IconBulb } from "@tabler/icons-react";
 import { marked } from "marked";
 import {
   FinancialModalContent,
