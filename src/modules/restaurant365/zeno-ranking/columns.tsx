@@ -30,10 +30,10 @@ export const columns: ColumnDef<StoreInsights>[] = [
       return value;
     },
   },
-  {
-    accessorKey: "store_id",
-    header: "Store ID",
-  },
+  // {
+  //   accessorKey: "store_id",
+  //   header: "Store ID",
+  // },
   {
     accessorKey: "name",
     header: "Location",

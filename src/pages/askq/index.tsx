@@ -1,7 +1,10 @@
 import {
   ActionIcon,
+  Anchor,
   Badge,
   Box,
+  Button,
+  Divider,
   Flex,
   Select,
   SimpleGrid,
@@ -10,7 +13,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { IconSend } from "@tabler/icons-react";
+import { IconFileExport, IconSend } from "@tabler/icons-react";
 import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
 import { Calendar } from "@mantine/dates";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
@@ -27,6 +30,13 @@ import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChar
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api/useGetInsights";
+import { DunkinGuestInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinGuestInsightsTable";
+import { DunkinCostInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinCostInsightsTable";
+import { DunkinSalesBuildingInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinSalesBuildingInsightsTable";
+import { DunkinLabourInfoInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinLabourInfoInsights";
+import { DunkinDriveThruInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinDriveThruInsights";
+import { DunkinSalesDataInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinSalesDataInsights";
 
 const stats = [
   {
@@ -66,11 +76,16 @@ const stats = [
 
 export default function DashboardPage() {
   const { user } = useUser();
+
   return (
     <ProtectedRoute>
       {user?.company_id === 211 ? (
         <InsightsProvider>
           <RussSetup />
+        </InsightsProvider>
+      ) : user?.company_id === 212 ? (
+        <InsightsProvider>
+          <ShawnSalemaSetup />
         </InsightsProvider>
       ) : (
         <Navigate to="/askq/insights" />
@@ -132,6 +147,126 @@ function RussSetup() {
           </TitleBox>
         )}
       </SimpleGrid>
+    </Layout>
+  );
+}
+
+function ShawnSalemaSetup() {
+  const { user } = useUser();
+  const { data } = useGetDunkinInsights();
+
+  return (
+    <Layout>
+      <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
+
+      <Box px={"xl"}>
+        <Flex justify={"end"}>
+          <Anchor href="https://demo-be.azal.io/api/analytics/exportWeeklyUpdate">
+            <Button
+              variant="azalio-ui-dark"
+              my={"sm"}
+              size="xl"
+              style={{ fontSize: "14px" }}
+              leftSection={<IconFileExport />}
+            >
+              Export
+            </Button>
+          </Anchor>
+        </Flex>
+
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Sales Data
+            </Title>
+          </Box>
+          <Divider />
+          <DunkinSalesDataInsightsTable data={data?.sales_data || []} />
+        </Box>
+
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Sales Building Data
+            </Title>
+          </Box>
+          <DunkinSalesBuildingInsightsTable
+            data={data?.sales_building_data || []}
+          />
+        </Box>
+
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Drive Thru
+            </Title>
+          </Box>
+          <DunkinDriveThruInsightsTable data={data?.drive_thru_data || []} />
+        </Box>
+
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Cost Data
+            </Title>
+          </Box>
+          <DunkinCostInsightsTable data={data?.cost_data || []} />
+        </Box>
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Labour Hours Info
+            </Title>
+          </Box>
+          <DunkinLabourInfoInsightsTable data={data?.labor_info_data || []} />
+        </Box>
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+          mb={"lg"}
+        >
+          <Box px="lg" py="md">
+            <Title order={5} fw={600} fz={16}>
+              Guest Satisfaction
+            </Title>
+          </Box>
+          <DunkinGuestInsightsTable
+            data={data?.guest_satisfaction_data || []}
+          />
+        </Box>
+      </Box>
     </Layout>
   );
 }

@@ -290,6 +290,7 @@ function BkSetup() {
 
 function DunkinSetup() {
   const { data } = useDunkinStoreRanking();
+
   const { data: managerData } = useDunkinManagerPlan();
 
   const topStores: DunkinStoreRankingData = [...(data ?? [])]
@@ -472,8 +473,6 @@ function LukeLobsterSetup() {
       return parseInt(a.store_rank) - parseInt(b.store_rank);
     }
   );
-
-  console.log(topStores);
 
   return (
     <Box mt="lg">
