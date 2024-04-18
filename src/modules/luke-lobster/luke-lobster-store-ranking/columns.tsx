@@ -35,10 +35,10 @@ export const columns: ColumnDef<LukeLobsterStoreRankingData>[] = [
     accessorKey: "name",
     header: "Store",
   },
-  {
-    accessorKey: "store_id",
-    header: "Store Id",
-  },
+  // {
+  //   accessorKey: "store_id",
+  //   header: "Store Id",
+  // },
   {
     accessorKey: "sales",
     header: "Sales",
