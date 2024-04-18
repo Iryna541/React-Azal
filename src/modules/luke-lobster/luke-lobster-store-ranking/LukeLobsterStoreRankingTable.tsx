@@ -17,12 +17,12 @@ import {
   Pagination,
   Table,
   Text,
-  TypographyStylesProvider,
+  // TypographyStylesProvider,
 } from "@mantine/core";
 import { columns } from "./columns";
 import { LukeLobsterStoreRankingData } from "./api/useLukeLobsterStoreRanking";
 import { useState } from "react";
-import { marked } from "marked";
+// import { marked } from "marked";
 
 interface LukeLobsterStoreRankingTableProps {
   data: LukeLobsterStoreRankingData[];
@@ -101,7 +101,8 @@ export function LukeLobsterStoreRankingTable({
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
-              const content = marked.parse(row.original.insights);
+              console.log("````", row.original);
+              // const content = marked.parse(row.original.insights);
               return (
                 <>
                   <Table.Tr
@@ -135,13 +136,13 @@ export function LukeLobsterStoreRankingTable({
                   {row.getIsExpanded() && (
                     <Table.Tr>
                       <Table.Td colSpan={5}>
-                        <TypographyStylesProvider>
+                        {/* <TypographyStylesProvider>
                           <div
                             dangerouslySetInnerHTML={{
                               __html: content as string,
                             }}
                           ></div>
-                        </TypographyStylesProvider>
+                        </TypographyStylesProvider> */}
                       </Table.Td>
                     </Table.Tr>
                   )}

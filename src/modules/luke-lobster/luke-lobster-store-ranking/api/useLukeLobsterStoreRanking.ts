@@ -5,11 +5,15 @@ export type LukeLobsterStoreRankingData = {
   id: string;
   store_rank: string;
   store_id: string;
-  name: string;
+  store_name: string;
   sales: string;
   forecast: string;
   sales_vs_sales_forecast: string;
   insights: string;
+
+  net_sales_previous: string;
+  net_sales_current: string;
+  sales_growth: string;
 };
 
 export type LukeLobsterStoreRankingResponse =
@@ -18,7 +22,8 @@ export type LukeLobsterStoreRankingResponse =
 export async function getLukeLobsterStoreRanking(): Promise<LukeLobsterStoreRankingResponse> {
   return axios
     .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/luke-lobster-store-ranking"
+      // "https://azalio-bk-api.cosmos.staging.delineate.pro/luke-lobster-store-ranking"
+      "http://localhost:3000/luke-lobster-store-ranking"
     )
     .then((res) => res.data);
 }

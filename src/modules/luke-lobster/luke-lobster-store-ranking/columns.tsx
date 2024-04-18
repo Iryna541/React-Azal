@@ -32,7 +32,7 @@ export const columns: ColumnDef<LukeLobsterStoreRankingData>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "store_name",
     header: "Store",
   },
   // {
@@ -40,16 +40,12 @@ export const columns: ColumnDef<LukeLobsterStoreRankingData>[] = [
   //   header: "Store Id",
   // },
   {
-    accessorKey: "sales",
-    header: "Sales",
+    accessorKey: "net_sales_current",
+    header: "Total Sales",
   },
   {
-    accessorKey: "sales_vs_sales_forecast",
-    header: "Forcast",
-  },
-  {
-    accessorKey: "sales_vs_sales_forecast",
-    header: "Delta",
+    accessorKey: "sales_growth",
+    header: "Sales growth (VS Last Week)",
   },
   {
     header: "Details",

@@ -470,7 +470,7 @@ function LukeLobsterSetup() {
   const { data } = useLukeLobsterStoreRanking();
   const topStores: LukeLobsterStoreRankingData[] = [...(data ?? [])].sort(
     (a, b) => {
-      return parseInt(a.store_rank) - parseInt(b.store_rank);
+      return parseInt(b.sales_growth) - parseInt(a.sales_growth);
     }
   );
 

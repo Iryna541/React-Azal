@@ -59,12 +59,25 @@ export interface DriveThruData extends StoreData {
 }
 
 export interface SalesData extends StoreData {
+  average_ticket_size: number;
+  growth: number;
+  ly_average_ticket_size: number;
+  ly_average_ticket_size_rank: number;
+  ly_transaction_rank: number;
+  ly_transactions: number;
   net_sales: number;
   net_sales_rank: number;
-  transactions: number;
-  transaction_rank: number;
-  average_ticket_size: number;
+  sales_growth_percentage: number;
+  sales_growth_percentage_rank: number;
+  sales_ly_rank: number;
+  store_name: string;
+  ticket_size_percentage: number;
+  ticket_size_percentage_rank: number;
   ticket_size_rank: number;
+  transaction_rank: number;
+  transactions: number;
+  transactions_growth_percentage: number;
+  transactions_growth_percentage_rank: number;
 }
 
 export interface DunkinInsightsData {

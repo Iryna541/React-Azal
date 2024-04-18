@@ -154,7 +154,7 @@ function RussSetup() {
 function ShawnSalemaSetup() {
   const { user } = useUser();
   const { data } = useGetDunkinInsights();
-
+  console.log("---", data?.cost_data);
   return (
     <Layout>
       <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>

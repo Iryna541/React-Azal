@@ -147,12 +147,12 @@ export const costDataColumns: ColumnDef<CostData>[] = [
   },
   {
     accessorKey: "target",
-    header: "Target",
+    header: "+/-Target$",
     size: 100,
     cell: ({ getValue }) => {
       const value = getValue() as string;
 
-      return `${value}%`;
+      return `$${value}`;
     },
   },
   {
@@ -324,6 +324,22 @@ export const salesColumns: ColumnDef<SalesData>[] = [
     size: 100,
   },
   {
+    accessorKey: "net_sales",
+    header: "v.LY $",
+    size: 100,
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+
+      return `$${value}`;
+    },
+  },
+  {
+    accessorKey: "sales_ly_rank",
+    header: "Rank",
+    size: 100,
+  },
+
+  {
     accessorKey: "transactions",
     header: "TC",
     size: 100,
@@ -333,6 +349,37 @@ export const salesColumns: ColumnDef<SalesData>[] = [
     header: "Rank",
     size: 100,
   },
+  {
+    accessorKey: "ly_transactions",
+    header: "v.LY $",
+    size: 100,
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+
+      return `$${value}`;
+    },
+  },
+  {
+    accessorKey: "ly_transaction_rank",
+    header: "Rank",
+    size: 100,
+  },
+  {
+    accessorKey: "transactions_growth_percentage",
+    header: "v.LY %",
+    size: 100,
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+
+      return `${value}%`;
+    },
+  },
+  {
+    accessorKey: "transactions_growth_percentage_rank",
+    header: "Rank",
+    size: 100,
+  },
+
   {
     accessorKey: "average_ticket_size",
     header: "AT",
@@ -345,6 +392,37 @@ export const salesColumns: ColumnDef<SalesData>[] = [
   },
   {
     accessorKey: "ticket_size_rank",
+    header: "Rank",
+    size: 100,
+  },
+  {
+    accessorKey: "ly_average_ticket_size",
+    header: "$v.LY",
+    size: 100,
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+
+      return `$${value}`;
+    },
+  },
+  {
+    accessorKey: "ly_average_ticket_size_rank",
+    header: "Rank",
+    size: 100,
+  },
+
+  {
+    accessorKey: "ticket_size_percentage",
+    header: "%v.LY",
+    size: 100,
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+
+      return `${value}%`;
+    },
+  },
+  {
+    accessorKey: "ticket_size_percentage_rank",
     header: "Rank",
     size: 100,
   },
