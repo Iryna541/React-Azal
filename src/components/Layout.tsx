@@ -127,8 +127,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     if (
       link.label === "Dashboard" &&
       (user?.company_id === 211 ||
-        user?.company_id === 212 ||
-        user?.company_id === 216)
+        user?.company_id === 212
+        
     ) {
       return { ...link, isLocked: false };
     }
