@@ -1,21 +1,6 @@
-import {
-  Box,
-  Title,
-  Grid,
-  Stack,
-  Badge,
-  ActionIcon,
-  Flex,
-  Tooltip,
-} from "@mantine/core";
-import { IconBulb } from "@tabler/icons-react";
-import { LukeLobsterStoreRankingData } from "../luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
+import { Box, Title, Grid, Stack } from "@mantine/core";
 
-const USDollar = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+import { LukeLobsterStoreRankingData } from "../luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
 
 export function LukeLobsterTopStoreRanking({
   title,
@@ -38,22 +23,34 @@ export function LukeLobsterTopStoreRanking({
         style={{ borderRadius: 4 }}
         mb="lg"
       >
-        <Grid.Col span={2}>Rank</Grid.Col>
-        <Grid.Col span={2}>Store</Grid.Col>
-        <Grid.Col span={2}>Sales</Grid.Col>
+        <Grid.Col span={3}>Rank</Grid.Col>
+        <Grid.Col span={3}>Store</Grid.Col>
+        <Grid.Col span={3}>Sales growth (VS Last Week)</Grid.Col>
+        <Grid.Col
+          span={3}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          Total Sales
+        </Grid.Col>
+
+        {/* <Grid.Col span={2}>Sales</Grid.Col>
         <Grid.Col
           span={3}
           style={{ display: "flex", justifyContent: "center" }}
         >
           Forecast
         </Grid.Col>
-        <Grid.Col span={3}>Delta</Grid.Col>
+        <Grid.Col span={3}>Delta</Grid.Col> */}
       </Grid>
       <Stack gap="xs">
-        {data.map((item) => {
-          const handleOpenModal = () => {};
+        {data.map((item, index) => {
           return (
             <Grid
+              key={index}
               c="hsl(var(--foreground) / 0.65)"
               fw={700}
               fz={14}
@@ -65,8 +62,38 @@ export function LukeLobsterTopStoreRanking({
               }}
             >
               <Grid.Col span={1}>{item.store_rank}</Grid.Col>
-              <Grid.Col span={3}>{item.name}</Grid.Col>
-              <Grid.Col span={2}>
+              <Grid.Col
+                span={4}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {item?.store_name}
+              </Grid.Col>
+
+              <Grid.Col
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                span={4}
+              >
+                {item?.net_sales_current}
+              </Grid.Col>
+              <Grid.Col
+                span={3}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {item?.sales_growth}
+              </Grid.Col>
+              {/* <Grid.Col span={2}>
                 <Badge
                   size="lg"
                   fw={700}
@@ -75,8 +102,8 @@ export function LukeLobsterTopStoreRanking({
                 >
                   {USDollar.format(parseInt(item.sales))}
                 </Badge>
-              </Grid.Col>
-              <Grid.Col
+              </Grid.Col> */}
+              {/* <Grid.Col
                 span={3}
                 style={{ display: "flex", justifyContent: "center" }}
               >
@@ -88,8 +115,8 @@ export function LukeLobsterTopStoreRanking({
                 >
                   {USDollar.format(parseInt(item.forecast))}
                 </Badge>
-              </Grid.Col>
-              <Grid.Col span={3}>
+              </Grid.Col> */}
+              {/* <Grid.Col span={3}>
                 <Flex w="100%" align="center" justify="space-between">
                   <Badge
                     size="lg"
@@ -113,7 +140,7 @@ export function LukeLobsterTopStoreRanking({
                     </ActionIcon>
                   </Tooltip>
                 </Flex>
-              </Grid.Col>
+              </Grid.Col> */}
             </Grid>
           );
         })}
