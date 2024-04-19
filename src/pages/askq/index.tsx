@@ -110,7 +110,6 @@ function RussSetup() {
 
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
-    console.log("Selected Value: ", value); // Optional: log the selected value
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
   };
 
@@ -199,7 +198,7 @@ function ShawnSalemaSetup() {
     <Layout>
       <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
 
-      <Box px={"xl"}>
+      <Box px={"xl"} w={"100%"}>
         <Flex
           justify={"end"}
           style={{
@@ -236,8 +235,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >
@@ -254,8 +251,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >
@@ -273,8 +268,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >
@@ -290,8 +283,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >
@@ -306,8 +297,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >
@@ -322,8 +311,6 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
-            overflowX: "scroll",
-            width: "100%",
           }}
           mb={"lg"}
         >

@@ -31,8 +31,8 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const rank = row.original.overall_experience_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{osat}</Text>
-          <Text>{rank}</Text>
+          <Text c={osat < 0 ? "red.5" : ""}>{osat}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -47,8 +47,8 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const rank = row.original.friendly_percent_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{friendlyness}</Text>
-          <Text>{rank}</Text>
+          <Text c={friendlyness < 0 ? "red.5" : ""}>{friendlyness}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -64,8 +64,8 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const rank = row.original.order_accuracy_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{accuracy}</Text>
-          <Text>{rank}</Text>
+          <Text c={accuracy < 0 ? "red.5" : ""}>{accuracy}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -80,8 +80,8 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const rank = row.original.speed_of_service_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{speed}</Text>
-          <Text>{rank}</Text>
+          <Text c={speed < 0 ? "red.5" : ""}>{speed}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -144,9 +144,9 @@ export const costDataColumns: ColumnDef<CostData>[] = [
       const sales = row.original.total_cogs_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.cogs_rank;
       return (
-        <Flex justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{sales}</Text>
-          <Text>{rank}</Text>
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -156,10 +156,14 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     accessorKey: "target",
     header: "+/-Target$",
     size: 80,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    cell: ({ row }) => {
+      const target = row.original.target;
 
-      return `$${value}`;
+      return (
+        <Text c={target < 0 ? "red.5" : ""} bg={target > 0 ? "red.5" : ""}>
+          {target}
+        </Text>
+      );
     },
   },
   {
@@ -186,9 +190,9 @@ export const costDataColumns: ColumnDef<CostData>[] = [
 
       return (
         <Flex justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{ttl}</Text>
-          <Text>{ot}</Text>
-          <Text>{gc}</Text>
+          <Text c={ttl < 0 ? "red.5" : ""}>{ttl}</Text>
+          <Text c={ot < 0 ? "red.5" : ""}>{ot}</Text>
+          <Text c={gc < 0 ? "red.5" : ""}>{gc}</Text>
         </Flex>
       );
     },
@@ -221,8 +225,8 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
       const rank = row.original.total_digital_sales_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{sales}</Text>
-          <Text>{rank}</Text>
+          <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -247,8 +251,8 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
       const rank = row.original.total_mobile_transactions_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{sales}</Text>
-          <Text>{rank}</Text>
+          <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -273,8 +277,8 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
       const rank = row.original.loyalty_sales_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{sales}</Text>
-          <Text>{rank}</Text>
+          <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -300,8 +304,8 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
       const rank = row.original.delivery_sales_rank;
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text>{sales}</Text>
-          <Text>{rank}</Text>
+          <Text c={sales && sales < 0 ? "red.5" : ""}>{sales}</Text>
+          <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
         </Flex>
       );
     },
@@ -386,8 +390,8 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -416,8 +420,8 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -446,8 +450,8 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -476,8 +480,8 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -518,8 +522,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -541,8 +545,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -597,8 +601,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -620,8 +624,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -655,8 +659,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -678,8 +682,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },
@@ -701,8 +705,8 @@ export const salesColumns: ColumnDef<SalesData>[] = [
               gap={2}
               px={"lg"}
             >
-              <Text>{sales}</Text>
-              <Text>{rank}</Text>
+              <Text c={sales < 0 ? "red.5" : ""}>{sales}</Text>
+              <Text c={rank < 0 ? "red.5" : ""}>{rank}</Text>
             </Flex>
           );
         },

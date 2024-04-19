@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Stack, Table } from "@mantine/core";
+import { ScrollArea, Stack, Table } from "@mantine/core";
 import { costDataColumns } from "./columns";
 import { useState } from "react";
 
@@ -66,72 +66,74 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
   };
   return (
     <>
-      <Stack>
-        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
-          <Table.Thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <Table.Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <Table.Th
-                      bg={setHeaderColor(header.column.id)}
-                      key={header.id}
-                      style={{
-                        width: header.column.getSize(),
-                        minWidth: header.column.getSize(),
-                        maxWidth: header.column.getSize(),
-                      }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </Table.Th>
-                  );
-                })}
-              </Table.Tr>
-            ))}
-          </Table.Thead>
-          <Table.Tbody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Table.Tr
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Td
-                      bg={setCellColor(cell.id)}
-                      key={cell.id}
-                      style={{
-                        width: cell.column.getSize(),
-                        minWidth: cell.column.getSize(),
-                        maxWidth: cell.column.getSize(),
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Td>
-                  ))}
+      <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
+        <Stack>
+          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+            <Table.Thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <Table.Tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <Table.Th
+                        bg={setHeaderColor(header.column.id)}
+                        key={header.id}
+                        style={{
+                          width: header.column.getSize(),
+                          minWidth: header.column.getSize(),
+                          maxWidth: header.column.getSize(),
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </Table.Th>
+                    );
+                  })}
                 </Table.Tr>
-              ))
-            ) : (
-              <Table.Tr>
-                <Table.Td
-                  colSpan={costDataColumns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </Table.Td>
-              </Table.Tr>
-            )}
-          </Table.Tbody>
-        </Table>
-      </Stack>
+              ))}
+            </Table.Thead>
+            <Table.Tbody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <Table.Tr
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <Table.Td
+                        bg={setCellColor(cell.id)}
+                        key={cell.id}
+                        style={{
+                          width: cell.column.getSize(),
+                          minWidth: cell.column.getSize(),
+                          maxWidth: cell.column.getSize(),
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Table.Td>
+                    ))}
+                  </Table.Tr>
+                ))
+              ) : (
+                <Table.Tr>
+                  <Table.Td
+                    colSpan={costDataColumns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </Table.Td>
+                </Table.Tr>
+              )}
+            </Table.Tbody>
+          </Table>
+        </Stack>
+      </ScrollArea>
     </>
   );
 }
