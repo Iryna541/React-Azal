@@ -57,7 +57,6 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "order_accuracy_percent",
     header: "Accuracy/Rank",
-    size: 80,
 
     cell: ({ row }) => {
       const accuracy = row.original.order_accuracy_percent; //jaleel:need to confirm from jaleel what should be the value
@@ -74,7 +73,7 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "speed_of_service_percent",
     header: "Speed/Rank",
-    size: 80,
+
     cell: ({ row }) => {
       const speed = row.original.speed_of_service_percent; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.speed_of_service_rank;
@@ -271,7 +270,7 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
         </Flex>
       );
     },
-    size: 80,
+
     cell: ({ row }) => {
       const sales = row.original.loyalty_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.loyalty_sales_rank;

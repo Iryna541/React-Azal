@@ -70,7 +70,7 @@ export function DunkinSalesBuildingInsightsTable({
   };
   return (
     <>
-      <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
+      <ScrollArea scrollbars="x">
         <Stack>
           <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
             <Table.Thead>

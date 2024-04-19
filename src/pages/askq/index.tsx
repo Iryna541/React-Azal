@@ -202,11 +202,10 @@ function ShawnSalemaSetup() {
         <Flex
           justify={"end"}
           style={{
-            justifyItems: "center",
             justifyContent: "center",
-            alignContent: "center",
             alignItems: "center",
           }}
+          w={"100%"}
           gap={"lg"}
         >
           <Select
