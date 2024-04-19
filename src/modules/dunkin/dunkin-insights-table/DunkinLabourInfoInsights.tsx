@@ -53,7 +53,14 @@ export function DunkinLabourInfoInsightsTable({
       sorting,
     },
   });
+  const setHeaderColor = () => {
+    return "blue.1";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
 
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -64,6 +71,7 @@ export function DunkinLabourInfoInsightsTable({
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor()}
                       key={header.id}
                       style={{
                         width: header.column.getSize(),
@@ -92,6 +100,7 @@ export function DunkinLabourInfoInsightsTable({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Td
+                      bg={setCellColor(cell.id)}
                       key={cell.id}
                       style={{
                         width: cell.column.getSize(),

@@ -53,7 +53,16 @@ export function DunkinDriveThruInsightsTable({
       sorting,
     },
   });
+  const setHeaderColor = (id: string) => {
+    if (id === "store_name") return "blue.1";
 
+    return "yellow.3";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
+
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -64,19 +73,22 @@ export function DunkinDriveThruInsightsTable({
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor(header.column.id)}
                       key={header.id}
-                      style={{
-                        width: header.column.getSize(),
-                        minWidth: header.column.getSize(),
-                        maxWidth: header.column.getSize(),
-                      }}
+                      colSpan={header.colSpan}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                      {header.isPlaceholder ? null : (
+                        <div>
+                          {header.column.getCanGroup()
+                            ? // If the header can be grouped, let's add a toggle
+                              null
+                            : null}{" "}
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                        </div>
+                      )}
                     </Table.Th>
                   );
                 })}
@@ -84,39 +96,69 @@ export function DunkinDriveThruInsightsTable({
             ))}
           </Table.Thead>
           <Table.Tbody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Table.Tr
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Td
-                      key={cell.id}
-                      style={{
-                        width: cell.column.getSize(),
-                        minWidth: cell.column.getSize(),
-                        maxWidth: cell.column.getSize(),
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Td>
-                  ))}
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <Table.Tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    console.log("get value:", cell.getValue());
+                    return (
+                      <Table.Td
+                        bg={setCellColor(cell.id)}
+                        {...{
+                          key: cell.id,
+                          style: {
+                            background: cell.getIsGrouped()
+                              ? "#0aff0082"
+                              : cell.getIsAggregated()
+                                ? "#ffa50078"
+                                : cell.getIsPlaceholder()
+                                  ? "#ff000042"
+                                  : "white",
+                          },
+                        }}
+                      >
+                        {cell.getIsGrouped() ? (
+                          // If it's a grouped cell, add an expander and row count
+                          <>
+                            <button
+                              {...{
+                                onClick: row.getToggleExpandedHandler(),
+                                style: {
+                                  cursor: row.getCanExpand()
+                                    ? "pointer"
+                                    : "normal",
+                                },
+                              }}
+                            >
+                              {row.getIsExpanded() ? "👇" : "👉"}{" "}
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}{" "}
+                              ({row.subRows.length})
+                            </button>
+                          </>
+                        ) : cell.getIsAggregated() ? (
+                          // If the cell is aggregated, use the Aggregated
+                          // renderer for cell
+                          flexRender(
+                            cell.column.columnDef.aggregatedCell ??
+                              cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
+                          // Otherwise, just render the regular cell
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </Table.Td>
+                    );
+                  })}
                 </Table.Tr>
-              ))
-            ) : (
-              <Table.Tr>
-                <Table.Td
-                  colSpan={driveThruColumns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </Table.Td>
-              </Table.Tr>
-            )}
+              );
+            })}
           </Table.Tbody>
         </Table>
       </Stack>

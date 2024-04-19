@@ -51,7 +51,16 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
       sorting,
     },
   });
+  const setHeaderColor = (id: string) => {
+    if (id === "store_name") return "blue.1";
 
+    return "orange.2";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
+
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -62,6 +71,7 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor(header.column.id)}
                       key={header.id}
                       style={{
                         width: header.column.getSize(),
@@ -90,6 +100,7 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Td
+                      bg={setCellColor(cell.id)}
                       key={cell.id}
                       style={{
                         width: cell.column.getSize(),

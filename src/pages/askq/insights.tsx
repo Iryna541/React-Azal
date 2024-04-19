@@ -21,10 +21,7 @@ import {
 } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { BkStoreRankingTable } from "~/modules/bk/bk-store-ranking/BkStoreRankingTable";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
-import {
-  BkManagerRankingData,
-  BkManagerRankingTable,
-} from "~/modules/bk/bk-manager-ranking-table/BkManagerRankingTable";
+
 import { useUser } from "~/modules/auth/hooks/useUser";
 import {
   DunkinStoreRankingData,
@@ -65,7 +62,6 @@ import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobste
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
-import { useGetManagersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -147,8 +143,6 @@ function BkSetup() {
 
   const { data: managers } = useGetManagers();
 
-  const { data: managersPic } = useGetManagersPic();
-
   const managerNames =
     managers?.users
       .filter((user) => user.role_title === "Manager")
@@ -177,21 +171,6 @@ function BkSetup() {
     // eslint-disable-next-line
   }, [selectedOption]);
 
-  const sortedManagersData: BkManagerRankingData = (data ?? [])
-    .sort((a, b) => {
-      return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
-    })
-    .map((item, index) => {
-      return {
-        position: index + 1,
-        manager: item.general_managers,
-        fss: item.fss_ranking,
-        financials: item.mgr_profit_ranking,
-        insights: item.bullet_points,
-        storeId: item.store_id,
-      };
-    });
-
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     setSelectedOption(value);
@@ -219,19 +198,6 @@ function BkSetup() {
       </Flex>
       <Tabs.Panel value="store">
         <Stack gap="xl">
-          <SimpleGrid cols={2}>
-            <BkManagerRankingTable
-              title="Weekly Top 5 Store Managers"
-              data={sortedManagersData.slice(0, 5)}
-              managersPic={managersPic}
-            />
-            <BkManagerRankingTable
-              title="Weekly Bottom 5 Store Managers"
-              data={sortedManagersData.reverse().slice(0, 5)}
-              isRed
-              managersPic={managersPic}
-            />
-          </SimpleGrid>
           <Box
             style={{
               border: "1px solid hsl(var(--border))",
