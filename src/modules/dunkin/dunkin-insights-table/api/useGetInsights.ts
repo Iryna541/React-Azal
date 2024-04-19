@@ -4,6 +4,9 @@ import { axios } from "~/lib/axios";
 interface StoreData {
   store_name: string;
 }
+interface WeekAndDates {
+  week_end_date: string;
+}
 
 export interface GuestSatisfactionData extends StoreData {
   store_name: string;
@@ -56,6 +59,10 @@ export interface DriveThruData extends StoreData {
   average_daily_count_rank: number;
   lane_total: number;
   lane_total_rank: number;
+  ly_lane_total: number;
+  ly_lane_total_rank: number;
+  ly_adc_total: number;
+  ly_adc_total_rank: number;
 }
 
 export interface SalesData extends StoreData {
@@ -87,21 +94,27 @@ export interface DunkinInsightsData {
   labor_info_data: LaborInfoData[];
   drive_thru_data: DriveThruData[];
   sales_data: SalesData[];
-  week_end_date: string;
+  week_end_dates: WeekAndDates[];
 }
 
-export async function getInsights(): Promise<DunkinInsightsData> {
-  return axios.get("/analytics/getWeeklyUpdate").then((res) => res.data);
+export async function getInsights(type: string): Promise<DunkinInsightsData> {
+  return axios
+    .get(`/analytics/getWeeklyUpdate?week_end_date=${type}`)
+    .then((res) => res.data);
 }
 
 export type UseInsightsOptions = {
   config?: UseQueryOptions<DunkinInsightsData>;
+  type?: string | null;
 };
 
-export function useGetDunkinInsights({ config }: UseInsightsOptions = {}) {
+export function useGetDunkinInsights({
+  config,
+  type,
+}: UseInsightsOptions = {}) {
   return useQuery({
-    queryKey: ["dunkin-insights"],
-    queryFn: getInsights,
+    queryKey: ["dunkin-insights", type],
+    queryFn: () => getInsights(type || ""),
     ...config,
   });
 }

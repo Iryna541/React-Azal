@@ -15,6 +15,7 @@ export const columns: ColumnDef<LukeLobsterStoreRankingData>[] = [
     accessorKey: "store_rank",
     header: "Rank",
     size: 80,
+    columns: [],
     cell: ({ getValue }) => {
       const value = getValue() as string;
       if (value === "1") {

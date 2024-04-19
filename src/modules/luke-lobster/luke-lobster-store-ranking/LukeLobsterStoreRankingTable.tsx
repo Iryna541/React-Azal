@@ -101,7 +101,6 @@ export function LukeLobsterStoreRankingTable({
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
-              console.log("````", row.original);
               // const content = marked.parse(row.original.insights);
               return (
                 <>

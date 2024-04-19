@@ -50,7 +50,20 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
       sorting,
     },
   });
+  const setHeaderColor = (id: string) => {
+    if (id === "store_name") return "blue.1";
+    else if (id === "cml_cost_percentage") return "green.1";
+    else if (id === "total_cogs_percentage") return "teal.5";
+    else if (id === "target") return "green.4";
+    else if (id === "labor_total_hours") return "indigo.2";
 
+    return "white";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
+
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -61,6 +74,7 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor(header.column.id)}
                       key={header.id}
                       style={{
                         width: header.column.getSize(),
@@ -89,6 +103,7 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Td
+                      bg={setCellColor(cell.id)}
                       key={cell.id}
                       style={{
                         width: cell.column.getSize(),

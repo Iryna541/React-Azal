@@ -37,6 +37,12 @@ import { DunkinSalesBuildingInsightsTable } from "~/modules/dunkin/dunkin-insigh
 import { DunkinLabourInfoInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinLabourInfoInsights";
 import { DunkinDriveThruInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinDriveThruInsights";
 import { DunkinSalesDataInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinSalesDataInsights";
+import {
+  BkManagerRankingData,
+  BkManagerRankingTable,
+} from "~/modules/bk/bk-manager-ranking-table/BkManagerRankingTable";
+import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
+import { useGetManagersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 
 const stats = [
   {
@@ -97,7 +103,8 @@ export default function DashboardPage() {
 function RussSetup() {
   const { user } = useUser();
   const [isMystores, setIsMystores] = useState(false);
-
+  const { data: managersRankingData } = useStoreRanking();
+  const { data: managersPic } = useGetManagersPic();
   const { data } = useBkAnalyticsCharts({ isMystores });
   const { boxref1 } = useInsightsContext();
 
@@ -106,6 +113,21 @@ function RussSetup() {
     console.log("Selected Value: ", value); // Optional: log the selected value
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
   };
+
+  const sortedManagersData: BkManagerRankingData = (managersRankingData ?? [])
+    .sort((a, b) => {
+      return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
+    })
+    .map((item, index) => {
+      return {
+        position: index + 1,
+        manager: item.general_managers,
+        fss: item.fss_ranking,
+        financials: item.mgr_profit_ranking,
+        insights: item.bullet_points,
+        storeId: item.store_id,
+      };
+    });
 
   return (
     <Layout>
@@ -146,21 +168,57 @@ function RussSetup() {
             />
           </TitleBox>
         )}
+
+        <BkManagerRankingTable
+          title="Weekly Top 5 Store Managers"
+          data={sortedManagersData.slice(0, 5)}
+          managersPic={managersPic}
+        />
+        <BkManagerRankingTable
+          title="Weekly Bottom 5 Store Managers"
+          data={sortedManagersData.reverse().slice(0, 5)}
+          isRed
+          managersPic={managersPic}
+        />
       </SimpleGrid>
     </Layout>
   );
 }
 
 function ShawnSalemaSetup() {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const { user } = useUser();
-  const { data } = useGetDunkinInsights();
+  const { data } = useGetDunkinInsights({ type: selectedOption });
 
+  const dates = data?.week_end_dates.map((item) => item.week_end_date) || [];
+
+  const handleSelectChange = (value: any) => {
+    setSelectedOption(value);
+  };
   return (
     <Layout>
       <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
 
       <Box px={"xl"}>
-        <Flex justify={"end"}>
+        <Flex
+          justify={"end"}
+          style={{
+            justifyItems: "center",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+          gap={"lg"}
+        >
+          <Select
+            label="Select Week and Date"
+            placeholder="Pick value"
+            data={dates}
+            defaultValue=""
+            mb={"lg"}
+            w={"10%"}
+            onChange={handleSelectChange}
+          />
           <Anchor href="https://demo-be.azal.io/api/analytics/exportWeeklyUpdate">
             <Button
               variant="azalio-ui-dark"
@@ -178,6 +236,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >
@@ -194,6 +254,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >
@@ -211,6 +273,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >
@@ -226,6 +290,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >
@@ -240,6 +306,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >
@@ -254,6 +322,8 @@ function ShawnSalemaSetup() {
           style={{
             border: "1px solid hsl(var(--border))",
             borderRadius: 8,
+            overflowX: "scroll",
+            width: "100%",
           }}
           mb={"lg"}
         >

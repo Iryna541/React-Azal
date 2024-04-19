@@ -8,6 +8,14 @@ import {
   SalesBuildingData,
   SalesData,
 } from "./api/useGetInsights";
+import { Flex, Text } from "@mantine/core";
+
+const cellColor = (rank: number) => {
+  if (rank >= 1 && rank <= 3) return "green.1";
+  else if (rank >= 12 && rank <= 14) return "red.1";
+
+  return "white";
+};
 
 export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
@@ -17,64 +25,66 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   },
   {
     accessorKey: "overall_experience_percent",
-    header: "OSAT",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: "OSAT/Rank",
+    cell: ({ row }) => {
+      const osat = row.original.overall_experience_percent; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.overall_experience_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{osat}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
   },
 
-  {
-    accessorKey: "overall_experience_rank",
-    header: "Rank",
-    size: 100,
-  },
   {
     accessorKey: "friendly_percent",
-    header: "Friendlyness",
-    size: 110,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    header: "Friendlyness/Rank",
 
-      return `${value}%`;
+    cell: ({ row }) => {
+      const friendlyness = row.original.friendly_percent; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.friendly_percent_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{friendlyness}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
   },
-  {
-    accessorKey: "friendly_percent_rank",
-    header: "Rank",
-    size: 100,
-  },
+
   {
     accessorKey: "order_accuracy_percent",
-    header: "Accuracy",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    header: "Accuracy/Rank",
+    size: 80,
 
-      return `${value}%`;
+    cell: ({ row }) => {
+      const accuracy = row.original.order_accuracy_percent; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.order_accuracy_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{accuracy}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
   },
-  {
-    accessorKey: "order_accuracy_rank",
-    header: "Rank",
-    size: 100,
-  },
+
   {
     accessorKey: "speed_of_service_percent",
-    header: "Speed",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: "Speed/Rank",
+    size: 80,
+    cell: ({ row }) => {
+      const speed = row.original.speed_of_service_percent; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.speed_of_service_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{speed}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
-  },
-  {
-    accessorKey: "speed_of_service_rank",
-    header: "Rank",
-    size: 100,
   },
 ];
 
@@ -86,69 +96,66 @@ export const costDataColumns: ColumnDef<CostData>[] = [
   },
   {
     accessorKey: "cml_cost_percentage",
-    header: "CML",
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            CML
+          </Text>
+          <Text fw={600} size="md">
+            Food
+          </Text>
+          <Text fw={600} size="md">
+            Paper
+          </Text>
+          <Text fw={600} size="md">
+            Prem
+          </Text>
+          <Text fw={600} size="md">
+            payroll
+          </Text>
+        </Flex>
+      );
+    },
+    size: 200,
+    cell: ({ row }) => {
+      const cml = row.original.cml_cost_percentage;
+      const food = row.original.dcp_food_cost_percentage;
+      const paper = row.original.dcp_paper_cost_percentage;
+      const prem = row.original.dcp_premiums_cost_percentage;
+      const payroll = row.original.payroll_cost_percentage;
 
-      return `${value}%`;
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{cml}</Text>
+          <Text>{food}</Text>
+          <Text>{paper}</Text>
+          <Text>{prem}</Text>
+          <Text>{payroll}</Text>
+        </Flex>
+      );
     },
   },
-  {
-    accessorKey: "dcp_food_cost_percentage",
-    header: "Food",
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
 
-      return `${value}%`;
-    },
-  },
-
-  {
-    accessorKey: "dcp_paper_cost_percentage",
-    header: "Paper",
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
-    },
-  },
-  {
-    accessorKey: "dcp_premiums_cost_percentage",
-    header: "Prem",
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
-    },
-  },
-
-  {
-    accessorKey: "payroll_cost_percentage",
-    header: "Payroll",
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
-    },
-  },
   {
     accessorKey: "total_cogs_percentage",
-    header: "COGS",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: "COGS/Rank",
+    cell: ({ row }) => {
+      const sales = row.original.total_cogs_percentage; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.cogs_rank;
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{sales}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
   },
-  {
-    accessorKey: "cogs_rank",
-    header: "Rank",
-  },
+
   {
     accessorKey: "target",
     header: "+/-Target$",
-    size: 100,
+    size: 80,
     cell: ({ getValue }) => {
       const value = getValue() as string;
 
@@ -157,15 +164,34 @@ export const costDataColumns: ColumnDef<CostData>[] = [
   },
   {
     accessorKey: "labor_total_hours",
-    header: "TTL Hours",
-  },
-  {
-    accessorKey: "labor_overtime_hours",
-    header: "OT Hours",
-  },
-  {
-    accessorKey: "gc_over_lh",
-    header: "GC/LH",
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            TTL Hours
+          </Text>
+          <Text fw={600} size="md">
+            OT Hours
+          </Text>
+          <Text fw={600} size="md">
+            GC/LH
+          </Text>
+        </Flex>
+      );
+    },
+    cell: ({ row }) => {
+      const ttl = row.original.labor_total_hours;
+      const ot = row.original.labor_overtime_hours;
+      const gc = row.original.gc_over_lh;
+
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{ttl}</Text>
+          <Text>{ot}</Text>
+          <Text>{gc}</Text>
+        </Flex>
+      );
+    },
   },
 ];
 
@@ -177,63 +203,108 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
   },
   {
     accessorKey: "total_digital_sales_percentage",
-    header: "Digital Sales",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            Digital
+          </Text>
+          <Text fw={600} size="md">
+            Rank
+          </Text>
+        </Flex>
+      );
     },
-  },
-  {
-    accessorKey: "total_digital_sales_rank",
-    header: "Rank",
-    size: 100,
+
+    cell: ({ row }) => {
+      const sales = row.original.total_digital_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.total_digital_sales_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{sales}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
+    },
   },
   {
     accessorKey: "total_mobile_transactions_percentage",
-    header: "Mobile Transactions",
-    size: 110,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            Mobile
+          </Text>
+          <Text fw={600} size="md">
+            Rank
+          </Text>
+        </Flex>
+      );
     },
-  },
-  {
-    accessorKey: "total_mobile_transactions_rank",
-    header: "Rank",
-    size: 100,
+
+    cell: ({ row }) => {
+      const sales = row.original.total_mobile_transactions_percentage; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.total_mobile_transactions_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{sales}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
+    },
   },
   {
     accessorKey: "loyalty_sales_percentage",
-    header: "Loyalty",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            Loyality
+          </Text>
+          <Text fw={600} size="md">
+            Rank
+          </Text>
+        </Flex>
+      );
+    },
+    size: 80,
+    cell: ({ row }) => {
+      const sales = row.original.loyalty_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.loyalty_sales_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{sales}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
     },
   },
-  {
-    accessorKey: "loyalty_sales_rank",
-    header: "Rank",
-    size: 100,
-  },
+
   {
     accessorKey: "delivery_sales_percentage",
-    header: "Delivery",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
+    header: () => {
+      return (
+        <Flex justify={"space-between"} gap={2} px={"lg"}>
+          <Text fw={600} size="md">
+            Delivery
+          </Text>
+          <Text fw={600} size="md">
+            Rank
+          </Text>
+        </Flex>
+      );
     },
-  },
-  {
-    accessorKey: "delivery_sales_rank",
-    header: "Rank",
-    size: 100,
+
+    cell: ({ row }) => {
+      const sales = row.original.delivery_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
+      const rank = row.original.delivery_sales_rank;
+      return (
+        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+          <Text>{sales}</Text>
+          <Text>{rank}</Text>
+        </Flex>
+      );
+    },
   },
 ];
 
@@ -282,23 +353,136 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
   },
   {
     accessorKey: "lane_total",
-    header: "Time(s)",
-    size: 100,
-  },
-  {
-    accessorKey: "lane_total_rank",
-    header: "Rank",
-    size: 100,
-  },
-  {
-    accessorKey: "average_daily_count",
-    header: "ADC",
-    size: 100,
-  },
-  {
-    accessorKey: "average_daily_count_rank",
-    header: "Rank",
-    size: 100,
+
+    header: () => {
+      return (
+        <Text fw={600} size="md" style={{ textAlign: "center" }}>
+          Weekly{" "}
+        </Text>
+      );
+    },
+    columns: [
+      {
+        accessorKey: "lane_total",
+        header: () => {
+          return (
+            <Flex justify={"space-between"} gap={2} px={"lg"}>
+              <Text fw={600} size="md">
+                Time
+              </Text>
+              <Text fw={600} size="md">
+                Rank
+              </Text>
+            </Flex>
+          );
+        },
+        cell: ({ row }) => {
+          const sales = row.original.lane_total;
+          const rank = row.original.lane_total_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "ly_lane_total",
+        header: () => {
+          return (
+            <Flex justify={"space-between"} gap={2} px={"lg"}>
+              <Text fw={600} size="md">
+                v.LY
+              </Text>
+              <Text fw={600} size="md">
+                Rank
+              </Text>
+            </Flex>
+          );
+        },
+        cell: ({ row }) => {
+          const sales = row.original.ly_lane_total;
+          const rank = row.original.ly_lane_total_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "average_daily_count",
+        header: () => {
+          return (
+            <Flex justify={"space-between"} gap={2} px={"lg"}>
+              <Text fw={600} size="md">
+                ADC
+              </Text>
+              <Text fw={600} size="md">
+                Rank
+              </Text>
+            </Flex>
+          );
+        },
+        cell: ({ row }) => {
+          const sales = row.original.average_daily_count;
+          const rank = row.original.average_daily_count_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "ly_adc_total",
+        header: () => {
+          return (
+            <Flex justify={"space-between"} gap={2} px={"lg"}>
+              <Text fw={600} size="md">
+                v.LY
+              </Text>
+              <Text fw={600} size="md">
+                Rank
+              </Text>
+            </Flex>
+          );
+        },
+        cell: ({ row }) => {
+          const sales = row.original.ly_adc_total;
+          const rank = row.original.ly_adc_total_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+    ],
   },
 ];
 
@@ -310,120 +494,219 @@ export const salesColumns: ColumnDef<SalesData>[] = [
   },
   {
     accessorKey: "net_sales",
-    header: "Sales",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    header: () => (
+      <Text fw={600} size="md" style={{ textAlign: "center" }}>
+        Sales
+      </Text>
+    ),
+    columns: [
+      {
+        accessorKey: "net_sales",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            Salse/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.net_sales;
+          const rank = row.original.net_sales_rank;
 
-      return `$${value}`;
-    },
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "growth",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            v.LY $/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.growth; //jaleel:need to confirm from jaleel what should be the value
+          const rank = row.original.sales_ly_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+    ],
   },
-  {
-    accessorKey: "net_sales_rank",
-    header: "Rank",
-    size: 100,
-  },
-  {
-    accessorKey: "net_sales",
-    header: "v.LY $",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `$${value}`;
-    },
-  },
-  {
-    accessorKey: "sales_ly_rank",
-    header: "Rank",
-    size: 100,
-  },
-
   {
     accessorKey: "transactions",
-    header: "TC",
-    size: 100,
-  },
-  {
-    accessorKey: "transaction_rank",
-    header: "Rank",
-    size: 100,
-  },
-  {
-    accessorKey: "ly_transactions",
-    header: "v.LY $",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `$${value}`;
-    },
-  },
-  {
-    accessorKey: "ly_transaction_rank",
-    header: "Rank",
-    size: 100,
-  },
-  {
-    accessorKey: "transactions_growth_percentage",
-    header: "v.LY %",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
-    },
-  },
-  {
-    accessorKey: "transactions_growth_percentage_rank",
-    header: "Rank",
-    size: 100,
+    header: () => (
+      <Text fw={600} size="md" style={{ textAlign: "center" }}>
+        Transactions
+      </Text>
+    ),
+    columns: [
+      {
+        accessorKey: "transactions",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            TC/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.transactions;
+          const rank = row.original.transaction_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "ly_transactions",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            v.LY /Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.ly_transactions;
+          const rank = row.original.ly_transaction_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "transactions_growth_percentage",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            v.LY % /Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.transactions_growth_percentage;
+          const rank = row.original.transactions_growth_percentage_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+    ],
   },
 
   {
     accessorKey: "average_ticket_size",
-    header: "AT",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
+    header: () => (
+      <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+        Avarage Ticket
+      </Text>
+    ),
 
-      return `$${value}`;
-    },
-  },
-  {
-    accessorKey: "ticket_size_rank",
-    header: "Rank",
-    size: 100,
-  },
-  {
-    accessorKey: "ly_average_ticket_size",
-    header: "$v.LY",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `$${value}`;
-    },
-  },
-  {
-    accessorKey: "ly_average_ticket_size_rank",
-    header: "Rank",
-    size: 100,
-  },
-
-  {
-    accessorKey: "ticket_size_percentage",
-    header: "%v.LY",
-    size: 100,
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-
-      return `${value}%`;
-    },
-  },
-  {
-    accessorKey: "ticket_size_percentage_rank",
-    header: "Rank",
-    size: 100,
+    columns: [
+      {
+        accessorKey: "average_ticket_size",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            AT/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.average_ticket_size;
+          const rank = row.original.ticket_size_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "ly_average_ticket_size",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            $v.LY/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.ly_average_ticket_size;
+          const rank = row.original.ly_average_ticket_size_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+      {
+        accessorKey: "ticket_size_percentage",
+        header: () => (
+          <Text fw={600} size="sm" style={{ textAlign: "center" }}>
+            %v.LY/Rank
+          </Text>
+        ),
+        cell: ({ row }) => {
+          const sales = row.original.ticket_size_percentage;
+          const rank = row.original.ticket_size_percentage_rank;
+          return (
+            <Flex
+              bg={cellColor(rank)}
+              justify={"space-between"}
+              gap={2}
+              px={"lg"}
+            >
+              <Text>{sales}</Text>
+              <Text>{rank}</Text>
+            </Flex>
+          );
+        },
+      },
+    ],
   },
 ];

@@ -53,7 +53,21 @@ export function DunkinSalesBuildingInsightsTable({
       sorting,
     },
   });
+  const setHeaderColor = (id: string) => {
+    if (id === "Sales") return "red.2";
+    else if (id === "total_digital_sales_percentage") return "orange.2";
+    else if (id === "store_name") return "blue.1";
+    else if (id === "total_mobile_transactions_percentage") return "violet.2";
+    else if (id === "loyalty_sales_percentage") return "blue.2";
+    else if (id === "delivery_sales_percentage") return "red.2";
 
+    return "white";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
+
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -64,6 +78,7 @@ export function DunkinSalesBuildingInsightsTable({
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor(header.column.id)}
                       key={header.id}
                       style={{
                         width: header.column.getSize(),
@@ -92,6 +107,7 @@ export function DunkinSalesBuildingInsightsTable({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Td
+                      bg={setCellColor(cell.id)}
                       key={cell.id}
                       style={{
                         width: cell.column.getSize(),

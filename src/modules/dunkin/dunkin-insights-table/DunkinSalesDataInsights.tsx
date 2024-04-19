@@ -51,7 +51,34 @@ export function DunkinSalesDataInsightsTable({
       sorting,
     },
   });
+  const setHeaderColor = (id: string) => {
+    if (id === "Sales") return "red.2";
+    else if (id === "net_sales") return "red.2";
+    else if (id === "growth") return "red.2";
+    else if (id === "v.LY $/Rank") return "red.2";
+    else if (id === "Transactions") return "blue.2";
+    else if (id === "transactions") return "blue.2";
+    else if (id === "transactions_growth_percentage") return "blue.2";
+    else if (id === "ly_transactions") return "blue.2";
+    else if (id === "v.LY /Rank") return "blue.2";
+    else if (id === "v.LY % /Rank") return "blue.2";
+    else if (id === "Avarage Ticket") return "green.2";
+    else if (id === "average_ticket_size") return "green.2";
+    else if (id === "AT/Rank") return "green.2";
+    else if (id === "ly_average_ticket_size") return "green.2";
+    else if (id === "ticket_size_percentage") return "green.2";
+    else if (id === "$v.LY/Rank") return "green.2";
+    else if (id === "%v.LY/Rank") return "green.2";
+    else if (id === "store_name") return "blue.1";
+    else if (id === "0_store_name") return "blue.1";
 
+    return "white";
+  };
+  const setCellColor = (id: string) => {
+    if (id.includes("store_name")) return "blue.1";
+
+    return "white";
+  };
   return (
     <>
       <Stack>
@@ -62,19 +89,22 @@ export function DunkinSalesDataInsightsTable({
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
+                      bg={setHeaderColor(header.column.id)}
                       key={header.id}
-                      style={{
-                        width: header.column.getSize(),
-                        minWidth: header.column.getSize(),
-                        maxWidth: header.column.getSize(),
-                      }}
+                      colSpan={header.colSpan}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                      {header.isPlaceholder ? null : (
+                        <div>
+                          {header.column.getCanGroup()
+                            ? // If the header can be grouped, let's add a toggle
+                              null
+                            : null}{" "}
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                        </div>
+                      )}
                     </Table.Th>
                   );
                 })}
@@ -82,39 +112,69 @@ export function DunkinSalesDataInsightsTable({
             ))}
           </Table.Thead>
           <Table.Tbody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Table.Tr
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Td
-                      key={cell.id}
-                      style={{
-                        width: cell.column.getSize(),
-                        minWidth: cell.column.getSize(),
-                        maxWidth: cell.column.getSize(),
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Td>
-                  ))}
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <Table.Tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    console.log("get value:", cell.getValue());
+                    return (
+                      <Table.Td
+                        bg={setCellColor(cell.id)}
+                        {...{
+                          key: cell.id,
+                          style: {
+                            background: cell.getIsGrouped()
+                              ? "#0aff0082"
+                              : cell.getIsAggregated()
+                                ? "#ffa50078"
+                                : cell.getIsPlaceholder()
+                                  ? "#ff000042"
+                                  : "white",
+                          },
+                        }}
+                      >
+                        {cell.getIsGrouped() ? (
+                          // If it's a grouped cell, add an expander and row count
+                          <>
+                            <button
+                              {...{
+                                onClick: row.getToggleExpandedHandler(),
+                                style: {
+                                  cursor: row.getCanExpand()
+                                    ? "pointer"
+                                    : "normal",
+                                },
+                              }}
+                            >
+                              {row.getIsExpanded() ? "👇" : "👉"}{" "}
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}{" "}
+                              ({row.subRows.length})
+                            </button>
+                          </>
+                        ) : cell.getIsAggregated() ? (
+                          // If the cell is aggregated, use the Aggregated
+                          // renderer for cell
+                          flexRender(
+                            cell.column.columnDef.aggregatedCell ??
+                              cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
+                          // Otherwise, just render the regular cell
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </Table.Td>
+                    );
+                  })}
                 </Table.Tr>
-              ))
-            ) : (
-              <Table.Tr>
-                <Table.Td
-                  colSpan={salesColumns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </Table.Td>
-              </Table.Tr>
-            )}
+              );
+            })}
           </Table.Tbody>
         </Table>
       </Stack>
