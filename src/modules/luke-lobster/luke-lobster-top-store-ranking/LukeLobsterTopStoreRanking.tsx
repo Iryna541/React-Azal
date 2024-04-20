@@ -81,7 +81,7 @@ export function LukeLobsterTopStoreRanking({
                 }}
                 span={4}
               >
-                {item?.net_sales_current}
+                {item?.sales_growth}
               </Grid.Col>
               <Grid.Col
                 span={3}
@@ -91,7 +91,7 @@ export function LukeLobsterTopStoreRanking({
                   justifyContent: "center",
                 }}
               >
-                {item?.sales_growth}
+                {item?.net_sales_current}
               </Grid.Col>
               {/* <Grid.Col span={2}>
                 <Badge
