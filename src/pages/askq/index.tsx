@@ -6,7 +6,6 @@ import {
   Button,
   Divider,
   Flex,
-  Grid,
   Select,
   SimpleGrid,
   Stack,
@@ -191,7 +190,7 @@ function ShawnSalemaSetup() {
   const { data } = useGetDunkinInsights({ type: selectedOption });
 
   const dates = data?.week_end_dates.map((item) => item.week_end_date) || [];
-
+  const defaultSelectedValue = data?.week_end_dates[0]?.week_end_date || "";
   const handleSelectChange = (value: any) => {
     setSelectedOption(value);
   };
@@ -210,10 +209,10 @@ function ShawnSalemaSetup() {
           gap={"lg"}
         >
           <Select
-            label="Select Week and Date"
+            label="Select week end date"
             placeholder="Pick value"
             data={dates}
-            defaultValue=""
+            defaultValue={defaultSelectedValue}
             mb={"lg"}
             w={"18%"}
             onChange={handleSelectChange}
