@@ -116,7 +116,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
         </Flex>
       );
     },
-    size: 200,
+    size: 350,
     cell: ({ row }) => {
       const cml = row.original.cml_cost_percentage;
       const food = row.original.dcp_food_cost_percentage;
@@ -182,6 +182,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
         </Flex>
       );
     },
+    size: 300,
     cell: ({ row }) => {
       const ttl = row.original.labor_total_hours;
       const ot = row.original.labor_overtime_hours;
