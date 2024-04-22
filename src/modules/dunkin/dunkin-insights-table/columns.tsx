@@ -154,7 +154,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
   {
     accessorKey: "target",
     header: "+/-Target$",
-    size: 80,
+    size: 100,
     cell: ({ row }) => {
       const target = row.original.target;
 
