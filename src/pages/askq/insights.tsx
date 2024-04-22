@@ -91,21 +91,21 @@ export default function InsightsPage() {
             </Flex>
           </Flex>
           {(user?.company_id === 211 || user?.company_id === 210) && (
-            <BkSetup />
+            <RussSetup />
           )}
           {(user?.company_id === 212 || user?.company_id === 215) && (
-            <DunkinSetup />
+            <ShawnSetup />
           )}
-          {user?.company_id === 213 && <R365Setup />}
-          {user?.company_id === 214 && <ZenoSetup />}
-          {user?.company_id === 216 && <LukeLobsterSetup />}
+          {user?.company_id === 213 && <AdamKlaersSetup />}
+          {user?.company_id === 214 && <ZinoSetup />}
+          {user?.company_id === 216 && <StevenSetup />}
         </InsightsProvider>
       </Layout>
     </ProtectedRoute>
   );
 }
 
-function R365Setup() {
+function AdamKlaersSetup() {
   const { data } = useR365StoreRanking();
   return (
     <Box
@@ -128,7 +128,7 @@ function R365Setup() {
   );
 }
 
-function BkSetup() {
+function RussSetup() {
   const { data } = useStoreRanking();
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
@@ -254,7 +254,7 @@ function BkSetup() {
   );
 }
 
-function DunkinSetup() {
+function ShawnSetup() {
   const { data } = useDunkinStoreRanking();
 
   const { data: managerData } = useDunkinManagerPlan();
@@ -328,7 +328,7 @@ function DunkinSetup() {
   );
 }
 
-function ZenoSetup() {
+function ZinoSetup() {
   const { data } = useZenoStoreRanking();
   const { data: managerData } = useZenoInsightTable();
   const selectData = managerData?.stores?.map((item) => {
@@ -432,7 +432,7 @@ function ZenoSetup() {
   );
 }
 
-function LukeLobsterSetup() {
+function StevenSetup() {
   const { data } = useLukeLobsterStoreRanking();
   const topStores: LukeLobsterStoreRankingData[] = [...(data ?? [])].sort(
     (a, b) => {
