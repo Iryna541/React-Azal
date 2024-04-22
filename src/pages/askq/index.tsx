@@ -4,8 +4,10 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Divider,
   Flex,
+  Loader,
   Select,
   SimpleGrid,
   Stack,
@@ -28,7 +30,7 @@ import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api/useGetInsights";
 import { DunkinGuestInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinGuestInsightsTable";
@@ -191,7 +193,12 @@ function ShawnSalemaSetup() {
   const { data } = useGetDunkinInsights({ type: selectedOption });
 
   const dates = data?.week_end_dates.map((item) => item.week_end_date) || [];
-  const defaultValue = data?.week_end_dates[0]?.week_end_date || null;
+
+  useEffect(() => {
+    if (dates.length > 0 && selectedOption === null) {
+      setSelectedOption(dates[0]);
+    }
+  }, [dates]);
 
   const handleSelectChange = (value: any) => {
     setSelectedOption(value);
@@ -212,14 +219,14 @@ function ShawnSalemaSetup() {
           gap={"lg"}
         >
           <Select
-            key={defaultValue} // This will force a re-render when defaultValue changes
             label="Select week end date"
             placeholder="Pick value"
             data={dates}
-            defaultValue={defaultValue}
+            value={selectedOption} // Controlled component
             mb={"lg"}
             w={"18%"}
             onChange={handleSelectChange}
+            allowDeselect={false}
           />
           <Anchor href="https://demo-be.azal.io/api/analytics/exportWeeklyUpdate">
             <Button
@@ -247,7 +254,13 @@ function ShawnSalemaSetup() {
             </Title>
           </Box>
           <Divider />
-          <DunkinSalesDataInsightsTable data={data?.sales_data || []} />
+          {data ? (
+            <DunkinSalesDataInsightsTable data={data?.sales_data || []} />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
 
         <Box
@@ -262,9 +275,15 @@ function ShawnSalemaSetup() {
               Sales Building Data
             </Title>
           </Box>
-          <DunkinSalesBuildingInsightsTable
-            data={data?.sales_building_data || []}
-          />
+          {data ? (
+            <DunkinSalesBuildingInsightsTable
+              data={data?.sales_building_data || []}
+            />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
 
         <Box
@@ -279,7 +298,13 @@ function ShawnSalemaSetup() {
               Drive Thru
             </Title>
           </Box>
-          <DunkinDriveThruInsightsTable data={data?.drive_thru_data || []} />
+          {data ? (
+            <DunkinDriveThruInsightsTable data={data?.drive_thru_data || []} />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
 
         <Box
@@ -294,7 +319,13 @@ function ShawnSalemaSetup() {
               Cost Data
             </Title>
           </Box>
-          <DunkinCostInsightsTable data={data?.cost_data || []} />
+          {data ? (
+            <DunkinCostInsightsTable data={data?.cost_data || []} />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
         <Box
           style={{
@@ -308,7 +339,13 @@ function ShawnSalemaSetup() {
               Labour Hours Info
             </Title>
           </Box>
-          <DunkinLabourInfoInsightsTable data={data?.labor_info_data || []} />
+          {data ? (
+            <DunkinLabourInfoInsightsTable data={data?.labor_info_data || []} />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
         <Box
           style={{
@@ -322,9 +359,15 @@ function ShawnSalemaSetup() {
               Guest Satisfaction
             </Title>
           </Box>
-          <DunkinGuestInsightsTable
-            data={data?.guest_satisfaction_data || []}
-          />
+          {data ? (
+            <DunkinGuestInsightsTable
+              data={data?.guest_satisfaction_data || []}
+            />
+          ) : (
+            <Center h={200}>
+              <Loader />
+            </Center>
+          )}
         </Box>
       </Box>
     </Layout>
