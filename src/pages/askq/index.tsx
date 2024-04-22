@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Flex,
+  Grid,
   Select,
   SimpleGrid,
   Stack,
@@ -198,131 +199,139 @@ function ShawnSalemaSetup() {
     <Layout>
       <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
 
-      <Box px={"xl"} w={"100%"}>
-        <Flex
-          justify={"end"}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          w={"100%"}
-          gap={"lg"}
-        >
-          <Select
-            label="Select Week and Date"
-            placeholder="Pick value"
-            data={dates}
-            defaultValue=""
-            mb={"lg"}
-            w={"10%"}
-            onChange={handleSelectChange}
-          />
-          <Anchor href="https://demo-be.azal.io/api/analytics/exportWeeklyUpdate">
-            <Button
-              variant="azalio-ui-dark"
-              my={"sm"}
-              size="xl"
-              style={{ fontSize: "14px" }}
-              leftSection={<IconFileExport />}
+      <Grid>
+        <Grid.Col span={{ base: 4, md: 6, lg: 8, xl: 12 }}>
+          <Box px={"sm"} w={"100%"}>
+            <Flex
+              justify={"end"}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              w={"100%"}
+              gap={"lg"}
             >
-              Export
-            </Button>
-          </Anchor>
-        </Flex>
+              <Select
+                label="Select Week and Date"
+                placeholder="Pick value"
+                data={dates}
+                defaultValue=""
+                mb={"lg"}
+                w={"18%"}
+                onChange={handleSelectChange}
+              />
+              <Anchor href="https://demo-be.azal.io/api/analytics/exportWeeklyUpdate">
+                <Button
+                  variant="azalio-ui-dark"
+                  my={"sm"}
+                  size="xl"
+                  style={{ fontSize: "14px" }}
+                  leftSection={<IconFileExport />}
+                >
+                  Export
+                </Button>
+              </Anchor>
+            </Flex>
 
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Sales Data
-            </Title>
-          </Box>
-          <Divider />
-          <DunkinSalesDataInsightsTable data={data?.sales_data || []} />
-        </Box>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Sales Data
+                </Title>
+              </Box>
+              <Divider />
+              <DunkinSalesDataInsightsTable data={data?.sales_data || []} />
+            </Box>
 
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Sales Building Data
-            </Title>
-          </Box>
-          <DunkinSalesBuildingInsightsTable
-            data={data?.sales_building_data || []}
-          />
-        </Box>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Sales Building Data
+                </Title>
+              </Box>
+              <DunkinSalesBuildingInsightsTable
+                data={data?.sales_building_data || []}
+              />
+            </Box>
 
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Drive Thru
-            </Title>
-          </Box>
-          <DunkinDriveThruInsightsTable data={data?.drive_thru_data || []} />
-        </Box>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Drive Thru
+                </Title>
+              </Box>
+              <DunkinDriveThruInsightsTable
+                data={data?.drive_thru_data || []}
+              />
+            </Box>
 
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Cost Data
-            </Title>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Cost Data
+                </Title>
+              </Box>
+              <DunkinCostInsightsTable data={data?.cost_data || []} />
+            </Box>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Labour Hours Info
+                </Title>
+              </Box>
+              <DunkinLabourInfoInsightsTable
+                data={data?.labor_info_data || []}
+              />
+            </Box>
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+              mb={"lg"}
+            >
+              <Box px="lg" py="md">
+                <Title order={5} fw={600} fz={16}>
+                  Guest Satisfaction
+                </Title>
+              </Box>
+              <DunkinGuestInsightsTable
+                data={data?.guest_satisfaction_data || []}
+              />
+            </Box>
           </Box>
-          <DunkinCostInsightsTable data={data?.cost_data || []} />
-        </Box>
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Labour Hours Info
-            </Title>
-          </Box>
-          <DunkinLabourInfoInsightsTable data={data?.labor_info_data || []} />
-        </Box>
-        <Box
-          style={{
-            border: "1px solid hsl(var(--border))",
-            borderRadius: 8,
-          }}
-          mb={"lg"}
-        >
-          <Box px="lg" py="md">
-            <Title order={5} fw={600} fz={16}>
-              Guest Satisfaction
-            </Title>
-          </Box>
-          <DunkinGuestInsightsTable
-            data={data?.guest_satisfaction_data || []}
-          />
-        </Box>
-      </Box>
+        </Grid.Col>
+      </Grid>
     </Layout>
   );
 }
