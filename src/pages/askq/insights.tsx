@@ -230,15 +230,7 @@ function RussSetup() {
               />
             </Flex>
             <Divider />
-            {data && (
-              <BkStoreRankingTable
-                data={filteredData.filter(
-                  (item) =>
-                    parseInt(item.overall_ranking) > 5 &&
-                    parseInt(item.overall_ranking) <= 16
-                )}
-              />
-            )}
+            {data && <BkStoreRankingTable data={filteredData} />}
           </Box>
         </Stack>
       </Tabs.Panel>
