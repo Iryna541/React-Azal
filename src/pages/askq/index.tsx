@@ -28,7 +28,7 @@ import TitleBox from "~/components/TitleBox";
 import { FSSBreakdownChart } from "~/modules/bk/bk-charts-2/FSSBreakdownChart";
 import FSSScoreOverviewChart from "~/modules/bk/bk-charts-2/FSSScoreOverviewChart";
 import { useBkAnalyticsCharts } from "~/modules/bk/bk-charts-2/api/useBkAnalyticsCharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api/useGetInsights";
 import { DunkinGuestInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinGuestInsightsTable";
@@ -186,14 +186,17 @@ function RussSetup() {
 
 function ShawnSalemaSetup() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
   const { user } = useUser();
   const { data } = useGetDunkinInsights({ type: selectedOption });
 
   const dates = data?.week_end_dates.map((item) => item.week_end_date) || [];
-  const defaultSelectedValue = data?.week_end_dates[0]?.week_end_date || "";
+  const defaultValue = data?.week_end_dates[0]?.week_end_date || null;
+
   const handleSelectChange = (value: any) => {
     setSelectedOption(value);
   };
+
   return (
     <Layout>
       <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
@@ -209,10 +212,11 @@ function ShawnSalemaSetup() {
           gap={"lg"}
         >
           <Select
+            key={defaultValue} // This will force a re-render when defaultValue changes
             label="Select week end date"
             placeholder="Pick value"
             data={dates}
-            defaultValue={defaultSelectedValue}
+            defaultValue={defaultValue}
             mb={"lg"}
             w={"18%"}
             onChange={handleSelectChange}
