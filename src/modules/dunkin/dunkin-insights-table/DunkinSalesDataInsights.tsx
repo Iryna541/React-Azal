@@ -90,6 +90,13 @@ export function DunkinSalesDataInsightsTable({
                   {headerGroup.headers.map((header) => {
                     return (
                       <Table.Th
+                        style={{
+                          width: header.column.getSize(),
+
+                          minWidth: header.column.getSize(),
+
+                          maxWidth: header.column.getSize(),
+                        }}
                         bg={setHeaderColor(header.column.id)}
                         key={header.id}
                         colSpan={header.colSpan}
@@ -117,7 +124,6 @@ export function DunkinSalesDataInsightsTable({
                 return (
                   <Table.Tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {
-                      console.log("get value:", cell.getValue());
                       return (
                         <Table.Td
                           bg={setCellColor(cell.id)}

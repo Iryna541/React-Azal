@@ -77,6 +77,13 @@ export function DunkinDriveThruInsightsTable({
                         bg={setHeaderColor(header.column.id)}
                         key={header.id}
                         colSpan={header.colSpan}
+                        style={{
+                          width: header.column.getSize(),
+
+                          minWidth: header.column.getSize(),
+
+                          maxWidth: header.column.getSize(),
+                        }}
                       >
                         {header.isPlaceholder ? null : (
                           <div>
@@ -101,7 +108,6 @@ export function DunkinDriveThruInsightsTable({
                 return (
                   <Table.Tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {
-                      console.log("get value:", cell.getValue());
                       return (
                         <Table.Td
                           bg={setCellColor(cell.id)}
