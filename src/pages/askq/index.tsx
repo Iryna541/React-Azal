@@ -103,7 +103,7 @@ export default function DashboardPage() {
 }
 
 function RussSetup() {
-  const { user } = useUser();
+  const { user, configurations } = useUser();
   const [isMystores, setIsMystores] = useState(false);
   const { data: managersRankingData } = useStoreRanking();
   const { data: managersPic } = useGetManagersPic();
@@ -142,7 +142,7 @@ function RussSetup() {
         />
       </Flex>
       <SimpleGrid ref={boxref1} cols={2} my="lg">
-        {data?.chart1 && (
+        {data?.chart1 ? (
           <TitleBox
             title="FSS Score Overview"
             subtitle="Detailed Store Performance Breakdown"
@@ -154,9 +154,13 @@ function RussSetup() {
               }))}
             />
           </TitleBox>
+        ) : (
+          <Center h={200}>
+            <Loader />
+          </Center>
         )}
 
-        {data?.chart2 && (
+        {data?.chart2 ? (
           <TitleBox
             title="FSS Breakdown by Category"
             subtitle="Identify Top Performers by Category"
@@ -168,19 +172,32 @@ function RussSetup() {
               }))}
             />
           </TitleBox>
+        ) : (
+          <Center h={200}>
+            <Loader />
+          </Center>
         )}
 
-        <BkManagerRankingTable
-          title="Weekly Top 5 Store Managers"
-          data={sortedManagersData.slice(0, 5)}
-          managersPic={managersPic}
-        />
-        <BkManagerRankingTable
-          title="Weekly Bottom 5 Store Managers"
-          data={sortedManagersData.reverse().slice(0, 5)}
-          isRed
-          managersPic={managersPic}
-        />
+        {configurations?.is_partner === 1 &&
+        configurations?.role.role_id === 2 ? (
+          <>
+            <BkManagerRankingTable
+              title="Weekly Top 5 Store Managers"
+              data={sortedManagersData.slice(0, 5)}
+              managersPic={managersPic}
+            />
+            <BkManagerRankingTable
+              title="Weekly Bottom 5 Store Managers"
+              data={sortedManagersData.reverse().slice(0, 5)}
+              isRed
+              managersPic={managersPic}
+            />
+          </>
+        ) : (
+          <Center>
+            <Text>There are no top list.</Text>
+          </Center>
+        )}
       </SimpleGrid>
     </Layout>
   );
@@ -190,6 +207,7 @@ function ShawnSalemaSetup() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { user } = useUser();
+
   const { data } = useGetDunkinInsights({ type: selectedOption });
 
   const dates = data?.week_end_dates.map((item) => item.week_end_date) || [];

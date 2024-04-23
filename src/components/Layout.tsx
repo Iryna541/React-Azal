@@ -112,7 +112,7 @@ export function Layout({
 
 export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const location = useLocation();
-  const { user } = useUser();
+  const { user, configurations } = useUser();
 
   let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
 
@@ -182,6 +182,12 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
               </Flex>
             );
           }
+          if (
+            (link.label === "OscarGPT" || link.label === "Analytics") &&
+            configurations?.is_partner !== 1 &&
+            configurations?.role.role_id !== 2
+          )
+            return;
 
           return (
             <NavLink
