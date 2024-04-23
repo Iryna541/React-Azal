@@ -142,6 +142,8 @@ export function ModalContent({ storeId }: { storeId: string }) {
     isMystores: false,
   });
 
+  let fssScore: number = 0;
+
   const storeRatings = {
     acr: 0,
     sos: 0,
@@ -200,13 +202,20 @@ export function ModalContent({ storeId }: { storeId: string }) {
       (item) => item.store_id === parseInt(storeId)
     )!.score;
 
+    for (let i = 0; i < data?.chart1?.length; i++) {
+      const store = data.chart1[i].stores.find(st => st.store_id === parseInt(storeId));
+      if(store){
+        fssScore = store.score;
+        break;
+      }
+    }
   }
 
   return (
     <Stack>
       <Flex justify="space-between">
         <Text>FSS Score</Text>
-        <Text fw={600}>17 </Text>
+        <Text fw={600}>{fssScore}</Text>
       </Flex>
       <Grid grow>
         <Grid.Col span={1}>
