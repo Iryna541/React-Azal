@@ -17,6 +17,7 @@ export type AnalyticsChartsResponse = {
     stores: Array<{
       rating: number;
       store_id: number;
+      score: number;
     }>;
   }>;
   chart3: Array<{

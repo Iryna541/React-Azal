@@ -163,7 +163,7 @@ function RussSetup() {
         {data?.chart2 ? (
           <TitleBox
             title="FSS Breakdown by Category"
-            subtitle="Identify Top Performers by Category"
+            subtitle="Detailed breakdown by category"
           >
             <FSSBreakdownChart
               data={data.chart2.map((item) => ({
@@ -182,12 +182,12 @@ function RussSetup() {
         configurations?.role.role_id === 2 ? (
           <>
             <BkManagerRankingTable
-              title="Weekly Top 5 Store Managers"
+              title="Top 5 Store Managers"
               data={sortedManagersData.slice(0, 5)}
               managersPic={managersPic}
             />
             <BkManagerRankingTable
-              title="Weekly Bottom 5 Store Managers"
+              title="Bottom 5 Store Managers"
               data={sortedManagersData.reverse().slice(0, 5)}
               isRed
               managersPic={managersPic}

@@ -124,7 +124,7 @@ export function FSSBreakdownChart({
             dataKey="formatted_value"
             position="top"
             offset={10}
-            style={{ fontSize: 12, fontWeight: 600 }}
+            style={{ fontSize: 12, fontWeight: 900 }}
           />
           <LabelList
             dataKey="score"
@@ -133,7 +133,7 @@ export function FSSBreakdownChart({
             fill="white"
             style={{
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 900,
             }}
           />
         </Bar>
@@ -211,7 +211,7 @@ export function FSSBreakdownChartBig({
       <Grid.Col ref={boxref2} span={7}>
         <TitleBox
           title="FSS Breakdown by Category"
-          subtitle="Identify Top Performers by Category"
+          subtitle="Detailed breakdown by category"
         >
           <BarChart
             p="md"
