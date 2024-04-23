@@ -256,6 +256,7 @@ function RussSetup() {
                 ...item,
                 value: item.values,
               }))}
+              fssScore={data?.fss_score}
             />
           </TitleBox>
         ) : (

@@ -29,6 +29,7 @@ export type AnalyticsChartsResponse = {
     actual_total_labor: number;
     budgeted_total_labor: number;
   }>;
+  fss_score: number;
 };
 
 export async function getBkAnalyticsCharts(
