@@ -112,16 +112,19 @@ function RussSetup() {
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
+  const [managerId, setManagerId] = useState("");
+  const { data: managersRankingData } = useStoreRanking();
   const { data: usersData } = useGetUsers();
-  const { data } = useBkAnalyticsCharts({ isMystores });
+  const { data } = useBkAnalyticsCharts({ isMystores, managerId: isMystores ? user?.user_id.toString() : managerId });
   const { boxref1 } = useInsightsContext();
 
   const { data: managers } = useGetManagers();
 
-  const managerNames =
+
+  const managerList =
     managers?.users
       .filter((user: any) => user.role_title === "Manager")
-      .map((user: any) => user.name) ?? [];
+      .map((user: any) => ({label: user.name, value: user.id.toString()})) ?? [];
 
   const DtlStores =
     usersData?.users?.flatMap((item) => {
@@ -134,6 +137,7 @@ function RussSetup() {
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
+    setManagerId(value);
   };
 
   const sortedManagersData: BkManagerRankingData = (managersRankingData ?? [])
@@ -218,8 +222,8 @@ function RussSetup() {
             data={
               configurations?.is_partner === 1 ||
               configurations?.role.role_id === 2
-                ? ["All Stores", "My Stores", ...managerNames]
-                : ["All Stores", "My Stores"]
+                ? [{label: "All Stores", value: "All Stores"}, {label: "My Stores", value: "My Stores"}, ...managerList]
+                : [{label: "All Stores", value: "All Stores"}, {label: "My Stores", value: "My Stores"}]
             }
             defaultValue="All Stores"
             onChange={handleSelectChange}
