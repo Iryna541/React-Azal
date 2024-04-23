@@ -11,8 +11,6 @@ import {
   Select,
   Loader,
   Center,
-  Button,
-  Text,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import {
@@ -52,8 +50,7 @@ import { useEffect, useState } from "react";
 import { InsightsProvider } from "~/modules/askq/insightsContext";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
-import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
-import { modals } from "@mantine/modals";
+
 import {
   LukeLobsterStoreRankingData,
   useLukeLobsterStoreRanking,
@@ -183,18 +180,6 @@ function RussSetup() {
           <Tabs.Tab value="store">Store</Tabs.Tab>
           <Tabs.Tab value="manager">DTL</Tabs.Tab>
         </Tabs.List>
-        <Button
-          onClick={() => {
-            modals.open({
-              size: "xl",
-              title: <Text>Send by email</Text>,
-              centered: true,
-              children: <SendInsightModal photo={[]} />,
-            });
-          }}
-        >
-          Send Rankings by Email
-        </Button>
       </Flex>
       <Tabs.Panel value="store">
         <Stack gap="xl">
@@ -253,16 +238,16 @@ function ShawnSetup() {
 
   const topStores: DunkinStoreRankingData = [...(data ?? [])]
     .sort((a, b) => {
-      return parseInt(a.store_rank) - parseInt(b.store_rank);
+      return b.sales_growth - a.sales_growth;
     })
     .map((item) => {
       return {
         store_rank: item.store_rank,
         store_id: item.store_id,
-        rank_net_sales: item.rank_net_sales,
-        rank_average_weekly_ticket_count: item.rank_average_weekly_ticket_count,
-        rank_average_ticket_size: item.rank_average_ticket_size,
-        bullet_points: item.bullet_points,
+        net_sales_current: item.net_sales_current,
+        net_sales_previous: item.net_sales_previous,
+        sales_growth: item.sales_growth,
+        insights: item.insights,
       };
     });
 

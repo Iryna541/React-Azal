@@ -183,6 +183,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             );
           }
           if (
+            user?.company_id === 211 &&
             (link.label === "OscarGPT" || link.label === "Analytics") &&
             configurations?.is_partner !== 1 &&
             configurations?.role.role_id !== 2

@@ -2,15 +2,12 @@ import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export interface DunkinStoreRankingData {
-  store_id: string;
-  rank_net_sales: string;
-  rank_average_weekly_ticket_count: string;
-  rank_average_ticket_size: string;
-  rank_net_sales_doubled: string;
-  total_rank_points: string;
-  store_rank: string;
+  store_rank: number;
+  store_id: number;
+  net_sales_current: number;
+  net_sales_previous: number;
+  sales_growth: number;
   insights: string;
-  bullet_points: string;
 }
 
 export type GetDunkinStoreRankingResponse = DunkinStoreRankingData[];

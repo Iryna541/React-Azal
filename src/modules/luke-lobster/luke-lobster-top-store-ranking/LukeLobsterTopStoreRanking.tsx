@@ -24,18 +24,11 @@ export function LukeLobsterTopStoreRanking({
         mb="lg"
       >
         <Grid.Col span={3}>Rank</Grid.Col>
+
         <Grid.Col span={3}>Store</Grid.Col>
-        <Grid.Col span={3}>Sales growth (VS Last Week)</Grid.Col>
-        <Grid.Col
-          span={3}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          Total Sales
-        </Grid.Col>
+
+        <Grid.Col span={3}>Total Sales</Grid.Col>
+        <Grid.Col span={3}>Sales growth (vs LW)</Grid.Col>
 
         {/* <Grid.Col span={2}>Sales</Grid.Col>
         <Grid.Col
@@ -72,17 +65,6 @@ export function LukeLobsterTopStoreRanking({
               >
                 {item?.store_name}
               </Grid.Col>
-
-              <Grid.Col
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                span={4}
-              >
-                {item?.sales_growth}
-              </Grid.Col>
               <Grid.Col
                 span={3}
                 style={{
@@ -93,6 +75,17 @@ export function LukeLobsterTopStoreRanking({
               >
                 {item?.net_sales_current}
               </Grid.Col>
+              <Grid.Col
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                span={4}
+              >
+                {item?.sales_growth}
+              </Grid.Col>
+
               {/* <Grid.Col span={2}>
                 <Badge
                   size="lg"
