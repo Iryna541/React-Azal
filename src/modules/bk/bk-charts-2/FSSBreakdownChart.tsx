@@ -124,7 +124,7 @@ export function FSSBreakdownChart({
             dataKey="formatted_value"
             position="top"
             offset={10}
-            style={{ fontSize: 12, fontWeight: 900 }}
+            style={{ fontSize: 12, fill: 'black', fontWeight: 800 }}
           />
           <LabelList
             dataKey="score"
