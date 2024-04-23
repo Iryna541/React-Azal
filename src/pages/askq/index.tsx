@@ -240,12 +240,12 @@ function RussSetup() {
         ) : (
           <>
             <BkManagerRankingTable
-              title="Weekly Top 5 Store Managers"
+              title="Top 5 Store Managers"
               data={topMathedDtlstores}
               managersPic={usersData}
             />
             <BkManagerRankingTable
-              title="Weekly Bottom 5 Store Managers"
+              title="Bottom 5 Store Managers"
               data={bottomMathedDtlstores}
               isRed
               managersPic={usersData}
