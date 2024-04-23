@@ -2,17 +2,23 @@ import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ActiveUserResponse, useActiveUser } from "../api/useActiveUser";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  ConfigurationResponse,
+  useConfigurations,
+} from "../api/useConfigurations";
 
 export type UserData = ActiveUserResponse["user_info"];
 
 type AuthState = {
   user: UserData | undefined;
+  configurations: ConfigurationResponse | undefined;
   refetch: () => void;
   loading: boolean;
 };
 
 export const AuthContext = createContext<AuthState>({
   user: undefined,
+  configurations: undefined,
   refetch: () => {},
   loading: true,
 });
@@ -23,9 +29,18 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
 
   const [user, setUser] = useState<UserData | undefined>(undefined);
+  const [configurations, setConfigurations] = useState<
+    ConfigurationResponse | undefined
+  >(undefined);
   const [loading, setLoading] = useState(true);
 
   const { data, isError } = useActiveUser({
+    config: {
+      staleTime: Infinity,
+      retry: 1,
+    },
+  });
+  const { data: configurationsData } = useConfigurations({
     config: {
       staleTime: Infinity,
       retry: 1,
@@ -37,6 +52,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       setTimeout(() => {
         setLoading(false);
         setUser(data.user_info);
+        setConfigurations(configurationsData);
       }, 1000);
     }
     // An error means, the user has no JWT or it's expired
@@ -47,7 +63,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       if (!isExcluded) navigate("/auth/login");
     }
     // eslint-disable-next-line
-  }, [data, isError]);
+  }, [data, isError, configurationsData]);
 
   function refetch() {
     setUser(undefined);
@@ -56,7 +72,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, refetch }}>
+    <AuthContext.Provider value={{ user, configurations, loading, refetch }}>
       {children}
     </AuthContext.Provider>
   );

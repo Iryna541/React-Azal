@@ -5,6 +5,7 @@ import {
   Badge,
   Divider,
   Flex,
+  Loader,
   Stack,
   Text,
   Tooltip,
@@ -232,61 +233,86 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
     currency: "USD",
     maximumFractionDigits: 0,
   });
+
   const filteredData =
-    data?.chart3?.filter((item) => item.store_id === storeId) || [];
+    data?.chart3?.filter((item) => item.store_id === storeId.toString()) || [];
 
   return (
     <Stack gap="sm">
       <Flex justify="space-between">
         <Text size="sm">Actual vs. Budgeted Manager's Profit:</Text>
-        <Text size="sm" fw={600}>
-          {USDollar.format(filteredData[0]?.act_vs_budget_managers_profits)}
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {USDollar.format(filteredData[0]?.act_vs_budget_managers_profits)}
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
 
       <Divider />
 
       <Flex justify="space-between">
         <Text size="sm">Theoretical Gross Profit:</Text>
-        <Text size="sm" fw={600}>
-          {filteredData[0]?.adj_theoretical_gp_percent} %
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {filteredData[0]?.adj_theoretical_gp_percent} %
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
 
       <Divider />
 
       <Flex justify="space-between">
         <Text size="sm">Actual Gross Profit:</Text>
-        <Text size="sm" fw={600}>
-          {filteredData[0]?.actual_gp_percent} %
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {filteredData[0]?.actual_gp_percent} %
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
 
       <Divider />
 
       <Flex justify="space-between">
         <Text size="sm">Gross Profit Variation:</Text>
-        <Text size="sm" fw={600}>
-          {filteredData[0]?.act_vs_adj_theor} %
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {filteredData[0]?.act_vs_adj_theor} %
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
 
       <Divider />
 
       <Flex justify="space-between">
         <Text size="sm">Actual Labor Cost:</Text>
-        <Text size="sm" fw={600}>
-          {USDollar.format(filteredData[0]?.actual_total_labor)}
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {USDollar.format(filteredData[0]?.actual_total_labor)}
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
 
       <Divider />
 
       <Flex justify="space-between">
         <Text size="sm">Budgeted Labor Cost:</Text>
-        <Text size="sm" fw={600}>
-          {USDollar.format(filteredData[0]?.budgeted_total_labor)}
-        </Text>
+        {data ? (
+          <Text size="sm" fw={600}>
+            {USDollar.format(filteredData[0]?.budgeted_total_labor)}
+          </Text>
+        ) : (
+          <Loader />
+        )}
       </Flex>
     </Stack>
   );
