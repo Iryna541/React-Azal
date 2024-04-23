@@ -34,7 +34,7 @@ export default function FSSScoreOverviewChart({
         paddingAngle={2}
         withLabels
         withLabelsLine
-        chartLabel={`${avg.toFixed(1)} Avg. Rating`}
+        chartLabel={`FSS Score ${avg.toFixed(1)}`}
         pieProps={{
           dataKey: "value",
           fontSize: 12,

@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Loader,
+  Grid,
   Stack,
   Text,
   Tooltip,
@@ -145,10 +146,20 @@ export function ModalContent({ storeId }: { storeId: string }) {
     acr: 0,
     sos: 0,
     training_rate: 0,
-    brand_standards: 0,
-    glv: 0,
     retention: 0,
+    glv: 0,
+    revs: 0,
   };
+
+  const storeScores = {
+    acr: 0,
+    sos: 0,
+    training_rate: 0,
+    retention: 0,
+    glv: 0,
+    revs: 0,
+  }
+
   if (data) {
     storeRatings.acr = data.chart2[0].stores.find(
       (item) => item.store_id === parseInt(storeId)
@@ -159,16 +170,36 @@ export function ModalContent({ storeId }: { storeId: string }) {
     storeRatings.training_rate = data.chart2[2].stores.find(
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
-    storeRatings.brand_standards = data.chart2[3].stores.find(
+    storeRatings.retention = data.chart2[3].stores.find(
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
-    storeRatings.glv = storeRatings.training_rate = data.chart2[2].stores.find(
+    storeRatings.glv = data.chart2[4].stores.find(
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
-    storeRatings.retention = storeRatings.training_rate =
-      data.chart2[2].stores.find(
+    storeRatings.revs =
+      data.chart2[5].stores.find(
         (item) => item.store_id === parseInt(storeId)
       )!.rating;
+
+    storeScores.acr = data.chart2[0].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+    storeScores.sos = data.chart2[1].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+    storeScores.training_rate = data.chart2[2].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+    storeScores.retention = data.chart2[3].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+    storeScores.glv = data.chart2[4].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+    storeScores.revs = data.chart2[4].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.score;
+
   }
 
   return (
@@ -177,48 +208,91 @@ export function ModalContent({ storeId }: { storeId: string }) {
         <Text>FSS Score</Text>
         <Text fw={600}>17 </Text>
       </Flex>
-      <Flex justify="space-between">
+      <Grid grow>
+        <Grid.Col span={1}>
         <Text>ACR</Text>
-        <Text fw={600}>
-          {storeRatings.acr}{" "}
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.acr}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
+          {storeRatings.acr} {" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
         </Text>
-      </Flex>
-      <Flex justify="space-between">
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col span={1}>
         <Text>SOS</Text>
-        <Text fw={600}>
-          {storeRatings.sos}{" "}
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.sos}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
+          {storeRatings.sos} {" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
         </Text>
-      </Flex>
-      <Flex justify="space-between">
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col span={1}>
         <Text>Training Rate</Text>
-        <Text fw={600}>
-          {storeRatings.training_rate}{" "}
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.training_rate}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
+          {storeRatings.training_rate} {" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
         </Text>
-      </Flex>
-      <Flex justify="space-between">
-        <Text>Brand Standards</Text>
-        <Text fw={600}>
-          {storeRatings.brand_standards}{" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
-      </Flex>
-      <Flex justify="space-between">
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col span={1}>
         <Text>Retention</Text>
-        <Text fw={600}>
-          {storeRatings.retention}{" "}
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.retention}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
+          {storeRatings.retention} {" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>{" "}
-      </Flex>
-      <Flex justify="space-between">
+        </Text>
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col span={1}>
         <Text>GLV</Text>
-        <Text fw={600}>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.glv}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
           {storeRatings.glv}{" "}
           <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>{" "}
-      </Flex>
+        </Text>
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col span={1}>
+        <Text>REVs</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'center'}}>{storeScores.revs}</Text>
+        </Grid.Col>
+        <Grid.Col span={1}>
+        <Text style={{textAlign: 'end'}}>
+          {storeRatings.revs} {" "}
+          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
+        </Text>
+        </Grid.Col>
+      </Grid>
+  
     </Stack>
   );
 }
