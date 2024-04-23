@@ -665,11 +665,11 @@ export const costDataColumns: ColumnDef<CostData>[] = [
 
       return (
         <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }}>{cml}</Text>
-          <Text style={{ fontSize: "14px" }}>{food}</Text>
-          <Text style={{ fontSize: "14px" }}>{paper}</Text>
-          <Text style={{ fontSize: "14px" }}>{prem}</Text>
-          <Text style={{ fontSize: "14px" }}>{payroll}</Text>
+          <Text style={{ fontSize: "14px" }}>{cml}%</Text>
+          <Text style={{ fontSize: "14px" }}>{food}%</Text>
+          <Text style={{ fontSize: "14px" }}>{paper}%</Text>
+          <Text style={{ fontSize: "14px" }}>{prem}%</Text>
+          <Text style={{ fontSize: "14px" }}>{payroll}%</Text>
         </Flex>
       );
     },
@@ -684,7 +684,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
       return (
         <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
           <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
-            {sales}
+            {sales}%
           </Text>
           <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
