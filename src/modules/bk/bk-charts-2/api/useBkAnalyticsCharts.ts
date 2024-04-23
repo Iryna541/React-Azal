@@ -32,25 +32,28 @@ export type AnalyticsChartsResponse = {
 };
 
 export async function getBkAnalyticsCharts(
-  isMystores: boolean
+  isMystores: boolean,
+  managerId?: string,
 ): Promise<AnalyticsChartsResponse> {
   return axios
-    .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}`)
+    .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}`)
     .then((res) => res.data);
 }
 
 export type UseBkAnalyticsChartsOptions = {
   config?: UseQueryOptions<AnalyticsChartsResponse>;
   isMystores?: boolean;
+  managerId?: string;
 };
 
 export function useBkAnalyticsCharts({
   config,
   isMystores = false,
+  managerId = ""
 }: UseBkAnalyticsChartsOptions = {}) {
   return useQuery({
-    queryKey: ["bk-analytics-charts", isMystores],
-    queryFn: () => getBkAnalyticsCharts(isMystores),
+    queryKey: ["bk-analytics-charts", isMystores, managerId],
+    queryFn: () => getBkAnalyticsCharts(isMystores, managerId),
     ...config,
   });
 }
