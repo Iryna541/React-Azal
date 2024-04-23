@@ -54,7 +54,7 @@ export type UseUserOptions = {
   config?: UseQueryOptions<GetManagersPicResponse>;
 };
 
-export function useGetManagersPic({ config }: UseUserOptions = {}) {
+export function useGetUsers({ config }: UseUserOptions = {}) {
   return useQuery({
     queryKey: ["manager-pic"],
     queryFn: getUser,
