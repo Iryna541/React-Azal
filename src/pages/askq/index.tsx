@@ -44,7 +44,7 @@ import {
   BkManagerRankingTable,
 } from "~/modules/bk/bk-manager-ranking-table/BkManagerRankingTable";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
-import { useGetManagersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
+import { useGetUsers } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 
 const stats = [
@@ -107,7 +107,7 @@ function RussSetup() {
   const { user, configurations } = useUser();
   const [isMystores, setIsMystores] = useState(false);
   const { data: managersRankingData } = useStoreRanking();
-  const { data: managersPic } = useGetManagersPic();
+  const { data: usersData } = useGetUsers();
   const { data } = useBkAnalyticsCharts({ isMystores });
   const { boxref1 } = useInsightsContext();
 
@@ -115,9 +115,27 @@ function RussSetup() {
 
   const managerNames =
     managers?.users
-      .filter((user) => user.role_title === "Manager")
-      .map((user) => user.name) ?? [];
+      .filter((user: any) => user.role_title === "Manager")
+      .map((user: any) => user.name) ?? [];
 
+  console.log(
+    "roleId:",
+    configurations?.role.role_id,
+    "isPartner:",
+    configurations?.is_partner
+  );
+  // console.log("user:", user);
+  console.log("users:", usersData);
+
+  const DtlStores =
+    usersData?.users?.flatMap((item) => {
+      if (user?.user_id === item.id) {
+        return item.regions.map((store) => store.region_title);
+      }
+      return [];
+    }) || [];
+
+  console.log("dtl:", DtlStores);
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
@@ -138,16 +156,31 @@ function RussSetup() {
       };
     });
 
+  const topFiveManager = sortedManagersData.slice(0, 5);
+
+  const topMathedDtlstores = topFiveManager.filter((manager) =>
+    DtlStores.includes(manager.storeId.toString())
+  );
+  const bottomFiveManager = sortedManagersData.reverse().slice(0, 5);
+  const bottomMathedDtlstores = bottomFiveManager.filter((manager) =>
+    DtlStores.includes(manager.storeId.toString())
+  );
+
+  // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
+  console.log("topMathedDtlstores:", topMathedDtlstores);
+  console.log("bottomMathedDtlstores:", bottomMathedDtlstores);
   return (
     <Layout>
       <Flex justify="space-between">
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
         <Select
           placeholder="Pick value"
-          data={(configurations?.is_partner === 1 ||
-            configurations?.role.role_id === 2) 
-              ? ["All Stores", "My Stores", ...managerNames] 
-              : ["All Stores", "My Stores"]}
+          data={
+            configurations?.is_partner === 1 ||
+            configurations?.role.role_id === 2
+              ? ["All Stores", "My Stores", ...managerNames]
+              : ["All Stores", "My Stores"]
+          }
           defaultValue="All Stores"
           onChange={handleSelectChange}
         />
@@ -195,19 +228,29 @@ function RussSetup() {
             <BkManagerRankingTable
               title="Top 5 Store Managers"
               data={sortedManagersData.slice(0, 5)}
-              managersPic={managersPic}
+              managersPic={usersData}
             />
             <BkManagerRankingTable
               title="Bottom 5 Store Managers"
               data={sortedManagersData.reverse().slice(0, 5)}
               isRed
-              managersPic={managersPic}
+              managersPic={usersData}
             />
           </>
         ) : (
-          <Center>
-            <Text>There are no top list.</Text>
-          </Center>
+          <>
+            <BkManagerRankingTable
+              title="Weekly Top 5 Store Managers"
+              data={topMathedDtlstores}
+              managersPic={usersData}
+            />
+            <BkManagerRankingTable
+              title="Weekly Bottom 5 Store Managers"
+              data={bottomMathedDtlstores}
+              isRed
+              managersPic={usersData}
+            />
+          </>
         )}
       </SimpleGrid>
     </Layout>
