@@ -45,6 +45,7 @@ import {
 } from "~/modules/bk/bk-manager-ranking-table/BkManagerRankingTable";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { useGetManagersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
+import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 
 const stats = [
   {
@@ -110,6 +111,13 @@ function RussSetup() {
   const { data } = useBkAnalyticsCharts({ isMystores });
   const { boxref1 } = useInsightsContext();
 
+  const { data: managers } = useGetManagers();
+
+  const managerNames =
+    managers?.users
+      .filter((user) => user.role_title === "Manager")
+      .map((user) => user.name) ?? [];
+
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
@@ -136,7 +144,10 @@ function RussSetup() {
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
         <Select
           placeholder="Pick value"
-          data={["All Stores", "My Stores"]}
+          data={(configurations?.is_partner === 1 ||
+            configurations?.role.role_id === 2) 
+              ? ["All Stores", "My Stores", ...managerNames] 
+              : ["All Stores", "My Stores"]}
           defaultValue="All Stores"
           onChange={handleSelectChange}
         />
