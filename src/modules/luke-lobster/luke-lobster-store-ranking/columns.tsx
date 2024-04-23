@@ -46,7 +46,7 @@ export const columns: ColumnDef<LukeLobsterStoreRankingData>[] = [
   },
   {
     accessorKey: "sales_growth",
-    header: "Sales growth (VS Last Week)",
+    header: "Sales growth (VS LW)",
   },
   {
     header: "Details",

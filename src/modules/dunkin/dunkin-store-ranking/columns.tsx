@@ -37,18 +37,13 @@ export const columns: ColumnDef<DunkinStoreRankingData>[] = [
   },
 
   {
-    accessorKey: "rank_net_sales",
-    header: "Net Sales",
+    accessorKey: "net_sales_current",
+    header: "Total sales",
   },
   {
-    accessorKey: "rank_average_weekly_ticket_count",
-    header: "Avg Weekly Ticket Count",
+    accessorKey: "sales_growth",
+    header: "Sales Growth",
   },
-  {
-    accessorKey: "rank_average_ticket_size",
-    header: "Avg Ticket Size",
-  },
-
   {
     header: "Details",
     cell: ({ row }) => {

@@ -46,6 +46,8 @@ import {
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { useGetUsers } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
+import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
+import { modals } from "@mantine/modals";
 
 const stats = [
   {
@@ -167,23 +169,36 @@ function RussSetup() {
   );
 
   // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
-  console.log("topMathedDtlstores:", topMathedDtlstores);
-  console.log("bottomMathedDtlstores:", bottomMathedDtlstores);
+
   return (
     <Layout>
       <Flex justify="space-between">
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
-        <Select
-          placeholder="Pick value"
-          data={
-            configurations?.is_partner === 1 ||
-            configurations?.role.role_id === 2
-              ? ["All Stores", "My Stores", ...managerNames]
-              : ["All Stores", "My Stores"]
-          }
-          defaultValue="All Stores"
-          onChange={handleSelectChange}
-        />
+        <Flex gap={4}>
+          <Select
+            placeholder="Pick value"
+            data={
+              configurations?.is_partner === 1 ||
+              configurations?.role.role_id === 2
+                ? ["All Stores", "My Stores", ...managerNames]
+                : ["All Stores", "My Stores"]
+            }
+            defaultValue="All Stores"
+            onChange={handleSelectChange}
+          />
+          <Button
+            onClick={() => {
+              modals.open({
+                size: "xl",
+                title: <Text>Send by email</Text>,
+                centered: true,
+                children: <SendInsightModal photo={[]} />,
+              });
+            }}
+          >
+            Send Rankings by Email
+          </Button>
+        </Flex>
       </Flex>
       <SimpleGrid ref={boxref1} cols={2} my="lg">
         {data?.chart1 ? (
