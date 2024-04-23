@@ -274,6 +274,7 @@ function RussSetup() {
               data={data.chart2.map((item) => ({
                 ...item,
                 Avg: item.AVG,
+                score: typeof item.score === "string" ? parseInt(item.score).toFixed(1) : item.score.toFixed(1)
               }))}
             />
           </TitleBox>

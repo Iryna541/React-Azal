@@ -14,6 +14,7 @@ export type AnalyticsChartsResponse = {
   chart2: Array<{
     name: string;
     AVG: number;
+    score: number;
     stores: Array<{
       rating: number;
       store_id: number;
