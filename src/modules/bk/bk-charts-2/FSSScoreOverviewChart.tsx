@@ -3,6 +3,7 @@ import { Box, Flex, Paper, Stack, Text, Title } from "@mantine/core";
 
 export default function FSSScoreOverviewChart({
   data,
+  fssScore,
 }: {
   data: Array<{
     name: string;
@@ -10,21 +11,22 @@ export default function FSSScoreOverviewChart({
     color: string;
     stores: { store_id: number; score: number }[];
   }>;
+  fssScore: number;
 }) {
-  let avg = 0,
-    cnt = 0;
+  // let avg = 0,
+  //   cnt = 0;
 
-  for (let i = 0; i < data.length; ++i) {
-    let sum = 0;
-    for (let j = 0; j < data[i].stores.length; ++j) {
-      sum += data[i].stores[j].score;
-    }
-    if (data[i].stores.length > 0) {
-      avg += sum / data[i].stores.length;
-      cnt++;
-    }
-  }
-  avg /= cnt;
+  // for (let i = 0; i < data.length; ++i) {
+  //   let sum = 0;
+  //   for (let j = 0; j < data[i].stores.length; ++j) {
+  //     sum += data[i].stores[j].score;
+  //   }
+  //   if (data[i].stores.length > 0) {
+  //     avg += sum / data[i].stores.length;
+  //     cnt++;
+  //   }
+  // }
+  // avg /= cnt;
 
   return (
     <>
@@ -35,7 +37,7 @@ export default function FSSScoreOverviewChart({
           paddingAngle={2}
           withLabels
           withLabelsLine
-          chartLabel={`FSS Score ${avg.toFixed(1)}`}
+          chartLabel={`FSS Score ${fssScore}`}
           pieProps={{
             dataKey: "value",
             fontSize: 12,
