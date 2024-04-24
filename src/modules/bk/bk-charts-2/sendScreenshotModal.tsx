@@ -56,6 +56,7 @@ export default function SendScreenshotModal({
           defaultValue="React"
           mb="md"
           label="Pick a store"
+          allowDeselect={false}
         />
         <TextInput
           label="Email Text"

@@ -58,6 +58,7 @@ export default function SendInsightModal({ photo }: SendInsightModalProps) {
           defaultValue="React"
           mb="md"
           label="Pick a store"
+          allowDeselect={false}
         />
         <TextInput
           label="Email Text"

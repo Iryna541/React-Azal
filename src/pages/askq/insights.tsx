@@ -212,6 +212,7 @@ function RussSetup() {
                 defaultValue="All Stores"
                 m={"sm"}
                 onChange={handleSelectChange}
+                allowDeselect={false}
               />
             </Flex>
             <Divider />
@@ -374,6 +375,7 @@ function ZinoSetup() {
             value={storeId}
             onChange={handleChange}
             defaultValue="React"
+            allowDeselect={false}
           />
         </Flex>
         <Divider />

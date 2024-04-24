@@ -89,6 +89,7 @@ export function BkManagerPlanTable({
         m={"sm"}
         w={"15%"}
         onChange={handleSelectChange}
+        allowDeselect={false}
       />
       <Table
         horizontalSpacing="lg"

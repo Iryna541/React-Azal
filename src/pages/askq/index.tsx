@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { IconFileExport, IconSend } from "@tabler/icons-react";
 import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
-import { Calendar, DatePickerInput, MonthPickerInput, YearPickerInput } from "@mantine/dates";
+import { Calendar, DatePickerInput, MonthPickerInput } from "@mantine/dates";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import { IconBubble, IconSaleTag, IconSparkles } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
@@ -51,7 +51,7 @@ import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import moment from 'moment';
+import moment from "moment";
 
 const stats = [
   {
@@ -114,21 +114,32 @@ function RussSetup() {
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
-  const [selectedFilter, setSelectedFilter] = useState<"weekly" | "monthly" | "periodically">("monthly")
-  const [startDate, setStartDate] = useState(moment().startOf('month').format('YYYY-MM-DD'));
-  const [endDate, setEndDate] = useState(moment().endOf('month').format('YYYY-MM-DD'));
-  const [filter, setFilter] = useState<{[key: string]: any}>({
-    startDate: moment().startOf('isoWeek'),
-    endDate: moment().endOf('isoWeek'),
-    monthlyStartDate: moment().startOf('month'),
-    monthlyEndDate: moment().endOf('month'),
-    periodicalStartDate: moment('01/01/2024'),
-    periodicalEndDate: moment('06/30/2024'),
-    periodical: 'Jan-June',
-  })
+  const [selectedFilter, setSelectedFilter] = useState<
+    "weekly" | "monthly" | "periodically"
+  >("monthly");
+  const [startDate, setStartDate] = useState(
+    moment().startOf("month").format("YYYY-MM-DD")
+  );
+  const [endDate, setEndDate] = useState(
+    moment().endOf("month").format("YYYY-MM-DD")
+  );
+  const [filter, setFilter] = useState<{ [key: string]: any }>({
+    startDate: moment().startOf("isoWeek"),
+    endDate: moment().endOf("isoWeek"),
+    monthlyStartDate: moment().startOf("month"),
+    monthlyEndDate: moment().endOf("month"),
+    periodicalStartDate: moment("01/01/2024"),
+    periodicalEndDate: moment("06/30/2024"),
+    periodical: "Jan-June",
+  });
   const [managerId, setManagerId] = useState("");
   const { data: usersData } = useGetUsers();
-  const { data } = useBkAnalyticsCharts({ isMystores, managerId: isMystores ? user?.user_id.toString() : managerId, startDate: startDate, endDate: endDate});
+  const { data } = useBkAnalyticsCharts({
+    isMystores,
+    managerId: isMystores ? user?.user_id.toString() : managerId,
+    startDate: startDate,
+    endDate: endDate,
+  });
   const { boxref1 } = useInsightsContext();
 
   const { data: managers } = useGetManagers();
@@ -136,7 +147,8 @@ function RussSetup() {
   const managerList =
     managers?.users
       .filter((user: any) => user.role_title === "Manager")
-      .map((user: any) => ({label: user.name, value: user.id.toString()})) ?? [];
+      .map((user: any) => ({ label: user.name, value: user.id.toString() })) ??
+    [];
 
   const DtlStores =
     usersData?.users?.flatMap((item) => {
@@ -149,7 +161,7 @@ function RussSetup() {
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
-    setManagerId( value === "All Stores"  ? "" : value);
+    setManagerId(value === "All Stores" ? "" : value);
   };
 
   const sortedManagersData: BkManagerRankingData = (managersRankingData ?? [])
@@ -221,72 +233,94 @@ function RussSetup() {
       setIsExportLoading(false);
     } else {
       console.error("Element not found!");
+      setIsExportLoading(false);
     }
   };
   const handleFilterChange = (value: any, key: string) => {
-    if(key === "startDate"){
+    if (key === "startDate") {
       setFilter({
-       ...filter,
-        [key]:  moment(value).startOf('isoWeek'),
-        endDate: moment(value).endOf('isoWeek'),
+        ...filter,
+        [key]: moment(value).startOf("isoWeek"),
+        endDate: moment(value).endOf("isoWeek"),
       });
     }
-    if(key === 'monthlyStartDate'){
+    if (key === "monthlyStartDate") {
       setFilter({
-       ...filter,
-        [key]:  moment(value).startOf('month'),
-        monthlyEndDate: moment(value).endOf('month'),
+        ...filter,
+        [key]: moment(value).startOf("month"),
+        monthlyEndDate: moment(value).endOf("month"),
       });
     }
-    const tempFilter = {...filter};
+    const tempFilter = { ...filter };
     tempFilter[key] = value;
     setFilter(tempFilter);
-  }
+  };
 
-  const handleFilterCheckbox = (value: "weekly" | "monthly" | "periodically" ) => {
-    if(selectedFilter === value) return;
+  const handleFilterCheckbox = (
+    value: "weekly" | "monthly" | "periodically"
+  ) => {
+    if (selectedFilter === value) return;
     else setSelectedFilter(value);
-  }
+  };
 
   useEffect(() => {
-    if(selectedFilter === "weekly"){
+    if (selectedFilter === "weekly") {
       setStartDate(filter?.startDate.format("YYYY-MM-DD"));
       setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-    } else if(selectedFilter === "monthly"){
+    } else if (selectedFilter === "monthly") {
       setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
       setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-    } else if(selectedFilter === "periodically"){
+    } else if (selectedFilter === "periodically") {
       setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
       setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
     }
-  }, [selectedFilter])
+  }, [selectedFilter]);
 
-  // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
-  console.log("topMathedDtlstores:", topMathedDtlstores);
-  console.log("bottomMathedDtlstores:", bottomMathedDtlstores);
-  console.log({filter});
-  console.log({data});
   return (
     <Layout>
       <Flex justify="space-between">
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
       </Flex>
-      <Flex style={{minWidth: 1150}} justify={"space-between"} align={"center"} mt={20}>
-        <Flex justify={"end"}  columnGap={10}>
+      <Flex
+        style={{ minWidth: 1150 }}
+        justify={"space-between"}
+        align={"center"}
+        mt={20}
+      >
+        <Flex justify={"end"} columnGap={10}>
           <Flex direction={"column"}>
             <Checkbox
               size="sm"
               radius={4}
-              label={<Text fz={14} fw={500} mb={5}>By Weeks</Text>}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  By Weeks
+                </Text>
+              }
               checked={selectedFilter === "weekly"}
               onChange={() => handleFilterCheckbox("weekly")}
             />
             <Flex columnGap={5} justify={"space-between"}>
               <Flex>
-                <DatePickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.startDate} w={"160px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "startDate")}/>
+                <DatePickerInput
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.startDate}
+                  w={"160px"}
+                  placeholder="Start Date"
+                  onChange={(value) => handleFilterChange(value, "startDate")}
+                />
               </Flex>
               <Flex>
-                <DatePickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.endDate} disabled={true} w={"160px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "endDate")}/>
+                <DatePickerInput
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.endDate}
+                  disabled={true}
+                  w={"160px"}
+                  placeholder="Start Date"
+                  onChange={(value) => handleFilterChange(value, "endDate")}
+                />
               </Flex>
             </Flex>
           </Flex>
@@ -294,13 +328,26 @@ function RussSetup() {
             <Checkbox
               size="sm"
               radius={4}
-              label={<Text fz={14} fw={500} mb={5}>Monthly</Text>}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  Monthly
+                </Text>
+              }
               checked={selectedFilter === "monthly"}
               onChange={() => handleFilterCheckbox("monthly")}
             />
             <Flex columnGap={5}>
               <Flex justify={"space-between"}>
-                <MonthPickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.monthlyStartDate} w={"160px"} placeholder="Select Month" onChange={(value) => handleFilterChange(value, "monthlyMonth")}/>
+                <MonthPickerInput
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.monthlyStartDate}
+                  w={"160px"}
+                  placeholder="Select Month"
+                  onChange={(value) =>
+                    handleFilterChange(value, "monthlyMonth")
+                  }
+                />
               </Flex>
             </Flex>
           </Flex>
@@ -308,7 +355,11 @@ function RussSetup() {
             <Checkbox
               size="sm"
               radius={4}
-              label={<Text fz={14} fw={500} mb={5}>Periodically</Text>}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  Periodically
+                </Text>
+              }
               checked={selectedFilter === "periodically"}
               onChange={() => handleFilterCheckbox("periodically")}
             />
@@ -319,8 +370,11 @@ function RussSetup() {
                   placeholder="Select Quarter"
                   w={"160px"}
                   disabled={true}
-                  data={[{label: "Jan-June", value: "Jan-June"}]}
-                  onChange={(value) => handleFilterChange(value, "quarterlyQuarter")}
+                  data={[{ label: "Jan-June", value: "Jan-June" }]}
+                  onChange={(value) =>
+                    handleFilterChange(value, "quarterlyQuarter")
+                  }
+                  allowDeselect={false}
                 />
               </Flex>
             </Flex>
@@ -333,8 +387,15 @@ function RussSetup() {
             data={
               configurations?.is_partner === 1 ||
               configurations?.role.role_id === 2
-                ? [{label: "All Stores", value: "All Stores"}, {label: "My Stores", value: "My Stores"}, ...managerList]
-                : [{label: "All Stores", value: "All Stores"}, {label: "My Stores", value: "My Stores"}]
+                ? [
+                    { label: "All Stores", value: "All Stores" },
+                    { label: "My Stores", value: "My Stores" },
+                    ...managerList,
+                  ]
+                : [
+                    { label: "All Stores", value: "All Stores" },
+                    { label: "My Stores", value: "My Stores" },
+                  ]
             }
             defaultValue="All Stores"
             onChange={handleSelectChange}
@@ -385,7 +446,11 @@ function RussSetup() {
               data={data.chart2.map((item) => ({
                 ...item,
                 Avg: item.AVG,
-                score: item.score ? typeof item.score === "string" ? parseInt(item.score).toFixed(1) : item.score.toFixed(1) : 0
+                score: item.score
+                  ? typeof item.score === "string"
+                    ? parseInt(item.score).toFixed(1)
+                    : item.score.toFixed(1)
+                  : 0,
               }))}
             />
           </TitleBox>
