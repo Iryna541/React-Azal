@@ -270,131 +270,30 @@ function RussSetup() {
       //   setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
       //   setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
       // }
-      setSelectedFilter(value)
+      setSelectedFilter(value);
     }
   };
 
   useEffect(() => {
-    if(selectedFilter === "weekly"){
+    if (selectedFilter === "weekly") {
       setStartDate(filter?.startDate.format("YYYY-MM-DD"));
       setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-    } else if(selectedFilter === "monthly"){
+    } else if (selectedFilter === "monthly") {
       setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
       setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-    } else if(selectedFilter === "periodically"){
+    } else if (selectedFilter === "periodically") {
       setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
       setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
     }
-  }, [selectedFilter, filter])
+  }, [selectedFilter, filter]);
 
-  console.log({filter});
+  console.log({ filter });
 
   return (
     <Layout>
-      <Flex justify="space-between">
+      <Flex justify="space-between" align="center">
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
-      </Flex>
-      <Flex
-        style={{ minWidth: 1150 }}
-        justify={"space-between"}
-        align={"end"}
-        mt={20}
-      >
-        <Flex justify={"end"} columnGap={10}>
-          <Flex direction={"column"}>
-            <Checkbox
-              size="sm"
-              radius={4}
-              label={
-                <Text fz={14} fw={500} mb={5}>
-                  By Weeks
-                </Text>
-              }
-              checked={selectedFilter === "weekly"}
-              onChange={() => handleFilterCheckbox("weekly")}
-            />
-            <Flex columnGap={5} justify={"space-between"}>
-              <Flex>
-                <DatePickerInput
-                  minDate={moment().startOf("year").toDate()}
-                  maxDate={moment().endOf("year").toDate()}
-                  value={filter?.startDate}
-                  w={"140px"}
-                  placeholder="Start Date"
-                  onChange={(value) => handleFilterChange(value, "startDate")}
-                />
-              </Flex>
-              <Flex>
-                <DatePickerInput
-                  minDate={moment().startOf("year").toDate()}
-                  maxDate={moment().endOf("year").toDate()}
-                  value={filter?.endDate}
-                  disabled={true}
-                  w={"150px"}
-                  placeholder="End Date"
-                  // onChange={(value) => handleFilterChange(value, "endDate")}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex direction={"column"}>
-            <Checkbox
-              size="sm"
-              radius={4}
-              label={
-                <Text fz={14} fw={500} mb={5}>
-                  Monthly
-                </Text>
-              }
-              checked={selectedFilter === "monthly"}
-              onChange={() => handleFilterCheckbox("monthly")}
-            />
-            <Flex columnGap={5}>
-              <Flex justify={"space-between"}>
-                <MonthPickerInput
-                  minDate={moment().startOf("year").toDate()}
-                  maxDate={moment().endOf("year").toDate()}
-                  value={filter?.monthlyStartDate}
-                  w={"150px"}
-                  placeholder="Select Month"
-                  onChange={(value) =>
-                    handleFilterChange(value, "monthlyStartDate")
-                  }
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex direction={"column"}>
-            <Checkbox
-              size="sm"
-              radius={4}
-              label={
-                <Text fz={14} fw={500} mb={5}>
-                  Periodically
-                </Text>
-              }
-              checked={selectedFilter === "periodically"}
-              onChange={() => handleFilterCheckbox("periodically")}
-            />
-            <Flex columnGap={5}>
-              <Flex justify={"space-between"}>
-                <Select
-                  value={"Jan-June"}
-                  placeholder="Select Quarter"
-                  w={"150px"}
-                  disabled={true}
-                  data={[{ label: "Jan-June", value: "Jan-June" }]}
-                  onChange={(value) =>
-                    handleFilterChange(value, "quarterlyQuarter")
-                  }
-                  allowDeselect={false}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <Flex gap={4} mt={28}>
+        <Flex gap={12} mt={28}>
           <Select
             placeholder="Pick value"
             allowDeselect={false}
@@ -430,6 +329,114 @@ function RussSetup() {
           >
             Send Rankings by Email
           </Button>
+        </Flex>
+      </Flex>
+      <Flex
+        // style={{ minWidth: 1150 }}
+        justify={"space-between"}
+        align={"end"}
+        mt={20}
+        bg="hsl(var(--primary) / 0.0250)"
+        p="lg"
+        style={{ border: "1px solid hsl(var(--border))", borderRadius: 8 }}
+        columnGap={24}
+      >
+        <Flex justify={"end"} columnGap={20}>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  By Weeks
+                </Text>
+              }
+              checked={selectedFilter === "weekly"}
+              onChange={() => handleFilterCheckbox("weekly")}
+            />
+            <Flex columnGap={20} justify={"space-between"}>
+              <Flex>
+                <DatePickerInput
+                  bg="white"
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.startDate}
+                  w={"140px"}
+                  placeholder="Start Date"
+                  onChange={(value) => handleFilterChange(value, "startDate")}
+                />
+              </Flex>
+              <Flex>
+                <DatePickerInput
+                  bg="white"
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.endDate}
+                  disabled={true}
+                  w={"150px"}
+                  placeholder="End Date"
+                  // onChange={(value) => handleFilterChange(value, "endDate")}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  Monthly
+                </Text>
+              }
+              checked={selectedFilter === "monthly"}
+              onChange={() => handleFilterCheckbox("monthly")}
+            />
+            <Flex columnGap={5}>
+              <Flex justify={"space-between"}>
+                <MonthPickerInput
+                  minDate={moment().startOf("year").toDate()}
+                  maxDate={moment().endOf("year").toDate()}
+                  value={filter?.monthlyStartDate}
+                  w={"150px"}
+                  placeholder="Select Month"
+                  onChange={(value) =>
+                    handleFilterChange(value, "monthlyStartDate")
+                  }
+                  bg="white"
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={
+                <Text fz={14} fw={500} mb={5}>
+                  Periodically
+                </Text>
+              }
+              checked={selectedFilter === "periodically"}
+              onChange={() => handleFilterCheckbox("periodically")}
+            />
+            <Flex columnGap={5}>
+              <Flex justify={"space-between"}>
+                <Select
+                  bg="white"
+                  value={"Jan-June"}
+                  placeholder="Select Quarter"
+                  w={"150px"}
+                  disabled={true}
+                  data={[{ label: "Jan-June", value: "Jan-June" }]}
+                  onChange={(value) =>
+                    handleFilterChange(value, "quarterlyQuarter")
+                  }
+                  allowDeselect={false}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
       <SimpleGrid ref={boxref1} cols={2} my="lg" id="chartContainer">
