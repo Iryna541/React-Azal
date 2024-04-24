@@ -253,9 +253,6 @@ function RussSetup() {
         monthlyEndDate: moment(value).endOf("month"),
       });
     }
-    const tempFilter = { ...filter };
-    tempFilter[key] = value;
-    setFilter(tempFilter);
   };
 
   const handleFilterCheckbox = (
@@ -263,32 +260,34 @@ function RussSetup() {
   ) => {
     if (selectedFilter === value) return;
     else {
-      if (value === "weekly") {
-        setStartDate(filter?.startDate.format("YYYY-MM-DD"));
-        setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-      } else if (value === "monthly") {
-        setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
-        setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-      } else if (value === "periodically") {
-        setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
-        setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
-      }
-      setSelectedFilter(value);
+      // if(value === "weekly"){
+      //   setStartDate(filter?.startDate.format("YYYY-MM-DD"));
+      //   setEndDate(filter?.endDate.format("YYYY-MM-DD"));
+      // } else if(value === "monthly"){
+      //   setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
+      //   setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
+      // } else if(value === "periodically"){
+      //   setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
+      //   setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+      // }
+      setSelectedFilter(value)
     }
   };
 
-  // useEffect(() => {
-  //   if(selectedFilter === "weekly"){
-  //     setStartDate(filter?.startDate.format("YYYY-MM-DD"));
-  //     setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-  //   } else if(selectedFilter === "monthly"){
-  //     setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
-  //     setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-  //   } else if(selectedFilter === "periodically"){
-  //     setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
-  //     setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
-  //   }
-  // }, [selectedFilter, filter])
+  useEffect(() => {
+    if(selectedFilter === "weekly"){
+      setStartDate(filter?.startDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.endDate.format("YYYY-MM-DD"));
+    } else if(selectedFilter === "monthly"){
+      setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
+    } else if(selectedFilter === "periodically"){
+      setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+    }
+  }, [selectedFilter])
+
+  console.log({filter});
 
   return (
     <Layout>
@@ -332,8 +331,8 @@ function RussSetup() {
                   value={filter?.endDate}
                   disabled={true}
                   w={"150px"}
-                  placeholder="Start Date"
-                  onChange={(value) => handleFilterChange(value, "endDate")}
+                  placeholder="End Date"
+                  // onChange={(value) => handleFilterChange(value, "endDate")}
                 />
               </Flex>
             </Flex>
@@ -359,7 +358,7 @@ function RussSetup() {
                   w={"150px"}
                   placeholder="Select Month"
                   onChange={(value) =>
-                    handleFilterChange(value, "monthlyMonth")
+                    handleFilterChange(value, "monthlyStartDate")
                   }
                 />
               </Flex>
