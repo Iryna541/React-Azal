@@ -40,7 +40,6 @@ export async function getBkAnalyticsCharts(
   endDate?: string
 ): Promise<AnalyticsChartsResponse> {
   let url = "";
-  console.log({"data": !!managerId && !!startDate && !!endDate});
   if(managerId && startDate && endDate){
     url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`
   } else if(startDate && endDate) {
