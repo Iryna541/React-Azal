@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-table";
 import {
   ActionIcon,
+  Badge,
   Box,
   Group,
   List,
@@ -201,6 +202,13 @@ export function BkManagerPlanTable({
                                       {el.employees.map((em, index) => {
                                         return (
                                           <ScrollArea scrollbars="y">
+                                            <Badge
+                                              size="lg"
+                                              ml={"xl"}
+                                              mb={"sm"}
+                                            >
+                                              {em.date}
+                                            </Badge>
                                             <List key={index} pl={"sm"}>
                                               {em.employee.map((el, idx) => {
                                                 return (
