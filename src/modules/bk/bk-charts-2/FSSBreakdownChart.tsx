@@ -99,15 +99,23 @@ export function FSSBreakdownChart({
                       Store Id
                     </Text>
                     <Text size="sm" fw={600}>
+                      Scores
+                    </Text>
+                    <Text size="sm" fw={600}>
                       Rating
                     </Text>
                   </Flex>
                   <Divider h={2} />
                   {data.stores.map(
-                    (store: { store_id: string; rating: number }) => {
+                    (store: {
+                      store_id: string;
+                      rating: number;
+                      score: string;
+                    }) => {
                       return (
                         <Flex justify="space-between">
                           <Text size="sm">{store.store_id}</Text>
+                          <Text size="sm">{store.score}</Text>
                           <Text size="sm" fw={600}>
                             <span style={{ marginRight: 2 }}>
                               {store.rating.toFixed(1)}
@@ -135,7 +143,7 @@ export function FSSBreakdownChart({
             dataKey="formatted_value"
             position="top"
             offset={10}
-            style={{ fontSize: 12, fill: 'black', fontWeight: 800 }}
+            style={{ fontSize: 12, fill: "black", fontWeight: 800 }}
           />
           <LabelList
             dataKey="score"

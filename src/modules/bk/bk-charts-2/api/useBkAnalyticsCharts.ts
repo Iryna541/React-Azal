@@ -40,19 +40,21 @@ export async function getBkAnalyticsCharts(
   endDate?: string
 ): Promise<AnalyticsChartsResponse> {
   let url = "";
-  if(managerId && startDate && endDate){
-    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`
-  } else if(startDate && endDate) {
-    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&start_date=${startDate}&end_date=${endDate}`
+  if (managerId && startDate && endDate) {
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`;
+  } else if (startDate && endDate) {
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&start_date=${startDate}&end_date=${endDate}`;
   } else if (managerId) {
-    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}`
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}`;
   } else {
-    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}`
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}`;
   }
-  return axios
-    // .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}&start_date=${startDate}&end_date=${endDate}`)
-    .get(url)
-    .then((res) => res.data);
+  return (
+    axios
+      // .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}&start_date=${startDate}&end_date=${endDate}`)
+      .get(url)
+      .then((res) => res.data)
+  );
 }
 
 export type UseBkAnalyticsChartsOptions = {
@@ -71,8 +73,15 @@ export function useBkAnalyticsCharts({
   endDate,
 }: UseBkAnalyticsChartsOptions = {}) {
   return useQuery({
-    queryKey: ["bk-analytics-charts", isMystores, managerId, startDate, endDate],
-    queryFn: () => getBkAnalyticsCharts(isMystores, managerId, startDate, endDate),
+    queryKey: [
+      "bk-analytics-charts",
+      isMystores,
+      managerId,
+      startDate,
+      endDate,
+    ],
+    queryFn: () =>
+      getBkAnalyticsCharts(isMystores, managerId, startDate, endDate),
     ...config,
   });
 }
