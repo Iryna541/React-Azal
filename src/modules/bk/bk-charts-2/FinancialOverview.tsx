@@ -141,7 +141,6 @@ export function FinancialOverviewBig({
               fill={"green"}
               barSize={32}
               onClick={(data) => {
-                console.log(data);
                 modals.open({
                   title: "Store " + data.store_id,
                   children: (
