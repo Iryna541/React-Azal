@@ -114,7 +114,7 @@ function RussSetup() {
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
   const [selectedFilter, setSelectedFilter] = useState<"weekly" | "monthly" | "quarterly" | "anually">("weekly")
-  const [filter, setFilter] = useState<{[key: string]: Date | string | null}>({
+  const [filter, setFilter] = useState<{[key: string]: any}>({
     startDate: new Date(),
     endDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
     monthlyMonth: null,
@@ -324,21 +324,6 @@ function RussSetup() {
                 onChange={(value) => handleFilterChange(value, "quarterlyQuarter")}
               />
             </Flex>
-            <Flex justify={"space-between"}>
-              <YearPickerInput value={filter?.quarterlyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "quarterlyYear")}/>
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex direction={"column"}>
-          <Checkbox
-            size="sm"
-            radius={4}
-            label={<Text fz={14} fw={500} mb={5}>Annually</Text>}
-            checked={selectedFilter === "anually"}
-            onChange={() => handleFilterCheckbox("anually")}
-          />
-          <Flex justify={"space-between"}>
-            <YearPickerInput value={filter?.annuallyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "annuallyYear")}/>
           </Flex>
         </Flex>
       </Flex>
