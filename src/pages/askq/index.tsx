@@ -48,6 +48,8 @@ import { useGetUsers } from "~/modules/bk/bk-manager-ranking-table/api/useGetMan
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const stats = [
   {
@@ -108,7 +110,8 @@ export default function DashboardPage() {
 function RussSetup() {
   const { user, configurations } = useUser();
   const [isMystores, setIsMystores] = useState(false);
-  const { data: managersRankingData } = useStoreRanking();
+  const [isExportLoading, setIsExportLoading] = useState(false);
+  const { data: managersRankingData, isPending } = useStoreRanking();
   const { data: usersData } = useGetUsers();
   const { data } = useBkAnalyticsCharts({ isMystores });
   const { boxref1 } = useInsightsContext();
@@ -120,15 +123,6 @@ function RussSetup() {
       .filter((user: any) => user.role_title === "Manager")
       .map((user: any) => user.name) ?? [];
 
-  console.log(
-    "roleId:",
-    configurations?.role.role_id,
-    "isPartner:",
-    configurations?.is_partner
-  );
-  // console.log("user:", user);
-  console.log("users:", usersData);
-
   const DtlStores =
     usersData?.users?.flatMap((item) => {
       if (user?.user_id === item.id) {
@@ -137,7 +131,6 @@ function RussSetup() {
       return [];
     }) || [];
 
-  console.log("dtl:", DtlStores);
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
@@ -159,16 +152,61 @@ function RussSetup() {
     });
 
   const topFiveManager = sortedManagersData.slice(0, 5);
+  const bottomFiveManager = sortedManagersData.reverse().slice(0, 5);
 
   const topMathedDtlstores = topFiveManager.filter((manager) =>
     DtlStores.includes(manager.storeId.toString())
   );
-  const bottomFiveManager = sortedManagersData.reverse().slice(0, 5);
+
   const bottomMathedDtlstores = bottomFiveManager.filter((manager) =>
     DtlStores.includes(manager.storeId.toString())
   );
 
-  // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
+  // Function to export chart as PDF
+  const exportPDF = async () => {
+    setIsExportLoading(true);
+    const input = document.getElementById("chartContainer");
+    if (input) {
+      const canvas = await html2canvas(input);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape", // Set orientation to landscape if the chart is wide
+      });
+
+      // Define horizontal and vertical padding (in mm)
+      const horizontalPadding = 10; // 10 mm padding on each side
+      const verticalPadding = 20; // 20 mm padding on the top and bottom
+
+      // Dimensions of a PDF page in landscape mode usually are 297mm x 210mm
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      // Adjust width and height available for the image by subtracting padding
+      const availableWidth = pageWidth - 2 * horizontalPadding;
+      const availableHeight = pageHeight - 2 * verticalPadding;
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgWidth = imgProps.width;
+      const imgHeight = imgProps.height;
+
+      // Scale the image to fit within the available dimensions while maintaining aspect ratio
+      const scaleX = availableWidth / imgWidth;
+      const scaleY = availableHeight / imgHeight;
+      const scale = Math.min(scaleX, scaleY); // Choose the smaller scale to ensure the image fits within both dimensions
+      const scaledWidth = imgWidth * scale;
+      const scaledHeight = imgHeight * scale;
+
+      // Center the image within the available space
+      const x = horizontalPadding + (availableWidth - scaledWidth) / 2;
+      const y = verticalPadding + (availableHeight - scaledHeight) / 2;
+
+      pdf.addImage(imgData, "PNG", x, y, scaledWidth, scaledHeight);
+      pdf.save("chart.pdf");
+      setIsExportLoading(false);
+    } else {
+      console.error("Element not found!");
+    }
+  };
 
   return (
     <Layout>
@@ -186,6 +224,9 @@ function RussSetup() {
             defaultValue="All Stores"
             onChange={handleSelectChange}
           />
+          <Button onClick={exportPDF} loading={isExportLoading}>
+            Export as PDF
+          </Button>
           <Button
             onClick={() => {
               modals.open({
@@ -200,7 +241,7 @@ function RussSetup() {
           </Button>
         </Flex>
       </Flex>
-      <SimpleGrid ref={boxref1} cols={2} my="lg">
+      <SimpleGrid ref={boxref1} cols={2} my="lg" id="chartContainer">
         {data?.chart1 ? (
           <TitleBox
             title="FSS Score Overview"
@@ -242,14 +283,16 @@ function RussSetup() {
           <>
             <BkManagerRankingTable
               title="Top 5 Store Managers"
-              data={sortedManagersData.slice(0, 5)}
+              data={topFiveManager}
               managersPic={usersData}
+              isPending={isPending}
             />
             <BkManagerRankingTable
               title="Bottom 5 Store Managers"
-              data={sortedManagersData.reverse().slice(0, 5)}
+              data={bottomFiveManager}
               isRed
               managersPic={usersData}
+              isPending={isPending}
             />
           </>
         ) : (
@@ -258,12 +301,16 @@ function RussSetup() {
               title="Top 5 Store Managers"
               data={topMathedDtlstores}
               managersPic={usersData}
+              emoji="&#128532;"
+              isPending={isPending}
             />
             <BkManagerRankingTable
               title="Bottom 5 Store Managers"
               data={bottomMathedDtlstores}
               isRed
               managersPic={usersData}
+              emoji="&#128522;"
+              isPending={isPending}
             />
           </>
         )}

@@ -27,46 +27,49 @@ export default function FSSScoreOverviewChart({
   avg /= cnt;
 
   return (
-    <Flex h="80%" align="center" justify="center">
-      <DonutChart
-        size={200}
-        thickness={32}
-        paddingAngle={2}
-        withLabels
-        withLabelsLine
-        chartLabel={`FSS Score ${avg.toFixed(1)}`}
-        pieProps={{
-          dataKey: "value",
-          fontSize: 12,
-          fontWeight: 600,
-          label: {
+    <>
+      <Flex h="80%" align="center" justify="center">
+        <DonutChart
+          size={200}
+          thickness={32}
+          paddingAngle={2}
+          withLabels
+          withLabelsLine
+          chartLabel={`FSS Score ${avg.toFixed(1)}`}
+          pieProps={{
+            dataKey: "value",
+            fontSize: 12,
             fontWeight: 600,
-            fill: "hsl(var(--foreground))",
-          },
-          legendType: "square",
-        }}
-        data={data}
-        tooltipDataSource="all"
-        tooltipAnimationDuration={500}
-        tooltipProps={{
-          content: ({ payload }) => {
-            return <ChartTooltip payload={payload} />;
-          },
-        }}
-      />
-      <Stack gap="xs" ml="xl">
-        {data.map((item) => {
-          return (
-            <Flex key={item.name} align="center" gap="xs">
-              <Box h={8} w={8} bg={item.color}></Box>
-              <Text c="hsl(var(--foreground))" fw={600} size="xs">
-                {item.name}
-              </Text>
-            </Flex>
-          );
-        })}
-      </Stack>
-    </Flex>
+            label: {
+              fontWeight: 600,
+              fill: "hsl(var(--foreground))",
+            },
+            legendType: "square",
+          }}
+          data={data}
+          tooltipDataSource="all"
+          tooltipAnimationDuration={500}
+          tooltipProps={{
+            content: ({ payload }) => {
+              return <ChartTooltip payload={payload} />;
+            },
+          }}
+        />
+        <Stack gap="xs" ml="xl">
+          {data.map((item) => {
+            return (
+              <Flex key={item.name} align="center" gap="xs">
+                <Box h={8} w={8} bg={item.color}></Box>
+
+                <Text c="hsl(var(--foreground))" fw={600} size="xs">
+                  {item.name}
+                </Text>
+              </Flex>
+            );
+          })}
+        </Stack>
+      </Flex>
+    </>
   );
 }
 

@@ -12,6 +12,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
+  ActionIcon,
+  Box,
   Group,
   Pagination,
   Select,
@@ -24,6 +26,8 @@ import { ManagerPlanResponse } from "./api/useBkManagerPlan"; // Update the impo
 import { useState } from "react";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
 
 interface BkManagerPlanTableProps {
   data: ManagerPlanResponse;
@@ -160,15 +164,68 @@ export function BkManagerPlanTable({
                     })}
                   </Table.Tr>
                   {subrows.map((item, idx) => {
-                    const markdown = (
-                      item.insights as unknown as { insight: string }[]
-                    )
-                      .map((el) => el.insight)
-                      .join("\n");
-
-                    const messageHtml = DOMPurify.sanitize(
-                      marked(markdown) as string
-                    );
+                    const insightItems = (
+                      item.insights as unknown as {
+                        insight: string;
+                        has_employee: boolean;
+                        employees: Array<{
+                          date: string;
+                          employee: Array<string>;
+                        }>;
+                      }[]
+                    ).map((el) => {
+                      const messageHtml = DOMPurify.sanitize(
+                        marked(el.insight) as string
+                      );
+                      return (
+                        <Box>
+                          <TypographyStylesProvider p="0" m="0">
+                            <div
+                              style={{ fontSize: 14 }}
+                              dangerouslySetInnerHTML={{
+                                __html: messageHtml,
+                              }}
+                            />
+                          </TypographyStylesProvider>
+                          {el.has_employee && el.employees.length ? (
+                            <ActionIcon
+                              ml={"xl"}
+                              onClick={() => {
+                                modals.open({
+                                  title: "Employees",
+                                  children: (
+                                    <>
+                                      {el.employees.map((em, index) => {
+                                        return (
+                                          <Box key={index}>
+                                            <Text
+                                              key={index}
+                                              fw={700}
+                                              mb={"sm"}
+                                            >
+                                              {em.date}
+                                            </Text>
+                                            {em.employee.map((el, idx) => {
+                                              return (
+                                                <Text key={idx}>{el}</Text>
+                                              );
+                                            })}
+                                          </Box>
+                                        );
+                                      })}
+                                    </>
+                                  ),
+                                });
+                              }}
+                            >
+                              <IconInfoCircle size={14} />
+                            </ActionIcon>
+                          ) : (
+                            <></>
+                          )}
+                        </Box>
+                      );
+                    });
 
                     return (
                       <>
@@ -187,14 +244,57 @@ export function BkManagerPlanTable({
                               border: "1px solid hsl(var(--border))",
                             }}
                           >
-                            <TypographyStylesProvider p="0" m="0">
+                            {insightItems}
+                            {/* <TypographyStylesProvider p="0" m="0">
                               <div
                                 style={{ fontSize: 14 }}
                                 dangerouslySetInnerHTML={{
                                   __html: messageHtml,
                                 }}
                               />
-                            </TypographyStylesProvider>
+                              {item.insights[0].has_employee &&
+                              item.insights[0].employees.length ? (
+                                <ActionIcon
+                                  onClick={() => {
+                                    modals.open({
+                                      title: "Employees",
+                                      children: (
+                                        <>
+                                          {item.insights[0].employees.map(
+                                            (em, index) => {
+                                              return (
+                                                <Box key={index}>
+                                                  <Text
+                                                    key={index}
+                                                    fw={700}
+                                                    mb={"sm"}
+                                                  >
+                                                    {em.date}
+                                                  </Text>
+                                                  {em.employee.map(
+                                                    (el, idx) => {
+                                                      return (
+                                                        <Text key={idx}>
+                                                          {el}
+                                                        </Text>
+                                                      );
+                                                    }
+                                                  )}
+                                                </Box>
+                                              );
+                                            }
+                                          )}
+                                        </>
+                                      ),
+                                    });
+                                  }}
+                                >
+                                  <IconInfoCircle size={14} />
+                                </ActionIcon>
+                              ) : (
+                                <></>
+                              )}
+                            </TypographyStylesProvider> */}
                           </Table.Td>
                         </Table.Tr>
                       </>
