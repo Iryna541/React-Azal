@@ -256,25 +256,35 @@ function RussSetup() {
     setFilter(tempFilter);
   };
 
-  const handleFilterCheckbox = (
-    value: "weekly" | "monthly" | "periodically"
-  ) => {
-    if (selectedFilter === value) return;
-    else setSelectedFilter(value);
-  };
-
-  useEffect(() => {
-    if (selectedFilter === "weekly") {
-      setStartDate(filter?.startDate.format("YYYY-MM-DD"));
-      setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-    } else if (selectedFilter === "monthly") {
-      setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
-      setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-    } else if (selectedFilter === "periodically") {
-      setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
-      setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+  const handleFilterCheckbox = (value: "weekly" | "monthly" | "periodically" ) => {
+    if(selectedFilter === value) return;
+    else {
+      if(value === "weekly"){
+        setStartDate(filter?.startDate.format("YYYY-MM-DD"));
+        setEndDate(filter?.endDate.format("YYYY-MM-DD"));
+      } else if(value === "monthly"){
+        setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
+        setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
+      } else if(value === "periodically"){
+        setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
+        setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+      }
+      setSelectedFilter(value)
     }
-  }, [selectedFilter]);
+  }
+
+  // useEffect(() => {
+  //   if(selectedFilter === "weekly"){
+  //     setStartDate(filter?.startDate.format("YYYY-MM-DD"));
+  //     setEndDate(filter?.endDate.format("YYYY-MM-DD"));
+  //   } else if(selectedFilter === "monthly"){
+  //     setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
+  //     setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
+  //   } else if(selectedFilter === "periodically"){
+  //     setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
+  //     setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+  //   }
+  // }, [selectedFilter, filter])
 
   return (
     <Layout>
