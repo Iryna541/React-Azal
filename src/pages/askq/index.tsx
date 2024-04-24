@@ -298,7 +298,7 @@ function RussSetup() {
       <Flex
         style={{ minWidth: 1150 }}
         justify={"space-between"}
-        align={"center"}
+        align={"end"}
         mt={20}
       >
         <Flex justify={"end"} columnGap={10}>
@@ -320,7 +320,7 @@ function RussSetup() {
                   minDate={moment().startOf("year").toDate()}
                   maxDate={moment().endOf("year").toDate()}
                   value={filter?.startDate}
-                  w={"160px"}
+                  w={"140px"}
                   placeholder="Start Date"
                   onChange={(value) => handleFilterChange(value, "startDate")}
                 />
@@ -331,7 +331,7 @@ function RussSetup() {
                   maxDate={moment().endOf("year").toDate()}
                   value={filter?.endDate}
                   disabled={true}
-                  w={"160px"}
+                  w={"150px"}
                   placeholder="Start Date"
                   onChange={(value) => handleFilterChange(value, "endDate")}
                 />
@@ -356,7 +356,7 @@ function RussSetup() {
                   minDate={moment().startOf("year").toDate()}
                   maxDate={moment().endOf("year").toDate()}
                   value={filter?.monthlyStartDate}
-                  w={"160px"}
+                  w={"150px"}
                   placeholder="Select Month"
                   onChange={(value) =>
                     handleFilterChange(value, "monthlyMonth")
@@ -382,7 +382,7 @@ function RussSetup() {
                 <Select
                   value={"Jan-June"}
                   placeholder="Select Quarter"
-                  w={"160px"}
+                  w={"150px"}
                   disabled={true}
                   data={[{ label: "Jan-June", value: "Jan-June" }]}
                   onChange={(value) =>
@@ -399,6 +399,7 @@ function RussSetup() {
           <Select
             placeholder="Pick value"
             allowDeselect={false}
+            w={"140px"}
             data={
               configurations?.is_partner === 1 ||
               configurations?.role.role_id === 2

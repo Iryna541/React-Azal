@@ -160,7 +160,7 @@ export function ModalContent({ storeId }: { storeId: string }) {
     retention: 0,
     glv: 0,
     revs: 0,
-  }
+  };
 
   if (data) {
     storeRatings.acr = data.chart2[0].stores.find(
@@ -178,10 +178,9 @@ export function ModalContent({ storeId }: { storeId: string }) {
     storeRatings.glv = data.chart2[4].stores.find(
       (item) => item.store_id === parseInt(storeId)
     )!.rating;
-    storeRatings.revs =
-      data.chart2[5].stores.find(
-        (item) => item.store_id === parseInt(storeId)
-      )!.rating;
+    storeRatings.revs = data.chart2[5].stores.find(
+      (item) => item.store_id === parseInt(storeId)
+    )!.rating;
 
     storeScores.acr = data.chart2[0].stores.find(
       (item) => item.store_id === parseInt(storeId)
@@ -203,8 +202,10 @@ export function ModalContent({ storeId }: { storeId: string }) {
     )!.score;
 
     for (let i = 0; i < data?.chart1?.length; i++) {
-      const store = data.chart1[i].stores.find(st => st.store_id === parseInt(storeId));
-      if(store){
+      const store = data.chart1[i].stores.find(
+        (st) => st.store_id === parseInt(storeId)
+      );
+      if (store) {
         fssScore = store.score;
         break;
       }
@@ -215,93 +216,196 @@ export function ModalContent({ storeId }: { storeId: string }) {
     <Stack>
       <Flex justify="space-between">
         <Text>FSS Score</Text>
-        <Text fw={600}>{fssScore}</Text>
+        {
+          data ? (
+            <Text fw={600}>{fssScore}</Text>
+          ) : (
+            <Loader />
+          )
+        }
       </Flex>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>ACR</Text>
+          <Text>ACR</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.acr}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>{storeScores.acr}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
-        <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.acr} {" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+        <Grid.Col span={1} style={{ justifyContent: "end" }}>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.acr}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>SOS</Text>
+          <Text>SOS</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.sos}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>{storeScores.sos}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.sos} {" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.sos}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>Training Rate</Text>
+          <Text>Training Rate</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.training_rate}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>
+              {storeScores.training_rate}
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.training_rate} {" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.training_rate}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>Retention</Text>
+          <Text>Retention</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.retention}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>{storeScores.retention}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.retention} {" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.retention}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>GLV</Text>
+          <Text>GLV</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.glv}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>{storeScores.glv}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.glv}{" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.glv}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
       <Grid grow>
         <Grid.Col span={1}>
-        <Text>REVs</Text>
+          <Text>REVs</Text>
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'center'}}>{storeScores.revs}</Text>
+          {data ? (
+            <Text style={{ textAlign: "center" }}>{storeScores.revs}</Text>
+          ) : (
+            <Text style={{ textAlign: "center" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
         <Grid.Col span={1}>
-        <Text style={{textAlign: 'end'}}>
-          {storeRatings.revs} {" "}
-          <IconStarFilled height={14} width={14} style={{ color: "#FAC84E" }} />
-        </Text>
+          {data ? (
+            <Text style={{ textAlign: "end" }}>
+              {storeRatings.revs}{" "}
+              <IconStarFilled
+                height={14}
+                width={14}
+                style={{ color: "#FAC84E" }}
+              />
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "end" }}>
+              <Loader />
+            </Text>
+          )}
         </Grid.Col>
       </Grid>
-  
     </Stack>
   );
 }

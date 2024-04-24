@@ -56,6 +56,17 @@ export function FSSBreakdownChart({
         domain: [0, 5],
         tickCount: 10,
         interval: 1,
+        tickLine: false,
+        style: {
+          fontWeight: '800',
+          color: 'black'
+        }
+      }}
+      xAxisProps={{
+        style: {
+          fontWeight: '800',
+          color: 'black'
+        }
       }}
       barChartProps={{ margin: { top: 20 } }}
       h={300}
