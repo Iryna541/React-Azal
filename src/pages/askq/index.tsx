@@ -51,6 +51,7 @@ import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import moment from 'moment';
 
 const stats = [
   {
@@ -113,24 +114,24 @@ function RussSetup() {
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
-  const [selectedFilter, setSelectedFilter] = useState<"weekly" | "monthly" | "quarterly" | "anually">("weekly")
+  const [selectedFilter, setSelectedFilter] = useState<"weekly" | "monthly" | "periodically">("monthly")
+  const [startDate, setStartDate] = useState(moment().startOf('month').format('YYYY-MM-DD'));
+  const [endDate, setEndDate] = useState(moment().endOf('month').format('YYYY-MM-DD'));
   const [filter, setFilter] = useState<{[key: string]: any}>({
-    startDate: new Date(),
-    endDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-    monthlyMonth: null,
-    monthlyYear: null,
-    quarterlyQuarter: '',
-    quarterlyYear: null,
-    annuallyYear: null,
+    startDate: moment().startOf('isoWeek'),
+    endDate: moment().endOf('isoWeek'),
+    monthlyStartDate: moment().startOf('month'),
+    monthlyEndDate: moment().endOf('month'),
+    periodicalStartDate: moment('01/01/2024'),
+    periodicalEndDate: moment('06/30/2024'),
+    periodical: 'Jan-June',
   })
   const [managerId, setManagerId] = useState("");
   const { data: usersData } = useGetUsers();
-  const { data } = useBkAnalyticsCharts({ isMystores, managerId: isMystores ? user?.user_id.toString() : managerId });
+  const { data } = useBkAnalyticsCharts({ isMystores, managerId: isMystores ? user?.user_id.toString() : managerId, startDate: startDate, endDate: endDate});
   const { boxref1 } = useInsightsContext();
 
   const { data: managers } = useGetManagers();
-
-  console.log({managers});
 
   const managerList =
     managers?.users
@@ -148,7 +149,7 @@ function RussSetup() {
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
-    setManagerId(value);
+    setManagerId( value === "All Stores"  ? "" : value);
   };
 
   const sortedManagersData: BkManagerRankingData = (managersRankingData ?? [])
@@ -223,24 +224,108 @@ function RussSetup() {
     }
   };
   const handleFilterChange = (value: any, key: string) => {
+    if(key === "startDate"){
+      setFilter({
+       ...filter,
+        [key]:  moment(value).startOf('isoWeek'),
+        endDate: moment(value).endOf('isoWeek'),
+      });
+    }
+    if(key === 'monthlyStartDate'){
+      setFilter({
+       ...filter,
+        [key]:  moment(value).startOf('month'),
+        monthlyEndDate: moment(value).endOf('month'),
+      });
+    }
     const tempFilter = {...filter};
     tempFilter[key] = value;
     setFilter(tempFilter);
   }
 
-  const handleFilterCheckbox = (value: "weekly" | "monthly" | "quarterly" | "anually") => {
+  const handleFilterCheckbox = (value: "weekly" | "monthly" | "periodically" ) => {
     if(selectedFilter === value) return;
     else setSelectedFilter(value);
   }
+
+  useEffect(() => {
+    if(selectedFilter === "weekly"){
+      setStartDate(filter?.startDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.endDate.format("YYYY-MM-DD"));
+    } else if(selectedFilter === "monthly"){
+      setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
+    } else if(selectedFilter === "periodically"){
+      setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
+      setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
+    }
+  }, [selectedFilter])
 
   // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
   console.log("topMathedDtlstores:", topMathedDtlstores);
   console.log("bottomMathedDtlstores:", bottomMathedDtlstores);
   console.log({filter});
+  console.log({data});
   return (
     <Layout>
       <Flex justify="space-between">
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
+      </Flex>
+      <Flex style={{minWidth: 1150}} justify={"space-between"} align={"center"} mt={20}>
+        <Flex justify={"end"}  columnGap={10}>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={<Text fz={14} fw={500} mb={5}>By Weeks</Text>}
+              checked={selectedFilter === "weekly"}
+              onChange={() => handleFilterCheckbox("weekly")}
+            />
+            <Flex columnGap={5} justify={"space-between"}>
+              <Flex>
+                <DatePickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.startDate} w={"160px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "startDate")}/>
+              </Flex>
+              <Flex>
+                <DatePickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.endDate} disabled={true} w={"160px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "endDate")}/>
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={<Text fz={14} fw={500} mb={5}>Monthly</Text>}
+              checked={selectedFilter === "monthly"}
+              onChange={() => handleFilterCheckbox("monthly")}
+            />
+            <Flex columnGap={5}>
+              <Flex justify={"space-between"}>
+                <MonthPickerInput minDate={moment().startOf('year').toDate()} maxDate={moment().endOf('year').toDate()} value={filter?.monthlyStartDate} w={"160px"} placeholder="Select Month" onChange={(value) => handleFilterChange(value, "monthlyMonth")}/>
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex direction={"column"}>
+            <Checkbox
+              size="sm"
+              radius={4}
+              label={<Text fz={14} fw={500} mb={5}>Periodically</Text>}
+              checked={selectedFilter === "periodically"}
+              onChange={() => handleFilterCheckbox("periodically")}
+            />
+            <Flex columnGap={5}>
+              <Flex justify={"space-between"}>
+                <Select
+                  value={"Jan-June"}
+                  placeholder="Select Quarter"
+                  w={"160px"}
+                  disabled={true}
+                  data={[{label: "Jan-June", value: "Jan-June"}]}
+                  onChange={(value) => handleFilterChange(value, "quarterlyQuarter")}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+        </Flex>
         <Flex gap={4}>
           <Select
             placeholder="Pick value"
@@ -269,62 +354,6 @@ function RussSetup() {
           >
             Send Rankings by Email
           </Button>
-        </Flex>
-      </Flex>
-      <Flex justify={"start"} columnGap={10} mt={16}>
-        <Flex direction={"column"}>
-          <Checkbox
-            size="sm"
-            radius={4}
-            label={<Text fz={14} fw={500} mb={5}>By Weeks</Text>}
-            checked={selectedFilter === "weekly"}
-            onChange={() => handleFilterCheckbox("weekly")}
-          />
-          <Flex columnGap={5} justify={"space-between"}>
-            <Flex>
-              <DatePickerInput value={filter?.startDate} w={"130px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "startDate")}/>
-            </Flex>
-            <Flex>
-              <DatePickerInput value={filter?.endDate} disabled={true} w={"130px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "endDate")}/>
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex direction={"column"}>
-          <Checkbox
-            size="sm"
-            radius={4}
-            label={<Text fz={14} fw={500} mb={5}>Monthly</Text>}
-            checked={selectedFilter === "monthly"}
-            onChange={() => handleFilterCheckbox("monthly")}
-          />
-          <Flex columnGap={5}>
-            <Flex justify={"space-between"}>
-              <MonthPickerInput value={filter?.monthlyMonth} w={"130px"} placeholder="Select Month" onChange={(value) => handleFilterChange(value, "monthlyMonth")}/>
-            </Flex>
-            <Flex justify={"space-between"}>
-              <YearPickerInput value={filter?.monthlyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "monthlyYear")}/>
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex direction={"column"}>
-          <Checkbox
-            size="sm"
-            radius={4}
-            label={<Text fz={14} fw={500} mb={5}>Quarterly</Text>}
-            checked={selectedFilter === "quarterly"}
-            onChange={() => handleFilterCheckbox("quarterly")}
-          />
-          <Flex columnGap={5}>
-            <Flex justify={"space-between"}>
-              <Select
-                value={filter?.quarterlyQuarter}
-                placeholder="Select Quarter"
-                w={"130px"}
-                data={[{label: "Q1", value: "q1"}, {label: "Q2", value: "q2"}, {label: "Q3", value: "q3"}, {label: "Q$", value: "q4"}]}
-                onChange={(value) => handleFilterChange(value, "quarterlyQuarter")}
-              />
-            </Flex>
-          </Flex>
         </Flex>
       </Flex>
       <SimpleGrid ref={boxref1} cols={2} my="lg">
@@ -356,7 +385,7 @@ function RussSetup() {
               data={data.chart2.map((item) => ({
                 ...item,
                 Avg: item.AVG,
-                score: typeof item.score === "string" ? parseInt(item.score).toFixed(1) : item.score.toFixed(1)
+                score: item.score ? typeof item.score === "string" ? parseInt(item.score).toFixed(1) : item.score.toFixed(1) : 0
               }))}
             />
           </TitleBox>

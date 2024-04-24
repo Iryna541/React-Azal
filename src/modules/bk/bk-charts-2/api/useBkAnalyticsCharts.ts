@@ -36,9 +36,18 @@ export type AnalyticsChartsResponse = {
 export async function getBkAnalyticsCharts(
   isMystores: boolean,
   managerId?: string,
+  startDate?: string,
+  endDate?: string
 ): Promise<AnalyticsChartsResponse> {
+  let url = "";
+  if(managerId){
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`
+  } else {
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&start_date=${startDate}&end_date=${endDate}`
+  }
   return axios
-    .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}`)
+    // .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}&start_date=${startDate}&end_date=${endDate}`)
+    .get(url)
     .then((res) => res.data);
 }
 
@@ -46,16 +55,20 @@ export type UseBkAnalyticsChartsOptions = {
   config?: UseQueryOptions<AnalyticsChartsResponse>;
   isMystores?: boolean;
   managerId?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export function useBkAnalyticsCharts({
   config,
   isMystores = false,
-  managerId = ""
+  managerId = "",
+  startDate,
+  endDate,
 }: UseBkAnalyticsChartsOptions = {}) {
   return useQuery({
-    queryKey: ["bk-analytics-charts", isMystores, managerId],
-    queryFn: () => getBkAnalyticsCharts(isMystores, managerId),
+    queryKey: ["bk-analytics-charts", isMystores, managerId, startDate, endDate],
+    queryFn: () => getBkAnalyticsCharts(isMystores, managerId, startDate, endDate),
     ...config,
   });
 }
