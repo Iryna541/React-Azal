@@ -40,10 +40,15 @@ export async function getBkAnalyticsCharts(
   endDate?: string
 ): Promise<AnalyticsChartsResponse> {
   let url = "";
-  if(managerId){
+  console.log({"data": !!managerId && !!startDate && !!endDate});
+  if(managerId && startDate && endDate){
     url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`
-  } else {
+  } else if(startDate && endDate) {
     url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&start_date=${startDate}&end_date=${endDate}`
+  } else if (managerId) {
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}`
+  } else {
+    url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}`
   }
   return axios
     // .get(`/analytics/getAnalyticsCharts?onlymystores=${isMystores ? 1 : 0}&managerId=${managerId || ""}&start_date=${startDate}&end_date=${endDate}`)
