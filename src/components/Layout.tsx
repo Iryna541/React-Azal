@@ -31,6 +31,7 @@ import {
 } from "@tabler/icons-react";
 import { storage } from "~/lib/storage";
 import { BkLogo } from "~/modules/bk/bk-chat/BkLogo";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ICON_SIZE = 26;
 
@@ -211,6 +212,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
 function UserMenu({ user }: { user: UserData }) {
   const { refetch } = useUser();
+  const queryClient = useQueryClient();
+
   return (
     <Menu
       styles={{
@@ -248,6 +251,7 @@ function UserMenu({ user }: { user: UserData }) {
           onClick={() => {
             storage.clearToken();
             storage.clearCompanyId();
+            queryClient.clear();
             refetch();
           }}
           leftSection={<IconLogout style={{ width: 16, height: 16 }} />}

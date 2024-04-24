@@ -114,6 +114,7 @@ function RussSetup() {
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
+
   const [selectedFilter, setSelectedFilter] = useState<
     "weekly" | "monthly" | "periodically"
   >("monthly");
@@ -160,6 +161,7 @@ function RussSetup() {
 
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
+    console.log("value:", value);
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
     setManagerId(value === "All Stores" ? "" : value);
   };
@@ -256,22 +258,24 @@ function RussSetup() {
     setFilter(tempFilter);
   };
 
-  const handleFilterCheckbox = (value: "weekly" | "monthly" | "periodically" ) => {
-    if(selectedFilter === value) return;
+  const handleFilterCheckbox = (
+    value: "weekly" | "monthly" | "periodically"
+  ) => {
+    if (selectedFilter === value) return;
     else {
-      if(value === "weekly"){
+      if (value === "weekly") {
         setStartDate(filter?.startDate.format("YYYY-MM-DD"));
         setEndDate(filter?.endDate.format("YYYY-MM-DD"));
-      } else if(value === "monthly"){
+      } else if (value === "monthly") {
         setStartDate(filter?.monthlyStartDate.format("YYYY-MM-DD"));
         setEndDate(filter?.monthlyEndDate.format("YYYY-MM-DD"));
-      } else if(value === "periodically"){
+      } else if (value === "periodically") {
         setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
         setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
       }
-      setSelectedFilter(value)
+      setSelectedFilter(value);
     }
-  }
+  };
 
   // useEffect(() => {
   //   if(selectedFilter === "weekly"){
@@ -390,7 +394,8 @@ function RussSetup() {
             </Flex>
           </Flex>
         </Flex>
-        <Flex gap={4}>
+
+        <Flex gap={4} mt={28}>
           <Select
             placeholder="Pick value"
             allowDeselect={false}
