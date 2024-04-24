@@ -3,10 +3,19 @@ import axios from "axios";
 
 export type ManagerPlanRow = {
   managers_name: string;
-  subRows: Array<{
+  subRows: {
+    order: number;
     shift: string;
-    insights: string;
-  }>;
+    insights: {
+      store_id: number;
+      insight: string;
+      has_employee: boolean;
+      employees: {
+        date: string;
+        employee: Array<string>;
+      }[];
+    }[];
+  }[];
 };
 
 export type ManagerPlanResponse = Array<ManagerPlanRow>;
@@ -16,7 +25,8 @@ export async function getBkManagerPlan(
 ): Promise<ManagerPlanResponse> {
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-manager-plan?type=${type}`
+      // `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-manager-plan?type=${type}`
+      `http://localhost:3000/bk-manager-plan?type=${type}`
     ) // Adjusted URL for manager plans
     .then((res) => res.data);
 }
