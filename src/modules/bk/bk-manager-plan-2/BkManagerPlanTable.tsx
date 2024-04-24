@@ -15,7 +15,9 @@ import {
   ActionIcon,
   Box,
   Group,
+  List,
   Pagination,
+  ScrollArea,
   Select,
   Table,
   Text,
@@ -198,20 +200,17 @@ export function BkManagerPlanTable({
                                     <>
                                       {el.employees.map((em, index) => {
                                         return (
-                                          <Box key={index}>
-                                            <Text
-                                              key={index}
-                                              fw={700}
-                                              mb={"sm"}
-                                            >
-                                              {em.date}
-                                            </Text>
-                                            {em.employee.map((el, idx) => {
-                                              return (
-                                                <Text key={idx}>{el}</Text>
-                                              );
-                                            })}
-                                          </Box>
+                                          <ScrollArea scrollbars="y">
+                                            <List key={index} pl={"sm"}>
+                                              {em.employee.map((el, idx) => {
+                                                return (
+                                                  <List.Item key={idx}>
+                                                    {el}
+                                                  </List.Item>
+                                                );
+                                              })}
+                                            </List>
+                                          </ScrollArea>
                                         );
                                       })}
                                     </>
