@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Divider,
   Flex,
   Loader,
@@ -17,7 +18,7 @@ import {
 } from "@mantine/core";
 import { IconFileExport, IconSend } from "@tabler/icons-react";
 import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
-import { Calendar } from "@mantine/dates";
+import { Calendar, DatePickerInput, MonthPickerInput, YearPickerInput } from "@mantine/dates";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import { IconBubble, IconSaleTag, IconSparkles } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
@@ -112,14 +113,24 @@ function RussSetup() {
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const { data: managersRankingData, isPending } = useStoreRanking();
+  const [selectedFilter, setSelectedFilter] = useState<"weekly" | "monthly" | "quarterly" | "anually">("weekly")
+  const [filter, setFilter] = useState<{[key: string]: Date | string | null}>({
+    startDate: new Date(),
+    endDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+    monthlyMonth: null,
+    monthlyYear: null,
+    quarterlyQuarter: '',
+    quarterlyYear: null,
+    annuallyYear: null,
+  })
   const [managerId, setManagerId] = useState("");
-  const { data: managersRankingData } = useStoreRanking();
   const { data: usersData } = useGetUsers();
   const { data } = useBkAnalyticsCharts({ isMystores, managerId: isMystores ? user?.user_id.toString() : managerId });
   const { boxref1 } = useInsightsContext();
 
   const { data: managers } = useGetManagers();
 
+  console.log({managers});
 
   const managerList =
     managers?.users
@@ -211,7 +222,21 @@ function RussSetup() {
       console.error("Element not found!");
     }
   };
+  const handleFilterChange = (value: any, key: string) => {
+    const tempFilter = {...filter};
+    tempFilter[key] = value;
+    setFilter(tempFilter);
+  }
 
+  const handleFilterCheckbox = (value: "weekly" | "monthly" | "quarterly" | "anually") => {
+    if(selectedFilter === value) return;
+    else setSelectedFilter(value);
+  }
+
+  // if (configurations?.is_partner !== 1 && configurations?.role.role_id !== 2)
+  console.log("topMathedDtlstores:", topMathedDtlstores);
+  console.log("bottomMathedDtlstores:", bottomMathedDtlstores);
+  console.log({filter});
   return (
     <Layout>
       <Flex justify="space-between">
@@ -219,6 +244,7 @@ function RussSetup() {
         <Flex gap={4}>
           <Select
             placeholder="Pick value"
+            allowDeselect={false}
             data={
               configurations?.is_partner === 1 ||
               configurations?.role.role_id === 2
@@ -245,7 +271,78 @@ function RussSetup() {
           </Button>
         </Flex>
       </Flex>
-      <SimpleGrid ref={boxref1} cols={2} my="lg" id="chartContainer">
+      <Flex justify={"start"} columnGap={10} mt={16}>
+        <Flex direction={"column"}>
+          <Checkbox
+            size="sm"
+            radius={4}
+            label={<Text fz={14} fw={500} mb={5}>By Weeks</Text>}
+            checked={selectedFilter === "weekly"}
+            onChange={() => handleFilterCheckbox("weekly")}
+          />
+          <Flex columnGap={5} justify={"space-between"}>
+            <Flex>
+              <DatePickerInput value={filter?.startDate} w={"130px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "startDate")}/>
+            </Flex>
+            <Flex>
+              <DatePickerInput value={filter?.endDate} disabled={true} w={"130px"} placeholder="Start Date" onChange={(value) => handleFilterChange(value, "endDate")}/>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex direction={"column"}>
+          <Checkbox
+            size="sm"
+            radius={4}
+            label={<Text fz={14} fw={500} mb={5}>Monthly</Text>}
+            checked={selectedFilter === "monthly"}
+            onChange={() => handleFilterCheckbox("monthly")}
+          />
+          <Flex columnGap={5}>
+            <Flex justify={"space-between"}>
+              <MonthPickerInput value={filter?.monthlyMonth} w={"130px"} placeholder="Select Month" onChange={(value) => handleFilterChange(value, "monthlyMonth")}/>
+            </Flex>
+            <Flex justify={"space-between"}>
+              <YearPickerInput value={filter?.monthlyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "monthlyYear")}/>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex direction={"column"}>
+          <Checkbox
+            size="sm"
+            radius={4}
+            label={<Text fz={14} fw={500} mb={5}>Quarterly</Text>}
+            checked={selectedFilter === "quarterly"}
+            onChange={() => handleFilterCheckbox("quarterly")}
+          />
+          <Flex columnGap={5}>
+            <Flex justify={"space-between"}>
+              <Select
+                value={filter?.quarterlyQuarter}
+                placeholder="Select Quarter"
+                w={"130px"}
+                data={[{label: "Q1", value: "q1"}, {label: "Q2", value: "q2"}, {label: "Q3", value: "q3"}, {label: "Q$", value: "q4"}]}
+                onChange={(value) => handleFilterChange(value, "quarterlyQuarter")}
+              />
+            </Flex>
+            <Flex justify={"space-between"}>
+              <YearPickerInput value={filter?.quarterlyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "quarterlyYear")}/>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Flex direction={"column"}>
+          <Checkbox
+            size="sm"
+            radius={4}
+            label={<Text fz={14} fw={500} mb={5}>Annually</Text>}
+            checked={selectedFilter === "anually"}
+            onChange={() => handleFilterCheckbox("anually")}
+          />
+          <Flex justify={"space-between"}>
+            <YearPickerInput value={filter?.annuallyYear} w={"130px"} placeholder="Select Year" onChange={(value) => handleFilterChange(value, "annuallyYear")}/>
+          </Flex>
+        </Flex>
+      </Flex>
+      <SimpleGrid ref={boxref1} cols={2} my="lg">
         {data?.chart1 ? (
           <TitleBox
             title="FSS Score Overview"
