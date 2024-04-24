@@ -417,7 +417,7 @@ function RussSetup() {
           </Button>
         </Flex>
       </Flex>
-      <SimpleGrid ref={boxref1} cols={2} my="lg">
+      <SimpleGrid ref={boxref1} cols={2} my="lg" id="chartContainer">
         {data?.chart1 ? (
           <TitleBox
             title="FSS Score Overview"
