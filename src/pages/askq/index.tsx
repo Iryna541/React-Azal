@@ -285,7 +285,7 @@ function RussSetup() {
       setStartDate(filter?.periodicalStartDate.format("YYYY-MM-DD"));
       setEndDate(filter?.periodicalEndDate.format("YYYY-MM-DD"));
     }
-  }, [selectedFilter])
+  }, [selectedFilter, filter])
 
   console.log({filter});
 
