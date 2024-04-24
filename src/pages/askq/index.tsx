@@ -141,6 +141,7 @@ function RussSetup() {
     startDate: startDate,
     endDate: endDate,
   });
+
   const { boxref1 } = useInsightsContext();
 
   const { data: managers } = useGetManagers();
@@ -161,7 +162,6 @@ function RussSetup() {
 
   // eslint-disable-next-line
   const handleSelectChange = (value: any) => {
-    console.log("value:", value);
     value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
     setManagerId(value === "All Stores" ? "" : value);
   };
@@ -197,7 +197,11 @@ function RussSetup() {
     setIsExportLoading(true);
     const input = document.getElementById("chartContainer");
     if (input) {
-      const canvas = await html2canvas(input);
+      const canvas = await html2canvas(input, {
+        logging: true,
+        useCORS: true, // Helps with handling cross-origin images
+      });
+
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
         orientation: "landscape", // Set orientation to landscape if the chart is wide
@@ -470,7 +474,7 @@ function RussSetup() {
                 Avg: item.AVG,
                 score: item.score
                   ? typeof item.score === "string"
-                    ? parseInt(item.score).toFixed(1)
+                    ? item.score
                     : item.score.toFixed(1)
                   : 0,
               }))}
