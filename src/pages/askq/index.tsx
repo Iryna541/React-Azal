@@ -291,8 +291,6 @@ function RussSetup() {
     }
   }, [selectedFilter, filter]);
 
-  console.log({ filter });
-
   return (
     <Layout>
       <Flex justify="space-between" align="center">
