@@ -171,7 +171,7 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                   </Table.Tr>
                   {row.getIsExpanded() && (
                     <Table.Tr key="exapanded" px={"sm"}>
-                      <Table.Td colSpan={5}>
+                      <Table.Td colSpan={6}>
                         <Flex>
                           <TypographyStylesProvider ref={boxRef} w={"90%"}>
                             <div
