@@ -36,7 +36,7 @@ export default function App() {
           <ModalsProvider>
             <AuthContextProvider>
               <Entry />
-              <ReactQueryDevtools />
+              {/* <ReactQueryDevtools /> */}
             </AuthContextProvider>
           </ModalsProvider>
         </MantineProvider>
