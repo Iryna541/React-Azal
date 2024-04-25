@@ -44,7 +44,7 @@ export default function FSSScoreOverviewChart({
             fontWeight: 600,
             label: {
               fontWeight: 600,
-              fill: "hsl(var(--foreground))",
+              color: "hsl(var(--foreground) / 0.75)",
             },
             legendType: "square",
           }}

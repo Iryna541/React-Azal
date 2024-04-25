@@ -58,14 +58,14 @@ export function FSSBreakdownChart({
         interval: 1,
         tickLine: false,
         style: {
-          fontWeight: "800",
-          color: "black",
+          fontWeight: "600",
+          color: "hsl(var(--foreground) / 0.75)",
         },
       }}
       xAxisProps={{
         style: {
-          fontWeight: "800",
-          color: "black",
+          fontWeight: "600",
+          color: "hsl(var(--foreground) / 0.75)",
         },
       }}
       barChartProps={{ margin: { top: 20 } }}
@@ -116,12 +116,11 @@ export function FSSBreakdownChart({
                     (store: {
                       store_id: string;
                       rating: number;
-                      score: any;
+                      score: number;
                     }) => {
                       return (
                         <Grid>
                           <Grid.Col span={4}>
-                            {" "}
                             <Text size="sm" style={{ textAlign: "center" }}>
                               {store.store_id}
                             </Text>
@@ -166,7 +165,11 @@ export function FSSBreakdownChart({
             dataKey="formatted_value"
             position="top"
             offset={10}
-            style={{ fontSize: 12, fill: "black", fontWeight: 800 }}
+            style={{
+              fontSize: 12,
+              fill: "hsl(var(--foreground) / 0.75)",
+              fontWeight: 700,
+            }}
           />
           <LabelList
             dataKey="score"
@@ -175,7 +178,7 @@ export function FSSBreakdownChart({
             fill="white"
             style={{
               fontSize: 12,
-              fontWeight: 900,
+              fontWeight: 800,
             }}
           />
         </Bar>
