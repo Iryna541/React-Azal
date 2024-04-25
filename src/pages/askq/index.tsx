@@ -44,7 +44,10 @@ import {
   BkManagerRankingData,
   BkManagerRankingTable,
 } from "~/modules/bk/bk-manager-ranking-table/BkManagerRankingTable";
-import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
+import {
+  GetStoreRankingResponse,
+  useStoreRanking,
+} from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { useGetUsers } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
@@ -113,6 +116,8 @@ function RussSetup() {
   const { user, configurations } = useUser();
   const [isMystores, setIsMystores] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
   const { data: managersRankingData, isPending } = useStoreRanking();
 
   const [selectedFilter, setSelectedFilter] = useState<
@@ -160,12 +165,6 @@ function RussSetup() {
       return [];
     }) || [];
 
-  // eslint-disable-next-line
-  const handleSelectChange = (value: any) => {
-    value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
-    setManagerId(value === "All Stores" ? "" : value);
-  };
-
   const sortedManagersData: BkManagerRankingData = (managersRankingData ?? [])
     .sort((a, b) => {
       return parseInt(a.overall_ranking) - parseInt(b.overall_ranking);
@@ -190,6 +189,46 @@ function RussSetup() {
 
   const bottomMathedDtlstores = bottomFiveManager.filter((manager) =>
     DtlStores.includes(manager.storeId.toString())
+  );
+
+  // eslint-disable-next-line
+  const handleSelectChange = (value: any, label: any) => {
+    setSelectedOption(label.label);
+    value === "My Stores" ? setIsMystores(true) : setIsMystores(false);
+    setManagerId(value === "All Stores" ? "" : value);
+  };
+
+  const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
+    managersRankingData || []
+  );
+  useEffect(() => {
+    if (managersRankingData) {
+      setFilteredData(managersRankingData);
+    }
+  }, [managersRankingData]);
+
+  useEffect(() => {
+    if (selectedOption === "All Stores" || !selectedOption) {
+      if (managersRankingData) setFilteredData(managersRankingData);
+      return;
+    }
+    const selectedManagerStores = managers?.users
+      .find((user) => user.name === selectedOption)
+      ?.regions.map((region) => region.region_title);
+
+    const filteredStoreRanking = managersRankingData?.filter((item) =>
+      selectedManagerStores?.includes(item.store_id.toString())
+    );
+
+    if (filteredStoreRanking) setFilteredData(filteredStoreRanking);
+    // eslint-disable-next-line
+  }, [selectedOption]);
+
+  const filteredTopFiveManagers = filteredData.flatMap((item) =>
+    topFiveManager.filter((el) => el.storeId === item.store_id)
+  );
+  const filteredBottomFiveManagers = filteredData.flatMap((item) =>
+    bottomFiveManager.filter((el) => el.storeId === item.store_id)
   );
 
   // Function to export chart as PDF
@@ -303,11 +342,7 @@ function RussSetup() {
             data={
               configurations?.is_partner === 1 ||
               configurations?.role.role_id === 2
-                ? [
-                    { label: "All Stores", value: "All Stores" },
-                    { label: "My Stores", value: "My Stores" },
-                    ...managerList,
-                  ]
+                ? [{ label: "All Stores", value: "All Stores" }, ...managerList]
                 : [
                     { label: "All Stores", value: "All Stores" },
                     { label: "My Stores", value: "My Stores" },
@@ -489,13 +524,13 @@ function RussSetup() {
           <>
             <BkManagerRankingTable
               title="Top 5 Store Managers"
-              data={topFiveManager}
+              data={filteredTopFiveManagers}
               managersPic={usersData}
               isPending={isPending}
             />
             <BkManagerRankingTable
               title="Bottom 5 Store Managers"
-              data={bottomFiveManager}
+              data={filteredBottomFiveManagers}
               isRed
               managersPic={usersData}
               isPending={isPending}
