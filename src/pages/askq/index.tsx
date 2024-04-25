@@ -49,52 +49,18 @@ import {
   useStoreRanking,
 } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 import { useGetUsers } from "~/modules/bk/bk-manager-ranking-table/api/useGetManagerManagersPic";
-import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
+import {
+  GetManagersResponse,
+  useGetManagers,
+} from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import SendInsightModal from "~/modules/bk/bk-store-ranking/SendInsightsModal";
 import { modals } from "@mantine/modals";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import moment from "moment";
 
-const stats = [
-  {
-    backgroundColor: "#E5FFF9",
-    iconBackgroundColor: "#3BE8B0",
-    iconColor: "#fff",
-    buttonColor: "#3BE8B0",
-    title: "Sales",
-    description:
-      "30 stores increased sales by over 5.2% while 8 stores saw a 4.2% decrease in the last week.",
-    value: "$24,034",
-    icon: <IconSaleTag />,
-  },
-  {
-    backgroundColor: "#FFFAED",
-    iconBackgroundColor: "#FFEDBD",
-    iconColor: "#FFB900",
-    buttonColor: "#FFB900",
-    title: "Inventory",
-    description:
-      "12 of 75 stores ran out of buns by evening shift before the restock the next day.",
-    value: "$24,034",
-    icon: <IconBubble />,
-  },
-  {
-    backgroundColor: "#FFF5F5",
-    iconBackgroundColor: "#FFE0E1",
-    iconColor: "#FD636B",
-    buttonColor: "#FD636B",
-    title: "Labor",
-    description:
-      "32 West Blvd, 140 Main St. and 23 King St. were overstaffed between the hours of 9pm and 11pm.",
-    value: "$24,034",
-    icon: <IconSaleTag />,
-  },
-];
-
 export default function DashboardPage() {
   const { user } = useUser();
-
   return (
     <ProtectedRoute>
       {user?.company_id === 211 ? (
@@ -136,8 +102,11 @@ function RussSetup() {
     monthlyEndDate: moment().endOf("month"),
     periodicalStartDate: moment("01/01/2024"),
     periodicalEndDate: moment("06/30/2024"),
+    // eslint-disable-next-line
+    // @ts-ignore
     periodical: "Jan-June",
   });
+
   const [managerId, setManagerId] = useState("");
   const { data: usersData } = useGetUsers();
   const { data } = useBkAnalyticsCharts({
@@ -153,9 +122,13 @@ function RussSetup() {
 
   const managerList =
     managers?.users
-      .filter((user: any) => user.role_title === "Manager")
-      .map((user: any) => ({ label: user.name, value: user.id.toString() })) ??
-    [];
+      .filter(
+        (user: GetManagersResponse["users"][0]) => user.role_title === "Manager"
+      )
+      .map((user: GetManagersResponse["users"][0]) => ({
+        label: user.name,
+        value: user.id.toString(),
+      })) ?? [];
 
   const DtlStores =
     usersData?.users?.flatMap((item) => {
@@ -524,39 +497,47 @@ function RussSetup() {
         {configurations?.is_partner === 1 ||
         configurations?.role.role_id === 2 ? (
           <>
-            <BkManagerRankingTable
-              title="Top 5 Store Managers"
-              data={filteredTopFiveManagers}
-              managersPic={usersData}
-              isPending={isPending}
-              emoji="&#128532;"
-            />
-            <BkManagerRankingTable
-              title="Bottom 5 Store Managers"
-              data={filteredBottomFiveManagers}
-              isRed
-              managersPic={usersData}
-              isPending={isPending}
-              emoji="&#128522;"
-            />
+            <Box mt="sm">
+              <BkManagerRankingTable
+                title="Top 5 Store Managers"
+                data={filteredTopFiveManagers}
+                managersPic={usersData}
+                isPending={isPending}
+                emoji="&#128532;"
+              />
+            </Box>
+            <Box mt="sm">
+              <BkManagerRankingTable
+                title="Bottom 5 Store Managers"
+                data={filteredBottomFiveManagers}
+                isRed
+                managersPic={usersData}
+                isPending={isPending}
+                emoji="&#128522;"
+              />
+            </Box>
           </>
         ) : (
           <>
-            <BkManagerRankingTable
-              title="Top 5 Store Managers"
-              data={topMathedDtlstores}
-              managersPic={usersData}
-              emoji="&#128532;"
-              isPending={isPending}
-            />
-            <BkManagerRankingTable
-              title="Bottom 5 Store Managers"
-              data={bottomMathedDtlstores}
-              isRed
-              managersPic={usersData}
-              emoji="&#128522;"
-              isPending={isPending}
-            />
+            <Box mt="sm">
+              <BkManagerRankingTable
+                title="Top 5 Store Managers"
+                data={topMathedDtlstores}
+                managersPic={usersData}
+                emoji="&#128532;"
+                isPending={isPending}
+              />
+            </Box>
+            <Box mt="sm">
+              <BkManagerRankingTable
+                title="Bottom 5 Store Managers"
+                data={bottomMathedDtlstores}
+                isRed
+                managersPic={usersData}
+                emoji="&#128522;"
+                isPending={isPending}
+              />
+            </Box>
           </>
         )}
       </SimpleGrid>
@@ -577,10 +558,11 @@ function ShawnSalemaSetup() {
     if (dates.length > 0 && selectedOption === null) {
       setSelectedOption(dates[0]);
     }
+    // eslint-disable-next-line
   }, [dates]);
 
-  const handleSelectChange = (value: any) => {
-    setSelectedOption(value);
+  const handleSelectChange = (value: string | null) => {
+    if (value) setSelectedOption(value);
   };
 
   return (
@@ -856,3 +838,39 @@ export function FallbackUI() {
     </LayoutWithSidebar>
   );
 }
+
+const stats = [
+  {
+    backgroundColor: "#E5FFF9",
+    iconBackgroundColor: "#3BE8B0",
+    iconColor: "#fff",
+    buttonColor: "#3BE8B0",
+    title: "Sales",
+    description:
+      "30 stores increased sales by over 5.2% while 8 stores saw a 4.2% decrease in the last week.",
+    value: "$24,034",
+    icon: <IconSaleTag />,
+  },
+  {
+    backgroundColor: "#FFFAED",
+    iconBackgroundColor: "#FFEDBD",
+    iconColor: "#FFB900",
+    buttonColor: "#FFB900",
+    title: "Inventory",
+    description:
+      "12 of 75 stores ran out of buns by evening shift before the restock the next day.",
+    value: "$24,034",
+    icon: <IconBubble />,
+  },
+  {
+    backgroundColor: "#FFF5F5",
+    iconBackgroundColor: "#FFE0E1",
+    iconColor: "#FD636B",
+    buttonColor: "#FD636B",
+    title: "Labor",
+    description:
+      "32 West Blvd, 140 Main St. and 23 King St. were overstaffed between the hours of 9pm and 11pm.",
+    value: "$24,034",
+    icon: <IconSaleTag />,
+  },
+];
