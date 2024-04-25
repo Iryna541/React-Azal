@@ -78,7 +78,7 @@ export function BkManagerPlanTable({
     },
   });
 
-  const handleSelectChange = (value: any) => {
+  const handleSelectChange = (value: string | null) => {
     setDtlSelectedOption(value);
   };
 
@@ -89,7 +89,7 @@ export function BkManagerPlanTable({
         placeholder="Pick value"
         data={["All", "Exclude Top 5"]}
         defaultValue="All"
-        m={"sm"}
+        my={"sm"}
         w={"15%"}
         onChange={handleSelectChange}
         allowDeselect={false}

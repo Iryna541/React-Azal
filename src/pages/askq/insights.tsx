@@ -127,6 +127,7 @@ function AdamKlaersSetup() {
 
 function RussSetup() {
   const { data } = useStoreRanking();
+  const { configurations } = useUser();
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
     data || []
@@ -172,6 +173,16 @@ function RussSetup() {
   const handleSelectChange = (value: any) => {
     setSelectedOption(value);
   };
+
+  // for filtering data to admin vs dtl
+  const isAdmin =
+    configurations?.is_partner === 1 || configurations?.role?.role_id === 2;
+
+  const filteredManagerData = isAdmin
+    ? managerData
+    : managerData?.filter((item) => {
+        return item.managers_name === "Dasiell";
+      });
 
   return (
     <Tabs variant="pills" radius="xs" defaultValue="store">
@@ -223,7 +234,7 @@ function RussSetup() {
       <Tabs.Panel value="manager">
         {managerData && (
           <BkManagerPlanTable
-            data={managerData}
+            data={filteredManagerData ?? []}
             setDtlSelectedOption={setDtlSelectedOption}
           />
         )}
