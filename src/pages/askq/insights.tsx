@@ -127,7 +127,7 @@ function AdamKlaersSetup() {
 
 function RussSetup() {
   const { data } = useStoreRanking();
-  const { configurations } = useUser();
+  const { configurations, user } = useUser();
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
     data || []
@@ -181,7 +181,7 @@ function RussSetup() {
   const filteredManagerData = isAdmin
     ? managerData
     : managerData?.filter((item) => {
-        return item.managers_name === "Dasiell";
+        return item.managers_name === user?.name;
       });
 
   return (
