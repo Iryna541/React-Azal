@@ -224,12 +224,14 @@ function RussSetup() {
     // eslint-disable-next-line
   }, [selectedOption]);
 
-  const filteredTopFiveManagers = filteredData.flatMap((item) =>
-    topFiveManager.filter((el) => el.storeId === item.store_id)
-  );
-  const filteredBottomFiveManagers = filteredData.flatMap((item) =>
-    bottomFiveManager.filter((el) => el.storeId === item.store_id)
-  );
+  const filteredTopFiveManagers =
+    filteredData.flatMap((item) =>
+      topFiveManager.filter((el) => el.storeId === item.store_id)
+    ) || [];
+  const filteredBottomFiveManagers =
+    filteredData.flatMap((item) =>
+      bottomFiveManager.filter((el) => el.storeId === item.store_id)
+    ) || [];
 
   // Function to export chart as PDF
   const exportPDF = async () => {
@@ -519,7 +521,7 @@ function RussSetup() {
           </Center>
         )}
 
-        {configurations?.is_partner === 1 &&
+        {configurations?.is_partner === 1 ||
         configurations?.role.role_id === 2 ? (
           <>
             <BkManagerRankingTable
@@ -527,6 +529,7 @@ function RussSetup() {
               data={filteredTopFiveManagers}
               managersPic={usersData}
               isPending={isPending}
+              emoji="&#128532;"
             />
             <BkManagerRankingTable
               title="Bottom 5 Store Managers"
@@ -534,6 +537,7 @@ function RussSetup() {
               isRed
               managersPic={usersData}
               isPending={isPending}
+              emoji="&#128522;"
             />
           </>
         ) : (
