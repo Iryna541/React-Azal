@@ -133,9 +133,7 @@ function RussSetup() {
     data || []
   );
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [dtlSelectedOption, setDtlSelectedOption] = useState<string | null>(
-    null
-  );
+  const [dtlSelectedOption, setDtlSelectedOption] = useState<string>("All");
 
   const { data: managerData } = useBkManagerPlan({ type: dtlSelectedOption });
 
@@ -235,6 +233,7 @@ function RussSetup() {
         {managerData && (
           <BkManagerPlanTable
             data={filteredManagerData ?? []}
+            dtlSelectedOption={dtlSelectedOption}
             setDtlSelectedOption={setDtlSelectedOption}
           />
         )}
