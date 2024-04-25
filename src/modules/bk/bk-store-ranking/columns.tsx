@@ -26,6 +26,8 @@ import {
 import { modals } from "@mantine/modals";
 
 import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
@@ -138,9 +140,15 @@ function FinancialRankingCell(cell: CellContext<StoreInsights, unknown>) {
 }
 
 export function ModalContent({ storeId }: { storeId: string }) {
-  const { data: data } = useBkAnalyticsCharts({
-    isMystores: false,
-  });
+  const [data, setData] = useState<any>();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setData(queryClient.getQueriesData({queryKey: ['bk-analytics-charts']})[0][1])
+  }, [queryClient])
+  // const { data: data } = useBkAnalyticsCharts({
+  //   isMystores: false,
+  // });
 
   let fssScore: number = 0;
 
@@ -154,56 +162,48 @@ export function ModalContent({ storeId }: { storeId: string }) {
   };
 
   const storeScores = {
-    acr: 0,
-    sos: 0,
-    training_rate: 0,
-    retention: 0,
-    glv: 0,
-    revs: 0,
+    acr: '0',
+    sos: '0',
+    training_rate: '0',
+    retention: '0',
+    glv: '0',
+    revs: '0',
   };
 
   if (data) {
     storeRatings.acr = data.chart2[0].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
     storeRatings.sos = data.chart2[1].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
     storeRatings.training_rate = data.chart2[2].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
     storeRatings.retention = data.chart2[3].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
     storeRatings.glv = data.chart2[4].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
     storeRatings.revs = data.chart2[5].stores.find(
-      (item) => item.store_id === parseInt(storeId)
+      (item: any) => item.store_id === parseInt(storeId)
     )!.rating;
 
-    storeScores.acr = data.chart2[0].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
-    storeScores.sos = data.chart2[1].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
-    storeScores.training_rate = data.chart2[2].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
-    storeScores.retention = data.chart2[3].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
-    storeScores.glv = data.chart2[4].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
-    storeScores.revs = data.chart2[4].stores.find(
-      (item) => item.store_id === parseInt(storeId)
-    )!.score;
+    const getScore = (index: number) => data.chart2[index].stores.find(
+      (item: any) => item.store_id === parseInt(storeId)
+    )!.score
+
+    storeScores.acr = typeof getScore(0) === 'number' ? getScore(0).toFixed(1) : '0';
+    storeScores.sos = typeof getScore(1) === 'number' ? getScore(1).toFixed(1) : '0';
+    storeScores.training_rate = typeof getScore(2) === 'number' ? getScore(2).toFixed(1) : '0';
+    storeScores.retention = typeof getScore(3) === 'number' ? getScore(3).toFixed(1) : '0';
+    storeScores.glv = typeof getScore(4) === 'number' ? getScore(4).toFixed(1) : '0';
+    storeScores.revs = typeof getScore(5) === 'number' ? getScore(5).toFixed(1) : '0';
 
     for (let i = 0; i < data?.chart1?.length; i++) {
       const store = data.chart1[i].stores.find(
-        (st) => st.store_id === parseInt(storeId)
+        (st: any) => st.store_id === parseInt(storeId)
       );
       if (store) {
         fssScore = store.score;
