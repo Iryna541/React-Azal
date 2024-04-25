@@ -58,15 +58,15 @@ export function FSSBreakdownChart({
         interval: 1,
         tickLine: false,
         style: {
-          fontWeight: '800',
-          color: 'black'
-        }
+          fontWeight: "800",
+          color: "black",
+        },
       }}
       xAxisProps={{
         style: {
-          fontWeight: '800',
-          color: 'black'
-        }
+          fontWeight: "800",
+          color: "black",
+        },
       }}
       barChartProps={{ margin: { top: 20 } }}
       h={300}
@@ -94,39 +94,62 @@ export function FSSBreakdownChart({
               title: data.name,
               children: (
                 <Stack gap={4}>
-                  <Flex justify="space-between">
-                    <Text size="sm" fw={600}>
-                      Store Id
-                    </Text>
-                    <Text size="sm" fw={600}>
-                      Scores
-                    </Text>
-                    <Text size="sm" fw={600}>
-                      Rating
-                    </Text>
-                  </Flex>
+                  <Grid>
+                    <Grid.Col span={4}>
+                      <Text size="sm" fw={600} style={{ textAlign: "center" }}>
+                        Store Id
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Text size="sm" fw={600} style={{ textAlign: "center" }}>
+                        Scores
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={4} style={{ textAlign: "center" }}>
+                      <Text size="sm" fw={600}>
+                        Rating
+                      </Text>
+                    </Grid.Col>
+                  </Grid>
                   <Divider h={2} />
                   {data.stores.map(
                     (store: {
                       store_id: string;
                       rating: number;
-                      score: string;
+                      score: any;
                     }) => {
                       return (
-                        <Flex justify="space-between">
-                          <Text size="sm">{store.store_id}</Text>
-                          <Text size="sm">{store.score}</Text>
-                          <Text size="sm" fw={600}>
-                            <span style={{ marginRight: 2 }}>
-                              {store.rating.toFixed(1)}
-                            </span>
-                            <IconStarFilled
-                              height={14}
-                              width={14}
-                              style={{ color: "#FAC84E" }}
-                            />
-                          </Text>
-                        </Flex>
+                        <Grid>
+                          <Grid.Col span={4}>
+                            {" "}
+                            <Text size="sm" style={{ textAlign: "center" }}>
+                              {store.store_id}
+                            </Text>
+                          </Grid.Col>
+                          <Grid.Col span={4}>
+                            <Text size="sm" style={{ textAlign: "center" }}>
+                              {typeof store.score === "number"
+                                ? store.score.toFixed(1)
+                                : store.score}
+                            </Text>
+                          </Grid.Col>
+                          <Grid.Col span={4}>
+                            <Text
+                              size="sm"
+                              fw={600}
+                              style={{ textAlign: "center" }}
+                            >
+                              <span style={{ marginRight: 2 }}>
+                                {store.rating.toFixed(1)}
+                              </span>
+                              <IconStarFilled
+                                height={14}
+                                width={14}
+                                style={{ color: "#FAC84E" }}
+                              />
+                            </Text>
+                          </Grid.Col>
+                        </Grid>
                       );
                     }
                   )}

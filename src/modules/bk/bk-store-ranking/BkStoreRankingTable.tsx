@@ -173,7 +173,7 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                     <Table.Tr key="exapanded" px={"sm"}>
                       <Table.Td colSpan={5}>
                         <Flex>
-                          <TypographyStylesProvider ref={boxRef}>
+                          <TypographyStylesProvider ref={boxRef} w={"90%"}>
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: content as string,
@@ -182,7 +182,6 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                           </TypographyStylesProvider>
                           <Button
                             w={120}
-                            style={{}}
                             py={"sm"}
                             px={"md"}
                             onClick={handleTakeScreenshot}
