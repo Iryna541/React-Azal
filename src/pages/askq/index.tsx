@@ -197,14 +197,25 @@ function RussSetup() {
     // eslint-disable-next-line
   }, [selectedOption]);
 
-  const filteredTopFiveManagers =
-    filteredData.flatMap((item) =>
-      topFiveManager.filter((el) => el.storeId === item.store_id)
-    ) || [];
-  const filteredBottomFiveManagers =
-    filteredData.flatMap((item) =>
-      bottomFiveManager.filter((el) => el.storeId === item.store_id)
-    ) || [];
+  let filteredTopFiveManagers, filteredBottomFiveManagers;
+  if (configurations?.is_partner === 1 || configurations?.role.role_id === 2) {
+    filteredTopFiveManagers =
+      filteredData.flatMap((item) =>
+        topFiveManager.filter((el) => el.storeId === item.store_id)
+      ) || [];
+    filteredBottomFiveManagers =
+      filteredData.flatMap((item) =>
+        bottomFiveManager.filter((el) => el.storeId === item.store_id)
+      ) || [];
+  } else {
+    if (selectedOption === "All Stores") {
+      filteredTopFiveManagers = topFiveManager;
+      filteredBottomFiveManagers = bottomFiveManager;
+    } else if (selectedOption === "My Stores") {
+      filteredTopFiveManagers = topMathedDtlstores;
+      filteredBottomFiveManagers = bottomMathedDtlstores;
+    }
+  }
 
   // Function to export chart as PDF
   const exportPDF = async () => {
@@ -494,52 +505,21 @@ function RussSetup() {
           </Center>
         )}
 
-        {configurations?.is_partner === 1 ||
-        configurations?.role.role_id === 2 ? (
-          <>
-            <Box mt="sm">
-              <BkManagerRankingTable
-                title="Top 5 Store Managers"
-                data={filteredTopFiveManagers}
-                managersPic={usersData}
-                isPending={isPending}
-                emoji="&#128532;"
-              />
-            </Box>
-            <Box mt="sm">
-              <BkManagerRankingTable
-                title="Bottom 5 Store Managers"
-                data={filteredBottomFiveManagers}
-                isRed
-                managersPic={usersData}
-                isPending={isPending}
-                emoji="&#128522;"
-              />
-            </Box>
-          </>
-        ) : (
-          <>
-            <Box mt="sm">
-              <BkManagerRankingTable
-                title="Top 5 Store Managers"
-                data={topMathedDtlstores}
-                managersPic={usersData}
-                emoji="&#128532;"
-                isPending={isPending}
-              />
-            </Box>
-            <Box mt="sm">
-              <BkManagerRankingTable
-                title="Bottom 5 Store Managers"
-                data={bottomMathedDtlstores}
-                isRed
-                managersPic={usersData}
-                emoji="&#128522;"
-                isPending={isPending}
-              />
-            </Box>
-          </>
-        )}
+        <BkManagerRankingTable
+          title="Top 5 Store Managers"
+          data={filteredTopFiveManagers || []}
+          managersPic={usersData}
+          isPending={isPending}
+          emoji="&#128532;"
+        />
+        <BkManagerRankingTable
+          title="Bottom 5 Store Managers"
+          data={filteredBottomFiveManagers || []}
+          isRed
+          managersPic={usersData}
+          isPending={isPending}
+          emoji="&#128522;"
+        />
       </SimpleGrid>
     </Layout>
   );
