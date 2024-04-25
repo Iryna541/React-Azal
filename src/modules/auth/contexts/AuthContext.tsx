@@ -52,9 +52,13 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       setTimeout(() => {
         setLoading(false);
         setUser(data.user_info);
-        setConfigurations(configurationsData);
       }, 1000);
     }
+
+    if (configurationsData) {
+      setConfigurations(configurationsData);
+    }
+
     // An error means, the user has no JWT or it's expired
     if (isError) {
       setLoading(false);
@@ -69,6 +73,7 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     setUser(undefined);
     setLoading(true);
     queryClient.removeQueries({ queryKey: ["me"] });
+    queryClient.removeQueries({ queryKey: ["configurations"] });
   }
 
   return (
