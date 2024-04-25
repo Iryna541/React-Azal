@@ -198,7 +198,7 @@ function RussSetup() {
   }, [selectedOption]);
 
   let filteredTopFiveManagers, filteredBottomFiveManagers;
-  if (configurations?.is_partner === 1 || configurations?.role.role_id === 2) {
+  if (configurations?.is_partner === 1 || configurations?.role?.role_id === 2) {
     filteredTopFiveManagers =
       filteredData.flatMap((item) =>
         topFiveManager.filter((el) => el.storeId === item.store_id)
@@ -214,6 +214,9 @@ function RussSetup() {
     } else if (selectedOption === "My Stores") {
       filteredTopFiveManagers = topMathedDtlstores;
       filteredBottomFiveManagers = bottomMathedDtlstores;
+    } else {
+      filteredTopFiveManagers = topFiveManager;
+      filteredBottomFiveManagers = bottomFiveManager;
     }
   }
 
