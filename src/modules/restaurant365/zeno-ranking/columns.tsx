@@ -12,7 +12,7 @@ import {
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
-    accessorKey: "total_net_sales_rank",
+    accessorKey: "store_rank",
     header: "Position",
     cell: ({ getValue }) => {
       const value = getValue() as string;
@@ -35,32 +35,32 @@ export const columns: ColumnDef<StoreInsights>[] = [
   //   header: "Store ID",
   // },
   {
-    accessorKey: "name",
-    header: "Location",
+    accessorKey: "store_name",
+    header: "Store",
   },
   {
-    accessorKey: "total_net_sales_rank",
-    header: "Sales Rank",
-    cell: ({ getValue }) => {
-      return (
-        <Badge
-          size="md"
-          h={32}
-          w={40}
-          c="hsl(var(--foreground) / 0.8)"
-          bg="hsl(var(--secondary))"
-          fw={600}
-          fz={14}
-          style={{ borderRadius: 4 }}
-        >
-          {getValue() as string}
-        </Badge>
-      );
-    },
+    accessorKey: "net_sales_current",
+    header: "Total Sales",
+    // cell: ({ getValue }) => {
+    //   return (
+    //     <Badge
+    //       size="md"
+    //       h={32}
+    //       w={40}
+    //       c="hsl(var(--foreground) / 0.8)"
+    //       bg="hsl(var(--secondary))"
+    //       fw={600}
+    //       fz={14}
+    //       style={{ borderRadius: 4 }}
+    //     >
+    //       {getValue() as string}
+    //     </Badge>
+    //   );
+    // },
   },
   {
-    accessorKey: "net_sales",
-    header: "Net Sales",
+    accessorKey: "sales_growth",
+    header: "Sales growth (VS LW)",
   },
   {
     header: "Details",
