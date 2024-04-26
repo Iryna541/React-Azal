@@ -16,8 +16,7 @@ export type GetZenoStoreRankingResponse = StoreInsights[];
 export async function getZenoStoreRanking(): Promise<GetZenoStoreRankingResponse> {
   return axios
     .get(
-      // "https://azalio-bk-api.cosmos.staging.delineate.pro/zeno-store-ranking"
-      "http://localhost:3000/zeno-store-ranking"
+      "https://azalio-bk-api.cosmos.staging.delineate.pro/zeno-store-ranking"
     )
     .then((res) => res.data);
 }
