@@ -2,10 +2,12 @@ import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export interface StoreInsights {
-  store_id: string;
-  name: string;
-  net_sales: string;
-  total_net_sales_rank: string;
+  store_rank: number;
+  store_id: number;
+  store_name: string;
+  net_sales_current: number;
+  net_sales_previous: number;
+  sales_growth: number;
   insights: string;
 }
 
@@ -14,7 +16,8 @@ export type GetZenoStoreRankingResponse = StoreInsights[];
 export async function getZenoStoreRanking(): Promise<GetZenoStoreRankingResponse> {
   return axios
     .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/zeno-store-ranking"
+      // "https://azalio-bk-api.cosmos.staging.delineate.pro/zeno-store-ranking"
+      "http://localhost:3000/zeno-store-ranking"
     )
     .then((res) => res.data);
 }
