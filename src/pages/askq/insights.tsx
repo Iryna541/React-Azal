@@ -59,6 +59,7 @@ import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobste
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
+import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -319,6 +320,7 @@ function ShawnSetup() {
 function ZinoSetup() {
   const { data } = useZenoStoreRanking();
   const { data: managerData } = useZenoInsightTable();
+
   const selectData = managerData?.stores?.map((item) => {
     return {
       value: item.id.toString(),
@@ -338,6 +340,13 @@ function ZinoSetup() {
       setStoreId("");
     } else {
       setStoreId(value);
+    }
+  };
+  const handleCustomReportChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log("custom report:", value);
     }
   };
 
@@ -361,6 +370,39 @@ function ZinoSetup() {
           data={[...sortedManagersData].reverse().slice(0, 5)}
         />
       </SimpleGrid> */}
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              Custom Report
+            </Title>
+          </Box>
+
+          <Select
+            p="md"
+            size="sm"
+            placeholder="Pick value"
+            data={["perieod 1", "period 2"]}
+            value={storeId}
+            onChange={handleCustomReportChange}
+            allowDeselect={false}
+          />
+        </Flex>
+        <Divider />
+        {isLoading && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {insightsData?.insights_data && (
+          <ZenoCustomReportTable data={insightsData.insights_data} />
+        )}
+      </Box>
       <Box
         style={{
           border: "1px solid hsl(var(--border))",
