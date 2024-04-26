@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { StoreInsights } from "./api/useZenoStoreRanking";
-import { ActionIcon, Badge } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import {
   IconFifthPlace,
