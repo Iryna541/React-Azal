@@ -16,6 +16,9 @@ function groupBy<
 }
 
 export function transformData(data: GetRevenueCenterDataResponse["data"]) {
+  if(!data){
+    return [];
+  }
   const groupedData = groupBy(data, "category_id");
   let firstRow = true;
   const dataArrays = Object.keys(groupedData).map((key) => {
