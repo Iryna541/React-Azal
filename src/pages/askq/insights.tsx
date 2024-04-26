@@ -60,6 +60,8 @@ import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
+import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
+import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -358,6 +360,13 @@ function ZinoSetup() {
   //   return parseInt(a.total_net_sales_rank) - parseInt(b.total_net_sales_rank);
   // });
 
+  const { data: customTableData } = useRevenueCenterData({
+    storeId: 1,
+    period: "PERIOD 1",
+  });
+
+  console.log(customTableData);
+
   return (
     <Stack gap="xl">
       {/* <SimpleGrid cols={2} spacing="xl">
@@ -381,6 +390,9 @@ function ZinoSetup() {
             <Title order={5} fw={500} fz={16}>
               Custom Report
             </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              Revenue Centers by Period
+            </Title>
           </Box>
 
           <Select
@@ -399,8 +411,10 @@ function ZinoSetup() {
             <Loader size="lg" />
           </Center>
         )}
-        {insightsData?.insights_data && (
-          <ZenoCustomReportTable data={insightsData.insights_data} />
+        {customTableData && (
+          <ZenoCustomReportTable
+            data={transformData(customTableData["data"])}
+          />
         )}
       </Box>
       <Box

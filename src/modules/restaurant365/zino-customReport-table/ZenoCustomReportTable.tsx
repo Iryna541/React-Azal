@@ -8,16 +8,16 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 import { columns } from "./columns";
 import { useState } from "react";
-import { GetZenoInsightTableResponse } from "./api/useZenoInsightTable";
+
 interface ZenoInsightTableProps {
-  data: GetZenoInsightTableResponse["insights_data"];
+  data: Array<Record<string, number | string>>;
 }
 
 export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
@@ -32,7 +32,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
     // pagination
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     // column filters
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
@@ -65,7 +65,11 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
         <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
           <Table.Thead>
-            <Table.Tr>
+            <Table.Tr
+              style={{
+                borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
+              }}
+            >
               <Table.Th className="text-center" style={{ textAlign: "center" }}>
                 Norwalk
               </Table.Th>
@@ -77,7 +81,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                 Period 1
               </Table.Th>
             </Table.Tr>
-            <Table.Tr>
+            {/* <Table.Tr>
               <Table.Th className="text-center">Week</Table.Th>
               <Table.Th className="text-center">1</Table.Th>
               <Table.Th className="text-center">2</Table.Th>
@@ -85,8 +89,8 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
               <Table.Th className="text-center">4</Table.Th>
               <Table.Th className="text-center">Totals</Table.Th>
               <Table.Th className="text-center">Prev Period</Table.Th>
-            </Table.Tr>
-            {/* {table.getHeaderGroups().map((headerGroup) => (
+            </Table.Tr> */}
+            {table.getHeaderGroups().map((headerGroup) => (
               <Table.Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
@@ -115,7 +119,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                   );
                 })}
               </Table.Tr>
-            ))} */}
+            ))}
           </Table.Thead>
           <Table.Tbody>
             {table.getRowModel().rows.map((row) => {
@@ -134,6 +138,8 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                                 : cell.getIsPlaceholder()
                                   ? "#ff000042"
                                   : "white",
+                            textAlign: "center",
+                            fontWeight: 500,
                           },
                         }}
                       >
