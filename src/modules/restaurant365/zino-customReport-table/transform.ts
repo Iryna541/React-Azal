@@ -96,5 +96,39 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
     return returnArr;
   });
 
-  return dataArrays.flat().slice(0, -1);
+  const result = dataArrays.flat().slice(0, -1);
+
+  let totalNetSales1 = 0;
+  let totalNetSales2 = 0;
+  let totalNetSales3 = 0;
+  let totalNetSales4 = 0;
+  let totalNetSales5 = 0;
+  for (let i = 0; i < result.length; ++i) {
+    if ((i - 2) % 5 === 0) {
+      totalNetSales1 += result[i].B as number;
+      totalNetSales2 += result[i].C as number;
+      totalNetSales3 += result[i].D as number;
+      totalNetSales4 += result[i].E as number;
+    }
+  }
+  totalNetSales5 =
+    totalNetSales1 + totalNetSales2 + totalNetSales3 + totalNetSales4;
+
+  const newResult = [];
+  newResult.push(result[0]);
+
+  newResult.push({
+    A: "TOTAL NET SALES",
+    B: totalNetSales1,
+    C: totalNetSales2,
+    D: totalNetSales3,
+    E: totalNetSales4,
+    F: totalNetSales5,
+  });
+
+  for (let i = 1; i < result.length; ++i) {
+    newResult.push(result[i]);
+  }
+
+  return newResult;
 }
