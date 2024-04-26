@@ -34,12 +34,14 @@ import { modals } from "@mantine/modals";
 
 interface BkManagerPlanTableProps {
   data: ManagerPlanResponse;
-  setDtlSelectedOption: (value: string | null) => void; // Correct type for the setter function
+  dtlSelectedOption: string;
+  setDtlSelectedOption: (value: string) => void; // Correct type for the setter function
 }
 
 export function BkManagerPlanTable({
   data,
   setDtlSelectedOption,
+  dtlSelectedOption,
 }: BkManagerPlanTableProps) {
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -78,7 +80,7 @@ export function BkManagerPlanTable({
     },
   });
 
-  const handleSelectChange = (value: any) => {
+  const handleSelectChange = (value: string) => {
     setDtlSelectedOption(value);
   };
 
@@ -88,10 +90,12 @@ export function BkManagerPlanTable({
         label="Filter"
         placeholder="Pick value"
         data={["All", "Exclude Top 5"]}
-        defaultValue="All"
-        m={"sm"}
+        value={dtlSelectedOption}
+        my={"sm"}
         w={"15%"}
-        onChange={handleSelectChange}
+        onChange={(v) => {
+          if (v) handleSelectChange(v);
+        }}
         allowDeselect={false}
       />
       <Table
@@ -202,11 +206,7 @@ export function BkManagerPlanTable({
                                       {el.employees.map((em, index) => {
                                         return (
                                           <ScrollArea scrollbars="y">
-                                            <Badge
-                                              size="lg"
-                                              ml={"xl"}
-                                              mb={"sm"}
-                                            >
+                                            <Badge size="lg" mb={"sm"}>
                                               {em.date}
                                             </Badge>
                                             <List key={index} pl={"sm"}>
