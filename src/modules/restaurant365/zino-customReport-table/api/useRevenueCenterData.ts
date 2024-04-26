@@ -36,7 +36,7 @@ export type GetRevenueCenterDataResponse = {
 
 export async function fetchRevenueCenterData(
   period: string,
-  storeId: number
+  storeId: number,
 ): Promise<GetRevenueCenterDataResponse> {
   try {
     const response = await axios.get(
@@ -60,7 +60,7 @@ export function useRevenueCenterData({
   ...config
 }: UseRevenueCenterDataOptions) {
   return useQuery({
-    queryKey: ["zeno-insight-table", storeId],
+    queryKey: ["zeno-insight-table", storeId, period],
     queryFn: () => fetchRevenueCenterData(period, storeId),
     ...config,
   });

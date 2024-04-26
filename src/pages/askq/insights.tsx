@@ -344,11 +344,61 @@ function ZinoSetup() {
       setStoreId(value);
     }
   };
-  const handleCustomReportChange = (value: string | null) => {
+  
+  
+  const [customReportStoreOptions] = useState<{label: string; value: string}[]>([
+    {
+        label: "Black Rock",
+        value: '1'
+    },
+    {
+        label: "Norwalk",
+        value: '2'
+    },
+    {
+      label: "Downtown",
+      value: '3'
+    },
+    {
+      label: "Ham Avenue",
+      value: '4'
+    },
+    {
+      label: "New Haven",
+      value: '5'
+    },
+    {
+      label: "Old Greenwich",
+      value: '6'
+    },
+    {
+      label: "Mamaroneck",
+      value: '7'
+    },
+    {
+      label: "Port Chester",
+      value: '8'
+    }
+])
+  const [customReportPeriodOptions] = useState<string[]>(["PERIOD 1", "PERIOD 2", "PERIOD 3", "PERIOD 4"])
+  const [customReportFilterStoreId, setCustomReportFilterStoreId] = useState<string>('1');
+  const [customReportFilterPeriod, setCustomReportFilterPeriod] = useState<string>("PERIOD 1");
+
+  const handleCustomReportPeriodChange = (value: string | null) => {
     if (value === null) {
       console.log("null");
     } else {
-      console.log("custom report:", value);
+      console.log({"preriod": value});
+      setCustomReportFilterPeriod(value);
+    }
+  };
+
+  const handleCustomReportStoreChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log({"store": value});
+      setCustomReportFilterStoreId(value)
     }
   };
 
@@ -356,16 +406,10 @@ function ZinoSetup() {
     storeId: storeId,
   });
 
-  // const sortedManagersData: StoreInsights[] = (data ?? []).sort((a, b) => {
-  //   return parseInt(a.total_net_sales_rank) - parseInt(b.total_net_sales_rank);
-  // });
-
   const { data: customTableData } = useRevenueCenterData({
-    storeId: 1,
-    period: "PERIOD 1",
+    storeId: Number(customReportFilterStoreId),
+    period: customReportFilterPeriod,
   });
-
-  console.log(customTableData);
 
   return (
     <Stack gap="xl">
@@ -395,15 +439,28 @@ function ZinoSetup() {
             </Title>
           </Box>
 
+          <Box display={'flex'}>
           <Select
-            p="md"
+            py="md"
             size="sm"
-            placeholder="Pick value"
-            data={["perieod 1", "period 2"]}
-            value={storeId}
-            onChange={handleCustomReportChange}
+            placeholder="Select period"
+            data={customReportPeriodOptions}
+            value={customReportFilterPeriod}
+            onChange={handleCustomReportPeriodChange}
             allowDeselect={false}
           />
+          <Select
+            py="md"
+            px="sm"
+            size="sm"
+            placeholder="Select store"
+            data={customReportStoreOptions}
+            value={customReportFilterStoreId}
+            onChange={handleCustomReportStoreChange}
+            allowDeselect={false}
+          />
+          </Box>
+
         </Flex>
         <Divider />
         {isLoading && (
