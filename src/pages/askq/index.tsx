@@ -374,7 +374,7 @@ function RussSetup() {
               radius={4}
               label={
                 <Text fz={14} fw={500} mb={5}>
-                  By Weeks
+                  By Week
                 </Text>
               }
               checked={selectedFilter === "weekly"}
@@ -412,7 +412,7 @@ function RussSetup() {
               radius={4}
               label={
                 <Text fz={14} fw={500} mb={5}>
-                  Monthly
+                  By Month
                 </Text>
               }
               checked={selectedFilter === "monthly"}
@@ -440,7 +440,7 @@ function RussSetup() {
               radius={4}
               label={
                 <Text fz={14} fw={500} mb={5}>
-                  Periodically
+                  By Period
                 </Text>
               }
               checked={selectedFilter === "periodically"}
