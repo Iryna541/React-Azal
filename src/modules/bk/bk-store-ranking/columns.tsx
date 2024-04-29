@@ -195,7 +195,7 @@ export function ModalContent({ storeId }: { storeId: string }) {
     )!.score
 
     storeScores.acr = typeof getScore(0) === 'number' ? getScore(0).toFixed(1) : '0';
-    storeScores.sos = typeof getScore(1) === 'number' ? getScore(1).toFixed(1) : '0';
+    storeScores.sos = getScore(1);
     storeScores.training_rate = typeof getScore(2) === 'number' ? getScore(2).toFixed(1) : '0';
     storeScores.retention = typeof getScore(3) === 'number' ? getScore(3).toFixed(1) : '0';
     storeScores.glv = typeof getScore(4) === 'number' ? getScore(4).toFixed(1) : '0';
