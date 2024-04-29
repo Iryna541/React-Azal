@@ -58,6 +58,7 @@ import { modals } from "@mantine/modals";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import moment from "moment";
+import { useGetUsersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetUsersPic";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -109,6 +110,8 @@ function RussSetup() {
 
   const [managerId, setManagerId] = useState("");
   const { data: usersData } = useGetUsers();
+  const { data: usersPic } = useGetUsersPic();
+
   const { data } = useBkAnalyticsCharts({
     isMystores,
     managerId: isMystores ? user?.user_id.toString() : managerId,
@@ -511,7 +514,7 @@ function RussSetup() {
         <BkManagerRankingTable
           title="Top 5 Store Managers"
           data={filteredTopFiveManagers || []}
-          managersPic={usersData}
+          managersPic={usersPic}
           isPending={isPending}
           emoji="&#128532;"
         />
@@ -519,7 +522,7 @@ function RussSetup() {
           title="Bottom 5 Store Managers"
           data={filteredBottomFiveManagers || []}
           isRed
-          managersPic={usersData}
+          managersPic={usersPic}
           isPending={isPending}
           emoji="&#128522;"
         />

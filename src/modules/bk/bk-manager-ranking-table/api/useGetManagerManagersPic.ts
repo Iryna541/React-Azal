@@ -33,7 +33,7 @@ type Manager = {
   tagsCount: number;
 };
 
-export type GetManagersPicResponse = {
+export type GetUsersResponse = {
   users: Manager[];
   pagination: {
     page_no: number;
@@ -42,7 +42,7 @@ export type GetManagersPicResponse = {
   };
 };
 
-export async function getUser(): Promise<GetManagersPicResponse> {
+export async function getUser(): Promise<GetUsersResponse> {
   return axios
     .get(
       "/organisation/getUsers?page_size=25&page_no=1&is_active=null&name_sort=1"
@@ -51,12 +51,12 @@ export async function getUser(): Promise<GetManagersPicResponse> {
 }
 
 export type UseUserOptions = {
-  config?: UseQueryOptions<GetManagersPicResponse>;
+  config?: UseQueryOptions<GetUsersResponse>;
 };
 
 export function useGetUsers({ config }: UseUserOptions = {}) {
   return useQuery({
-    queryKey: ["manager-pic"],
+    queryKey: ["all-users"],
     queryFn: getUser,
     ...config,
   });
