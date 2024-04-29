@@ -27,8 +27,9 @@ import {
   IconSecondPlace,
   IconThirdPlace,
 } from "~/assets";
-import { GetManagersPicResponse } from "./api/useGetManagerManagersPic";
+
 import UserProfileIcon from "~/assets/UserProfile";
+import { GetUsersPicResponse } from "./api/useGetUsersPic";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -42,7 +43,7 @@ export type BkManagerRankingData = Array<{
 interface BkManagerRankingTableProps {
   title: string;
   data: BkManagerRankingData;
-  managersPic?: GetManagersPicResponse;
+  managersPic?: GetUsersPicResponse;
   isRed?: boolean;
   emoji?: string;
   isPending: boolean;
@@ -84,9 +85,9 @@ export function BkManagerRankingTable({
       ) : data.length > 0 ? (
         <Stack gap="xs">
           {data.map((item, index) => {
+            // console.log("name:", item.);
             const managerProfilePic = managersPic?.users.find(
-              (manager) =>
-                manager.name === item.manager && manager.role_title === "RGM"
+              (manager) => manager.user_name === item.manager
             );
 
             const managerFstName = item?.manager?.split(" ") || "";
