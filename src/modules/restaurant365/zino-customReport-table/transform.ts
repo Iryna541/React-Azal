@@ -78,6 +78,10 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
     row4["F"] = arr.reduce((a, b) => a + parseFloat(b.average_ticket_size), 0);
     row4["F"] = row4["F"] / 4.0;
 
+    row1["G"] = arr[0].prev_period_total_diff ? `${arr[0].prev_period_total_diff}` : "";
+    row3["G"] = arr[0].prev_period_ticket_diff || "";
+    row4["G"] = arr[0].prev_period_avg_ticket_diff ? `${arr[0].prev_period_avg_ticket_diff}` : "";
+
     // console.log(row1);
     // console.log(row2);
     // console.log(row3);
