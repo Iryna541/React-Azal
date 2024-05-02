@@ -25,7 +25,7 @@ import {
 } from "~/assets";
 import { modals } from "@mantine/modals";
 
-import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
+// import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -170,32 +170,33 @@ export function ModalContent({ storeId }: { storeId: string }) {
     revs: '0',
   };
 
+  
   if (data) {
     storeRatings.acr = data.chart2[0].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
     storeRatings.sos = data.chart2[1].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
     storeRatings.training_rate = data.chart2[2].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
     storeRatings.retention = data.chart2[3].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
     storeRatings.glv = data.chart2[4].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
     storeRatings.revs = data.chart2[5].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.rating;
+    )?.rating || 5;
 
     const getScore = (index: number) => data.chart2[index].stores.find(
       (item: any) => item.store_id === parseInt(storeId)
-    )!.score
+    )?.score
 
     storeScores.acr = typeof getScore(0) === 'number' ? getScore(0).toFixed(1) : '0';
-    storeScores.sos = getScore(1);
+    storeScores.sos = getScore(1) || "0";
     storeScores.training_rate = typeof getScore(2) === 'number' ? getScore(2).toFixed(1) : '0';
     storeScores.retention = typeof getScore(3) === 'number' ? getScore(3).toFixed(1) : '0';
     storeScores.glv = typeof getScore(4) === 'number' ? getScore(4).toFixed(1) : '0';
@@ -411,9 +412,15 @@ export function ModalContent({ storeId }: { storeId: string }) {
 }
 
 export function FinancialModalContent({ storeId }: { storeId: string }) {
-  const { data: data } = useBkAnalyticsCharts({
-    isMystores: false,
-  });
+  const [data, setData] = useState<any>();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setData(queryClient.getQueriesData({queryKey: ['bk-analytics-charts']})[0][1])
+  }, [queryClient])
+  // const { data: data } = useBkAnalyticsCharts({
+  //   isMystores: false,
+  // });
 
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -422,7 +429,7 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   });
 
   const filteredData =
-    data?.chart3?.filter((item) => item.store_id === storeId.toString()) || [];
+    data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) || [];
 
   return (
     <Stack gap="sm">
