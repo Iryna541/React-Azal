@@ -85,7 +85,9 @@ function RussSetup() {
   const [isExportLoading, setIsExportLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  const { data: managersRankingData, isPending } = useStoreRanking();
+  const { data: managersRankingData, isPending } = useStoreRanking({
+    isDemo: user?.company_id === 210 ? "true" : "",
+  });
 
   const [selectedFilter, setSelectedFilter] = useState<
     "weekly" | "monthly" | "periodically"
@@ -531,7 +533,7 @@ function RussSetup() {
   );
 }
 
-export function ShawnSalemaSetup({isDemo= false}: {isDemo?: boolean}) {
+export function ShawnSalemaSetup({ isDemo = false }: { isDemo?: boolean }) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { user } = useUser();
@@ -553,10 +555,8 @@ export function ShawnSalemaSetup({isDemo= false}: {isDemo?: boolean}) {
 
   return (
     <Layout>
-      {
-        !isDemo && <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
-      }
-      
+      {!isDemo && <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>}
+
       <Box px={"sm"} w="calc(100vw - 330px)">
         <Flex
           justify={"end"}

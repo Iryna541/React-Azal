@@ -144,8 +144,10 @@ export function ModalContent({ storeId }: { storeId: string }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    setData(queryClient.getQueriesData({queryKey: ['bk-analytics-charts']})[0][1])
-  }, [queryClient])
+    setData(
+      queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
+    );
+  }, [queryClient]);
   // const { data: data } = useBkAnalyticsCharts({
   //   isMystores: false,
   // });
@@ -162,45 +164,58 @@ export function ModalContent({ storeId }: { storeId: string }) {
   };
 
   const storeScores = {
-    acr: '0',
-    sos: '0',
-    training_rate: '0',
-    retention: '0',
-    glv: '0',
-    revs: '0',
+    acr: "0",
+    sos: "0",
+    training_rate: "0",
+    retention: "0",
+    glv: "0",
+    revs: "0",
   };
 
-  
   if (data) {
-    storeRatings.acr = data.chart2[0].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
-    storeRatings.sos = data.chart2[1].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
-    storeRatings.training_rate = data.chart2[2].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
-    storeRatings.retention = data.chart2[3].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
-    storeRatings.glv = data.chart2[4].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
-    storeRatings.revs = data.chart2[5].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.rating || 5;
+    console.log(data.chart2[0].stores);
 
-    const getScore = (index: number) => data.chart2[index].stores.find(
-      (item: any) => item.store_id === parseInt(storeId)
-    )?.score
+    storeRatings.acr =
+      data.chart2[0].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
+    storeRatings.sos =
+      data.chart2[1].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
+    storeRatings.training_rate =
+      data.chart2[2].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
+    storeRatings.retention =
+      data.chart2[3].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
+    storeRatings.glv =
+      data.chart2[4].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
+    storeRatings.revs =
+      data.chart2[5].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.rating || 5;
 
-    storeScores.acr = typeof getScore(0) === 'number' ? getScore(0).toFixed(1) : '0';
+    const getScore = (index: number) =>
+      data.chart2[index].stores.find(
+        (item: any) => item.store_id.toString() === storeId.toString()
+      )?.score;
+
+    storeScores.acr =
+      typeof getScore(0) === "number" ? getScore(0).toFixed(1) : "0";
     storeScores.sos = getScore(1) || "0";
-    storeScores.training_rate = typeof getScore(2) === 'number' ? getScore(2).toFixed(1) : '0';
-    storeScores.retention = typeof getScore(3) === 'number' ? getScore(3).toFixed(1) : '0';
-    storeScores.glv = typeof getScore(4) === 'number' ? getScore(4).toFixed(1) : '0';
-    storeScores.revs = typeof getScore(5) === 'number' ? getScore(5).toFixed(1) : '0';
+    storeScores.training_rate =
+      typeof getScore(2) === "number" ? getScore(2).toFixed(1) : "0";
+    storeScores.retention =
+      typeof getScore(3) === "number" ? getScore(3).toFixed(1) : "0";
+    storeScores.glv =
+      typeof getScore(4) === "number" ? getScore(4).toFixed(1) : "0";
+    storeScores.revs =
+      typeof getScore(5) === "number" ? getScore(5).toFixed(1) : "0";
 
     for (let i = 0; i < data?.chart1?.length; i++) {
       const store = data.chart1[i].stores.find(
@@ -217,13 +232,7 @@ export function ModalContent({ storeId }: { storeId: string }) {
     <Stack>
       <Flex justify="space-between">
         <Text>FSS Score</Text>
-        {
-          data ? (
-            <Text fw={600}>{fssScore}</Text>
-          ) : (
-            <Loader />
-          )
-        }
+        {data ? <Text fw={600}>{fssScore}</Text> : <Loader />}
       </Flex>
       <Grid grow>
         <Grid.Col span={1}>
@@ -416,8 +425,10 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    setData(queryClient.getQueriesData({queryKey: ['bk-analytics-charts']})[0][1])
-  }, [queryClient])
+    setData(
+      queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
+    );
+  }, [queryClient]);
   // const { data: data } = useBkAnalyticsCharts({
   //   isMystores: false,
   // });
@@ -429,7 +440,8 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   });
 
   const filteredData =
-    data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) || [];
+    data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) ||
+    [];
 
   return (
     <Stack gap="sm">
