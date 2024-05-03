@@ -16,7 +16,6 @@ import {
   IconAnalytics,
   IconAutomation,
   IconBubble,
-  IconCommunication,
   IconDashboard,
   BarchartBig,
 } from "~/assets";
