@@ -55,18 +55,18 @@ const NAVBAR_LINKS = [
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
-  {
-    label: "Communication",
-    href: "/communication",
-    Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-    isLocked: false,
-  },
+  // {
+  //   label: "Communication",
+  //   href: "/communication",
+  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
+  //   isLocked: false,
+  // },
   {
     label: "OscarGPT",
     href: "/oscar-gpt",
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
-  }
+  },
 ];
 
 const NAVBAR_DEMO_LINKS = [
@@ -137,7 +137,9 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
     if (
       link.label === "Dashboard" &&
-      (user?.company_id === 211 || user?.company_id === 212 || user?.company_id === 210)
+      (user?.company_id === 211 ||
+        user?.company_id === 212 ||
+        user?.company_id === 210)
     ) {
       return { ...link, isLocked: false };
     }
@@ -145,8 +147,10 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     return link;
   });
 
-  if (user?.company_id === 210){
-    links = [...links, ...NAVBAR_DEMO_LINKS].filter(item => item.label != "OscarGPT")
+  if (user?.company_id === 210) {
+    links = [...links, ...NAVBAR_DEMO_LINKS].filter(
+      (item) => item.label != "OscarGPT"
+    );
   }
 
   return (
