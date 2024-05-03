@@ -11,3 +11,4 @@ export * from "./IconSecondPlace";
 export * from "./IconThirdPlace";
 export * from "./IconFourthPlace";
 export * from "./IconFifthPlace";
+export * from "./BarchartBig";

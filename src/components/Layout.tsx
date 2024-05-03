@@ -18,6 +18,7 @@ import {
   IconBubble,
   IconCommunication,
   IconDashboard,
+  BarchartBig,
 } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
@@ -64,6 +65,15 @@ const NAVBAR_LINKS = [
     label: "OscarGPT",
     href: "/oscar-gpt",
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
+  }
+];
+
+const NAVBAR_DEMO_LINKS = [
+  {
+    label: "Reports",
+    href: "/reports",
+    Icon: <BarchartBig height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
 ];
@@ -127,13 +137,17 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
     if (
       link.label === "Dashboard" &&
-      (user?.company_id === 211 || user?.company_id === 212)
+      (user?.company_id === 211 || user?.company_id === 212 || user?.company_id === 210)
     ) {
       return { ...link, isLocked: false };
     }
 
     return link;
   });
+
+  if (user?.company_id === 210){
+    links = [...links, ...NAVBAR_DEMO_LINKS].filter(item => item.label != "OscarGPT")
+  }
 
   return (
     <AppShell.Navbar p={28}>

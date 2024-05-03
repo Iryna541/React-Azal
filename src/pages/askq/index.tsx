@@ -64,7 +64,7 @@ export default function DashboardPage() {
   const { user } = useUser();
   return (
     <ProtectedRoute>
-      {user?.company_id === 211 ? (
+      {user?.company_id === 211 || user?.company_id === 210 ? (
         <InsightsProvider>
           <RussSetup />
         </InsightsProvider>
@@ -531,7 +531,7 @@ function RussSetup() {
   );
 }
 
-function ShawnSalemaSetup() {
+export function ShawnSalemaSetup({isDemo= false}: {isDemo?: boolean}) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { user } = useUser();
@@ -553,8 +553,10 @@ function ShawnSalemaSetup() {
 
   return (
     <Layout>
-      <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
-
+      {
+        !isDemo && <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
+      }
+      
       <Box px={"sm"} w="calc(100vw - 330px)">
         <Flex
           justify={"end"}
