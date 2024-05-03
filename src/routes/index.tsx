@@ -11,6 +11,7 @@ import InsightsPage from "~/pages/askq/insights";
 import AnalyticsPage from "~/pages/askq/analytics";
 import CommunicationPage from "~/pages/communication";
 import DashboardPage from "~/pages/askq";
+import ReportsPage from "~/pages/reports";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -25,6 +26,7 @@ export const getRoutes = (): RouteObject[] => {
     defineRoute("/oscar-gpt", <OscarGptPage />),
     defineRoute("/auth/login", <LoginPage />),
     defineRoute("/organization", <OrganizationPage />),
+    defineRoute("/reports", <ReportsPage />),
     defineRoute(
       "/admin",
       isSuperAdmin ? <AdminCompanyListingPage /> : <Navigate to="/askq" />
