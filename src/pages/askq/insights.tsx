@@ -344,51 +344,59 @@ function ZinoSetup() {
       setStoreId(value);
     }
   };
-  
-  
-  const [customReportStoreOptions] = useState<{label: string; value: string}[]>([
+
+  const [customReportStoreOptions] = useState<
+    { label: string; value: string }[]
+  >([
     {
-        label: "Black Rock",
-        value: '1'
+      label: "Black Rock",
+      value: "1",
     },
     {
-        label: "Norwalk",
-        value: '2'
+      label: "Norwalk",
+      value: "2",
     },
     {
       label: "Downtown",
-      value: '3'
+      value: "3",
     },
     {
       label: "Ham Avenue",
-      value: '4'
+      value: "4",
     },
     {
       label: "New Haven",
-      value: '5'
+      value: "5",
     },
     {
       label: "Old Greenwich",
-      value: '6'
+      value: "6",
     },
     {
       label: "Mamaroneck",
-      value: '7'
+      value: "7",
     },
     {
       label: "Port Chester",
-      value: '8'
-    }
-])
-  const [customReportPeriodOptions] = useState<string[]>(["PERIOD 1", "PERIOD 2", "PERIOD 3", "PERIOD 4"])
-  const [customReportFilterStoreId, setCustomReportFilterStoreId] = useState<string>('1');
-  const [customReportFilterPeriod, setCustomReportFilterPeriod] = useState<string>("PERIOD 1");
+      value: "8",
+    },
+  ]);
+  const [customReportPeriodOptions] = useState<string[]>([
+    "PERIOD 1",
+    "PERIOD 2",
+    "PERIOD 3",
+    "PERIOD 4",
+  ]);
+  const [customReportFilterStoreId, setCustomReportFilterStoreId] =
+    useState<string>("1");
+  const [customReportFilterPeriod, setCustomReportFilterPeriod] =
+    useState<string>("PERIOD 1");
 
   const handleCustomReportPeriodChange = (value: string | null) => {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({"preriod": value});
+      console.log({ preriod: value });
       setCustomReportFilterPeriod(value);
     }
   };
@@ -397,8 +405,8 @@ function ZinoSetup() {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({"store": value});
-      setCustomReportFilterStoreId(value)
+      console.log({ store: value });
+      setCustomReportFilterStoreId(value);
     }
   };
 
@@ -439,28 +447,27 @@ function ZinoSetup() {
             </Title>
           </Box>
 
-          <Box display={'flex'}>
-          <Select
-            py="md"
-            size="sm"
-            placeholder="Select period"
-            data={customReportPeriodOptions}
-            value={customReportFilterPeriod}
-            onChange={handleCustomReportPeriodChange}
-            allowDeselect={false}
-          />
-          <Select
-            py="md"
-            px="sm"
-            size="sm"
-            placeholder="Select store"
-            data={customReportStoreOptions}
-            value={customReportFilterStoreId}
-            onChange={handleCustomReportStoreChange}
-            allowDeselect={false}
-          />
+          <Box display={"flex"}>
+            <Select
+              py="md"
+              size="sm"
+              placeholder="Select period"
+              data={customReportPeriodOptions}
+              value={customReportFilterPeriod}
+              onChange={handleCustomReportPeriodChange}
+              allowDeselect={false}
+            />
+            <Select
+              py="md"
+              px="sm"
+              size="sm"
+              placeholder="Select store"
+              data={customReportStoreOptions}
+              value={customReportFilterStoreId}
+              onChange={handleCustomReportStoreChange}
+              allowDeselect={false}
+            />
           </Box>
-
         </Flex>
         <Divider />
         {isLoading && (
