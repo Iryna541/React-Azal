@@ -138,12 +138,14 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => {
+              const storeId = row.original.store_id;
               const content = marked.parse(row.original.insights);
               return (
                 <>
                   <Table.Tr
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    data-store-id={storeId}
                     // onClick={() => {
                     //   row.getIsExpanded()
                     //     ? row.toggleExpanded(false)

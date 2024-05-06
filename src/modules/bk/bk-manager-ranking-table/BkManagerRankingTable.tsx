@@ -30,6 +30,7 @@ import {
 
 import UserProfileIcon from "~/assets/UserProfile";
 import { GetUsersPicResponse } from "./api/useGetUsersPic";
+import { useNavigate } from "react-router-dom";
 
 export type BkManagerRankingData = Array<{
   position: number;
@@ -57,6 +58,7 @@ export function BkManagerRankingTable({
   emoji,
   isPending,
 }: BkManagerRankingTableProps) {
+  const navigate = useNavigate();
   return (
     <Box>
       <Title order={5} mb="lg">
@@ -77,7 +79,6 @@ export function BkManagerRankingTable({
         <Grid.Col span={2}>Financials</Grid.Col>
         <Grid.Col span={2}>Total</Grid.Col>
       </Grid>
-
       {isPending ? (
         <Center h={200}>
           <Loader />
@@ -115,7 +116,23 @@ export function BkManagerRankingTable({
                   {placeIcon ? placeIcon : item.position}
                 </Grid.Col>
                 <Grid.Col span={4} c="hsl(var(--foreground))">
-                  <Flex gap={"xs"} style={{ alignItems: "center" }}>
+                  <Flex
+                    gap={"xs"}
+                    style={{ alignItems: "center", cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/askq/insights?storeId=" + item.storeId);
+                      setTimeout(() => {
+                        const url = new URL(window.location.href);
+                        const storeId = url.searchParams.get("storeId");
+                        const element = document.querySelector(
+                          `tr[data-store-id="${storeId}"]`
+                        );
+                        if (element) {
+                          element.querySelector("button")?.click();
+                        }
+                      }, 0);
+                    }}
+                  >
                     {managerProfilePic?.profile_url ? (
                       <Image
                         style={{
