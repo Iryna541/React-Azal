@@ -43,6 +43,12 @@ const NAVBAR_LINKS = [
     isLocked: true,
   },
   {
+    label: "Reports",
+    href: "/reports",
+    Icon: <BarchartBig height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
+  },
+  {
     label: "Insights",
     href: "/askq/insights",
     Icon: <IconAutomation />,
@@ -64,15 +70,6 @@ const NAVBAR_LINKS = [
     label: "OscarGPT",
     href: "/oscar-gpt",
     Icon: <IconBubble height={ICON_SIZE} width={ICON_SIZE} />,
-    isLocked: false,
-  },
-];
-
-const NAVBAR_DEMO_LINKS = [
-  {
-    label: "Reports",
-    href: "/reports",
-    Icon: <BarchartBig height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
 ];
@@ -147,9 +144,11 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   });
 
   if (user?.company_id === 210) {
-    links = [...links, ...NAVBAR_DEMO_LINKS].filter(
-      (item) => item.label != "OscarGPT"
-    );
+    links = [...links].filter((item) => item.label != "OscarGPT");
+  }
+
+  if (user?.company_id !== 210) {
+    links = [...links].filter((item) => item.label != "Reports");
   }
 
   return (
