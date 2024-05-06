@@ -21,11 +21,12 @@ export type ManagerPlanRow = {
 export type ManagerPlanResponse = Array<ManagerPlanRow>;
 
 export async function getBkManagerPlan(
-  type: string
+  type: string,
+  isDemo: string = ""
 ): Promise<ManagerPlanResponse> {
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-manager-plan?type=${type}`
+      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-manager-plan?type=${type}&isDemo=${isDemo}`
     ) // Adjusted URL for manager plans
     .then((res) => res.data);
 }
@@ -33,15 +34,17 @@ export async function getBkManagerPlan(
 export type UseBkManagerPlanOptions = {
   config?: UseQueryOptions<ManagerPlanResponse>;
   type?: string | null;
+  isDemo?: string;
 };
 
 export function useBkManagerPlan({
   config,
   type = "all",
+  isDemo,
 }: UseBkManagerPlanOptions = {}) {
   return useQuery({
-    queryKey: ["bk-manager-plan", type],
-    queryFn: () => getBkManagerPlan(type || "all"),
+    queryKey: ["bk-manager-plan", type, isDemo],
+    queryFn: () => getBkManagerPlan(type || "all", isDemo),
     ...config,
   });
 }
