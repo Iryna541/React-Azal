@@ -129,8 +129,10 @@ function AdamKlaersSetup() {
 }
 
 function RussSetup() {
-  const { data } = useStoreRanking();
   const { configurations, user } = useUser();
+  const { data } = useStoreRanking({
+    isDemo: user?.company_id === 210 ? "true" : "",
+  });
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
     data || []
@@ -138,7 +140,10 @@ function RussSetup() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dtlSelectedOption, setDtlSelectedOption] = useState<string>("All");
 
-  const { data: managerData } = useBkManagerPlan({ type: dtlSelectedOption });
+  const { data: managerData } = useBkManagerPlan({
+    type: dtlSelectedOption,
+    isDemo: user?.company_id === 210 ? "true" : "",
+  });
 
   const { data: managers } = useGetManagers();
 
