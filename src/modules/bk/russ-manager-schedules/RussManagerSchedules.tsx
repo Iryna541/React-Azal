@@ -27,8 +27,8 @@ export function RussManagerSchedules() {
           />
         </Flex>
         {isLoading && (
-          <Box mx="auto">
-            <Loader size="xl" />
+          <Box mx="auto" my="xl">
+            <Loader size="lg" />
           </Box>
         )}
         {managerSchedulesData?.previous_week_schedules && (
