@@ -62,6 +62,7 @@ import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlan
 import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
 import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
 import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
+import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -196,6 +197,7 @@ function RussSetup() {
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
           <Tabs.Tab value="manager">DTL</Tabs.Tab>
+          <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
         </Tabs.List>
       </Flex>
       <Tabs.Panel value="store">
@@ -245,6 +247,9 @@ function RussSetup() {
             setDtlSelectedOption={setDtlSelectedOption}
           />
         )}
+      </Tabs.Panel>
+      <Tabs.Panel value="manager-schedules">
+        <RussManagerSchedules />
       </Tabs.Panel>
     </Tabs>
   );
