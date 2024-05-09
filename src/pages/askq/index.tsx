@@ -64,7 +64,9 @@ export default function DashboardPage() {
   const { user } = useUser();
   return (
     <ProtectedRoute>
-      {user?.company_id === 211 || user?.company_id === 210 ? (
+      {user?.company_id === 211 ||
+      user?.company_id === 210 ||
+      user?.company_id === 218 ? (
         <InsightsProvider>
           <RussSetup />
         </InsightsProvider>
