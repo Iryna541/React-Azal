@@ -132,7 +132,7 @@ function AdamKlaersSetup() {
 function RussSetup() {
   const { configurations, user } = useUser();
   const { data } = useStoreRanking({
-    isDemo: user?.company_id === 210 ? "true" : "",
+    companyId: user?.company_id.toString(),
   });
 
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
@@ -196,8 +196,12 @@ function RussSetup() {
       <Flex align="center" justify="space-between">
         <Tabs.List mb="lg">
           <Tabs.Tab value="store">Store</Tabs.Tab>
-          <Tabs.Tab value="manager">DTL</Tabs.Tab>
-          <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
+          {(user?.company_id === 210 || user?.company_id === 211) && (
+            <Tabs.Tab value="manager">DTL</Tabs.Tab>
+          )}
+          {user?.company_id === 211 && (
+            <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
+          )}
         </Tabs.List>
       </Flex>
       <Tabs.Panel value="store">

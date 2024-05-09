@@ -88,7 +88,7 @@ function RussSetup() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { data: managersRankingData, isPending } = useStoreRanking({
-    isDemo: user?.company_id === 210 ? "true" : "",
+    companyId: user?.company_id.toString(),
   });
 
   const [selectedFilter, setSelectedFilter] = useState<
