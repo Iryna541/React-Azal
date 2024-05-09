@@ -22,35 +22,50 @@ import { DunkinSalesDataInsightsTable } from "~/modules/dunkin/dunkin-insights-t
 import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api/useGetInsights";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
+import { useUser } from "~/modules/auth/hooks/useUser";
+import { useRussLtoTrainingReports } from "~/modules/bk/lto-training-report/api/useRussLtoTrainings";
+import RussLtoTrainingReportTable from "~/modules/bk/lto-training-report/RussLtoTrainingReportTable";
+import {
+  dtlWiseColumns,
+  storeWiseColumns,
+} from "~/modules/bk/lto-training-report/columns";
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
+  const { user } = useUser();
   return (
     <ProtectedRoute>
       <Layout>
         <Flex justify="space-between">
           <Title order={3}>Reports</Title>
-          <Select
-            data={[
-              {
-                value: "example1",
-                label: "Example 1",
-              },
-              {
-                value: "example2",
-                label: "Example 2",
-              },
-            ]}
-            value={value}
-            onChange={(val) => {
-              if (val) {
-                setValue(val);
-              }
-            }}
-          />
+          {user?.company_id === 210 && (
+            <Select
+              data={[
+                {
+                  value: "example1",
+                  label: "Example 1",
+                },
+                {
+                  value: "example2",
+                  label: "Example 2",
+                },
+              ]}
+              value={value}
+              onChange={(val) => {
+                if (val) {
+                  setValue(val);
+                }
+              }}
+            />
+          )}
         </Flex>
-        {value === "example1" && <ShawnExample />}
-        {value === "example2" && <ZinoExample />}
+        {user?.company_id === 210 && (
+          <>
+            {value === "example1" && <ShawnExample />}
+            {value === "example2" && <ZinoExample />}
+          </>
+        )}
+        {user?.company_id === 211 && <RussReport />}
       </Layout>
     </ProtectedRoute>
   );
@@ -294,6 +309,72 @@ function ZinoExample() {
         <ZenoInsightTable data={insightsData.insights_data} />
       )}
     </Box>
+  );
+}
+
+function RussReport() {
+  const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
+
+  console.log({ ltoTrainingReport });
+  return (
+    <>
+      <Box
+        mt="xl"
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              Store Wise LTO Training Data
+            </Title>
+          </Box>
+        </Flex>
+        <Divider />
+        {isLoading && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {ltoTrainingReport?.store_wise_data && (
+          <RussLtoTrainingReportTable
+            data={ltoTrainingReport?.store_wise_data}
+            columns={storeWiseColumns}
+            colVisibility={{}}
+          />
+        )}
+      </Box>
+      <Box
+        mt="xl"
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              DTL Wise LTO Training Data
+            </Title>
+          </Box>
+        </Flex>
+        <Divider />
+        {isLoading && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {ltoTrainingReport?.dtl_wise_data && (
+          <RussLtoTrainingReportTable
+            data={ltoTrainingReport?.dtl_wise_data}
+            columns={dtlWiseColumns}
+            colVisibility={{ manager_id: false }}
+          />
+        )}
+      </Box>
+    </>
   );
 }
 
