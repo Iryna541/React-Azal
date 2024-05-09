@@ -229,7 +229,7 @@ export function StoreWiseModalContent({ managerId }: { managerId: string }) {
     <Stack>
       <Grid grow>
         <Grid.Col span={1}>
-          <HeaderCell title="Store ID" />
+          <HeaderCell title="Store ID" textAlign={"left"} />
         </Grid.Col>
         <Grid.Col span={1}>
           <HeaderCell title="T. Enrolled" />
@@ -248,9 +248,9 @@ export function StoreWiseModalContent({ managerId }: { managerId: string }) {
         <Grid grow>
           <Grid.Col span={1}>
             {!isFetching ? (
-              <Text style={{ textAlign: "center" }}>{item.store_id}</Text>
+              <Text>{item.store_id}</Text>
             ) : (
-              <Text style={{ textAlign: "center" }}>
+              <Text>
                 <Loader />
               </Text>
             )}
