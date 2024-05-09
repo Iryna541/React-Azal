@@ -17,27 +17,29 @@ export interface StoreInsights {
 export type GetStoreRankingResponse = StoreInsights[];
 
 export async function getStoreRanking(
-  isDemo: string = ""
+  companyId: string = ""
 ): Promise<GetStoreRankingResponse> {
+  const searchParams = new URLSearchParams();
+  searchParams.append("companyId", companyId);
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-store-ranking${isDemo.length > 0 ? `?isDemo=${isDemo}` : ""}`
+      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-store-ranking?${searchParams.toString()}`
     )
     .then((res) => res.data);
 }
 
 export type UseStoreRankingOptions = {
-  isDemo?: string;
+  companyId?: string;
   config?: UseQueryOptions<GetStoreRankingResponse>;
 };
 
 export function useStoreRanking({
   config,
-  isDemo,
+  companyId,
 }: UseStoreRankingOptions = {}) {
   return useQuery({
-    queryKey: ["bk-store-ranking", isDemo],
-    queryFn: () => getStoreRanking(isDemo),
+    queryKey: ["bk-store-ranking", companyId],
+    queryFn: () => getStoreRanking(companyId),
     ...config,
   });
 }
