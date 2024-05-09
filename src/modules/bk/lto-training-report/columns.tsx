@@ -20,7 +20,7 @@ export const storeWiseColumns: ColumnDef<any>[] = [
         style={{ borderRadius: 4, cursor: "pointer" }}
         onClick={() => {
           modals.open({
-            title: `Store Details ${cell.getValue()}`,
+            title: `Store Details (${cell.getValue()})`,
             size: "xl",
             children: <ModalContent storeId={cell.getValue() as string} />,
           });
