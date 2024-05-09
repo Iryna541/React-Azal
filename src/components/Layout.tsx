@@ -135,7 +135,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
       link.label === "Dashboard" &&
       (user?.company_id === 211 ||
         user?.company_id === 212 ||
-        user?.company_id === 210)
+        user?.company_id === 210 ||
+        user?.company_id === 218)
     ) {
       return { ...link, isLocked: false };
     }

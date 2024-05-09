@@ -91,9 +91,9 @@ export default function InsightsPage() {
               </Tooltip>
             </Flex>
           </Flex>
-          {(user?.company_id === 211 || user?.company_id === 210) && (
-            <RussSetup />
-          )}
+          {(user?.company_id === 211 ||
+            user?.company_id === 210 ||
+            user?.company_id === 218) && <RussSetup />}
           {(user?.company_id === 212 || user?.company_id === 215) && (
             <ShawnSetup />
           )}
