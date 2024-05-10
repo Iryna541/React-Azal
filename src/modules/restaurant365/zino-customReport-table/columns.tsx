@@ -1,5 +1,8 @@
-import { Text } from "@mantine/core";
+import { Box, Button, Flex, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconPencil } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
+import { ReactNode } from "react";
 
 export const columns: ColumnDef<Record<string, number | string>>[] = [
   {
@@ -49,10 +52,17 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         row.original.A !== "%" &&
         row.original.A !== "Start Date"
       ) {
+        {console.log({"row": row.original});}
         return (
-          <Text bg="green.1" style={{ fontSize: "14px" }} fw={500}>
-            {row.original.B}
-          </Text>
+          <Flex bg="green.1" justify={"center"} align={"center"}>
+            <Text  style={{ fontSize: "14px" }} fw={500}>
+              {row.original.B}
+            </Text>
+            {row.original.A === "CATERING IN STORE" && <Button size="compact-sm" variant="transparent" onClick={() => modals.open({
+              title: "Edit Data",
+              children: <EditModalContent/>
+            })}><IconPencil size={16}/></Button> }
+          </Flex>
         );
       }
       return row.original.B;
@@ -162,4 +172,43 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     header: "Prev Period",
     size: 150,
   },
+  {
+    accessorKey: "store_id",
+    header: "Store ID",
+    size: 150,
+  },
+  {
+    accessorKey: "category_id",
+    header: "Category ID",
+    size: 150,
+  },
+  {
+    accessorKey: "week_1_start_date",
+    header: "Week 1 Start Date",
+    size: 150,
+  },
+  {
+    accessorKey: "week_2_start_date",
+    header: "Week 2 Start Date",
+    size: 150,
+  },
+  {
+    accessorKey: "week_3_start_date",
+    header: "Week 3 Start Date",
+    size: 150,
+  },
+  {
+    accessorKey: "week_4_start_date",
+    header: "Week 4 Start Date",
+    size: 150,
+  },
 ];
+
+
+function EditModalContent(): ReactNode {
+  return (
+    <Box>
+      <h1>This is modal</h1>
+    </Box>
+  )
+}

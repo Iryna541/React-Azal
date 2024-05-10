@@ -51,6 +51,8 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
       firstRow = false;
     }
 
+    console.log({arr, data, groupedData});
+
     const row1: Record<string, number | string> = {},
       row2: Record<string, number | string> = {},
       row3: Record<string, number | string> = {},
@@ -81,11 +83,24 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
     row1["G"] = arr[0].prev_period_total_diff ? `${arr[0].prev_period_total_diff}` : "";
     row3["G"] = arr[0].prev_period_ticket_diff || "";
     row4["G"] = arr[0].prev_period_avg_ticket_diff ? `${arr[0].prev_period_avg_ticket_diff}` : "";
+    
+    // setting store_id, category_id, weekStartDate
+    row1["store_id"] = arr[0].store_id;
+    row2["store_id"] = arr[0].store_id;
+    row3["store_id"] = arr[0].store_id;
+    row4["store_id"] = arr[0].store_id;
 
-    // console.log(row1);
-    // console.log(row2);
-    // console.log(row3);
-    // console.log(row4);
+    row1["category_id"] = arr[0].category_id;
+    row2["category_id"] = arr[0].category_id;
+    row3["category_id"] = arr[0].category_id;
+    row4["category_id"] = arr[0].category_id;
+
+    for (let i = 0; i < 4; ++i) {
+      row1[`week_${i+1}_start_date`] = arr[i].week_start_date;
+      row2[`week_${i+1}_start_date`] = arr[i].week_start_date;
+      row3[`week_${i+1}_start_date`] = arr[i].week_start_date;
+      row4[`week_${i+1}_start_date`] = arr[i].week_start_date;
+    }
 
     returnArr.push(row1);
     returnArr.push(row2);
