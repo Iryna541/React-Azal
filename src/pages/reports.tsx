@@ -328,9 +328,23 @@ function RussReport() {
         <Flex justify="space-between">
           <Box px="lg" py="md">
             <Title order={5} fw={500} fz={16}>
-              Store Wise LTO Training Data
+              Store LTO Training Data
+            </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              LTO Training data for all stores
             </Title>
           </Box>
+          <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+            <Button
+              variant="azalio-ui-dark"
+              my={"sm"}
+              size="xl"
+              style={{ fontSize: "14px" }}
+              leftSection={<IconFileExport />}
+            >
+              Export
+            </Button>
+          </Anchor>
         </Flex>
         <Divider />
         {isLoading && (
@@ -356,9 +370,23 @@ function RussReport() {
         <Flex justify="space-between">
           <Box px="lg" py="md">
             <Title order={5} fw={500} fz={16}>
-              DTL Wise LTO Training Data
+              DTL LTO Training Data
+            </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              LTO Training data for all DTL's
             </Title>
           </Box>
+          <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+            <Button
+              variant="azalio-ui-dark"
+              my={"sm"}
+              size="xl"
+              style={{ fontSize: "14px" }}
+              leftSection={<IconFileExport />}
+            >
+              Export
+            </Button>
+          </Anchor>
         </Flex>
         <Divider />
         {isLoading && (
