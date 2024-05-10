@@ -24,7 +24,7 @@ const RussLtoTrainingReportTable = ({
   columns: any;
   colVisibility: VisibilityState;
 }) => {
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 100;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] =
@@ -74,6 +74,7 @@ const RussLtoTrainingReportTable = ({
                 return (
                   <Table.Th
                     key={header.id}
+                    ta={"center"}
                     style={{
                       width: header.column.getSize(),
                       minWidth: header.column.getSize(),
@@ -94,7 +95,8 @@ const RussLtoTrainingReportTable = ({
         </Table.Thead>
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => {
+            table.getRowModel().rows.map((row: any) => {
+              console.log({ row });
               return (
                 <>
                   <Table.Tr
@@ -106,12 +108,19 @@ const RussLtoTrainingReportTable = ({
                         : row.toggleExpanded(true);
                     }}
                     style={{ cursor: "pointer" }}
+                    bg={
+                      row?.original.manager_name === "Grand Total" ||
+                      row?.original.store_id === "Grand Total"
+                        ? "hsl(var(--secondary))"
+                        : ""
+                    }
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell: any) => (
                       <Table.Td
                         fw={500}
                         c="hsl(var(--foreground) / 0.8)"
                         key={cell.id}
+                        ta={"center"}
                         style={{
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),

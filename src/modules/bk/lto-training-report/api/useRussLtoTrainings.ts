@@ -15,6 +15,7 @@ export type DTLWiseData = {
   total_enrolled: number;
   total_completed: number;
   total_not_completed: number;
+  completion_percentage: number;
 };
 
 export type GetRussLtoTrainingReportResponse = {

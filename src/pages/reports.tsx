@@ -314,8 +314,34 @@ function ZinoExample() {
 
 function RussReport() {
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
+  const [storeWiseData, setStoreWiseData] = useState<any[]>([]);
+  const [dtlWiseData, setDtlWiseData] = useState<any[]>([]);
 
-  console.log({ ltoTrainingReport });
+  useEffect(() => {
+    if(ltoTrainingReport?.store_wise_data){
+      const tempData = ltoTrainingReport.store_wise_data;
+      const finalRow = {
+        store_id: "Grand Total",
+        total_enrolled: tempData.reduce((acc, row) => acc + row.total_enrolled, 0),
+        total_completed: tempData.reduce((acc, row) => acc + row.total_completed, 0),
+        total_not_completed: tempData.reduce((acc, row) => acc + row.total_not_completed, 0),
+        completion_percentage: (tempData.reduce((acc, row) => acc + row.total_completed, 0) / tempData.reduce((acc, row) => acc + row.total_enrolled, 0) * 100).toFixed(2),
+      }
+      setStoreWiseData([...tempData, finalRow])
+    }
+    if(ltoTrainingReport?.dtl_wise_data){
+      const tempData = ltoTrainingReport.dtl_wise_data;
+      const finalRow = {
+        manager_name: "Grand Total",
+        total_enrolled: tempData.reduce((acc, row) => acc + row.total_enrolled, 0),
+        total_completed: tempData.reduce((acc, row) => acc + row.total_completed, 0),
+        total_not_completed: tempData.reduce((acc, row) => acc + row.total_not_completed, 0),
+        completion_percentage: (tempData.reduce((acc, row) => acc + row.total_completed, 0) / tempData.reduce((acc, row) => acc + row.total_enrolled, 0) * 100).toFixed(2),
+      }
+      setDtlWiseData([...tempData, finalRow])
+    }
+  }, [ltoTrainingReport])
+
   return (
     <>
       <Box
@@ -354,7 +380,7 @@ function RussReport() {
         )}
         {ltoTrainingReport?.store_wise_data && (
           <RussLtoTrainingReportTable
-            data={ltoTrainingReport?.store_wise_data}
+            data={storeWiseData}
             columns={storeWiseColumns}
             colVisibility={{}}
           />
@@ -396,7 +422,7 @@ function RussReport() {
         )}
         {ltoTrainingReport?.dtl_wise_data && (
           <RussLtoTrainingReportTable
-            data={ltoTrainingReport?.dtl_wise_data}
+            data={dtlWiseData}
             columns={dtlWiseColumns}
             colVisibility={{ manager_id: false }}
           />
