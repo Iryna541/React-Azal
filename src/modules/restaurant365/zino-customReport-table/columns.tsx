@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@mantine/core";
+import { Box, Button, Flex, Grid, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -52,7 +52,6 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         row.original.A !== "%" &&
         row.original.A !== "Start Date"
       ) {
-        {console.log({"row": row.original});}
         return (
           <Flex bg="green.1" justify={"center"} align={"center"}>
             <Text  style={{ fontSize: "14px" }} fw={500}>
@@ -60,7 +59,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
             </Text>
             {row.original.A === "CATERING IN STORE" && <Button size="compact-sm" variant="transparent" onClick={() => modals.open({
               title: "Edit Data",
-              children: <EditModalContent/>
+              children: <EditModalContent storeId={row.original.store_id} category_id={row.original.category_id} weekStartDate={row.original.week_1_start_date}/>
             })}><IconPencil size={16}/></Button> }
           </Flex>
         );
@@ -205,10 +204,29 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
 ];
 
 
-function EditModalContent(): ReactNode {
+function EditModalContent({storeId, categoryId, weekStartDate}: {storeId: number, categoryId: number, weekStartDate: string}): ReactNode {
   return (
-    <Box>
-      <h1>This is modal</h1>
-    </Box>
+    <Stack gap={"sm"}>
+      <Flex justify={'space-between'} align={"center"}>
+          <Text>Store ID:</Text>
+          <Text>{storeId}</Text>
+      </Flex>
+      <Grid grow>
+        <Grid.Col>
+          <Text>Category ID:</Text>
+        </Grid.Col>
+        <Grid.Col>
+          <Text>{categoryId}</Text>
+        </Grid.Col>
+      </Grid>
+      <Grid grow>
+        <Grid.Col>
+          <Text>Week Start Date:</Text>
+        </Grid.Col>
+        <Grid.Col>
+          <Text>{weekStartDate}</Text>
+        </Grid.Col>
+      </Grid>
+    </Stack>
   )
 }
