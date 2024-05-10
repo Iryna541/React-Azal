@@ -24,7 +24,13 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    category_id: false,
+    week_1_start_date: false,
+    week_2_start_date: false,
+    week_3_start_date: false,
+    week_4_start_date: false
+  });
 
   const table = useReactTable({
     data,

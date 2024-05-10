@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { axios } from "~/lib/axios";
 
 export type GetRevenueCenterDataResponse = {
@@ -60,8 +60,37 @@ export function useRevenueCenterData({
   ...config
 }: UseRevenueCenterDataOptions) {
   return useQuery({
-    queryKey: ["zeno-insight-table", storeId, period],
+    queryKey: ["zeno-insight-revenue-table", storeId, period],
     queryFn: () => fetchRevenueCenterData(period, storeId),
     ...config,
   });
 }
+
+export type UpdateRevenueCenterDataPayload = {
+  "store_id": number,
+  "category_id": number,
+  "week_start_date": string,
+  "net_sales": number,
+  "percentage": number,
+  "tickets": number,
+  "average_ticket_size": number
+}
+
+export type UpdateRevenueCenterDataError = {
+  message: string;
+};
+
+export const updateRevenueCenterData = async (body: UpdateRevenueCenterDataPayload) => {
+  return axios.post("/analytics/updateRevenueCenterData", body).then((res) => res.data);
+};
+
+type UseLoginOptions = {
+  config?: UseMutationOptions<any, UpdateRevenueCenterDataError, UpdateRevenueCenterDataPayload>;
+};
+
+export const useUpdateRevenueCenterData = ({ config }: UseLoginOptions = {}) => {
+  return useMutation<any, UpdateRevenueCenterDataError, UpdateRevenueCenterDataPayload>({
+    mutationFn: (values) => updateRevenueCenterData(values),
+    ...config,
+  });
+};

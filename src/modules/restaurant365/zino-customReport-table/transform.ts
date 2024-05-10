@@ -86,9 +86,6 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
     
     // setting store_id, category_id, weekStartDate
     row1["store_id"] = arr[0].store_id;
-    row2["store_id"] = arr[0].store_id;
-    row3["store_id"] = arr[0].store_id;
-    row4["store_id"] = arr[0].store_id;
 
     row1["category_id"] = arr[0].category_id;
     row2["category_id"] = arr[0].category_id;
