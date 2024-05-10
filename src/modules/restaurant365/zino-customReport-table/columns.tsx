@@ -1,8 +1,22 @@
-import { Box, Button, Flex, Grid, Stack, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Flex,
+  NumberInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { useUpdateRevenueCenterData } from "./api/useRevenueCenterData";
+import { showSuccessNotification } from "~/utils/notifications";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
 
 export const columns: ColumnDef<Record<string, number | string>>[] = [
   {
@@ -54,13 +68,9 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Flex bg="green.1" justify={"center"} align={"center"}>
-            <Text  style={{ fontSize: "14px" }} fw={500}>
+            <Text style={{ fontSize: "14px" }} fw={500}>
               {row.original.B}
             </Text>
-            {row.original.A === "CATERING IN STORE" && <Button size="compact-sm" variant="transparent" onClick={() => modals.open({
-              title: "Edit Data",
-              children: <EditModalContent storeId={row.original.store_id} category_id={row.original.category_id} weekStartDate={row.original.week_1_start_date}/>
-            })}><IconPencil size={16}/></Button> }
           </Flex>
         );
       }
@@ -173,7 +183,38 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
   },
   {
     accessorKey: "store_id",
-    header: "Store ID",
+    header: "Action",
+    cell: ({ row }) => {
+      return row.original.store_id ? (
+        <Flex>
+          <Button
+            size="compact-sm"
+            variant="outline"
+            // p={"md"}
+            onClick={() =>
+              modals.open({
+                title: "Edit Data",
+                children: (
+                  <EditModalContent
+                    storeId={row.original.store_id as number}
+                    categoryId={row.original.category_id as number}
+                    weekStartDates={{
+                      "Week 1": row.original.week_1_start_date as string,
+                      "Week 2": row.original.week_2_start_date as string,
+                      "Week 3": row.original.week_3_start_date as string,
+                      "Week 4": row.original.week_4_start_date as string,
+                    }}
+                  />
+                ),
+              })
+            }
+          >
+            Edit&nbsp;
+            <IconPencil size={16} />
+          </Button>
+        </Flex>
+      ) : null;
+    },
     size: 150,
   },
   {
@@ -203,30 +244,196 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
   },
 ];
 
+function EditModalContent({
+  storeId,
+  categoryId,
+  weekStartDates,
+}: {
+  storeId: number;
+  categoryId: number;
+  weekStartDates: { [key: string]: string };
+}): ReactNode {
+  const [selectedWeek, setSelectedWeek] = useState<string>("Week 1");
+  const [weekStartDate, setWeekStartDate] = useState<string>(
+    weekStartDates["Week 1"]
+  );
 
-function EditModalContent({storeId, categoryId, weekStartDate}: {storeId: number, categoryId: number, weekStartDate: string}): ReactNode {
+  const queryClient = useQueryClient();
+
+  const updateSchema = z.object({
+    net_sales: z.number(),
+    percentage: z.number(),
+    tickets: z.number(),
+    average_ticket_size: z.number(),
+    week_start_date: z.string(),
+    category_id: z.number(),
+    store_id: z.number(),
+  });
+
+  type UpdateSchema = z.infer<typeof updateSchema>;
+
+  const { mutate: handleUpdate, isPending } = useUpdateRevenueCenterData({
+    config: {
+      onSuccess: () => {
+        queryClient.refetchQueries({
+          queryKey: ["zeno-insight-revenue-table"],
+        });
+        showSuccessNotification("Successfully Updated!");
+        modals.closeAll();
+      },
+    },
+  });
+
+  const form = useForm<UpdateSchema>({
+    validate: zodResolver(updateSchema),
+    initialValues: {
+      percentage: 0,
+      tickets: 0,
+      average_ticket_size: 0,
+      week_start_date: weekStartDate,
+      category_id: categoryId,
+      store_id: storeId,
+      net_sales: 0,
+    },
+  });
+
+  useEffect(() => {
+    if (selectedWeek) {
+      const data = (
+        queryClient.getQueriesData({
+          queryKey: ["zeno-insight-revenue-table"],
+        })[0][1] as any
+      ).data;
+      const currentItem = data.find(
+        (item: any) =>
+          item.category_id === categoryId &&
+          item.store_id === storeId &&
+          item.week_start_date === weekStartDate
+      );
+      if (currentItem) {
+        form.setFieldValue("net_sales", currentItem?.category_total as number);
+        form.setFieldValue("percentage", parseFloat(currentItem.percentage));
+        form.setFieldValue("tickets", currentItem.tickets as number);
+        form.setFieldValue(
+          "average_ticket_size",
+          parseFloat(currentItem.average_ticket_size)
+        );
+        form.setFieldValue("week_start_date", weekStartDate as string);
+        form.setFieldValue("category_id", categoryId as number);
+        form.setFieldValue("store_id", storeId as number);
+      }
+    }
+  }, [queryClient, weekStartDate]);
+
+  useEffect(() => {
+    if (selectedWeek) {
+      setWeekStartDate(weekStartDates[selectedWeek]);
+    }
+  }, [selectedWeek]);
+
   return (
     <Stack gap={"sm"}>
-      <Flex justify={'space-between'} align={"center"}>
-          <Text>Store ID:</Text>
-          <Text>{storeId}</Text>
+      <Flex direction={"column"} justify={"space-between"} gap={"xs"}>
+        <Select
+          fw={"500"}
+          placeholder="Pick value"
+          data={["Week 1", "Week 2", "Week 3", "Week 4"]}
+          value={selectedWeek}
+          onChange={(v) => {
+            if (v) setSelectedWeek(v);
+          }}
+          allowDeselect={false}
+        />
       </Flex>
-      <Grid grow>
-        <Grid.Col>
-          <Text>Category ID:</Text>
-        </Grid.Col>
-        <Grid.Col>
-          <Text>{categoryId}</Text>
-        </Grid.Col>
-      </Grid>
-      <Grid grow>
-        <Grid.Col>
-          <Text>Week Start Date:</Text>
-        </Grid.Col>
-        <Grid.Col>
-          <Text>{weekStartDate}</Text>
-        </Grid.Col>
-      </Grid>
+      {selectedWeek !== "0" && (
+        <form
+          onSubmit={form.onSubmit((values) => {
+            handleUpdate(values);
+          })}
+        >
+          <Stack gap={"sm"}>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Week Start Date
+              </Text>
+              <TextInput value={weekStartDate} readOnly={true} w={200} />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Store ID
+              </Text>
+              <TextInput value={storeId} readOnly={true} w={200} />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Category ID
+              </Text>
+              <TextInput value={categoryId} readOnly={true} w={200} />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Net Sales
+                <Box c={"red.5"} component={"span"}>
+                  *
+                </Box>
+              </Text>
+              <NumberInput
+                placeholder="Enter Net Sales"
+                w={200}
+                {...form.getInputProps("net_sales")}
+              />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Percentage{" "}
+                <Box c={"red.5"} component={"span"}>
+                  *
+                </Box>
+              </Text>
+              <NumberInput
+                placeholder="Enter Percentage"
+                w={200}
+                {...form.getInputProps("percentage")}
+              />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Tickets{" "}
+                <Box c={"red.5"} component={"span"}>
+                  *
+                </Box>
+              </Text>
+              <NumberInput
+                placeholder="Enter Total Tickets"
+                w={200}
+                {...form.getInputProps("tickets")}
+              />
+            </Flex>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text size="sm" fw={"600"}>
+                Average Ticket Size{" "}
+                <Box c={"red.5"} component={"span"}>
+                  *
+                </Box>
+              </Text>
+              <NumberInput
+                placeholder="Enter Average Ticket Size"
+                w={200}
+                {...form.getInputProps("average_ticket_size")}
+              />
+            </Flex>
+            <Button
+              mt="sm"
+              size="md"
+              type="submit"
+              variant="azalio-ui-dark"
+              loading={isPending}
+            >
+              Update
+            </Button>
+          </Stack>
+        </form>
+      )}
     </Stack>
-  )
+  );
 }
