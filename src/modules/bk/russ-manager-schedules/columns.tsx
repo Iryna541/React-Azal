@@ -18,9 +18,6 @@ function ScheduleHeader() {
       <Text size="sm" fw={700}>
         Out
       </Text>
-      <Text size="sm" fw={700}>
-        Hrs
-      </Text>
     </Group>
   );
 }
@@ -34,9 +31,9 @@ function ScheduleCell({ data }: { data: Schedule }) {
       <Text size="sm" lts={-1}>
         {format(data[1])}
       </Text>
-      <Text size="sm" lts={-1}>
+      {/* <Text size="sm" lts={-1}>
         {data[2]}
-      </Text>
+      </Text> */}
     </Group>
   );
 }
@@ -46,6 +43,13 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
     accessorKey: "managerName",
     header: "Manager",
     size: 120,
+    cell: ({ row }) => {
+      return (
+        <Text size="sm" truncate="end">
+          {row.original.managerName}
+        </Text>
+      );
+    },
   },
   {
     accessorKey: "A",

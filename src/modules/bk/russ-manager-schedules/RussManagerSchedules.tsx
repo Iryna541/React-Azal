@@ -1,4 +1,12 @@
-import { Box, Flex, Loader, Select, Stack, Title } from "@mantine/core";
+import {
+  Box,
+  Flex,
+  Loader,
+  ScrollArea,
+  Select,
+  Stack,
+  Title,
+} from "@mantine/core";
 import {
   ManagerSchedule,
   useRussManagerSchedules,
@@ -9,47 +17,60 @@ import { useState } from "react";
 
 export function RussManagerSchedules() {
   const [value, setValue] = useState<string | null>("4");
-
   const { data: managerSchedulesData, isLoading } = useRussManagerSchedules({
     params: { storeId: value ?? "4" },
   });
   return (
-    <>
-      <Stack>
-        <Flex justify="space-between">
-          <Title order={3}>Weekly Schedule</Title>
-          <Select
-            allowDeselect={false}
-            placeholder="Pick store Id"
-            data={managerSchedulesData ? managerSchedulesData.stores : []}
-            value={value}
-            onChange={setValue}
-          />
-        </Flex>
-        {isLoading && (
-          <Box mx="auto" my="xl">
-            <Loader size="lg" />
-          </Box>
-        )}
-        {managerSchedulesData?.previous_week_schedules && (
-          <TransformedTable
-            data={managerSchedulesData.previous_week_schedules}
-          />
-        )}
-        {managerSchedulesData?.current_week_schedules && (
-          <TransformedTable
-            data={managerSchedulesData.current_week_schedules}
-          />
-        )}
-        {managerSchedulesData?.next_week_schedules && (
-          <TransformedTable data={managerSchedulesData.next_week_schedules} />
-        )}
-      </Stack>
-    </>
+    <Stack>
+      <Flex justify="space-between" align="center">
+        <Title order={3}>Weekly Schedule</Title>
+        <Select
+          label="Select Store"
+          allowDeselect={false}
+          placeholder="Pick store Id"
+          data={managerSchedulesData ? managerSchedulesData.stores : []}
+          value={value}
+          onChange={setValue}
+        />
+      </Flex>
+      {isLoading && (
+        <Box mx="auto" my="xl">
+          <Loader size="lg" />
+        </Box>
+      )}
+      <ScrollArea h="65vh" scrollbars="xy">
+        <Stack>
+          {managerSchedulesData?.previous_week_schedules && (
+            <TransformedTable
+              storeId={value!}
+              data={managerSchedulesData.previous_week_schedules}
+            />
+          )}
+          {managerSchedulesData?.current_week_schedules && (
+            <TransformedTable
+              storeId={value!}
+              data={managerSchedulesData.current_week_schedules}
+            />
+          )}
+          {managerSchedulesData?.next_week_schedules && (
+            <TransformedTable
+              storeId={value!}
+              data={managerSchedulesData.next_week_schedules}
+            />
+          )}
+        </Stack>
+      </ScrollArea>
+    </Stack>
   );
 }
 
-export function TransformedTable({ data }: { data: ManagerSchedule[] }) {
+export function TransformedTable({
+  data,
+  storeId,
+}: {
+  storeId: string;
+  data: ManagerSchedule[];
+}) {
   const transformedData = data ? transform(data) : null;
   if (transformedData) {
     return (
@@ -60,6 +81,7 @@ export function TransformedTable({ data }: { data: ManagerSchedule[] }) {
           {moment(transformedData.endDate, "MM-DD-YYYY").format("MM/DD/YYYY")}
         </Title>
         <RussManagerSchedulesTable
+          storeId={storeId}
           data={transformedData.data}
           startDate={transformedData.startDate}
           endDate={transformedData.endDate}
