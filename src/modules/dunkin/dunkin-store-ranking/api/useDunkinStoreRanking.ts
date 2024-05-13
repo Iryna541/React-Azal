@@ -12,24 +12,28 @@ export interface DunkinStoreRankingData {
 
 export type GetDunkinStoreRankingResponse = DunkinStoreRankingData[];
 
-export async function getDunkinStoreRanking(): Promise<GetDunkinStoreRankingResponse> {
+export async function getDunkinStoreRanking(companyId: string | undefined): Promise<GetDunkinStoreRankingResponse> {
+  const searchParams = new URLSearchParams();
+  searchParams.append("companyId", companyId as string);
   return axios
     .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/dunkin-store-ranking"
+      `https://azalio-bk-api.cosmos.staging.delineate.pro/dunkin-store-ranking?${searchParams.toString()}`
     )
     .then((res) => res.data);
 }
 
 export type UseDunkinStoreRankingOptions = {
   config?: UseQueryOptions<GetDunkinStoreRankingResponse>;
+  companyId?: string;
 };
 
 export default function useDunkinStoreRanking({
   config,
+  companyId, 
 }: UseDunkinStoreRankingOptions = {}) {
   return useQuery({
     queryKey: ["dunkin-store-ranking"],
-    queryFn: getDunkinStoreRanking,
+    queryFn: () => getDunkinStoreRanking(companyId),
     ...config,
   });
 }

@@ -67,6 +67,9 @@ import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussMa
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
+  const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
+    "Dunkin"
+  );
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
@@ -90,16 +93,38 @@ export default function InsightsPage() {
                 </Badge>
               </Tooltip>
             </Flex>
+            {user?.company_id === 210 && (
+              <Box>
+                <Select
+                  value={selectedDemoOption}
+                  placeholder="Pick value"
+                  data={["Dunkin", "Burger King"]}
+                  m={"sm"}
+                  onChange={(value) => setSelectedDemoOption(value)}
+                  allowDeselect={false}
+                />
+              </Box>
+            )}
           </Flex>
-          {(user?.company_id === 211 ||
-            user?.company_id === 210 ||
-            user?.company_id === 218) && <RussSetup />}
-          {(user?.company_id === 212 || user?.company_id === 215) && (
-            <ShawnSetup />
+          {user?.company_id === 210 ? (
+            selectedDemoOption === "Dunkin" ? (
+              <ShawnSetup />
+            ) : (
+              <RussSetup />
+            )
+          ) : (
+            <>
+              {(user?.company_id === 211 || user?.company_id === 218) && (
+                <RussSetup />
+              )}
+              {(user?.company_id === 212 || user?.company_id === 215) && (
+                <ShawnSetup />
+              )}
+              {user?.company_id === 213 && <AdamKlaersSetup />}
+              {user?.company_id === 214 && <ZinoSetup />}
+              {user?.company_id === 216 && <StevenSetup />}
+            </>
           )}
-          {user?.company_id === 213 && <AdamKlaersSetup />}
-          {user?.company_id === 214 && <ZinoSetup />}
-          {user?.company_id === 216 && <StevenSetup />}
         </InsightsProvider>
       </Layout>
     </ProtectedRoute>
@@ -260,7 +285,10 @@ function RussSetup() {
 }
 
 function ShawnSetup() {
-  const { data } = useDunkinStoreRanking();
+  const { user } = useUser();
+  const { data } = useDunkinStoreRanking({
+    companyId: user?.company_id.toString(),
+  });
 
   const { data: managerData } = useDunkinManagerPlan();
 
