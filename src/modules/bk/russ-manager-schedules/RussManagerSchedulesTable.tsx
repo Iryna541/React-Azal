@@ -21,10 +21,12 @@ export function RussManagerSchedulesTable({
   data,
   startDate,
   endDate,
+  storeId,
 }: {
   data: TransformedData;
   startDate: string;
   endDate: string;
+  storeId: string;
 }) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -82,7 +84,7 @@ export function RussManagerSchedulesTable({
               borderBottom: "1px solid hsl(var(--foreground) / 0.075)",
             }}
           >
-            <Table.Th></Table.Th>
+            <Table.Th>Store: {storeId}</Table.Th>
             {datesInRange.map((date) => {
               return (
                 <Table.Th ta="center">
