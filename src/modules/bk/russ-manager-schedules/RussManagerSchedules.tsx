@@ -1,18 +1,9 @@
-import {
-  Box,
-  Flex,
-  Loader,
-  ScrollArea,
-  Select,
-  Stack,
-  Title,
-} from "@mantine/core";
+import { Box, Flex, Loader, Select, Stack, Tabs, Title } from "@mantine/core";
 import {
   ManagerSchedule,
   useRussManagerSchedules,
 } from "./api/useRussManagerSchedules";
 import { RussManagerSchedulesTable } from "./RussManagerSchedulesTable";
-import moment from "moment";
 import { useState } from "react";
 
 export function RussManagerSchedules() {
@@ -20,10 +11,15 @@ export function RussManagerSchedules() {
   const { data: managerSchedulesData, isLoading } = useRussManagerSchedules({
     params: { storeId: value ?? "4" },
   });
+
+  // {moment(transformedData.startDate, "MM-DD-YYYY").format("MM/DD/YYYY")}{" "}
+  // &mdash;{" "}
+  // {moment(transformedData.endDate, "MM-DD-YYYY").format("MM/DD/YYYY")}
+
   return (
     <Stack>
       <Flex justify="space-between" align="center">
-        <Title order={3}>Weekly Schedule</Title>
+        <Title order={4}>Weekly Schedule</Title>
         <Select
           label="Select Store"
           allowDeselect={false}
@@ -38,28 +34,39 @@ export function RussManagerSchedules() {
           <Loader size="lg" />
         </Box>
       )}
-      <ScrollArea h="65vh" scrollbars="xy">
-        <Stack>
-          {managerSchedulesData?.previous_week_schedules && (
-            <TransformedTable
-              storeId={value!}
-              data={managerSchedulesData.previous_week_schedules}
-            />
-          )}
-          {managerSchedulesData?.current_week_schedules && (
-            <TransformedTable
-              storeId={value!}
-              data={managerSchedulesData.current_week_schedules}
-            />
-          )}
-          {managerSchedulesData?.next_week_schedules && (
-            <TransformedTable
-              storeId={value!}
-              data={managerSchedulesData.next_week_schedules}
-            />
-          )}
-        </Stack>
-      </ScrollArea>
+      <Stack mt={-20}>
+        <Tabs defaultValue="first">
+          <Tabs.List mb="sm">
+            <Tabs.Tab value="first">Previous Week</Tabs.Tab>
+            <Tabs.Tab value="second">Current Week</Tabs.Tab>
+            <Tabs.Tab value="third">Next Week</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="first">
+            {managerSchedulesData?.previous_week_schedules && (
+              <TransformedTable
+                storeId={value!}
+                data={managerSchedulesData.previous_week_schedules}
+              />
+            )}
+          </Tabs.Panel>
+          <Tabs.Panel value="second">
+            {managerSchedulesData?.current_week_schedules && (
+              <TransformedTable
+                storeId={value!}
+                data={managerSchedulesData.current_week_schedules}
+              />
+            )}
+          </Tabs.Panel>
+          <Tabs.Panel value="third">
+            {managerSchedulesData?.next_week_schedules && (
+              <TransformedTable
+                storeId={value!}
+                data={managerSchedulesData.next_week_schedules}
+              />
+            )}
+          </Tabs.Panel>
+        </Tabs>
+      </Stack>
     </Stack>
   );
 }
@@ -74,19 +81,12 @@ export function TransformedTable({
   const transformedData = data ? transform(data) : null;
   if (transformedData) {
     return (
-      <Box>
-        <Title order={6} mb="sm">
-          {moment(transformedData.startDate, "MM-DD-YYYY").format("MM/DD/YYYY")}{" "}
-          &mdash;{" "}
-          {moment(transformedData.endDate, "MM-DD-YYYY").format("MM/DD/YYYY")}
-        </Title>
-        <RussManagerSchedulesTable
-          storeId={storeId}
-          data={transformedData.data}
-          startDate={transformedData.startDate}
-          endDate={transformedData.endDate}
-        />
-      </Box>
+      <RussManagerSchedulesTable
+        storeId={storeId}
+        data={transformedData.data}
+        startDate={transformedData.startDate}
+        endDate={transformedData.endDate}
+      />
     );
   }
   return null;

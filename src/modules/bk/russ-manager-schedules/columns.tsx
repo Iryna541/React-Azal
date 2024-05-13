@@ -54,12 +54,14 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   {
     accessorKey: "A",
     header: () => <ScheduleHeader />,
+    size: 180,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
     },
   },
   {
     accessorKey: "B",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
@@ -67,6 +69,7 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   },
   {
     accessorKey: "C",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
@@ -74,6 +77,7 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   },
   {
     accessorKey: "D",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
@@ -81,6 +85,7 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   },
   {
     accessorKey: "E",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
@@ -88,6 +93,7 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   },
   {
     accessorKey: "F",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;
@@ -95,6 +101,7 @@ export const columns: ColumnDef<TransformedData[number]>[] = [
   },
   {
     accessorKey: "G",
+    size: 180,
     header: () => <ScheduleHeader />,
     cell: ({ cell }) => {
       return <ScheduleCell data={cell.getValue() as unknown as Schedule} />;

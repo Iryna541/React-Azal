@@ -4,6 +4,7 @@
   --_tab-hover-color: white;
   padding-top: 16px !important;
   padding-bottom: 16px !important;
+  font-weight: 500;
   &[data-active="true"] {
     color: hsl(var(--primary));
   }
