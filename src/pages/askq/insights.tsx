@@ -64,6 +64,9 @@ import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-
 import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
+import { useLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/api/useLabourEfficiencyReportData";
+import { ZenoLabourEfficiencyReportTable } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/ZenoLabourEfficiencyReportTable";
+import { transformLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/transform";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -463,6 +466,10 @@ function ZinoSetup() {
     period: customReportFilterPeriod,
   });
 
+  const {data: labourEfficiencyData} = useLabourEfficiencyReportData({
+    day: 'Monday'
+  })
+
   return (
     <Stack gap="xl">
       {/* <SimpleGrid cols={2} spacing="xl">
@@ -475,6 +482,46 @@ function ZinoSetup() {
           data={[...sortedManagersData].reverse().slice(0, 5)}
         />
       </SimpleGrid> */}
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              Labour Efficiency Report
+            </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              See the labour effieciency report by day
+            </Title>
+          </Box>
+
+          <Box display={"flex"}>
+            <Select
+              py="md"
+              size="sm"
+              placeholder="Select day"
+              data={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
+              defaultValue={'Monday'}
+              // onChange={handleCustomReportPeriodChange}
+              allowDeselect={false}
+            />
+          </Box>
+        </Flex>
+        <Divider />
+        {isLoading && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {labourEfficiencyData && (
+          <ZenoLabourEfficiencyReportTable
+            data={transformLabourEfficiencyReportData(labourEfficiencyData["data"])}
+          />
+        )}
+      </Box>
       <Box
         style={{
           border: "1px solid hsl(var(--border))",
