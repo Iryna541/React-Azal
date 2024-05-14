@@ -12,24 +12,20 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
+import { ScrollArea, Table, Text } from "@mantine/core";
 import { columns } from "./columns";
 import { useState } from "react";
 
 interface ZenoInsightTableProps {
-  data: Array<Record<string, number | string>>;
+  data: Array<Record<string, number | string | boolean>>;
 }
 
-export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
-  const PAGE_SIZE = 10;
+export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps) {
+  const PAGE_SIZE = 100;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    category_id: false,
-    week_1_start_date: false,
-    week_2_start_date: false,
-    week_3_start_date: false,
-    week_4_start_date: false
+    isHeader: false,
   });
 
   const table = useReactTable({
@@ -76,16 +72,31 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                 borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
               }}
             >
-              <Table.Th className="text-center" style={{ textAlign: "center" }}>
-                Norwalk
+              <Table.Th className="text-center" style={{ textAlign: "center" }} colSpan={3}>
+                Monday
               </Table.Th>
               <Table.Th
-                colSpan={7}
+                colSpan={2}
                 className="text-center"
                 style={{ textAlign: "center" }}
               >
-                Period 1
+                Supervisor
               </Table.Th>
+              <Table.Th
+                colSpan={5}
+                className="text-center"
+                style={{ textAlign: "center" }}
+              >
+                # of Back of House  (BOH)
+              </Table.Th>
+              <Table.Th
+                colSpan={2}
+                className="text-center"
+                style={{ textAlign: "center" }}
+              >
+                FOH
+              </Table.Th>
+              <Table.Th></Table.Th>
             </Table.Tr>
             {/* <Table.Tr>
               <Table.Th className="text-center">Week</Table.Th>
@@ -108,6 +119,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                       }}
                       key={header.id}
                       colSpan={header.colSpan}
+                      ta={'center'}
                     >
                       {header.isPlaceholder ? null : (
                         <div>
@@ -131,72 +143,83 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
           <Table.Tbody>
             {table.getRowModel().rows.map((row) => {
               return (
-                <Table.Tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <Table.Td
-                        {...{
-                          key: cell.id,
-                          style: {
-                            background: cell.getIsGrouped()
-                              ? "#0aff0082"
-                              : cell.getIsAggregated()
-                                ? "#ffa50078"
-                                : cell.getIsPlaceholder()
-                                  ? "#ff000042"
-                                  : "white",
-                            textAlign: "center",
-                            fontWeight: 500,
-                          },
-                        }}
-                      >
-                        {cell.getIsGrouped() ? (
-                          // If it's a grouped cell, add an expander and row count
-                          <>
-                            <button
-                              {...{
-                                onClick: row.getToggleExpandedHandler(),
-                                style: {
-                                  cursor: row.getCanExpand()
-                                    ? "pointer"
-                                    : "normal",
-                                },
-                              }}
-                            >
-                              {row.getIsExpanded() ? "👇" : "👉"}{" "}
-                              {flexRender(
+                row?.original?.isHeader ? (
+                  <Table.Tr key={row.id} ta={'center'} bg={'hsl(var(--foreground) / 0.065)'}>
+                    <Table.Td colSpan={13} >
+                      <Text size="sm" fw={'600'} c="hsl(var(--foreground) / 0.65)">
+                        {row.original.meal}
+                      </Text>
+                    </Table.Td>
+                  </Table.Tr>
+                ) : (
+                  <Table.Tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <Table.Td
+                          pos={'relative'}
+                          {...{
+                            key: cell.id,
+                            style: {
+                              background: cell.getIsGrouped()
+                                ? "#0aff0082"
+                                : cell.getIsAggregated()
+                                  ? "#ffa50078"
+                                  : cell.getIsPlaceholder()
+                                    ? "#ff000042"
+                                    : "white",
+                              textAlign: "center",
+                              fontWeight: 500,
+                            },
+                          }}
+                        >
+                          {cell.getIsGrouped() ? (
+                            // If it's a grouped cell, add an expander and row count
+                            <>
+                              <button
+                                {...{
+                                  onClick: row.getToggleExpandedHandler(),
+                                  style: {
+                                    cursor: row.getCanExpand()
+                                      ? "pointer"
+                                      : "normal",
+                                  },
+                                }}
+                              >
+                                {row.getIsExpanded() ? "👇" : "👉"}{" "}
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}{" "}
+                                ({row.subRows.length})
+                              </button>
+                            </>
+                          ) : cell.getIsAggregated() ? (
+                            // If the cell is aggregated, use the Aggregated
+                            // renderer for cell
+                            flexRender(
+                              cell.column.columnDef.aggregatedCell ??
                                 cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}{" "}
-                              ({row.subRows.length})
-                            </button>
-                          </>
-                        ) : cell.getIsAggregated() ? (
-                          // If the cell is aggregated, use the Aggregated
-                          // renderer for cell
-                          flexRender(
-                            cell.column.columnDef.aggregatedCell ??
+                              cell.getContext()
+                            )
+                          ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
+                            // Otherwise, just render the regular cell
+                            flexRender(
                               cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
-                          // Otherwise, just render the regular cell
-                          flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        )}
-                      </Table.Td>
-                    );
-                  })}
-                </Table.Tr>
+                              cell.getContext()
+                            )
+                          )}
+                        </Table.Td>
+                      );
+                    })}
+                  </Table.Tr>
+                )
               );
             })}
           </Table.Tbody>
         </Table>
       </ScrollArea>
 
-      <Group
+      {/* <Group
         justify="space-between"
         px="xs"
         py="sm"
@@ -217,7 +240,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
           total={table.getPageCount()}
           onChange={(value) => table.setPageIndex(value - 1)}
         />
-      </Group>
+      </Group> */}
     </>
   );
 }
