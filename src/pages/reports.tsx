@@ -11,7 +11,7 @@ import {
   Stack,
   Title,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Layout } from "~/components/Layout";
 import { IconFileExport } from "@tabler/icons-react";
 import { DunkinCostInsightsTable } from "~/modules/dunkin/dunkin-insights-table/DunkinCostInsightsTable";
@@ -470,6 +470,7 @@ function ZinoReport() {
   const [dates, setDates] = useState<{label: string, value: string}[]>([]);
   const [labourReportSelectedDate, setLabourReportSelectedDate] = useState<string>("");
   const [labourReportSelectedStore, setLabourReportSelectedStore] = useState<string>("1");
+  const labourReportFirstimeUpdated = useRef(false);
 
   const [customReportStoreOptions] = useState<
     { label: string; value: string }[]
@@ -569,13 +570,12 @@ function ZinoReport() {
   };
 
   useEffect(() => {
-    if(labourEfficiencyData){
+    if(labourEfficiencyData && !labourReportFirstimeUpdated.current){
+      labourReportFirstimeUpdated.current = true;
       setDates(labourEfficiencyData.dates?.map(item => ({label: item.day, value: item.date})));
       setLabourReportSelectedDate(labourEfficiencyData.dates?.[0]?.date);
     }
   }, [labourEfficiencyData]);
-
-  console.log({dates});
 
   return (
     <Stack dir="column" gap="xl" mt="xl">
@@ -629,6 +629,7 @@ function ZinoReport() {
             data={transformLabourEfficiencyReportData(
               labourEfficiencyData["data"]
             )}
+            day={labourEfficiencyData?.day}
           />
         )}
       </Box>

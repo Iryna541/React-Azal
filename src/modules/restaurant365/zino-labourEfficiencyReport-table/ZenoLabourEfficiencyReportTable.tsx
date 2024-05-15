@@ -18,10 +18,12 @@ import { useState } from "react";
 
 interface ZenoInsightTableProps {
   data: Array<Record<string, number | string | boolean>>;
+  day: string;
 }
 
 export function ZenoLabourEfficiencyReportTable({
   data,
+  day,
 }: ZenoInsightTableProps) {
   const PAGE_SIZE = 100;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -79,7 +81,7 @@ export function ZenoLabourEfficiencyReportTable({
                 style={{ textAlign: "center" }}
                 colSpan={3}
               >
-                Monday
+                {day}
               </Table.Th>
               <Table.Th
                 colSpan={2}
