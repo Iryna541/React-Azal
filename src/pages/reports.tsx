@@ -357,7 +357,7 @@ function RussReport() {
               Store LTO Training Data
             </Title>
             <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              LTO Training data for all stores
+              {ltoTrainingReport?.course_name}
             </Title>
           </Box>
           <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
@@ -399,7 +399,7 @@ function RussReport() {
               DTL LTO Training Data
             </Title>
             <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              LTO Training data for all DTL's
+            {ltoTrainingReport?.course_name}
             </Title>
           </Box>
           <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
