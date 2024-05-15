@@ -177,39 +177,42 @@ export type GetLabourEfficiencyReportDataResponse = {
     cashier2: number;
     total: number;
   }>;
+  dates: Array<{
+    date: string;
+    day: string;
+  }>;
   day: string;
 };
 
 export async function fetchLabourEfficiencyData(
-  day: string,
+  date: string,
+  storeId: number,
 ): Promise<GetLabourEfficiencyReportDataResponse> {
-  return {
-    data: dummyData,
-    day: 'Monday'
+  try {
+    const response = await axios.get(
+      `https://demo-be.azal.io/api/analytics/getLaborEfficiencyReport?date=${date}&store_id=${storeId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to fetch labour efficiency data: ${error}`);
   }
-  // try {
-  //   const response = await axios.get(
-  //     `https://demo-be.azal.io/api/analytics/getRevenueCenterData?day=${day}`
-  //   );
-  //   return response.data;
-  // } catch (error) {
-  //   throw new Error(`Failed to fetch labour efficiency data: ${error}`);
-  // }
 }
 
 export type UseLabourEfficiencyReportDataOptions = {
-  day: string;
+  date: string;
+  storeId: number;
   // storeId: number;
   config?: UseQueryOptions<GetLabourEfficiencyReportDataResponse>;
 };
 
 export function useLabourEfficiencyReportData({
-  day,
+  date,
+  storeId,
   ...config
 }: UseLabourEfficiencyReportDataOptions) {
   return useQuery({
-    queryKey: ["zeno-insight-labour-efficiency-table", day],
-    queryFn: () => fetchLabourEfficiencyData(day),
+    queryKey: ["zeno-insight-labour-efficiency-table", date, storeId],
+    queryFn: () => fetchLabourEfficiencyData(date, storeId),
     ...config,
   });
 }

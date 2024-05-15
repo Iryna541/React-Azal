@@ -59,9 +59,6 @@ import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobste
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
-import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
-import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
-import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
 import { useLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/api/useLabourEfficiencyReportData";
@@ -392,83 +389,9 @@ function ZinoSetup() {
     }
   };
 
-  const [customReportStoreOptions] = useState<
-    { label: string; value: string }[]
-  >([
-    {
-      label: "Black Rock",
-      value: "1",
-    },
-    {
-      label: "Norwalk",
-      value: "2",
-    },
-    {
-      label: "Downtown",
-      value: "3",
-    },
-    {
-      label: "Ham Avenue",
-      value: "4",
-    },
-    {
-      label: "New Haven",
-      value: "5",
-    },
-    {
-      label: "Old Greenwich",
-      value: "6",
-    },
-    {
-      label: "Mamaroneck",
-      value: "7",
-    },
-    {
-      label: "Port Chester",
-      value: "8",
-    },
-  ]);
-  const [customReportPeriodOptions] = useState<string[]>([
-    "PERIOD 1",
-    "PERIOD 2",
-    "PERIOD 3",
-    "PERIOD 4",
-  ]);
-  const [customReportFilterStoreId, setCustomReportFilterStoreId] =
-    useState<string>("1");
-  const [customReportFilterPeriod, setCustomReportFilterPeriod] =
-    useState<string>("PERIOD 1");
-
-  const handleCustomReportPeriodChange = (value: string | null) => {
-    if (value === null) {
-      console.log("null");
-    } else {
-      console.log({ preriod: value });
-      setCustomReportFilterPeriod(value);
-    }
-  };
-
-  const handleCustomReportStoreChange = (value: string | null) => {
-    if (value === null) {
-      console.log("null");
-    } else {
-      console.log({ store: value });
-      setCustomReportFilterStoreId(value);
-    }
-  };
-
   const { data: insightsData, isLoading } = useZenoInsightTable({
     storeId: storeId,
   });
-
-  const { data: customTableData } = useRevenueCenterData({
-    storeId: Number(customReportFilterStoreId),
-    period: customReportFilterPeriod,
-  });
-
-  const {data: labourEfficiencyData} = useLabourEfficiencyReportData({
-    day: 'Monday'
-  })
 
   return (
     <Stack gap="xl">
@@ -482,96 +405,6 @@ function ZinoSetup() {
           data={[...sortedManagersData].reverse().slice(0, 5)}
         />
       </SimpleGrid> */}
-      <Box
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: 8,
-        }}
-      >
-        <Flex justify="space-between">
-          <Box px="lg" py="md">
-            <Title order={5} fw={500} fz={16}>
-              Labour Efficiency Report
-            </Title>
-            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              See the labour effieciency report by day
-            </Title>
-          </Box>
-
-          <Box display={"flex"}>
-            <Select
-              py="md"
-              size="sm"
-              placeholder="Select day"
-              data={["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
-              defaultValue={'Monday'}
-              // onChange={handleCustomReportPeriodChange}
-              allowDeselect={false}
-            />
-          </Box>
-        </Flex>
-        <Divider />
-        {isLoading && (
-          <Center h={500}>
-            <Loader size="lg" />
-          </Center>
-        )}
-        {labourEfficiencyData && (
-          <ZenoLabourEfficiencyReportTable
-            data={transformLabourEfficiencyReportData(labourEfficiencyData["data"])}
-          />
-        )}
-      </Box>
-      <Box
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: 8,
-        }}
-      >
-        <Flex justify="space-between">
-          <Box px="lg" py="md">
-            <Title order={5} fw={500} fz={16}>
-              Custom Report
-            </Title>
-            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              Revenue Centers by Period
-            </Title>
-          </Box>
-
-          <Box display={"flex"}>
-            <Select
-              py="md"
-              size="sm"
-              placeholder="Select period"
-              data={customReportPeriodOptions}
-              value={customReportFilterPeriod}
-              onChange={handleCustomReportPeriodChange}
-              allowDeselect={false}
-            />
-            <Select
-              py="md"
-              px="sm"
-              size="sm"
-              placeholder="Select store"
-              data={customReportStoreOptions}
-              value={customReportFilterStoreId}
-              onChange={handleCustomReportStoreChange}
-              allowDeselect={false}
-            />
-          </Box>
-        </Flex>
-        <Divider />
-        {isLoading && (
-          <Center h={500}>
-            <Loader size="lg" />
-          </Center>
-        )}
-        {customTableData && (
-          <ZenoCustomReportTable
-            data={transformData(customTableData["data"])}
-          />
-        )}
-      </Box>
       <Box
         style={{
           border: "1px solid hsl(var(--border))",

@@ -8,6 +8,7 @@ import {
   Flex,
   Loader,
   Select,
+  Stack,
   Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
@@ -29,6 +30,12 @@ import {
   dtlWiseColumns,
   storeWiseColumns,
 } from "~/modules/bk/lto-training-report/columns";
+import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
+import { useLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/api/useLabourEfficiencyReportData";
+import { ZenoLabourEfficiencyReportTable } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/ZenoLabourEfficiencyReportTable";
+import { transformLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/transform";
+import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
+import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
@@ -66,6 +73,7 @@ const ReportsPage = () => {
           </>
         )}
         {user?.company_id === 211 && <RussReport />}
+        {user?.company_id === 214 && <ZinoReport />}
       </Layout>
     </ProtectedRoute>
   );
@@ -318,29 +326,55 @@ function RussReport() {
   const [dtlWiseData, setDtlWiseData] = useState<any[]>([]);
 
   useEffect(() => {
-    if(ltoTrainingReport?.store_wise_data){
+    if (ltoTrainingReport?.store_wise_data) {
       const tempData = ltoTrainingReport.store_wise_data;
       const finalRow = {
         store_id: "Grand Total",
-        total_enrolled: tempData.reduce((acc, row) => acc + row.total_enrolled, 0),
-        total_completed: tempData.reduce((acc, row) => acc + row.total_completed, 0),
-        total_not_completed: tempData.reduce((acc, row) => acc + row.total_not_completed, 0),
-        completion_percentage: (tempData.reduce((acc, row) => acc + row.total_completed, 0) / tempData.reduce((acc, row) => acc + row.total_enrolled, 0) * 100).toFixed(2),
-      }
-      setStoreWiseData([...tempData, finalRow])
+        total_enrolled: tempData.reduce(
+          (acc, row) => acc + row.total_enrolled,
+          0
+        ),
+        total_completed: tempData.reduce(
+          (acc, row) => acc + row.total_completed,
+          0
+        ),
+        total_not_completed: tempData.reduce(
+          (acc, row) => acc + row.total_not_completed,
+          0
+        ),
+        completion_percentage: (
+          (tempData.reduce((acc, row) => acc + row.total_completed, 0) /
+            tempData.reduce((acc, row) => acc + row.total_enrolled, 0)) *
+          100
+        ).toFixed(2),
+      };
+      setStoreWiseData([...tempData, finalRow]);
     }
-    if(ltoTrainingReport?.dtl_wise_data){
+    if (ltoTrainingReport?.dtl_wise_data) {
       const tempData = ltoTrainingReport.dtl_wise_data;
       const finalRow = {
         manager_name: "Grand Total",
-        total_enrolled: tempData.reduce((acc, row) => acc + row.total_enrolled, 0),
-        total_completed: tempData.reduce((acc, row) => acc + row.total_completed, 0),
-        total_not_completed: tempData.reduce((acc, row) => acc + row.total_not_completed, 0),
-        completion_percentage: (tempData.reduce((acc, row) => acc + row.total_completed, 0) / tempData.reduce((acc, row) => acc + row.total_enrolled, 0) * 100).toFixed(2),
-      }
-      setDtlWiseData([...tempData, finalRow])
+        total_enrolled: tempData.reduce(
+          (acc, row) => acc + row.total_enrolled,
+          0
+        ),
+        total_completed: tempData.reduce(
+          (acc, row) => acc + row.total_completed,
+          0
+        ),
+        total_not_completed: tempData.reduce(
+          (acc, row) => acc + row.total_not_completed,
+          0
+        ),
+        completion_percentage: (
+          (tempData.reduce((acc, row) => acc + row.total_completed, 0) /
+            tempData.reduce((acc, row) => acc + row.total_enrolled, 0)) *
+          100
+        ).toFixed(2),
+      };
+      setDtlWiseData([...tempData, finalRow]);
     }
-  }, [ltoTrainingReport])
+  }, [ltoTrainingReport]);
 
   return (
     <>
@@ -429,6 +463,226 @@ function RussReport() {
         )}
       </Box>
     </>
+  );
+}
+
+function ZinoReport() {
+  const [dates, setDates] = useState<{label: string, value: string}[]>([]);
+  const [labourReportSelectedDate, setLabourReportSelectedDate] = useState<string>("");
+  const [labourReportSelectedStore, setLabourReportSelectedStore] = useState<string>("1");
+
+  const [customReportStoreOptions] = useState<
+    { label: string; value: string }[]
+  >([
+    {
+      label: "Black Rock",
+      value: "1",
+    },
+    {
+      label: "Norwalk",
+      value: "2",
+    },
+    {
+      label: "Downtown",
+      value: "3",
+    },
+    {
+      label: "Ham Avenue",
+      value: "4",
+    },
+    {
+      label: "New Haven",
+      value: "5",
+    },
+    {
+      label: "Old Greenwich",
+      value: "6",
+    },
+    {
+      label: "Mamaroneck",
+      value: "7",
+    },
+    {
+      label: "Port Chester",
+      value: "8",
+    },
+  ]);
+  const [customReportPeriodOptions] = useState<string[]>([
+    "PERIOD 1",
+    "PERIOD 2",
+    "PERIOD 3",
+    "PERIOD 4",
+  ]);
+  const [customReportFilterStoreId, setCustomReportFilterStoreId] =
+    useState<string>("1");
+  const [customReportFilterPeriod, setCustomReportFilterPeriod] =
+    useState<string>("PERIOD 1");
+
+  const handleCustomReportPeriodChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log({ preriod: value });
+      setCustomReportFilterPeriod(value);
+    }
+  };
+
+  const handleCustomReportStoreChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log({ store: value });
+      setCustomReportFilterStoreId(value);
+    }
+  };
+
+  const { data: customTableData, isLoading: isLoadingRevenueCenterData } =
+    useRevenueCenterData({
+      storeId: Number(customReportFilterStoreId),
+      period: customReportFilterPeriod,
+    });
+
+  const {
+    data: labourEfficiencyData,
+    isLoading: isLoadingLabourEfficiencyData,
+  } = useLabourEfficiencyReportData({
+    date: labourReportSelectedDate,
+    storeId: Number(labourReportSelectedStore),
+  });
+
+  const handleLabourReportStoreChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log({ store: value });
+      setLabourReportSelectedStore(value);
+    }
+  };
+
+  const handleLabourReportDayChange = (value: string | null) => {
+    if (value === null) {
+      console.log("null");
+    } else {
+      console.log({ store: value });
+      setLabourReportSelectedDate(value);
+    }
+  };
+
+  useEffect(() => {
+    if(labourEfficiencyData){
+      setDates(labourEfficiencyData.dates?.map(item => ({label: item.day, value: item.date})));
+      setLabourReportSelectedDate(labourEfficiencyData.dates?.[0]?.date);
+    }
+  }, [labourEfficiencyData]);
+
+  console.log({dates});
+
+  return (
+    <Stack dir="column" gap="xl" mt="xl">
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              Labour Efficiency Report
+            </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              See the labour effieciency report by day
+            </Title>
+          </Box>
+
+          <Box display={"flex"}>
+            <Select
+              py="md"
+              size="sm"
+              placeholder="Select day"
+              data={dates}
+              value={labourReportSelectedDate}
+              // defaultValue={"Monday"}
+              onChange={handleLabourReportDayChange}
+              allowDeselect={false}
+            />
+            <Select
+              py="md"
+              px="sm"
+              size="sm"
+              placeholder="Select store"
+              data={customReportStoreOptions}
+              value={labourReportSelectedStore}
+              onChange={handleLabourReportStoreChange}
+              allowDeselect={false}
+            />
+          </Box>
+        </Flex>
+        <Divider />
+        {isLoadingLabourEfficiencyData && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {labourEfficiencyData && (
+          <ZenoLabourEfficiencyReportTable
+            data={transformLabourEfficiencyReportData(
+              labourEfficiencyData["data"]
+            )}
+          />
+        )}
+      </Box>
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Flex justify="space-between">
+          <Box px="lg" py="md">
+            <Title order={5} fw={500} fz={16}>
+              Custom Report
+            </Title>
+            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+              Revenue Centers by Period
+            </Title>
+          </Box>
+
+          <Box display={"flex"}>
+            <Select
+              py="md"
+              size="sm"
+              placeholder="Select period"
+              data={customReportPeriodOptions}
+              value={customReportFilterPeriod}
+              onChange={handleCustomReportPeriodChange}
+              allowDeselect={false}
+            />
+            <Select
+              py="md"
+              px="sm"
+              size="sm"
+              placeholder="Select store"
+              data={customReportStoreOptions}
+              value={customReportFilterStoreId}
+              onChange={handleCustomReportStoreChange}
+              allowDeselect={false}
+            />
+          </Box>
+        </Flex>
+        <Divider />
+        {isLoadingRevenueCenterData && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {customTableData && (
+          <ZenoCustomReportTable
+            data={transformData(customTableData["data"])}
+          />
+        )}
+      </Box>
+    </Stack>
   );
 }
 
