@@ -148,7 +148,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     links = [...links].filter((item) => item.label != "OscarGPT");
   }
 
-  if (!(user?.company_id === 210 || user?.company_id === 211)) {
+  if (!(user?.company_id === 210 || user?.company_id === 211 || user?.company_id === 214)) {
     links = [...links].filter((item) => item.label != "Reports");
   }
 

@@ -20,7 +20,9 @@ interface ZenoInsightTableProps {
   data: Array<Record<string, number | string | boolean>>;
 }
 
-export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps) {
+export function ZenoLabourEfficiencyReportTable({
+  data,
+}: ZenoInsightTableProps) {
   const PAGE_SIZE = 100;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -72,7 +74,11 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                 borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
               }}
             >
-              <Table.Th className="text-center" style={{ textAlign: "center" }} colSpan={3}>
+              <Table.Th
+                className="text-center"
+                style={{ textAlign: "center" }}
+                colSpan={3}
+              >
                 Monday
               </Table.Th>
               <Table.Th
@@ -87,7 +93,7 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                 className="text-center"
                 style={{ textAlign: "center" }}
               >
-                # of Back of House  (BOH)
+                # of Back of House (BOH)
               </Table.Th>
               <Table.Th
                 colSpan={2}
@@ -119,7 +125,7 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                       }}
                       key={header.id}
                       colSpan={header.colSpan}
-                      ta={'center'}
+                      ta={"center"}
                     >
                       {header.isPlaceholder ? null : (
                         <div>
@@ -138,15 +144,22 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                 })}
               </Table.Tr>
             ))}
-            
           </Table.Thead>
           <Table.Tbody>
-            {table.getRowModel().rows.map((row) => {
-              return (
-                row?.original?.isHeader ? (
-                  <Table.Tr key={row.id} ta={'center'} bg={'hsl(var(--foreground) / 0.065)'}>
-                    <Table.Td colSpan={13} >
-                      <Text size="sm" fw={'600'} c="hsl(var(--foreground) / 0.65)">
+            {table.getRowModel().rows?.length > 3 ? (
+              table.getRowModel().rows.map((row) => {
+                return row?.original?.isHeader ? (
+                  <Table.Tr
+                    key={row.id}
+                    ta={"center"}
+                    bg={"hsl(var(--foreground) / 0.065)"}
+                  >
+                    <Table.Td colSpan={13}>
+                      <Text
+                        size="sm"
+                        fw={"600"}
+                        c="hsl(var(--foreground) / 0.65)"
+                      >
                         {row.original.meal}
                       </Text>
                     </Table.Td>
@@ -156,7 +169,7 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <Table.Td
-                          pos={'relative'}
+                          pos={"relative"}
                           {...{
                             key: cell.id,
                             style: {
@@ -212,9 +225,15 @@ export function ZenoLabourEfficiencyReportTable({ data }: ZenoInsightTableProps)
                       );
                     })}
                   </Table.Tr>
-                )
-              );
-            })}
+                );
+              })
+            ) : (
+              <Table.Tr>
+                <Table.Td colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </Table.Td>
+              </Table.Tr>
+            )}
           </Table.Tbody>
         </Table>
       </ScrollArea>
