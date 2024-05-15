@@ -21,6 +21,7 @@ export type DTLWiseData = {
 export type GetRussLtoTrainingReportResponse = {
   store_wise_data: StorwWiseData[];
   dtl_wise_data: DTLWiseData[];
+  course_name: string;
 };
 
 export type UseRussLtoTrainingReportOptions = {
