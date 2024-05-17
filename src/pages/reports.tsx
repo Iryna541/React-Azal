@@ -523,7 +523,6 @@ function ZinoReport() {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({ preriod: value });
       setCustomReportFilterPeriod(value);
     }
   };
@@ -532,7 +531,6 @@ function ZinoReport() {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({ store: value });
       setCustomReportFilterStoreId(value);
     }
   };
@@ -555,8 +553,6 @@ function ZinoReport() {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({ store: value });
-
       setLabourReportSelectedStore(value);
     }
   };
@@ -565,7 +561,6 @@ function ZinoReport() {
     if (value === null) {
       console.log("null");
     } else {
-      console.log({ store: value });
       setLabourReportSelectedDate(value);
     }
   };
