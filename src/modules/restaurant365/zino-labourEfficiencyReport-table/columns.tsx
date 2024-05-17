@@ -80,9 +80,9 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "expectedGuests",
     header: "# of Guests Expected",
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="expectedGuests" row={row} cell={cell}/>
-    )
+    // cell: ({row, cell}) => (
+    //   <CustomCell accessorKey="expectedGuests" row={row} cell={cell}/>
+    // )
   },
   {
     accessorKey: "actualGuests",
