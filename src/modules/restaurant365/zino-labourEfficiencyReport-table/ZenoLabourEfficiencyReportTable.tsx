@@ -30,6 +30,8 @@ export function ZenoLabourEfficiencyReportTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     isHeader: false,
+    id: false,
+    store_id: false,
   });
 
   const table = useReactTable({
@@ -156,7 +158,7 @@ export function ZenoLabourEfficiencyReportTable({
                     ta={"center"}
                     bg={"hsl(var(--foreground) / 0.065)"}
                   >
-                    <Table.Td colSpan={13}>
+                    <Table.Td colSpan={14}>
                       <Text
                         size="sm"
                         fw={"600"}

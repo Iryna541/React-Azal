@@ -556,6 +556,7 @@ function ZinoReport() {
       console.log("null");
     } else {
       console.log({ store: value });
+
       setLabourReportSelectedStore(value);
     }
   };
@@ -627,7 +628,8 @@ function ZinoReport() {
         {labourEfficiencyData && (
           <ZenoLabourEfficiencyReportTable
             data={transformLabourEfficiencyReportData(
-              labourEfficiencyData["data"]
+              labourEfficiencyData["data"],
+              parseInt(labourReportSelectedStore)
             )}
             day={labourEfficiencyData?.day}
           />
