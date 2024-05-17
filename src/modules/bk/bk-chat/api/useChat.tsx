@@ -21,16 +21,19 @@ export type UseChatResponse = {
 };
 
 export const getChatResponse = async ({ type, ...body }: UseChatPayload) => {
-  const searchParams = new URLSearchParams();
-  searchParams.set("query", body.query);
-
-  let ragUrl = "https://azalio-rag.cosmos.staging.delineate.pro/bk-rag";
-  if (type === "dunkin") {
-    ragUrl =
-      "https://azalio-rag-salema.cosmos.staging.delineate.pro/salema-rag";
+  // const searchParams = new URLSearchParams();
+  // searchParams.set("query", body.query);
+  // searchParams.set("client_id", type === 'bk' ? "russ" : type === "dunkin" ? "shawn_salema" : "");
+  const data = {
+    query: body.query,
+    client_id: type === 'bk'? "russ" : type === "dunkin"? "shawn_salema" : "",
   }
 
-  return axios.post(ragUrl, searchParams.toString()).then((res) => res.data);
+  // let ragUrl = "https://azalio-rag.cosmos.staging.delineate.pro/bk-rag";
+  const ragUrl = "https://azal-ai-api.cosmos.server.azal.io/clients-rag";
+
+  return axios.post(ragUrl, data).then((res) => res.data);
+  // return axios.post(ragUrl, JSON.stringify({query: body.query, client_id: type === 'bk' ? "russ" : type === "dunkin" ? "shawn_salema" : ""})).then((res) => res.data);
 };
 
 type UseSignUpMutationOptions = {
