@@ -39,6 +39,8 @@ export async function getBkAnalyticsCharts(
   startDate?: string,
   endDate?: string
 ): Promise<AnalyticsChartsResponse> {
+  // const baseUrl = "https://dev-be.azal.io/api";
+
   let url = "";
   if (managerId && startDate && endDate) {
     url = `/analytics/getAnalyticsCharts?onlymystores=${isMystores}&managerId=${managerId}&start_date=${startDate}&end_date=${endDate}`;

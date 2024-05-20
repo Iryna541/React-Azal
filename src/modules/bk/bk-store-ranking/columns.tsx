@@ -3,7 +3,6 @@ import { StoreInsights } from "./api/useStoreRanking";
 import {
   ActionIcon,
   Badge,
-  Divider,
   Flex,
   Loader,
   Grid,
@@ -443,83 +442,21 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
     data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) ||
     [];
 
+  const financialData = filteredData[0]?.data;
+
   return (
     <Stack gap="sm">
-      <Flex justify="space-between">
-        <Text size="sm">Actual vs. Budgeted Manager's Profit:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {USDollar.format(filteredData[0]?.act_vs_budget_managers_profits)}
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
-
-      <Divider />
-
-      <Flex justify="space-between">
-        <Text size="sm">Theoretical Gross Profit:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {filteredData[0]?.adj_theoretical_gp_percent} %
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
-
-      <Divider />
-
-      <Flex justify="space-between">
-        <Text size="sm">Actual Gross Profit:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {filteredData[0]?.actual_gp_percent} %
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
-
-      <Divider />
-
-      <Flex justify="space-between">
-        <Text size="sm">Gross Profit Variation:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {filteredData[0]?.act_vs_adj_theor} %
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
-
-      <Divider />
-
-      <Flex justify="space-between">
-        <Text size="sm">Actual Labor Cost:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {USDollar.format(filteredData[0]?.actual_total_labor)}
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
-
-      <Divider />
-
-      <Flex justify="space-between">
-        <Text size="sm">Budgeted Labor Cost:</Text>
-        {data ? (
-          <Text size="sm" fw={600}>
-            {USDollar.format(filteredData[0]?.budgeted_total_labor)}
-          </Text>
-        ) : (
-          <Loader />
-        )}
-      </Flex>
+      {financialData &&
+        financialData.map((item: any) => {
+          return (
+            <Flex justify="space-between" py={4}>
+              <Text size="sm">{item.label}</Text>
+              <Text size="sm" fw={600}>
+                {USDollar.format(item.value)}
+              </Text>
+            </Flex>
+          );
+        })}
     </Stack>
   );
 }
