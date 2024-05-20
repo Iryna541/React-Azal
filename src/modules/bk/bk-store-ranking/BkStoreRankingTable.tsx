@@ -20,7 +20,6 @@ import {
   List,
   Pagination,
   SimpleGrid,
-  Stack,
   Table,
   Text,
   Title,
@@ -185,6 +184,10 @@ export function BkStoreRankingTable({ data }: CombinedProps) {
                       <Table.Td colSpan={6}>
                         {user?.company_id === 210 && (
                           <Box>
+                            <Title order={4}>
+                              Summary for Store {row.original.store_id}: 4/29 -
+                              5/05
+                            </Title>
                             <Charts />
                           </Box>
                         )}
@@ -251,20 +254,31 @@ function Charts() {
   return (
     <SimpleGrid cols={2} py="sm">
       <Paper withBorder p="lg">
-        <Stack justify="center">
-          <Title order={4} fw={500}>
-            Summary
-          </Title>
-          <List fz={14}>
-            <List.Item>
-              5% more labor is being used in morning daypart
-            </List.Item>
-            <List.Item>Got 2 negative reviews this week</List.Item>
-            <List.Item>
-              Speed of service is 10s lower during late night{" "}
-            </List.Item>
-          </List>
-        </Stack>
+        <Group gap={32}>
+          <img
+            style={{
+              width: 140,
+              height: 140,
+              objectFit: "cover",
+              borderRadius: 8,
+            }}
+            src="https://demo-be.azal.io/api/global/getProfilePic?id=pexels-chuck-2287252.jpg"
+          />
+          <Box>
+            <Title order={4} fw={500} mb="md">
+              Summary
+            </Title>
+            <List fz={14}>
+              <List.Item>
+                5% more labor is being used in morning daypart
+              </List.Item>
+              <List.Item>Got 2 negative reviews this week</List.Item>
+              <List.Item>
+                Speed of service is 10s lower during late night{" "}
+              </List.Item>
+            </List>
+          </Box>
+        </Group>
       </Paper>
       <Box>
         <StatsGrid />
@@ -274,7 +288,7 @@ function Charts() {
           Weekly Sales Trend{" "}
         </Title>
         <BarChart
-          h={300}
+          h={200}
           data={[
             { week: "Week 1", Sales: 5000 },
             { week: "Week 2", Sales: 10000 },
@@ -299,7 +313,7 @@ function Charts() {
           Sales vs Labor{" "}
         </Title>
         <LineChart
-          h={300}
+          h={200}
           data={[
             {
               week: "Week 1",
@@ -378,7 +392,7 @@ export function StatsGrid() {
           <Icon className={classes.icon} size="1.4rem" stroke={1.5} />
         </Group>
 
-        <Group align="flex-end" gap="xs" mt={25}>
+        <Group align="flex-end" gap="xs" mt={8}>
           <Text className={classes.value} c="hsl(var(--foreground))">
             {stat.value}
           </Text>
