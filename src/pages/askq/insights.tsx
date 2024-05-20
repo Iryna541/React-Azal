@@ -63,7 +63,7 @@ import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport
 import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
 import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
-import { NewRussSetup } from "~/revamp/NewRussSetup";
+// import { NewRussSetup } from "~/revamp/NewRussSetup";
 
 export default function InsightsPage() {
   const { user } = useUser();
@@ -95,7 +95,7 @@ export default function InsightsPage() {
                 </Badge>
               </Tooltip>
             </Flex>
-            {/* {user?.company_id === 210 && (
+            {user?.company_id === 210 && (
               <Box>
                 <Select
                   value={selectedDemoOption}
@@ -106,13 +106,13 @@ export default function InsightsPage() {
                   allowDeselect={false}
                 />
               </Box>
-            )} */}
+            )}
           </Flex>
           {user?.company_id === 210 ? (
             selectedDemoOption === "Company 2" ? (
               <ShawnSetup />
             ) : (
-              <NewRussSetup />
+              <RussSetup />
             )
           ) : (
             <>
