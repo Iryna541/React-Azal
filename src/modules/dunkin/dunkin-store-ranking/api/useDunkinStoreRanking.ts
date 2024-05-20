@@ -12,12 +12,14 @@ export interface DunkinStoreRankingData {
 
 export type GetDunkinStoreRankingResponse = DunkinStoreRankingData[];
 
-export async function getDunkinStoreRanking(companyId: string | undefined): Promise<GetDunkinStoreRankingResponse> {
+export async function getDunkinStoreRanking(
+  companyId: string | undefined
+): Promise<GetDunkinStoreRankingResponse> {
   const searchParams = new URLSearchParams();
   searchParams.append("companyId", companyId as string);
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/dunkin-store-ranking?${searchParams.toString()}`
+      `https://azalio-insights-api.cosmos.server.azal.io/dunkin-store-ranking?${searchParams.toString()}`
     )
     .then((res) => res.data);
 }
@@ -29,7 +31,7 @@ export type UseDunkinStoreRankingOptions = {
 
 export default function useDunkinStoreRanking({
   config,
-  companyId, 
+  companyId,
 }: UseDunkinStoreRankingOptions = {}) {
   return useQuery({
     queryKey: ["dunkin-store-ranking"],
