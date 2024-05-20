@@ -17,15 +17,26 @@ export type GetLabourEfficiencyReportDataResponse = {
     lateNight: number;
     dish: number;
     cashier: number;
-    cashier2: number;
+    cashier2: number | string;
     sales: number;
-    total: number;
+    total: number | string;
+    estGuestsPerLH?: number | string;
+    actualGuestsPerLH?: number | string;
+    actualSalesPerLH?: number | string;
+    store_id?: number | string;
+    date?: number | string;
   }>;
   dates: Array<{
     date: string;
     day: string;
   }>;
   day: string;
+  aggregate_values: Array<{
+    average_hourly_wage: number;
+    discounts: number;
+    gm: number;
+    id: number;
+  }>
 };
 
 export async function fetchLabourEfficiencyData(
@@ -93,6 +104,32 @@ type UpdateLabourEfficiencyDataOptions = {
 export const useUpdateLabourEfficiencyData = ({ config }: UpdateLabourEfficiencyDataOptions = {}) => {
   return useMutation<any, UpdateLabourEfficiencyDataError, UpdateLabourEfficiencyDataPayload>({
     mutationFn: (values) => updateLabourEfficiencyData(values),
+    ...config,
+  });
+};
+
+export type UpdateLabourEfficiencyAggregateDataPayload = {
+  "id": number;
+  "date": string;
+  "store_id": number | string;
+  [key: string]: any;
+}
+
+export type UpdateLabourEfficiencyAggregateDataError = {
+  message: string;
+};
+
+export const updateLabourEfficiencyAggregateData = async (body: UpdateLabourEfficiencyAggregateDataPayload) => {
+  return axios.post("/analytics/updateLaborAggregateValues", body).then((res) => res.data);
+};
+
+type UpdateLabourEfficiencyAggregateDataOptions = {
+  config?: UseMutationOptions<any, UpdateLabourEfficiencyAggregateDataError, UpdateLabourEfficiencyAggregateDataPayload>;
+};
+
+export const useUpdateLabourEfficiencyAggregateData = ({ config }: UpdateLabourEfficiencyAggregateDataOptions = {}) => {
+  return useMutation<any, UpdateLabourEfficiencyAggregateDataError, UpdateLabourEfficiencyAggregateDataPayload>({
+    mutationFn: (values) => updateLabourEfficiencyAggregateData(values),
     ...config,
   });
 };
