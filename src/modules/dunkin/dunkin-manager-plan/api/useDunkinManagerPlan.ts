@@ -14,7 +14,7 @@ export type ManagerPlanResponse = Array<ManagerPlanRow>;
 export async function getDunkinManagerPlan(): Promise<ManagerPlanResponse> {
   return axios
     .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/dunkin-manager-plan"
+      "https://azalio-insights-api.cosmos.server.azal.io/dunkin-manager-plan"
     ) // Adjusted URL for manager plans
     .then((res) => res.data);
 }

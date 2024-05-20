@@ -14,9 +14,7 @@ export type GetR365StoreRankingResponse = StoreInsights[];
 
 export async function getR365StoreRanking(): Promise<GetR365StoreRankingResponse> {
   return axios
-    .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/r365-store-ranking"
-    )
+    .get("https://azalio-insights-api.cosmos.server.azal.io/r365-store-ranking")
     .then((res) => res.data);
 }
 

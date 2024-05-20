@@ -23,7 +23,7 @@ export async function getStoreRanking(
   searchParams.append("companyId", companyId);
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-store-ranking?${searchParams.toString()}`
+      `https://azalio-insights-api.cosmos.server.azal.io/bk-store-ranking?${searchParams.toString()}`
     )
     .then((res) => res.data);
 }

@@ -22,7 +22,7 @@ export type LukeLobsterStoreRankingResponse =
 export async function getLukeLobsterStoreRanking(): Promise<LukeLobsterStoreRankingResponse> {
   return axios
     .get(
-      "https://azalio-bk-api.cosmos.staging.delineate.pro/luke-lobster-store-ranking"
+      "https://azalio-insights-api.cosmos.server.azal.io/luke-lobster-store-ranking"
     )
     .then((res) => res.data);
 }

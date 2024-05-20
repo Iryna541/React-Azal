@@ -26,7 +26,7 @@ export async function getBkManagerPlan(
 ): Promise<ManagerPlanResponse> {
   return axios
     .get(
-      `https://azalio-bk-api.cosmos.staging.delineate.pro/bk-manager-plan?type=${type}&isDemo=${isDemo}`
+      `https://azalio-insights-api.cosmos.server.azal.io/bk-manager-plan?type=${type}&isDemo=${isDemo}`
     ) // Adjusted URL for manager plans
     .then((res) => res.data);
 }
