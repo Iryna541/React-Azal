@@ -155,7 +155,20 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
-        {user?.company_id === 211 ? (
+        {user?.company_id === 210 && (
+          <Stack>
+            <Flex gap="md">
+              <Image
+                src="/Subway-Logo.png"
+                h={80}
+                p={2}
+                style={{ borderRadius: 4 }}
+              />
+            </Flex>
+          </Stack>
+        )}
+
+        {user?.company_id === 211 && (
           <Stack>
             <Flex gap="md">
               <BkLogo width={48} height={48} />
@@ -167,15 +180,13 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
                 style={{ borderRadius: 4 }}
               />
             </Flex>
-            <Title order={3} fw={800} mb="xl">
-              Oscar AI
-            </Title>
           </Stack>
-        ) : (
-          <Title order={3} fw={800} mb="xl">
-            Oscar AI
-          </Title>
         )}
+
+        <Title order={3} fw={800} mb="xl">
+          Oscar AI
+        </Title>
+
         {links.map((link, index) => {
           const isActive = link.href === location.pathname;
           const isLocked = link.isLocked;

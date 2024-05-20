@@ -1,4 +1,9 @@
 .root {
+  .item {
+    background: #fff;
+    box-shadow: var(--mantine-shadow-xs);
+    border: 1px solid hsl(var(--border));
+  }
 }
 
 .item {

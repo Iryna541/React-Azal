@@ -63,13 +63,15 @@ import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport
 import { useRevenueCenterData } from "~/modules/restaurant365/zino-customReport-table/api/useRevenueCenterData";
 import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
+import { NewRussSetup } from "~/revamp/NewRussSetup";
 
 export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
-    "Dunkin"
+    "Company 1"
   );
+  console.log(setSelectedDemoOption);
 
   const dateInformation = currentDateRange
     ? currentDateRange[0].data_frequency === "Weekly"
@@ -93,24 +95,24 @@ export default function InsightsPage() {
                 </Badge>
               </Tooltip>
             </Flex>
-            {user?.company_id === 210 && (
+            {/* {user?.company_id === 210 && (
               <Box>
                 <Select
                   value={selectedDemoOption}
                   placeholder="Pick value"
-                  data={["Dunkin", "Burger King"]}
+                  data={["Company 1", "Company 2"]}
                   m={"sm"}
                   onChange={(value) => setSelectedDemoOption(value)}
                   allowDeselect={false}
                 />
               </Box>
-            )}
+            )} */}
           </Flex>
           {user?.company_id === 210 ? (
-            selectedDemoOption === "Dunkin" ? (
+            selectedDemoOption === "Company 2" ? (
               <ShawnSetup />
             ) : (
-              <RussSetup />
+              <NewRussSetup />
             )
           ) : (
             <>
