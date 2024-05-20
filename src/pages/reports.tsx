@@ -573,6 +573,8 @@ function ZinoReport() {
     }
   }, [labourEfficiencyData]);
 
+  console.log({labourEfficiencyData});
+
   return (
     <Stack dir="column" gap="xl" mt="xl">
       <Box
@@ -624,7 +626,9 @@ function ZinoReport() {
           <ZenoLabourEfficiencyReportTable
             data={transformLabourEfficiencyReportData(
               labourEfficiencyData["data"],
-              parseInt(labourReportSelectedStore)
+              parseInt(labourReportSelectedStore),
+              labourEfficiencyData["aggregate_values"],
+              labourReportSelectedDate,
             )}
             day={labourEfficiencyData?.day}
           />
