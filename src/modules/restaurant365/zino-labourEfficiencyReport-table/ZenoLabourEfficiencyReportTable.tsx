@@ -107,7 +107,7 @@ export function ZenoLabourEfficiencyReportTable({
               >
                 FOH
               </Table.Th>
-              <Table.Th></Table.Th>
+              <Table.Th colSpan={5}></Table.Th>
             </Table.Tr>
             {/* <Table.Tr>
               <Table.Th className="text-center">Week</Table.Th>
@@ -127,6 +127,7 @@ export function ZenoLabourEfficiencyReportTable({
                         width: `${header.column.getSize()}px`,
                         minWidth: `${header.column.getSize()}px`,
                         maxWidth: `${header.column.getSize()}px`,
+                        borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
                       }}
                       key={header.id}
                       colSpan={header.colSpan}
@@ -159,7 +160,7 @@ export function ZenoLabourEfficiencyReportTable({
                     ta={"center"}
                     bg={"hsl(var(--foreground) / 0.065)"}
                   >
-                    <Table.Td colSpan={14}>
+                    <Table.Td colSpan={17}>
                       <Text
                         size="sm"
                         fw={"600"}
@@ -170,11 +171,15 @@ export function ZenoLabourEfficiencyReportTable({
                     </Table.Td>
                   </Table.Tr>
                 ) : (
-                  <Table.Tr key={row.id}>
+                  <Table.Tr 
+                    key={row.id}
+                  >
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <Table.Td
                           pos={"relative"}
+                          // bg={(row.original.meal && (row.original.meal as string).includes('total')) ? "hsl(var(--foreground) / 0.065)" : "white"}
+
                           {...{
                             key: cell.id,
                             style: {
@@ -184,7 +189,7 @@ export function ZenoLabourEfficiencyReportTable({
                                   ? "#ffa50078"
                                   : cell.getIsPlaceholder()
                                     ? "#ff000042"
-                                    : "white",
+                                    : (row.original.meal && (row.original.meal as string).includes('total')) ? "hsl(var(--foreground) / 0.035)" : "white",
                               textAlign: "center",
                               fontWeight: 500,
                             },
