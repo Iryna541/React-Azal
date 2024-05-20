@@ -155,7 +155,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <AppShell.Navbar p={28}>
       <AppShell.Section grow>
-        {user?.company_id === 210 && (
+        {/* {user?.company_id === 210 && (
           <Stack>
             <Flex gap="md">
               <Image
@@ -166,7 +166,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
               />
             </Flex>
           </Stack>
-        )}
+        )} */}
 
         {user?.company_id === 211 && (
           <Stack>
