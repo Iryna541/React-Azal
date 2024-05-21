@@ -39,7 +39,9 @@ import { transformData } from "~/modules/restaurant365/zino-customReport-table/t
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
-  const [zinoSelectedReport, setZenoSelectedReport] = useState<'revenue-center' | 'labor-efficiency'>("revenue-center");
+  const [zinoSelectedReport, setZenoSelectedReport] = useState<
+    "revenue-center" | "labor-efficiency"
+  >("revenue-center");
   const { user } = useUser();
   return (
     <ProtectedRoute>
@@ -67,7 +69,7 @@ const ReportsPage = () => {
             />
           )}
 
-{user?.company_id === 214 && (
+          {user?.company_id === 214 && (
             <Select
               data={[
                 {
@@ -81,9 +83,11 @@ const ReportsPage = () => {
               ]}
               value={zinoSelectedReport}
               onChange={(val) => {
-                console.log({val});
+                console.log({ val });
                 if (val) {
-                  setZenoSelectedReport(val as 'revenue-center' | 'labor-efficiency');
+                  setZenoSelectedReport(
+                    val as "revenue-center" | "labor-efficiency"
+                  );
                 }
               }}
             />
@@ -96,7 +100,9 @@ const ReportsPage = () => {
           </>
         )}
         {user?.company_id === 211 && <RussReport />}
-        {user?.company_id === 214 && <ZinoReport selectedReport={zinoSelectedReport} />}
+        {user?.company_id === 214 && (
+          <ZinoReport selectedReport={zinoSelectedReport} />
+        )}
       </Layout>
     </ProtectedRoute>
   );
@@ -489,10 +495,16 @@ function RussReport() {
   );
 }
 
-function ZinoReport({selectedReport}: {selectedReport: 'revenue-center' | 'labor-efficiency'}) {
-  const [dates, setDates] = useState<{label: string, value: string}[]>([]);
-  const [labourReportSelectedDate, setLabourReportSelectedDate] = useState<string>("");
-  const [labourReportSelectedStore, setLabourReportSelectedStore] = useState<string>("1");
+function ZinoReport({
+  selectedReport,
+}: {
+  selectedReport: "revenue-center" | "labor-efficiency";
+}) {
+  const [dates, setDates] = useState<{ label: string; value: string }[]>([]);
+  const [labourReportSelectedDate, setLabourReportSelectedDate] =
+    useState<string>("");
+  const [labourReportSelectedStore, setLabourReportSelectedStore] =
+    useState<string>("1");
   const labourReportFirstimeUpdated = useRef(false);
 
   const [customReportStoreOptions] = useState<
@@ -589,130 +601,145 @@ function ZinoReport({selectedReport}: {selectedReport: 'revenue-center' | 'labor
   };
 
   useEffect(() => {
-    if(labourEfficiencyData && !labourReportFirstimeUpdated.current){
+    if (labourEfficiencyData && !labourReportFirstimeUpdated.current) {
       labourReportFirstimeUpdated.current = true;
-      setDates(labourEfficiencyData.dates?.map(item => ({label: item.day, value: item.date})));
+      setDates(
+        labourEfficiencyData.dates?.map((item) => ({
+          label: item.day,
+          value: item.date,
+        }))
+      );
       setLabourReportSelectedDate(labourEfficiencyData.dates?.[0]?.date);
     }
   }, [labourEfficiencyData]);
 
   return (
     <Stack dir="column" gap="xl" mt="xl">
-      {
-        selectedReport === "labor-efficiency" && (
-          <Box
-            style={{
-              border: "1px solid hsl(var(--border))",
-              borderRadius: 8,
-            }}
-          >
-            <Flex justify="space-between">
-              <Box px="lg" py="md">
-                <Title order={5} fw={500} fz={16}>
-                  Labour Efficiency Report
-                </Title>
-                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-                  See the labour effieciency report by day
-                </Title>
-              </Box>
+      {selectedReport === "labor-efficiency" && (
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+        >
+          <Flex justify="space-between">
+            <Box px="lg" py="md">
+              <Title order={5} fw={500} fz={16}>
+                Labour Efficiency Report
+              </Title>
+              <Title
+                component="p"
+                order={6}
+                fz={14}
+                fw={500}
+                size="sm"
+                lh={1.5}
+              >
+                See the labour effieciency report by day
+              </Title>
+            </Box>
 
-              <Box display={"flex"}>
-                <Select
-                  py="md"
-                  size="sm"
-                  placeholder="Select day"
-                  data={dates}
-                  value={labourReportSelectedDate}
-                  // defaultValue={"Monday"}
-                  onChange={handleLabourReportDayChange}
-                  allowDeselect={false}
-                />
-                <Select
-                  py="md"
-                  px="sm"
-                  size="sm"
-                  placeholder="Select store"
-                  data={customReportStoreOptions}
-                  value={labourReportSelectedStore}
-                  onChange={handleLabourReportStoreChange}
-                  allowDeselect={false}
-                />
-              </Box>
-            </Flex>
-            <Divider />
-            {isLoadingLabourEfficiencyData && (
-              <Center h={500}>
-                <Loader size="lg" />
-              </Center>
-            )}
-            {labourEfficiencyData && (
-              <ZenoLabourEfficiencyReportTable
-                data={transformLabourEfficiencyReportData(
-                  labourEfficiencyData["data"],
-                  parseInt(labourReportSelectedStore),
-                  labourEfficiencyData["aggregate_values"],
-                  labourReportSelectedDate,
-                )}
-                day={labourEfficiencyData?.day}
+            <Box display={"flex"}>
+              <Select
+                py="md"
+                size="sm"
+                placeholder="Select day"
+                data={dates}
+                value={labourReportSelectedDate}
+                // defaultValue={"Monday"}
+                onChange={handleLabourReportDayChange}
+                allowDeselect={false}
               />
-            )}
-          </Box>
-        )
-      }
-      {
-        selectedReport === "revenue-center" && (
-          <Box
-            style={{
-              border: "1px solid hsl(var(--border))",
-              borderRadius: 8,
-            }}
-          >
-            <Flex justify="space-between">
-              <Box px="lg" py="md">
-                <Title order={5} fw={500} fz={16}>
-                  Custom Report
-                </Title>
-                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-                  Revenue Centers by Period
-                </Title>
-              </Box>
+              <Select
+                py="md"
+                px="sm"
+                size="sm"
+                placeholder="Select store"
+                data={customReportStoreOptions}
+                value={labourReportSelectedStore}
+                onChange={handleLabourReportStoreChange}
+                allowDeselect={false}
+              />
+            </Box>
+          </Flex>
+          <Divider />
+          {isLoadingLabourEfficiencyData && (
+            <Center h={500}>
+              <Loader size="lg" />
+            </Center>
+          )}
+          {labourEfficiencyData && (
+            <ZenoLabourEfficiencyReportTable
+              data={transformLabourEfficiencyReportData(
+                labourEfficiencyData["data"],
+                parseInt(labourReportSelectedStore),
+                labourEfficiencyData["aggregate_values"],
+                labourReportSelectedDate
+              )}
+              day={labourEfficiencyData?.day}
+            />
+          )}
+        </Box>
+      )}
+      {selectedReport === "revenue-center" && (
+        <Box
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+        >
+          <Flex justify="space-between">
+            <Box px="lg" py="md">
+              <Title order={5} fw={500} fz={16}>
+                Custom Report
+              </Title>
+              <Title
+                component="p"
+                order={6}
+                fz={14}
+                fw={500}
+                size="sm"
+                lh={1.5}
+              >
+                Revenue Centers by Period
+              </Title>
+            </Box>
 
-              <Box display={"flex"}>
-                <Select
-                  py="md"
-                  size="sm"
-                  placeholder="Select period"
-                  data={customReportPeriodOptions}
-                  value={customReportFilterPeriod}
-                  onChange={handleCustomReportPeriodChange}
-                  allowDeselect={false}
-                />
-                <Select
-                  py="md"
-                  px="sm"
-                  size="sm"
-                  placeholder="Select store"
-                  data={customReportStoreOptions}
-                  value={customReportFilterStoreId}
-                  onChange={handleCustomReportStoreChange}
-                  allowDeselect={false}
-                />
-              </Box>
-            </Flex>
-            <Divider />
-            {isLoadingRevenueCenterData && (
-              <Center h={500}>
-                <Loader size="lg" />
-              </Center>
-            )}
-            {customTableData && (
-              <ZenoCustomReportTable
-                data={transformData(customTableData["data"])}
+            <Box display={"flex"}>
+              <Select
+                py="md"
+                size="sm"
+                placeholder="Select period"
+                data={customReportPeriodOptions}
+                value={customReportFilterPeriod}
+                onChange={handleCustomReportPeriodChange}
+                allowDeselect={false}
               />
-            )}
-          </Box>
-        )
-      }
+              <Select
+                py="md"
+                px="sm"
+                size="sm"
+                placeholder="Select store"
+                data={customReportStoreOptions}
+                value={customReportFilterStoreId}
+                onChange={handleCustomReportStoreChange}
+                allowDeselect={false}
+              />
+            </Box>
+          </Flex>
+          <Divider />
+          {isLoadingRevenueCenterData && (
+            <Center h={500}>
+              <Loader size="lg" />
+            </Center>
+          )}
+          {customTableData && (
+            <ZenoCustomReportTable
+              data={transformData(customTableData["data"])}
+            />
+          )}
+        </Box>
+      )}
     </Stack>
   );
 }
