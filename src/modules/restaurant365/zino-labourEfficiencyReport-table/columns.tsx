@@ -78,29 +78,6 @@ console.log({"row": row?.original as string});
           ) : cell.getValue()
         ) : cell.getValue()
       }
-      {/* {
-        // (isEditActive && (!(row.original.meal as string).includes('total') && (row.original.meal as string)?.includes('bottom'))) ? (
-        (isEditActive && (
-          (row.original.meal as string)?.includes('bottom') 
-          && accessorKey === "total"
-        ))
-         ? (
-          <NumberInput
-            onChange={handleValueUpdate}
-            onBlur={handleBlur}
-            value={inputValue}
-            hideControls
-            autoFocus
-            styles={{
-              input: {
-                minHeight: 30,
-                height: 30,
-                textAlign: 'center'
-              }
-            }}
-          />
-        ): cell.getValue()
-      } */}
     </Box>
   )
 }
