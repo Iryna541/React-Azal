@@ -115,6 +115,7 @@ const RussLaborViolationReportTable = ({
                   >
                     {row.getVisibleCells().map((cell: any) => (
                       <Table.Td
+                        bg={row?.original?.color ? row?.original?.color : ""}
                         fw={500}
                         c="hsl(var(--foreground) / 0.8)"
                         key={cell.id}
