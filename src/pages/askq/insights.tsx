@@ -61,9 +61,6 @@ import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
-import { useLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/api/useLabourEfficiencyReportData";
-import { ZenoLabourEfficiencyReportTable } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/ZenoLabourEfficiencyReportTable";
-import { transformLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/transform";
 
 export default function InsightsPage() {
   const { user } = useUser();
