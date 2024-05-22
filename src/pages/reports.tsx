@@ -24,7 +24,7 @@ import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useUser } from "~/modules/auth/hooks/useUser";
-import { useRussLtoTrainingReports } from "~/modules/bk/lto-training-report/api/useRussLtoTrainings";
+import { useRussLtoTrainingReportDetail, useRussLtoTrainingReports } from "~/modules/bk/lto-training-report/api/useRussLtoTrainings";
 import RussLtoTrainingReportTable from "~/modules/bk/lto-training-report/RussLtoTrainingReportTable";
 import {
   dtlWiseColumns,
@@ -36,12 +36,17 @@ import { ZenoLabourEfficiencyReportTable } from "~/modules/restaurant365/zino-la
 import { transformLabourEfficiencyReportData } from "~/modules/restaurant365/zino-labourEfficiencyReport-table/transform";
 import { ZenoCustomReportTable } from "~/modules/restaurant365/zino-customReport-table/ZenoCustomReportTable";
 import { transformData } from "~/modules/restaurant365/zino-customReport-table/transform";
+import { useRussLaborViolationReports } from "~/modules/bk/labor-violation-report/api/useRussLaborViolationReport";
+import moment from "moment";
+import { DatePickerInput } from "@mantine/dates";
+import RussLaborViolationReportTable from "~/modules/bk/labor-violation-report/RussLaborViolationReportTable";
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
   const [zinoSelectedReport, setZenoSelectedReport] = useState<
     "revenue-center" | "labor-efficiency"
   >("revenue-center");
+  const [russSelectedReport, setRussSelectedReport] = useState<string>("lto-training");
   const { user } = useUser();
   return (
     <ProtectedRoute>
@@ -92,6 +97,26 @@ const ReportsPage = () => {
               }}
             />
           )}
+          {user?.company_id === 211 && (
+            <Select
+              data={[
+                {
+                  value: "lto-training",
+                  label: "LTO Training",
+                },
+                {
+                  value: "labor-violation",
+                  label: "Labor Violation",
+                },
+              ]}
+              value={russSelectedReport}
+              onChange={(val) => {
+                if (val) {
+                  setRussSelectedReport(val);
+                }
+              }}
+            />
+          )}
         </Flex>
         {user?.company_id === 210 && (
           <>
@@ -99,10 +124,11 @@ const ReportsPage = () => {
             {value === "example2" && <ZinoExample />}
           </>
         )}
-        {user?.company_id === 211 && <RussReport />}
+        {user?.company_id === 211 && <RussReport selectedReport={russSelectedReport} />}
         {user?.company_id === 214 && (
           <ZinoReport selectedReport={zinoSelectedReport} />
         )}
+        {user?.company_id === 211 && <RussReport selectedReport={russSelectedReport} />}
       </Layout>
     </ProtectedRoute>
   );
@@ -349,8 +375,11 @@ function ZinoExample() {
   );
 }
 
-function RussReport() {
+function RussReport({selectedReport}: {selectedReport: string}) {
+  const [laborViolationSelectedDate, setLaborViolationSelectedDate] = useState<Date | null>(new Date());
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
+  const { data: laborViolationReport, isLoading: isLoadingLaborViolation } = useRussLaborViolationReports({params: {date: moment(laborViolationSelectedDate).format("YYYY-MM-DD")}});
+  
   const [storeWiseData, setStoreWiseData] = useState<any[]>([]);
   const [dtlWiseData, setDtlWiseData] = useState<any[]>([]);
 
@@ -407,7 +436,97 @@ function RussReport() {
 
   return (
     <>
-      <Box
+    {
+      selectedReport === "lto-training" ? (
+        <>
+          <Box
+            mt="xl"
+            style={{
+              border: "1px solid hsl(var(--border))",
+              borderRadius: 8,
+            }}
+          >
+<Flex justify="space-between">
+              <Box px="lg" py="md">
+                <Title order={5} fw={500} fz={16}>
+                  Store LTO Training Data
+                </Title>
+                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+                  {ltoTrainingReport?.course_name}
+                </Title>
+              </Box>
+              <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+                <Button
+                  variant="azalio-ui-dark"
+                  my={"sm"}
+                  size="xl"
+                  style={{ fontSize: "14px" }}
+                  leftSection={<IconFileExport />}
+                >
+                  Export
+                </Button>
+              </Anchor>
+            </Flex>
+            <Divider />
+            {isLoading && (
+              <Center h={500}>
+                <Loader size="lg" />
+              </Center>
+            )}
+            {ltoTrainingReport?.store_wise_data && (
+              <RussLtoTrainingReportTable
+                data={storeWiseData}
+                columns={storeWiseColumns}
+                colVisibility={{}}
+              />
+            )}
+        </Box>
+          <Box
+            mt="xl"
+            style={{
+              border: "1px solid hsl(var(--border))",
+              borderRadius: 8,
+            }}
+          >
+            <Flex justify="space-between">
+              <Box px="lg" py="md">
+                <Title order={5} fw={500} fz={16}>
+                  DTL LTO Training Data
+                </Title>
+                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+                {ltoTrainingReport?.course_name}
+                </Title>
+              </Box>
+              <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+                <Button
+                  variant="azalio-ui-dark"
+                  my={"sm"}
+                  size="xl"
+                  style={{ fontSize: "14px" }}
+                  leftSection={<IconFileExport />}
+                >
+                  Export
+                </Button>
+              </Anchor>
+            </Flex>
+            <Divider />
+            {isLoading && (
+              <Center h={500}>
+                <Loader size="lg" />
+              </Center>
+            )}
+            {ltoTrainingReport?.dtl_wise_data && (
+              <RussLtoTrainingReportTable
+                data={dtlWiseData}
+                columns={dtlWiseColumns}
+                colVisibility={{ manager_id: false }}
+              />
+            )}
+          </Box>
+        
+        </>
+      ) : ( 
+        <Box
         mt="xl"
         style={{
           border: "1px solid hsl(var(--border))",
@@ -417,80 +536,52 @@ function RussReport() {
         <Flex justify="space-between">
           <Box px="lg" py="md">
             <Title order={5} fw={500} fz={16}>
-              Store LTO Training Data
+              Labor Violation Data
             </Title>
             <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              {ltoTrainingReport?.course_name}
+              See store's minor law violation information
             </Title>
           </Box>
-          <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
-            <Button
-              variant="azalio-ui-dark"
-              my={"sm"}
-              size="xl"
-              style={{ fontSize: "14px" }}
-              leftSection={<IconFileExport />}
-            >
-              Export
-            </Button>
-          </Anchor>
+          <Flex columnGap={20} justify={"space-between"} align={"center"}>
+            <DatePickerInput
+              bg="white"
+              minDate={moment('2024-05-01').toDate()}
+              maxDate={moment().toDate()}
+              value={laborViolationSelectedDate}
+              w={"200px"}
+              placeholder="Select Date"
+              onChange={(value) => setLaborViolationSelectedDate(value)}
+            />
+            <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+              <Button
+                variant="azalio-ui-dark"
+                my={"sm"}
+                size="xl"
+                style={{ fontSize: "14px" }}
+                leftSection={<IconFileExport />}
+              >
+                Export
+              </Button>
+            </Anchor>
+          </Flex>
         </Flex>
         <Divider />
-        {isLoading && (
+        {isLoadingLaborViolation && (
           <Center h={500}>
             <Loader size="lg" />
           </Center>
         )}
-        {ltoTrainingReport?.store_wise_data && (
-          <RussLtoTrainingReportTable
-            data={storeWiseData}
-            columns={storeWiseColumns}
-            colVisibility={{}}
+        {laborViolationReport && (
+          <RussLaborViolationReportTable
+            data={laborViolationReport}
+            colVisibility={{
+              color: false
+            }}
           />
         )}
       </Box>
-      <Box
-        mt="xl"
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: 8,
-        }}
-      >
-        <Flex justify="space-between">
-          <Box px="lg" py="md">
-            <Title order={5} fw={500} fz={16}>
-              DTL LTO Training Data
-            </Title>
-            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-            {ltoTrainingReport?.course_name}
-            </Title>
-          </Box>
-          <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
-            <Button
-              variant="azalio-ui-dark"
-              my={"sm"}
-              size="xl"
-              style={{ fontSize: "14px" }}
-              leftSection={<IconFileExport />}
-            >
-              Export
-            </Button>
-          </Anchor>
-        </Flex>
-        <Divider />
-        {isLoading && (
-          <Center h={500}>
-            <Loader size="lg" />
-          </Center>
-        )}
-        {ltoTrainingReport?.dtl_wise_data && (
-          <RussLtoTrainingReportTable
-            data={dtlWiseData}
-            columns={dtlWiseColumns}
-            colVisibility={{ manager_id: false }}
-          />
-        )}
-      </Box>
+      )
+     }
     </>
   );
 }
