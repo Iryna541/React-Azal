@@ -40,6 +40,7 @@ import { useRussLaborViolationReports } from "~/modules/bk/labor-violation-repor
 import moment from "moment";
 import { DatePickerInput } from "@mantine/dates";
 import RussLaborViolationReportTable from "~/modules/bk/labor-violation-report/RussLaborViolationReportTable";
+import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
@@ -128,7 +129,6 @@ const ReportsPage = () => {
         {user?.company_id === 214 && (
           <ZinoReport selectedReport={zinoSelectedReport} />
         )}
-        {user?.company_id === 211 && <RussReport selectedReport={russSelectedReport} />}
       </Layout>
     </ProtectedRoute>
   );
@@ -377,6 +377,9 @@ function ZinoExample() {
 
 function RussReport({selectedReport}: {selectedReport: string}) {
   const [laborViolationSelectedDate, setLaborViolationSelectedDate] = useState<Date | null>(new Date());
+  const [laborViolationSelectedStoreId, setLaborViolationSelectedStoreId] = useState<string>("");
+
+  const { data: managers } = useGetManagers();
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
   const { data: laborViolationReport, isLoading: isLoadingLaborViolation } = useRussLaborViolationReports({params: {date: moment(laborViolationSelectedDate).format("YYYY-MM-DD")}});
   
@@ -433,6 +436,23 @@ function RussReport({selectedReport}: {selectedReport: string}) {
       setDtlWiseData([...tempData, finalRow]);
     }
   }, [ltoTrainingReport]);
+
+  // const storeOptions = managers?.users?.map((item) => {
+  //   return {
+  //     value: item.id.toString(),
+  //     label: item.name,
+  //   };
+  // });
+
+  // const handleChange = (value: string | null) => {
+  //   if (value === null) {
+  //     setLaborViolationSelectedStoreId("");
+  //   } else {
+  //     setLaborViolationSelectedStoreId(value);
+  //   }
+  // };
+
+  console.log({managers});
 
   return (
     <>
@@ -543,6 +563,16 @@ function RussReport({selectedReport}: {selectedReport: string}) {
             </Title>
           </Box>
           <Flex columnGap={20} justify={"space-between"} align={"center"}>
+
+            {/* <Select
+                label="Filter stores"
+                placeholder="Pick value"
+                data={["All Stores", ...managerNames]}
+                defaultValue="All Stores"
+                m={"sm"}
+                onChange={handleSelectChange}
+                allowDeselect={false}
+              /> */}
             <DatePickerInput
               bg="white"
               minDate={moment('2024-05-01').toDate()}
