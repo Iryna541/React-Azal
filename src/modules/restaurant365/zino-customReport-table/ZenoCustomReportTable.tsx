@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
+import { ScrollArea, Table } from "@mantine/core";
 import { columns } from "./columns";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
     week_1_start_date: false,
     week_2_start_date: false,
     week_3_start_date: false,
-    week_4_start_date: false
+    week_4_start_date: false,
   });
 
   const table = useReactTable({
@@ -195,7 +195,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
           </Table.Tbody>
         </Table>
       </ScrollArea>
-
+{/* 
       <Group
         justify="space-between"
         px="xs"
@@ -217,7 +217,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
           total={table.getPageCount()}
           onChange={(value) => table.setPageIndex(value - 1)}
         />
-      </Group>
+      </Group> */}
     </>
   );
 }

@@ -735,7 +735,7 @@ function ZinoReport({
           )}
           {customTableData && (
             <ZenoCustomReportTable
-              data={transformData(customTableData["data"])}
+              data={transformData(customTableData["data"], customTableData["locations"])}
             />
           )}
         </Box>
