@@ -60,7 +60,15 @@ console.log({"row": row?.original as string});
     <Box onClick={() => setIsEditActive(true)} h={30}>
       {
         isEditActive ? (
-          (accessorKey === 'total' && (row.original.meal as string)?.includes('bottom')) || (accessorKey !== 'total' && (row.original.meal as string) !== "") ? (
+          (
+            (row.original.meal as string) !== "breakfast-total"
+            && (row.original.meal as string) !== "lunch-total"
+            && (row.original.meal as string) !== "dinner-total"
+            && (row.original.meal as string) !== "grand-total"
+            && accessorKey !== "total"
+            && (row.original.meal as string) !== ""
+          ) ? (
+          // (accessorKey === 'total' && (row.original.meal as string)?.includes('bottom')) || (accessorKey !== 'total' && (row.original.meal as string) !== "") ? (
             <NumberInput
             onChange={handleValueUpdate}
             onBlur={handleBlur}
