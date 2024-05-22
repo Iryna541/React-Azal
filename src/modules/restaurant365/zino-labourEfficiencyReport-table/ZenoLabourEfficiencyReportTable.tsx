@@ -33,6 +33,7 @@ export function ZenoLabourEfficiencyReportTable({
     id: false,
     store_id: false,
     date: false,
+    store_name: false,
   });
 
   const table = useReactTable({
