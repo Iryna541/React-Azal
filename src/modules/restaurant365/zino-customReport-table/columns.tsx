@@ -204,6 +204,8 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
                       "Week 3": row.original.week_3_start_date as string,
                       "Week 4": row.original.week_4_start_date as string,
                     }}
+                    storeName={row.original.store_name as string}
+                    categoryName={row.original.A as string}
                   />
                 ),
               })
@@ -242,16 +244,23 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     header: "Week 4 Start Date",
     size: 150,
   },
+  {
+    accessorKey: "store_name",
+  },
 ];
 
 function EditModalContent({
   storeId,
   categoryId,
   weekStartDates,
+  storeName,
+  categoryName,
 }: {
   storeId: number;
   categoryId: number;
   weekStartDates: { [key: string]: string };
+  storeName: string;
+  categoryName: string;
 }): ReactNode {
   const [selectedWeek, setSelectedWeek] = useState<string>("Week 1");
   const [weekStartDate, setWeekStartDate] = useState<string>(
@@ -356,19 +365,19 @@ function EditModalContent({
               <Text size="sm" fw={"600"}>
                 Week Start Date
               </Text>
-              <TextInput value={weekStartDate} readOnly={true} w={200} />
+              <TextInput value={weekStartDate} disabled={true} w={200} />
             </Flex>
             <Flex justify={"space-between"} align={"center"}>
               <Text size="sm" fw={"600"}>
-                Store ID
+                Store
               </Text>
-              <TextInput value={storeId} readOnly={true} w={200} />
+              <TextInput value={storeName} disabled={true} w={200} />
             </Flex>
             <Flex justify={"space-between"} align={"center"}>
               <Text size="sm" fw={"600"}>
-                Category ID
+                Category
               </Text>
-              <TextInput value={categoryId} readOnly={true} w={200} />
+              <TextInput value={categoryName} disabled={true} w={200} />
             </Flex>
             <Flex justify={"space-between"} align={"center"}>
               <Text size="sm" fw={"600"}>

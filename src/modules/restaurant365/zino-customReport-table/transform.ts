@@ -15,7 +15,7 @@ function groupBy<
   );
 }
 
-export function transformData(data: GetRevenueCenterDataResponse["data"]) {
+export function transformData(data: GetRevenueCenterDataResponse["data"], locations: GetRevenueCenterDataResponse["locations"]) {
   if(!data){
     return [];
   }
@@ -86,6 +86,7 @@ export function transformData(data: GetRevenueCenterDataResponse["data"]) {
     
     // setting store_id, category_id, weekStartDate
     row1["store_id"] = arr[0].store_id;
+    row1["store_name"] = locations?.find(item => item.store_id === arr[0].store_id)?.name || "";
 
     row1["category_id"] = arr[0].category_id;
     row2["category_id"] = arr[0].category_id;
