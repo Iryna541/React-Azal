@@ -135,7 +135,6 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     cell: ({row, cell}) => (
       <CustomCell accessorKey="manager" row={row} cell={cell}/>
     ),
-    size: 100,
   },
   {
     accessorKey: "shiftLeader",
@@ -180,7 +179,6 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "dish",
     header: "Dish",
-    size: 100,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="dish" row={row} cell={cell}/>
     ),
