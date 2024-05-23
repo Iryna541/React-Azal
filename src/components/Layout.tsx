@@ -137,6 +137,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
       (user?.company_id === 211 ||
         user?.company_id === 212 ||
         user?.company_id === 210 ||
+        user?.company_id === 214 ||
         user?.company_id === 218)
     ) {
       return { ...link, isLocked: false };
@@ -145,7 +146,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     return link;
   });
 
-  if (user?.company_id === 210) {
+  if (user?.company_id === 210 || user?.company_id === 214) {
     links = [...links].filter((item) => item.label != "OscarGPT");
   }
 
@@ -157,6 +158,15 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     )
   ) {
     links = [...links].filter((item) => item.label != "Reports");
+  }
+
+  if (user?.company_id === 214) {
+    const tempLinks = [...links]
+    const idx = tempLinks.findIndex(item => item.label === "Insights");
+    if(idx !== -1) {
+      tempLinks[idx].label = "Weekly Highlights";
+      links = [...tempLinks];
+    }
   }
 
   return (

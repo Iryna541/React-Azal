@@ -30,6 +30,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
     week_2_start_date: false,
     week_3_start_date: false,
     week_4_start_date: false,
+    store_name: false,
   });
 
   const table = useReactTable({
@@ -69,7 +70,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
   return (
     <>
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
-        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" fz={12}>
           <Table.Thead>
             <Table.Tr
               style={{

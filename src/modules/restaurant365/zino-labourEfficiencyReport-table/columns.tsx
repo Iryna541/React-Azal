@@ -110,12 +110,12 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "hour",
     header: "Hour",
-    size: 110,
+    size: 100,
   },
   {
     accessorKey: "expectedGuests",
     header: "# of Guests Expected",
-    size: 100,
+    size: 80,
     // cell: ({row, cell}) => (
     //   <CustomCell accessorKey="expectedGuests" row={row} cell={cell}/>
     // )
@@ -126,12 +126,12 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     cell: ({row, cell}) => (
       <CustomCell accessorKey="actualGuests" row={row} cell={cell}/>
     ),
-    size: 100,
+    size: 80,
   },
   {
     accessorKey: "manager",
     header: "Manager",
-    size: 100,
+    size: 80,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="manager" row={row} cell={cell}/>
     ),
@@ -139,7 +139,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "shiftLeader",
     header: "Shift Leader",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="shiftLeader" row={row} cell={cell}/>
     )
@@ -147,7 +147,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "nuggetPrep",
     header: "Nugget Prep",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="nuggetPrep" row={row} cell={cell}/>
     )
@@ -155,7 +155,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "portion",
     header: "Portion",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="portion" row={row} cell={cell}/>
     )
@@ -166,7 +166,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     cell: ({row, cell}) => (
       <CustomCell accessorKey="lineCook" row={row} cell={cell}/>
     ),
-    size: 90,
+    size: 70,
   },
   {
     accessorKey: "lateNight",
@@ -174,7 +174,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     cell: ({row, cell}) => (
       <CustomCell accessorKey="lateNight" row={row} cell={cell}/>
     ),
-    size: 90,
+    size: 70,
   },
   {
     accessorKey: "dish",
@@ -182,19 +182,19 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     cell: ({row, cell}) => (
       <CustomCell accessorKey="dish" row={row} cell={cell}/>
     ),
-    size: 90,
+    size: 70,
   },
   {
     accessorKey: "cashier",
     header: "Cashier",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="cashier" row={row} cell={cell}/>
   )},
   {
     accessorKey: "cashier2",
     header: "Cashier 2",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="cashier2" row={row} cell={cell}/>
     )
@@ -217,7 +217,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
             alignItems: "center",
             color: "hsl(var(--foreground))",
             fontWeight: 600,
-            fontSize: "14px",
+            fontSize: "inherit",
           }}
         >
           <CustomCell accessorKey="total" row={row} cell={cell}/>
@@ -226,10 +226,15 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "empty",
+  //   header: '',
+  //   size: 70,
+  // },
   {
     accessorKey: "sales",
     header: "Sales",
-    size: 90,
+    size: 70,
     cell: ({row, cell}) => (
       <CustomCell accessorKey="sales" row={row} cell={cell}/>
     )
@@ -237,7 +242,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "estGuestsPerLH",
     header: "Est. Guests per L/H",
-    size: 90,
+    size: 70,
     cell: ({cell}) => (
       <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
       // <span>${parseFloat(cell.getValue() as string).toFixed(1)}</span>
@@ -246,7 +251,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "actualGuestsPerLH",
     header: "Actual Guests per L/H",
-    size: 90,
+    size: 70,
     cell: ({cell}) => (
       <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
     )
@@ -254,10 +259,9 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "actualSalesPerLH",
     header: "Actual Sales per L/H",
-    size: 90,
+    size: 70,
     cell: ({cell}) => (
       <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
-      // <span>${parseFloat(cell.getValue() as string).toFixed(1)}</span>
     )
   },
 ];

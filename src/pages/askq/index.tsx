@@ -59,6 +59,8 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import moment from "moment";
 import { useGetUsersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetUsersPic";
+import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
+import { useZenoStoreRanking } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -73,6 +75,10 @@ export default function DashboardPage() {
       ) : user?.company_id === 212 ? (
         <InsightsProvider>
           <ShawnSalemaSetup />
+        </InsightsProvider>
+      ) : user?.company_id === 214 ? (
+        <InsightsProvider>
+          <ZinoSetup/>
         </InsightsProvider>
       ) : (
         <Navigate to="/askq/insights" />
@@ -531,6 +537,41 @@ function RussSetup() {
           emoji="&#128522;"
         />
       </SimpleGrid>
+    </Layout>
+  );
+}
+
+function ZinoSetup() {
+  const { data, isLoading } = useZenoStoreRanking();
+  const { user } = useUser();
+
+  return (
+    <Layout>
+      <Flex justify="space-between" align="center" mb={28}>
+        <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
+      </Flex>
+      <Box
+        style={{
+          border: "1px solid hsl(var(--border))",
+          borderRadius: 8,
+        }}
+      >
+        <Box px="lg" py="md">
+          <Title order={5} fw={500} fz={16}>
+            Store Leaderboard
+          </Title>
+          <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+            Which locations are doing better?
+          </Title>
+        </Box>
+        <Divider />
+        {isLoading && (
+          <Center h={500}>
+            <Loader size="lg" />
+          </Center>
+        )}
+        {data && <ZenoStoreRankingTable data={data} />}
+      </Box>
     </Layout>
   );
 }

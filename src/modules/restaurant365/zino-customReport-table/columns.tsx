@@ -29,7 +29,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
 
       if (row.original.A === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.A}
           </Text>
         );
@@ -41,7 +41,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         )
       ) {
         return (
-          <Text bg="gray.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="gray.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.A}
           </Text>
         );
@@ -56,7 +56,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     cell: ({ row }) => {
       if (row.original.A === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.B}
           </Text>
         );
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Flex bg="green.1" justify={"center"} align={"center"}>
-            <Text style={{ fontSize: "14px" }} fw={500}>
+            <Text style={{ fontSize: "inherit" }} fw={500}>
               {row.original.B}
             </Text>
           </Flex>
@@ -84,7 +84,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     cell: ({ row }) => {
       if (row.original.A === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.C}
           </Text>
         );
@@ -95,7 +95,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         row.original.A !== "Start Date"
       ) {
         return (
-          <Text bg="green.1" style={{ fontSize: "14px" }} fw={500}>
+          <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
             {row.original.C}
           </Text>
         );
@@ -110,7 +110,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     cell: ({ row }) => {
       if (row.original.A === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.D}
           </Text>
         );
@@ -121,7 +121,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         row.original.A !== "Start Date"
       ) {
         return (
-          <Text bg="green.1" style={{ fontSize: "14px" }} fw={500}>
+          <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
             {row.original.D}
           </Text>
         );
@@ -136,7 +136,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     cell: ({ row }) => {
       if (row.original.A === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.E}
           </Text>
         );
@@ -147,7 +147,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         row.original.A !== "Start Date"
       ) {
         return (
-          <Text bg="green.1" style={{ fontSize: "14px" }} fw={500}>
+          <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
             {row.original.E}
           </Text>
         );
@@ -162,14 +162,14 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     cell: ({ row }) => {
       if (row.original.F === "TOTAL NET SALES") {
         return (
-          <Text bg="yellow.1" style={{ fontSize: "14px" }} fw={600}>
+          <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
             {row.original.A}
           </Text>
         );
       }
       if (typeof row.original.F === "number")
         return (
-          <Text bg="gray.1" style={{ fontSize: "14px" }} fw={500}>
+          <Text bg="gray.1" style={{ fontSize: "inherit" }} fw={500}>
             {row.original.F.toFixed(2)}
           </Text>
         );
@@ -190,6 +190,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
           <Button
             size="compact-sm"
             variant="outline"
+            fz={"inherit"}
             // p={"md"}
             onClick={() =>
               modals.open({
