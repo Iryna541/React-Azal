@@ -11,8 +11,10 @@ import {
   Switch,
   Text,
   TextInput,
+  Textarea,
   Title,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPencil, IconSearch } from "@tabler/icons-react";
 import { Layout } from "~/components/Layout";
 import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
@@ -86,7 +88,68 @@ export default function CommunicationPage() {
                         </Paper>
                         <Group align="center">
                           <Switch size="md" />
-                          <ActionIcon variant="azalio-ui-secondary">
+                          <ActionIcon
+                            variant="azalio-ui-secondary"
+                            onClick={() => {
+                              modals.open({
+                                title: item.title,
+                                children: (
+                                  <Box>
+                                    <Text size="sm" mb="sm">
+                                      When an employee is hired, automatically
+                                      send out a series of text messages that
+                                      make it easy for the manager to get to
+                                      know them.
+                                    </Text>
+                                    <Textarea
+                                      rows={14}
+                                      value={`Day 1: 
+Welcome to Burger King! Over the next
+few weeks, you'll receive automated messages
+with helpful tips and questions in order to
+make sure you have the best onboarding
+experience possible. You Rule! In the
+meantime, check out our Training Roadmap at
+this link and log in with your Okta
+credentials provided by your Manager:
+https://bkgateway.whopper.com/docs/DOC-24015
+
+Day 2: 
+Again, welcome to the Burger King
+Family! Help your Manager and Above
+Restaurant Leadership get to know you
+better. What hobbies :basketball::trumpet:
+do you enjoy outside of work? You can reply
+to this message directly. 
+
+Day 3: 
+Help your
+Manager and Above Restaurant Leadership get
+to know you better. What are three words
+that describe you?
+  
+Day 4: 
+Help your Manager
+and Above Restaurant Leadership get to know
+you better. What motivates you at work? Day
+7: Congrats on finishing your first week at
+Burger King! Which employee has helped you
+the most at work? Feel free to include
+anything specific about your experience so
+far.`}
+                                    />
+                                    <Button
+                                      fullWidth
+                                      mt="sm"
+                                      onClick={() => modals.closeAll()}
+                                    >
+                                      Save
+                                    </Button>
+                                  </Box>
+                                ),
+                              });
+                            }}
+                          >
                             <IconPencil size={14} />
                           </ActionIcon>
                         </Group>
