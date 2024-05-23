@@ -40,7 +40,6 @@ import { useRussLaborViolationReports } from "~/modules/bk/labor-violation-repor
 import moment from "moment";
 import { DatePickerInput } from "@mantine/dates";
 import RussLaborViolationReportTable from "~/modules/bk/labor-violation-report/RussLaborViolationReportTable";
-import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 
 const ReportsPage = () => {
