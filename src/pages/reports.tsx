@@ -544,15 +544,15 @@ function ZinoReport({
     },
   ]);
   const [customReportPeriodOptions] = useState<string[]>([
-    "PERIOD 1",
-    "PERIOD 2",
-    "PERIOD 3",
     "PERIOD 4",
+    "PERIOD 3",
+    "PERIOD 2",
+    "PERIOD 1",
   ]);
   const [customReportFilterStoreId, setCustomReportFilterStoreId] =
     useState<string>("1");
   const [customReportFilterPeriod, setCustomReportFilterPeriod] =
-    useState<string>("PERIOD 1");
+    useState<string>("PERIOD 4");
 
   const handleCustomReportPeriodChange = (value: string | null) => {
     if (value === null) {

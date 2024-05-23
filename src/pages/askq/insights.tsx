@@ -32,11 +32,11 @@ import useDunkinStoreRanking from "~/modules/dunkin/dunkin-store-ranking/api/use
 import { DunkinStoreRankingTable } from "~/modules/dunkin/dunkin-store-ranking/DunkinStoreRankingTable";
 import { R365StoreRankingTable } from "~/modules/restaurant365/store-ranking/R365StoreRankingTable";
 import { useR365StoreRanking } from "~/modules/restaurant365/store-ranking/api/useR365StoreRanking";
-import {
-  // StoreInsights,
-  useZenoStoreRanking,
-} from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
-import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
+// import {
+//   // StoreInsights,
+//   useZenoStoreRanking,
+// } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
+// import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
 // import { ZenoTopRankingTable } from "~/modules/restaurant365/zeno-ranking/zeno-top-ranking-table/ZenoTopRankingTable";
 
 import { useDunkinManagerPlan } from "~/modules/dunkin/dunkin-manager-plan/api/useDunkinManagerPlan";
@@ -476,7 +476,7 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
 }
 
 function ZinoSetup() {
-  const { data } = useZenoStoreRanking();
+  // const { data } = useZenoStoreRanking();
   const { data: managerData } = useZenoInsightTable();
 
   const selectData = managerData?.stores?.map((item) => {
@@ -554,7 +554,7 @@ function ZinoSetup() {
           <ZenoInsightTable data={insightsData.insights_data} />
         )}
       </Box>
-
+{/* 
       <Box
         style={{
           border: "1px solid hsl(var(--border))",
@@ -572,7 +572,7 @@ function ZinoSetup() {
         <Divider />
 
         {data && <ZenoStoreRankingTable data={data} />}
-      </Box>
+      </Box> */}
     </Stack>
   );
 }

@@ -73,7 +73,7 @@ export function ZenoLabourEfficiencyReportTable({
   return (
     <>
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
-        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" fz={12}>
           <Table.Thead>
             <Table.Tr
               style={{
@@ -163,7 +163,8 @@ export function ZenoLabourEfficiencyReportTable({
                   >
                     <Table.Td colSpan={17}>
                       <Text
-                        size="sm"
+                        // size="sm"
+                        fz={'inherit'}
                         fw={"600"}
                         c="hsl(var(--foreground) / 0.65)"
                       >
