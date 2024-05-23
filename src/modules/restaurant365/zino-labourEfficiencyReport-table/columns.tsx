@@ -67,8 +67,10 @@ console.log({"row": row?.original as string});
             && (row.original.meal as string) !== "grand-total"
             && accessorKey !== "total"
             && (row.original.meal as string) !== ""
+            // && ((row.original.meal as string) === "empty")
+            // && accessorKey !== "empty"
+            // && ((row.original.meal as string) !== "" && accessorKey === "empty")
           ) ? (
-          // (accessorKey === 'total' && (row.original.meal as string)?.includes('bottom')) || (accessorKey !== 'total' && (row.original.meal as string) !== "") ? (
             <NumberInput
             onChange={handleValueUpdate}
             onBlur={handleBlur}
@@ -79,7 +81,9 @@ console.log({"row": row?.original as string});
               input: {
                 minHeight: 30,
                 height: 30,
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: 'inherit',
+                padding: 2
               }
             }}
           />
@@ -226,11 +230,14 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "empty",
-  //   header: '',
-  //   size: 70,
-  // },
+  {
+    accessorKey: "empty",
+    header: '',
+    size: 70,
+    cell: ({row, cell}) => (
+      <CustomCell accessorKey="empty" row={row} cell={cell}/>
+    )
+  },
   {
     accessorKey: "sales",
     header: "Sales",
