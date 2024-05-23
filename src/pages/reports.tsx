@@ -24,7 +24,7 @@ import { useGetDunkinInsights } from "~/modules/dunkin/dunkin-insights-table/api
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useUser } from "~/modules/auth/hooks/useUser";
-import { useRussLtoTrainingReportDetail, useRussLtoTrainingReports } from "~/modules/bk/lto-training-report/api/useRussLtoTrainings";
+import { useRussLtoTrainingReports } from "~/modules/bk/lto-training-report/api/useRussLtoTrainings";
 import RussLtoTrainingReportTable from "~/modules/bk/lto-training-report/RussLtoTrainingReportTable";
 import {
   dtlWiseColumns,
@@ -41,6 +41,7 @@ import moment from "moment";
 import { DatePickerInput } from "@mantine/dates";
 import RussLaborViolationReportTable from "~/modules/bk/labor-violation-report/RussLaborViolationReportTable";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
+import { useStoreRanking } from "~/modules/bk/bk-store-ranking/api/useStoreRanking";
 
 const ReportsPage = () => {
   const [value, setValue] = useState<string>("example1");
@@ -379,9 +380,9 @@ function RussReport({selectedReport}: {selectedReport: string}) {
   const [laborViolationSelectedDate, setLaborViolationSelectedDate] = useState<Date | null>(new Date());
   const [laborViolationSelectedStoreId, setLaborViolationSelectedStoreId] = useState<string>("");
 
-  const { data: managers } = useGetManagers();
+  const { data: stores } = useStoreRanking();
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
-  const { data: laborViolationReport, isLoading: isLoadingLaborViolation } = useRussLaborViolationReports({params: {date: moment(laborViolationSelectedDate).format("YYYY-MM-DD")}});
+  const { data: laborViolationReport, isLoading: isLoadingLaborViolation } = useRussLaborViolationReports({params: {date: moment(laborViolationSelectedDate).format("YYYY-MM-DD"), store_id: laborViolationSelectedStoreId}});
   
   const [storeWiseData, setStoreWiseData] = useState<any[]>([]);
   const [dtlWiseData, setDtlWiseData] = useState<any[]>([]);
@@ -437,22 +438,22 @@ function RussReport({selectedReport}: {selectedReport: string}) {
     }
   }, [ltoTrainingReport]);
 
-  // const storeOptions = managers?.users?.map((item) => {
-  //   return {
-  //     value: item.id.toString(),
-  //     label: item.name,
-  //   };
-  // });
+  const storeOptions = stores?.map((item) => {
+    return {
+      value: item.store_id.toString(),
+      label: item.general_managers,
+    };
+  });
 
-  // const handleChange = (value: string | null) => {
-  //   if (value === null) {
-  //     setLaborViolationSelectedStoreId("");
-  //   } else {
-  //     setLaborViolationSelectedStoreId(value);
-  //   }
-  // };
+  const handleRussLaborViolationStoreChange = (value: string | null) => {
+    if (value === null) {
+      setLaborViolationSelectedStoreId("");
+    } else {
+      setLaborViolationSelectedStoreId(value);
+    }
+  };
 
-  console.log({managers});
+  console.log({stores});
 
   return (
     <>
@@ -564,15 +565,13 @@ function RussReport({selectedReport}: {selectedReport: string}) {
           </Box>
           <Flex columnGap={20} justify={"space-between"} align={"center"}>
 
-            {/* <Select
-                label="Filter stores"
+            <Select
                 placeholder="Pick value"
-                data={["All Stores", ...managerNames]}
-                defaultValue="All Stores"
-                m={"sm"}
-                onChange={handleSelectChange}
+                data={storeOptions}
+                defaultValue={storeOptions?.[0].value || ""}
+                onChange={handleRussLaborViolationStoreChange}
                 allowDeselect={false}
-              /> */}
+              />
             <DatePickerInput
               bg="white"
               minDate={moment('2024-05-01').toDate()}

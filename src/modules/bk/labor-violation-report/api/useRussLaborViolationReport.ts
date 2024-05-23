@@ -14,25 +14,26 @@ export type LaborViolationData = {
 export type GetRussLaborViolationReportResponse = LaborViolationData[];
 
 export type UseRussLaborViolationReportOptions = {
-  params: {date: string};
+  params: {date: string; store_id: string};
   config?: UseQueryOptions<GetRussLaborViolationReportResponse>;
 };
 
 export type GetLaborViolationReportParams = {
   date?: string;
+  store_id?: string;
 };
 
-async function getLaborViolationReport(date: string) {
-  return axios.get(`/analytics/getLaborViolationsReport?date=${date}`).then((res) => res.data);
+async function getLaborViolationReport(date: string, store_id: string) {
+  return axios.get(`/analytics/getLaborViolationsReport?date=${date}&store_id=${store_id}`).then((res) => res.data);
 }
 
 export function useRussLaborViolationReports({
-  params: {date},
+  params: {date, store_id},
   config,
 }: UseRussLaborViolationReportOptions) {
   return useQuery({
-    queryKey: ["russ-labor-violation-report", date],
-    queryFn: () => getLaborViolationReport(date),
+    queryKey: ["russ-labor-violation-report", date, store_id],
+    queryFn: () => getLaborViolationReport(date, store_id),
     ...config,
   });
 }
