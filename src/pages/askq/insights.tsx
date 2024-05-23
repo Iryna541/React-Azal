@@ -11,6 +11,9 @@ import {
   Select,
   Loader,
   Center,
+  Grid,
+  Text,
+  TypographyStylesProvider,
 } from "@mantine/core";
 import { Layout } from "~/components/Layout";
 import {
@@ -60,6 +63,9 @@ import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
+import { NewRussSetup } from "~/revamp/NewRussSetup";
+import { InsightsList } from "~/revamp/components/InsightsList";
+import { marked } from "marked";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
 
 export default function InsightsPage() {
@@ -97,7 +103,7 @@ export default function InsightsPage() {
                 <Select
                   value={selectedDemoOption}
                   placeholder="Pick value"
-                  data={["Company 1", "Company 2"]}
+                  data={["Company 1", "Company 2", "Company 3"]}
                   m={"sm"}
                   onChange={(value) => setSelectedDemoOption(value)}
                   allowDeselect={false}
@@ -107,9 +113,11 @@ export default function InsightsPage() {
           </Flex>
           {user?.company_id === 210 ? (
             selectedDemoOption === "Company 2" ? (
-              <ShawnSetup />
+              <ShawnSetup withAccordion />
+            ) : selectedDemoOption === "Company 1" ? (
+              <RussSetup withAccordion />
             ) : (
-              <RussSetup />
+              <NewRussSetup />
             )
           ) : (
             <>
@@ -153,7 +161,7 @@ function AdamKlaersSetup() {
   );
 }
 
-function RussSetup() {
+function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
   const { configurations, user } = useUser();
   const { data } = useStoreRanking({
     companyId: user?.company_id.toString(),
@@ -230,41 +238,94 @@ function RussSetup() {
       </Flex>
       <Tabs.Panel value="store">
         <Stack gap="xl">
-          <Box
-            style={{
-              border: "1px solid hsl(var(--border))",
-              borderRadius: 8,
-            }}
-          >
-            <Flex justify={"space-between"}>
-              <Box px="lg" py="md">
-                <Title order={5} fw={500} fz={16}>
-                  Store Leaderboard
-                </Title>
-                <Title
-                  component="p"
-                  order={6}
-                  fz={14}
-                  fw={500}
-                  size="sm"
-                  lh={1.5}
-                >
-                  Which locations are doing better?
-                </Title>
-              </Box>
-              <Select
-                label="Filter stores"
-                placeholder="Pick value"
-                data={["All Stores", ...managerNames]}
-                defaultValue="All Stores"
-                m={"sm"}
-                onChange={handleSelectChange}
-                allowDeselect={false}
-              />
-            </Flex>
-            <Divider />
-            {data && <BkStoreRankingTable data={filteredData} />}
-          </Box>
+          {!withAccordion && (
+            <Box
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: 8,
+              }}
+            >
+              <Flex justify={"space-between"}>
+                <Box px="lg" py="md">
+                  <Title order={5} fw={500} fz={16}>
+                    Store Leaderboard
+                  </Title>
+                  <Title
+                    component="p"
+                    order={6}
+                    fz={14}
+                    fw={500}
+                    size="sm"
+                    lh={1.5}
+                  >
+                    Which locations are doing better?
+                  </Title>
+                </Box>
+                <Select
+                  label="Filter stores"
+                  placeholder="Pick value"
+                  data={["All Stores", ...managerNames]}
+                  defaultValue="All Stores"
+                  m={"sm"}
+                  onChange={handleSelectChange}
+                  allowDeselect={false}
+                />
+              </Flex>
+              <Divider />
+              {data && <BkStoreRankingTable data={filteredData} />}
+            </Box>
+          )}
+          {data && withAccordion && (
+            <InsightsList
+              data={data}
+              control={({ row }) => {
+                return (
+                  <Grid>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Position
+                      </Title>
+                      <Text>#{row.overall_ranking}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Store Id
+                      </Title>
+                      <Text>{row.store_id}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        FSS Ranking
+                      </Title>
+                      <Text>{row.fss_ranking}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Manager Profit Ranking
+                      </Title>
+                      <Text>{row.mgr_profit_ranking}</Text>
+                    </Grid.Col>
+                  </Grid>
+                );
+              }}
+              panel={({ row }) => {
+                const html = marked(row.insights) as string;
+                return (
+                  <Stack
+                    style={{ borderTop: "1px solid hsl(var(--border))" }}
+                    py="md"
+                  >
+                    <TypographyStylesProvider p="0" m="0">
+                      <div
+                        style={{ fontSize: 14 }}
+                        dangerouslySetInnerHTML={{ __html: html! }}
+                      />
+                    </TypographyStylesProvider>
+                  </Stack>
+                );
+              }}
+            />
+          )}
         </Stack>
       </Tabs.Panel>
       <Tabs.Panel value="manager">
@@ -283,7 +344,7 @@ function RussSetup() {
   );
 }
 
-function ShawnSetup() {
+function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
   const { user } = useUser();
   const { data } = useDunkinStoreRanking({
     companyId: user?.company_id.toString(),
@@ -325,30 +386,84 @@ function ShawnSetup() {
                 data={topStores.reverse().slice(0, 5)}
               />
             </SimpleGrid>
-            <Box
-              style={{
-                border: "1px solid hsl(var(--border))",
-                borderRadius: 8,
-              }}
-            >
-              <Box px="lg" py="md">
-                <Title order={5} fw={500} fz={16}>
-                  Store Leaderboard
-                </Title>
-                <Title
-                  component="p"
-                  order={6}
-                  fz={14}
-                  fw={500}
-                  size="sm"
-                  lh={1.5}
-                >
-                  Which locations are doing better?
-                </Title>
+            {!withAccordion && (
+              <Box
+                style={{
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: 8,
+                }}
+              >
+                <Box px="lg" py="md">
+                  <Title order={5} fw={500} fz={16}>
+                    Store Leaderboard
+                  </Title>
+                  <Title
+                    component="p"
+                    order={6}
+                    fz={14}
+                    fw={500}
+                    size="sm"
+                    lh={1.5}
+                  >
+                    Which locations are doing better?
+                  </Title>
+                </Box>
+                <Divider />
+                {data && <DunkinStoreRankingTable data={data} />}
               </Box>
-              <Divider />
-              {data && <DunkinStoreRankingTable data={data} />}
-            </Box>
+            )}
+
+            {data && withAccordion && (
+              <InsightsList
+                data={data}
+                control={({ row }) => {
+                  return (
+                    <Grid>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Position
+                        </Title>
+                        <Text>#{row.store_rank}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Store Id
+                        </Title>
+                        <Text>{row.store_id}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Net Sales Current
+                        </Title>
+                        <Text>{row.net_sales_current}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Net Sales Previous
+                        </Title>
+                        <Text>{row.net_sales_previous}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  );
+                }}
+                panel={({ row }) => {
+                  const html = marked(row.insights) as string;
+                  return (
+                    <Stack
+                      style={{ borderTop: "1px solid hsl(var(--border))" }}
+                      py="md"
+                    >
+                      <TypographyStylesProvider p="0" m="0">
+                        <div
+                          style={{ fontSize: 14 }}
+                          dangerouslySetInnerHTML={{ __html: html! }}
+                        />
+                      </TypographyStylesProvider>
+                    </Stack>
+                  );
+                }}
+              />
+            )}
           </Stack>
         </Tabs.Panel>
 

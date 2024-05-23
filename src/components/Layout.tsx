@@ -18,6 +18,7 @@ import {
   IconBubble,
   IconDashboard,
   BarchartBig,
+  IconCommunication,
 } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
@@ -60,12 +61,12 @@ const NAVBAR_LINKS = [
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
     isLocked: false,
   },
-  // {
-  //   label: "Communication",
-  //   href: "/communication",
-  //   Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
-  //   isLocked: false,
-  // },
+  {
+    label: "Communication",
+    href: "/communication",
+    Icon: <IconCommunication height={ICON_SIZE} width={ICON_SIZE} />,
+    isLocked: false,
+  },
   {
     label: "OscarGPT",
     href: "/oscar-gpt",
@@ -148,7 +149,13 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     links = [...links].filter((item) => item.label != "OscarGPT");
   }
 
-  if (!(user?.company_id === 210 || user?.company_id === 211 || user?.company_id === 214)) {
+  if (
+    !(
+      user?.company_id === 210 ||
+      user?.company_id === 211 ||
+      user?.company_id === 214
+    )
+  ) {
     links = [...links].filter((item) => item.label != "Reports");
   }
 
