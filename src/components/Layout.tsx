@@ -167,6 +167,13 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
       tempLinks[idx].label = "Weekly Highlights";
       links = [...tempLinks];
     }
+  } else {
+    const tempLinks = [...links]
+    const idx = tempLinks.findIndex(item => item.label === "Weekly Highlights");
+    if(idx !== -1) {
+      tempLinks[idx].label = "Insights";
+      links = [...tempLinks];
+    }
   }
 
   return (

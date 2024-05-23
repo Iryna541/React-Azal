@@ -67,9 +67,7 @@ console.log({"row": row?.original as string});
             && (row.original.meal as string) !== "grand-total"
             && accessorKey !== "total"
             && (row.original.meal as string) !== ""
-            // && ((row.original.meal as string) === "empty")
-            // && accessorKey !== "empty"
-            // && ((row.original.meal as string) !== "" && accessorKey === "empty")
+            && (accessorKey !== "empty" || (accessorKey === "empty" && (row.original.meal as string).includes("bottom-")))
           ) ? (
             <NumberInput
             onChange={handleValueUpdate}

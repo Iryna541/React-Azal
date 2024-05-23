@@ -8,6 +8,7 @@ import {
   Checkbox,
   Divider,
   Flex,
+  Grid,
   Loader,
   Select,
   SimpleGrid,
@@ -15,6 +16,7 @@ import {
   Text,
   TextInput,
   Title,
+  TypographyStylesProvider,
 } from "@mantine/core";
 import { IconFileExport, IconSend } from "@tabler/icons-react";
 import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
@@ -59,8 +61,9 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import moment from "moment";
 import { useGetUsersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetUsersPic";
-import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
 import { useZenoStoreRanking } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
+import { InsightsList } from "~/revamp/components/InsightsList";
+import { marked } from "marked";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -78,7 +81,7 @@ export default function DashboardPage() {
         </InsightsProvider>
       ) : user?.company_id === 214 ? (
         <InsightsProvider>
-          <ZinoSetup/>
+          <ZinoSetup />
         </InsightsProvider>
       ) : (
         <Navigate to="/askq/insights" />
@@ -545,6 +548,11 @@ function ZinoSetup() {
   const { data, isLoading } = useZenoStoreRanking();
   const { user } = useUser();
 
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   return (
     <Layout>
       <Flex justify="space-between" align="center" mb={28}>
@@ -570,7 +578,66 @@ function ZinoSetup() {
             <Loader size="lg" />
           </Center>
         )}
-        {data && <ZenoStoreRankingTable data={data} />}
+        {/* {data && <ZenoStoreRankingTable data={data} />} */}
+        {data && (
+          <Box p={"sm"}>
+            <InsightsList
+              data={data}
+              control={({ row }) => {
+                return (
+                  <Grid>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Position
+                      </Title>
+                      <Text>#{row.store_rank}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Store
+                      </Title>
+                      <Text>{row.store_id}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Total Sales
+                      </Title>
+                      <Text>{formatter.format(row.net_sales_current)}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Sales growth (VS LW)
+                      </Title>
+                      <Text>{formatter.format(row.sales_growth)}</Text>
+                    </Grid.Col>
+                  </Grid>
+                );
+              }}
+              panel={({ row }) => {
+                // const html = marked(row.insight) as string;
+                // const summaryHtml = marked(row.summary) as string;
+                // const headingHtml = marked(row.heading) as string;
+                const content = marked.parse(row.insights);
+                return (
+                  <Stack
+                    style={{ borderTop: "1px solid hsl(var(--border))" }}
+                    py="md"
+                  >
+                    <Box>
+                      <TypographyStylesProvider>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: content as string,
+                          }}
+                        ></div>
+                      </TypographyStylesProvider>
+                    </Box>
+                  </Stack>
+                );
+              }}
+            />
+          </Box>
+        )}
       </Box>
     </Layout>
   );
