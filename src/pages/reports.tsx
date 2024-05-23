@@ -453,8 +453,6 @@ function RussReport({selectedReport}: {selectedReport: string}) {
     }
   };
 
-  console.log({stores});
-
   return (
     <>
     {
@@ -581,7 +579,7 @@ function RussReport({selectedReport}: {selectedReport: string}) {
               placeholder="Select Date"
               onChange={(value) => setLaborViolationSelectedDate(value)}
             />
-            <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
+            <Anchor href="https://demo-be.azal.io/api/analytics/exportLaborViolationsReport">
               <Button
                 variant="azalio-ui-dark"
                 my={"sm"}
