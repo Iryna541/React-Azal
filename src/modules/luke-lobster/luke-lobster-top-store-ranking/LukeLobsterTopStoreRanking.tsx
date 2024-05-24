@@ -87,8 +87,8 @@ export function LukeLobsterTopStoreRanking({
               >
                 <Badge
                   fw={700}
-                  bg="rgba(0, 132, 255, 0.2)"
-                  c="rgb(0, 132, 255)"
+                  bg="rgba(	51,	102,	153, 1)"
+                  c="rgba(255, 255,255, 0.5)"
                 >
                   {item?.sales_growth}
                 </Badge>
