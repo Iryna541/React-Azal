@@ -26,7 +26,7 @@ export function SubwayInsights() {
           <Grid>
             <Grid.Col span={4}>
               <Title order={6} fw={500}>
-                Position
+                Rank
               </Title>
               <Text>#{row.overall_ranking}</Text>
             </Grid.Col>
