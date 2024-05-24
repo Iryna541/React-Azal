@@ -1,4 +1,4 @@
-import { Box, Title, Grid, Stack } from "@mantine/core";
+import { Box, Title, Grid, Stack, Badge } from "@mantine/core";
 
 import { LukeLobsterStoreRankingData } from "../luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
 
@@ -73,7 +73,9 @@ export function LukeLobsterTopStoreRanking({
                   justifyContent: "center",
                 }}
               >
-                {item?.net_sales_current}
+                <Badge fw={700} bg="rgba(255, 138, 2,0.2)" c="rgb(255, 138, 2)">
+                  {item?.net_sales_current}
+                </Badge>
               </Grid.Col>
               <Grid.Col
                 style={{
@@ -83,7 +85,13 @@ export function LukeLobsterTopStoreRanking({
                 }}
                 span={4}
               >
-                {item?.sales_growth}
+                <Badge
+                  fw={700}
+                  bg="rgba(0, 132, 255, 0.2)"
+                  c="rgb(0, 132, 255)"
+                >
+                  {item?.sales_growth}
+                </Badge>
               </Grid.Col>
 
               {/* <Grid.Col span={2}>
@@ -95,8 +103,8 @@ export function LukeLobsterTopStoreRanking({
                 >
                   {USDollar.format(parseInt(item.sales))}
                 </Badge>
-              </Grid.Col> */}
-              {/* <Grid.Col
+              </Grid.Col>
+              <Grid.Col
                 span={3}
                 style={{ display: "flex", justifyContent: "center" }}
               >
@@ -108,8 +116,8 @@ export function LukeLobsterTopStoreRanking({
                 >
                   {USDollar.format(parseInt(item.forecast))}
                 </Badge>
-              </Grid.Col> */}
-              {/* <Grid.Col span={3}>
+              </Grid.Col>
+              <Grid.Col span={3}>
                 <Flex w="100%" align="center" justify="space-between">
                   <Badge
                     size="lg"

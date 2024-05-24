@@ -124,27 +124,36 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
   let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
 
-  links = links.map((link) => {
-    if (
-      link.label === "OscarGPT" &&
-      (user?.company_id === 214 || user?.company_id === 216)
-    ) {
-      return { ...link, isLocked: true };
-    }
+  links = links
+    .map((link) => {
+      if (
+        link.label === "OscarGPT" &&
+        (user?.company_id === 214 || user?.company_id === 216)
+      ) {
+        return { ...link, isLocked: true };
+      }
 
-    if (
-      link.label === "Dashboard" &&
-      (user?.company_id === 211 ||
-        user?.company_id === 212 ||
-        user?.company_id === 210 ||
-        user?.company_id === 214 ||
-        user?.company_id === 218)
-    ) {
-      return { ...link, isLocked: false };
-    }
+      if (
+        link.label === "Dashboard" &&
+        (user?.company_id === 211 ||
+          user?.company_id === 212 ||
+          user?.company_id === 210 ||
+          user?.company_id === 214 ||
+          user?.company_id === 216 ||
+          user?.company_id === 218)
+      ) {
+        return { ...link, isLocked: false };
+      }
 
-    return link;
-  });
+      return link;
+    })
+    .filter((item) => {
+      if (item.label === "OscarGPT" && user?.company_id === 216) return false;
+      if (item.label === "Analytics" && user?.company_id === 216) return false;
+      return true;
+    });
+
+  links.unshift(NAVBAR_LINKS[3]);
 
   if (user?.company_id === 210 || user?.company_id === 214) {
     links = [...links].filter((item) => item.label != "OscarGPT");
