@@ -54,12 +54,8 @@ import { InsightsProvider } from "~/modules/askq/insightsContext";
 import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/ZenoInsightTable";
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 
-import {
-  LukeLobsterStoreRankingData,
-  useLukeLobsterStoreRanking,
-} from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
+import { useLukeLobsterStoreRanking } from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
 import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
-import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
@@ -579,12 +575,6 @@ function ZinoSetup() {
 
 function StevenSetup() {
   const { data } = useLukeLobsterStoreRanking();
-  const topStores: LukeLobsterStoreRankingData[] = [...(data ?? [])].sort(
-    (a, b) => {
-      return parseInt(b.sales_growth) - parseInt(a.sales_growth);
-    }
-  );
-
   return (
     <Box mt="lg">
       <Tabs variant="pills" radius="xs" defaultValue="store">
@@ -594,16 +584,6 @@ function StevenSetup() {
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
-            <SimpleGrid cols={2} spacing="xl">
-              <LukeLobsterTopStoreRanking
-                title="Top 5 Stores"
-                data={topStores.slice(0, 5)}
-              />
-              <LukeLobsterTopStoreRanking
-                title="Bottom 5 Stores"
-                data={topStores.reverse().slice(0, 5)}
-              />
-            </SimpleGrid>
             <Box
               style={{
                 border: "1px solid hsl(var(--border))",

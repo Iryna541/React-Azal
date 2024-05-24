@@ -64,6 +64,11 @@ import { useGetUsersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGet
 import { useZenoStoreRanking } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
 import { InsightsList } from "~/revamp/components/InsightsList";
 import { marked } from "marked";
+import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
+import {
+  LukeLobsterStoreRankingData,
+  useLukeLobsterStoreRanking,
+} from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -83,6 +88,8 @@ export default function DashboardPage() {
         <InsightsProvider>
           <ZinoSetup />
         </InsightsProvider>
+      ) : user?.company_id === 216 ? (
+        <LukeSetup />
       ) : (
         <Navigate to="/askq/insights" />
       )}
@@ -623,6 +630,31 @@ function ZinoSetup() {
           />
         </Box>
       )}
+    </Layout>
+  );
+}
+
+export function LukeSetup({ isDemo = false }: { isDemo?: boolean }) {
+  const { user } = useUser();
+  const { data } = useLukeLobsterStoreRanking();
+  const topStores: LukeLobsterStoreRankingData[] = [...(data ?? [])].sort(
+    (a, b) => {
+      return parseInt(b.sales_growth) - parseInt(a.sales_growth);
+    }
+  );
+  return (
+    <Layout>
+      {!isDemo && <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>}
+      <SimpleGrid cols={2} spacing="xl">
+        <LukeLobsterTopStoreRanking
+          title="Top 5 Stores"
+          data={topStores.slice(0, 5)}
+        />
+        <LukeLobsterTopStoreRanking
+          title="Bottom 5 Stores"
+          data={topStores.reverse().slice(0, 5)}
+        />
+      </SimpleGrid>
     </Layout>
   );
 }
