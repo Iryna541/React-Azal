@@ -124,6 +124,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
   let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
 
+  let analyticsExists = false;
   links = links
     .map((link) => {
       if (
@@ -149,11 +150,15 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     })
     .filter((item) => {
       if (item.label === "OscarGPT" && user?.company_id === 216) return false;
-      if (item.label === "Analytics" && user?.company_id === 216) return false;
+      if (item.label === "Analytics" && user?.company_id === 216) {
+        analyticsExists = true;
+        return false;
+      }
       return true;
     });
 
-  links.unshift(NAVBAR_LINKS[3]);
+  if (user?.company_id === 216 && analyticsExists)
+    links.unshift(NAVBAR_LINKS[3]);
 
   if (user?.company_id === 210 || user?.company_id === 214) {
     links = [...links].filter((item) => item.label != "OscarGPT");
@@ -170,16 +175,16 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   }
 
   if (user?.company_id === 214) {
-    const tempLinks = [...links]
-    const idx = tempLinks.findIndex(item => item.label === "Insights");
-    if(idx !== -1) {
+    const tempLinks = [...links];
+    const idx = tempLinks.findIndex((item) => item.label === "Insights");
+    if (idx !== -1) {
       tempLinks[idx].label = "Weekly Flash";
       links = [...tempLinks];
     }
   } else {
-    const tempLinks = [...links]
-    const idx = tempLinks.findIndex(item => item.label === "Weekly Flash");
-    if(idx !== -1) {
+    const tempLinks = [...links];
+    const idx = tempLinks.findIndex((item) => item.label === "Weekly Flash");
+    if (idx !== -1) {
       tempLinks[idx].label = "Insights";
       links = [...tempLinks];
     }
