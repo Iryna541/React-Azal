@@ -558,87 +558,71 @@ function ZinoSetup() {
       <Flex justify="space-between" align="center" mb={28}>
         <Title order={3}>Welcome, {user?.name.split(" ")[0]}</Title>
       </Flex>
-      <Box
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: 8,
-        }}
-      >
-        <Box px="lg" py="md">
-          <Title order={5} fw={500} fz={16}>
-            Store Leaderboard
-          </Title>
-          <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-            Which locations are doing better?
-          </Title>
+      {isLoading && (
+        <Center h={500}>
+          <Loader size="lg" />
+        </Center>
+      )}
+      {/* {data && <ZenoStoreRankingTable data={data} />} */}
+      {data && (
+        <Box>
+          <InsightsList
+            data={data}
+            control={({ row }) => {
+              return (
+                <Grid>
+                  <Grid.Col span={3}>
+                    <Title order={6} fw={500}>
+                      Position
+                    </Title>
+                    <Text>#{row.store_rank}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={3}>
+                    <Title order={6} fw={500}>
+                      Store
+                    </Title>
+                    <Text>{row.store_id}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={3}>
+                    <Title order={6} fw={500}>
+                      Total Sales
+                    </Title>
+                    <Text>{formatter.format(row.net_sales_current)}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={3}>
+                    <Title order={6} fw={500}>
+                      Sales growth (VS LW)
+                    </Title>
+                    <Text>{formatter.format(row.sales_growth)}</Text>
+                  </Grid.Col>
+                </Grid>
+              );
+            }}
+            panel={({ row }) => {
+              // const html = marked(row.insight) as string;
+              // const summaryHtml = marked(row.summary) as string;
+              // const headingHtml = marked(row.heading) as string;
+              const content = marked.parse(row.insights);
+              return (
+                <Stack
+                  style={{ borderTop: "1px solid hsl(var(--border))" }}
+                  py="md"
+                >
+                  <Box>
+                    <TypographyStylesProvider>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: content as string,
+                        }}
+                      ></div>
+                    </TypographyStylesProvider>
+                  </Box>
+                </Stack>
+              );
+            }}
+          />
         </Box>
-        <Divider />
-        {isLoading && (
-          <Center h={500}>
-            <Loader size="lg" />
-          </Center>
-        )}
-        {/* {data && <ZenoStoreRankingTable data={data} />} */}
-        {data && (
-          <Box p={"sm"}>
-            <InsightsList
-              data={data}
-              control={({ row }) => {
-                return (
-                  <Grid>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Position
-                      </Title>
-                      <Text>#{row.store_rank}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Store
-                      </Title>
-                      <Text>{row.store_id}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Total Sales
-                      </Title>
-                      <Text>{formatter.format(row.net_sales_current)}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Sales growth (VS LW)
-                      </Title>
-                      <Text>{formatter.format(row.sales_growth)}</Text>
-                    </Grid.Col>
-                  </Grid>
-                );
-              }}
-              panel={({ row }) => {
-                // const html = marked(row.insight) as string;
-                // const summaryHtml = marked(row.summary) as string;
-                // const headingHtml = marked(row.heading) as string;
-                const content = marked.parse(row.insights);
-                return (
-                  <Stack
-                    style={{ borderTop: "1px solid hsl(var(--border))" }}
-                    py="md"
-                  >
-                    <Box>
-                      <TypographyStylesProvider>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: content as string,
-                          }}
-                        ></div>
-                      </TypographyStylesProvider>
-                    </Box>
-                  </Stack>
-                );
-              }}
-            />
-          </Box>
-        )}
-      </Box>
+      )}
     </Layout>
   );
 }

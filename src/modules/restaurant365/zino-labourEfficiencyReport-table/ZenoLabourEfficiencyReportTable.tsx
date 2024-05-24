@@ -73,11 +73,19 @@ export function ZenoLabourEfficiencyReportTable({
   return (
     <>
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
-        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" fz={12}>
+        <Table
+          horizontalSpacing="lg"
+          withColumnBorders
+          verticalSpacing={4}
+          fz={12}
+        >
           <Table.Thead>
             <Table.Tr
               style={{
                 borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
+                background: "#336699",
+                color: "white",
+                borderColor: "rgba(255, 255, 255, 0.2)",
               }}
             >
               <Table.Th
@@ -108,7 +116,7 @@ export function ZenoLabourEfficiencyReportTable({
               >
                 FOH
               </Table.Th>
-              <Table.Th colSpan={5}></Table.Th>
+              <Table.Th colSpan={6}></Table.Th>
             </Table.Tr>
             {/* <Table.Tr>
               <Table.Th className="text-center">Week</Table.Th>
@@ -120,7 +128,14 @@ export function ZenoLabourEfficiencyReportTable({
               <Table.Th className="text-center">Prev Period</Table.Th>
             </Table.Tr> */}
             {table.getHeaderGroups().map((headerGroup) => (
-              <Table.Tr key={headerGroup.id}>
+              <Table.Tr
+                key={headerGroup.id}
+                style={{
+                  background: "#336699",
+                  color: "white",
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                }}
+              >
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
@@ -128,7 +143,9 @@ export function ZenoLabourEfficiencyReportTable({
                         width: `${header.column.getSize()}px`,
                         minWidth: `${header.column.getSize()}px`,
                         maxWidth: `${header.column.getSize()}px`,
-                        borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
+                        borderBottom:
+                          "2px solid hsl(var(--foreground) / 0.05) ",
+                        borderColor: "rgba(255, 255, 255, 0.2)",
                       }}
                       key={header.id}
                       colSpan={header.colSpan}
@@ -161,10 +178,10 @@ export function ZenoLabourEfficiencyReportTable({
                     ta={"center"}
                     bg={"hsl(var(--foreground) / 0.065)"}
                   >
-                    <Table.Td colSpan={17}>
+                    <Table.Td colSpan={18}>
                       <Text
                         // size="sm"
-                        fz={'inherit'}
+                        fz={"inherit"}
                         fw={"600"}
                         c="hsl(var(--foreground) / 0.65)"
                       >
@@ -173,9 +190,7 @@ export function ZenoLabourEfficiencyReportTable({
                     </Table.Td>
                   </Table.Tr>
                 ) : (
-                  <Table.Tr 
-                    key={row.id}
-                  >
+                  <Table.Tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <Table.Td
@@ -191,7 +206,12 @@ export function ZenoLabourEfficiencyReportTable({
                                   ? "#ffa50078"
                                   : cell.getIsPlaceholder()
                                     ? "#ff000042"
-                                    : (row.original.meal && (row.original.meal as string).includes('total')) ? "hsl(var(--foreground) / 0.035)" : "white",
+                                    : row.original.meal &&
+                                        (row.original.meal as string).includes(
+                                          "total"
+                                        )
+                                      ? "hsl(var(--foreground) / 0.035)"
+                                      : "white",
                               textAlign: "center",
                               fontWeight: 500,
                             },
