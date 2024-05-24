@@ -885,6 +885,7 @@ function ZinoReport({
                 customTableData["data"],
                 customTableData["locations"]
               )}
+              customReportFilterPeriod={customReportFilterPeriod}
             />
           )}
         </Box>

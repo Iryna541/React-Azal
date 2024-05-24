@@ -69,10 +69,29 @@ export function transformLabourEfficiencyReportData(
     meal: "Breakfast",
   });
   newList = [...newList, ...breakFastData];
+  
+  newList.push({
+    isHeader: true,
+    meal: "Lunch",
+  });
+  newList = [...newList, ...lunchData];
+  newList.push({
+    isHeader: true,
+    meal: "Dinner",
+  });
+  newList = [...newList, ...dinnerData];
+
+  // newList.push({
+  //   isEmpty: true,
+  // });
+  newList.push({
+    meal: "empty",
+  });
+  // All total calculations
   newList.push({
     isHeader: false,
     meal: "breakfast-total",
-    hour: "Breakfast Total",
+    hour: "Breakfast",
     actualGuests: breakFastData.reduce(
       (acc, item) => acc + (item?.actualGuests || 0),
       0
@@ -141,14 +160,9 @@ export function transformLabourEfficiencyReportData(
       ),
   });
   newList.push({
-    isHeader: true,
-    meal: "Lunch",
-  });
-  newList = [...newList, ...lunchData];
-  newList.push({
     isHeader: false,
     meal: "lunch-total",
-    hour: "Lunch Total",
+    hour: "Lunch",
     actualGuests: lunchData.reduce(
       (acc, item) => acc + (item?.actualGuests || 0),
       0
@@ -204,14 +218,9 @@ export function transformLabourEfficiencyReportData(
       ),
   });
   newList.push({
-    isHeader: true,
-    meal: "Dinner",
-  });
-  newList = [...newList, ...dinnerData];
-  newList.push({
     isHeader: false,
     meal: "dinner-total",
-    hour: "Dinner Total",
+    hour: "Dinner",
     actualGuests: dinnerData.reduce(
       (acc, item) => acc + (item?.actualGuests || 0),
       0
@@ -368,10 +377,10 @@ export function transformLabourEfficiencyReportData(
   const grossLabor = grossPayroll + gm;
   const grossLaborPercentage = grossLabor / grandTtotalTotal;
 
-  // newList.push({
-  //   isHeader: true,
-  //   meal: "",
-  // });
+  newList.push({
+    meal: "empty",
+  });
+
   newList.push({
     isHeader: false,
     meal: "",

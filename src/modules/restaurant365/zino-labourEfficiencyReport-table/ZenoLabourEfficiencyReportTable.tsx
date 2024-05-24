@@ -90,7 +90,7 @@ export function ZenoLabourEfficiencyReportTable({
             >
               <Table.Th
                 className="text-center"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}
                 colSpan={3}
               >
                 {day}
@@ -98,21 +98,21 @@ export function ZenoLabourEfficiencyReportTable({
               <Table.Th
                 colSpan={2}
                 className="text-center"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}
               >
                 Supervisor
               </Table.Th>
               <Table.Th
                 colSpan={5}
                 className="text-center"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}
               >
                 # of Back of House (BOH)
               </Table.Th>
               <Table.Th
                 colSpan={2}
                 className="text-center"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}
               >
                 FOH
               </Table.Th>
@@ -189,6 +189,22 @@ export function ZenoLabourEfficiencyReportTable({
                       </Text>
                     </Table.Td>
                   </Table.Tr>
+                ) : row?.original?.isEmpty ? (
+                  <Table.Tr
+                    key={row.id}
+                    ta={"center"}
+                    // bg={"hsl(var(--foreground) / 0.065)"}
+                    >
+                      <Table.Td colSpan={18} h={30}>
+                        {/* <Text
+                          fz={"inherit"}
+                          fw={"600"}
+                          c="hsl(var(--foreground) / 0.65)"
+                        >
+                          {row.original.meal}
+                        </Text> */}
+                      </Table.Td>
+                    </Table.Tr>
                 ) : (
                   <Table.Tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {

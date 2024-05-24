@@ -68,6 +68,15 @@ const CustomCell = ({
 
   // isEditable={!(row.original.meal as string).includes('total')}
   console.log({ row: row?.original as string });
+
+  const disabledRows = [
+    "breakfast-total",
+    "lunch-total",
+    "dinner-total",
+    "grand-total",
+    "empty",
+  ];
+
   return (
     <Box
       onClick={() => setIsEditActive(true)}
@@ -79,11 +88,12 @@ const CustomCell = ({
       }}
     >
       {isEditActive ? (
-        (row.original.meal as string) !== "breakfast-total" &&
-        (row.original.meal as string) !== "lunch-total" &&
-        (row.original.meal as string) !== "dinner-total" &&
-        (row.original.meal as string) !== "grand-total" &&
+        !disabledRows?.includes(row.original.meal as string) &&
         accessorKey !== "total" &&
+        !(
+          (row.original.meal as string).includes("bottom-") &&
+          accessorKey !== "empty"
+        ) &&
         (row.original.meal as string) !== "" &&
         (accessorKey !== "empty" ||
           (accessorKey === "empty" &&
@@ -252,8 +262,10 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     },
   },
   {
+    accessorKey: "empty",
     id: "empty",
     size: 20,
+    header: ""
   },
   {
     accessorKey: "sales",
