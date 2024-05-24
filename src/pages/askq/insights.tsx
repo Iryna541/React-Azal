@@ -55,7 +55,7 @@ import { ZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/Ze
 import { useZenoInsightTable } from "~/modules/restaurant365/zeno-insights-table/api/useZenoInsightTable";
 
 import { useLukeLobsterStoreRanking } from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
-import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
+// import { LukeLobsterStoreRankingTable } from "~/modules/luke-lobster/luke-lobster-store-ranking/LukeLobsterStoreRankingTable";
 import { useGetManagers } from "~/modules/bk/bk-store-ranking/api/useGetManagers";
 import { BkManagerPlanTable } from "~/modules/bk/bk-manager-plan-2/BkManagerPlanTable";
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
@@ -584,7 +584,7 @@ function StevenSetup() {
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
-            <Box
+            {/* <Box
               style={{
                 border: "1px solid hsl(var(--border))",
                 borderRadius: 8,
@@ -607,7 +607,58 @@ function StevenSetup() {
               </Box>
               <Divider />
               {data && <LukeLobsterStoreRankingTable data={data} />}
-            </Box>
+            </Box> */}
+            {data && (
+              <InsightsList
+                data={data}
+                control={({ row }) => {
+                  return (
+                    <Grid>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Rank
+                        </Title>
+                        <Text>#{row.store_rank}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Store Id
+                        </Title>
+                        <Text>{row.store_id}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Net Sales Current
+                        </Title>
+                        <Text>{row.net_sales_current}</Text>
+                      </Grid.Col>
+                      <Grid.Col span={3}>
+                        <Title order={6} fw={500}>
+                          Net Sales Previous
+                        </Title>
+                        <Text>{row.net_sales_previous}</Text>
+                      </Grid.Col>
+                    </Grid>
+                  );
+                }}
+                panel={({ row }) => {
+                  const html = marked(row.insights) as string;
+                  return (
+                    <Stack
+                      style={{ borderTop: "1px solid hsl(var(--border))" }}
+                      py="md"
+                    >
+                      <TypographyStylesProvider p="0" m="0">
+                        <div
+                          style={{ fontSize: 14 }}
+                          dangerouslySetInnerHTML={{ __html: html! }}
+                        />
+                      </TypographyStylesProvider>
+                    </Stack>
+                  );
+                }}
+              />
+            )}
           </Stack>
         </Tabs.Panel>
         {/* <Tabs.Panel value="manager"></Tabs.Panel> */}
