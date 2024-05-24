@@ -161,16 +161,18 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   }
 
   if (user?.company_id === 214) {
-    const tempLinks = [...links]
-    const idx = tempLinks.findIndex(item => item.label === "Insights");
-    if(idx !== -1) {
+    const tempLinks = [...links];
+    const idx = tempLinks.findIndex((item) => item.label === "Insights");
+    if (idx !== -1) {
       tempLinks[idx].label = "Weekly Highlights";
       links = [...tempLinks];
     }
   } else {
-    const tempLinks = [...links]
-    const idx = tempLinks.findIndex(item => item.label === "Weekly Highlights");
-    if(idx !== -1) {
+    const tempLinks = [...links];
+    const idx = tempLinks.findIndex(
+      (item) => item.label === "Weekly Highlights"
+    );
+    if (idx !== -1) {
       tempLinks[idx].label = "Insights";
       links = [...tempLinks];
     }
@@ -191,6 +193,21 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             </Flex>
           </Stack>
         )} */}
+
+        {user?.user_id === 1527 && (
+          <Stack>
+            <Flex gap="md">
+              <Image
+                src="/sam_logo.png"
+                h={60}
+                p={2}
+                bg="white"
+                style={{ borderRadius: 4 }}
+                mb="sm"
+              />
+            </Flex>
+          </Stack>
+        )}
 
         {user?.company_id === 211 && (
           <Stack>
