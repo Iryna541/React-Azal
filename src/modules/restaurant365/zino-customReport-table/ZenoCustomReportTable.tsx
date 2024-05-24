@@ -18,9 +18,10 @@ import { useState } from "react";
 
 interface ZenoInsightTableProps {
   data: Array<Record<string, number | string>>;
+  customReportFilterPeriod: string;
 }
 
-export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
+export function ZenoCustomReportTable({ data, customReportFilterPeriod }: ZenoInsightTableProps) {
   const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -70,22 +71,26 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
   return (
     <>
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
-        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" fz={12}>
+        <Table horizontalSpacing="lg" withColumnBorders verticalSpacing={6} fz={12}>
           <Table.Thead>
             <Table.Tr
               style={{
                 borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
+                background: "#336699",
+                color: "white",
+                borderColor: "rgba(255, 255, 255, 0.2)",
               }}
             >
-              <Table.Th className="text-center" style={{ textAlign: "center" }}>
+              <Table.Th className="text-center"
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}>
                 Norwalk
               </Table.Th>
               <Table.Th
                 colSpan={7}
                 className="text-center"
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", borderColor: "rgba(255, 255, 255, 0.2)", }}
               >
-                Period 1
+                {customReportFilterPeriod}
               </Table.Th>
             </Table.Tr>
             {/* <Table.Tr>
@@ -98,7 +103,14 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
               <Table.Th className="text-center">Prev Period</Table.Th>
             </Table.Tr> */}
             {table.getHeaderGroups().map((headerGroup) => (
-              <Table.Tr key={headerGroup.id}>
+              <Table.Tr key={headerGroup.id}
+              
+              style={{
+                background: "#336699",
+                color: "white",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+              }}
+              >
                 {headerGroup.headers.map((header) => {
                   return (
                     <Table.Th
@@ -106,9 +118,13 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                         width: `${header.column.getSize()}px`,
                         minWidth: `${header.column.getSize()}px`,
                         maxWidth: `${header.column.getSize()}px`,
+                        borderBottom:
+                          "2px solid hsl(var(--foreground) / 0.05) ",
+                        borderColor: "rgba(255, 255, 255, 0.2)",
                       }}
                       key={header.id}
                       colSpan={header.colSpan}
+                      ta={"center"}
                     >
                       {header.isPlaceholder ? null : (
                         <div>
@@ -132,7 +148,10 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
           <Table.Tbody>
             {table.getRowModel().rows.map((row) => {
               return (
-                <Table.Tr key={row.id}>
+                <Table.Tr key={row.id}
+                ta={"center"}
+                bg={"hsl(var(--foreground) / 0.065)"}
+                >
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <Table.Td
@@ -148,6 +167,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                                   : "white",
                             textAlign: "center",
                             fontWeight: 500,
+                            verticalAlign:  'middle',
                           },
                         }}
                       >
@@ -161,6 +181,7 @@ export function ZenoCustomReportTable({ data }: ZenoInsightTableProps) {
                                   cursor: row.getCanExpand()
                                     ? "pointer"
                                     : "normal",
+                                    // verticalAlign: 'middle'
                                 },
                               }}
                             >
