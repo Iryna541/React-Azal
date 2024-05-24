@@ -15,8 +15,8 @@ export function LukeLobsterTopStoreRanking({
         {title}
       </Title>
       <Grid
-        bg="hsl(var(--secondary))"
-        c="hsl(var(--foreground) / 0.65)"
+        bg="rgba(	51,	102,	153, 1)"
+        c="white"
         fw={700}
         fz={14}
         px="md"
@@ -88,7 +88,7 @@ export function LukeLobsterTopStoreRanking({
                 <Badge
                   fw={700}
                   bg="rgba(	51,	102,	153, 1)"
-                  c="rgba(255, 255,255, 0.5)"
+                  c="rgba(255, 255,255, 0.8)"
                 >
                   {item?.sales_growth}
                 </Badge>
