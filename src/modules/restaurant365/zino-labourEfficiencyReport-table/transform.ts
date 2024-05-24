@@ -66,7 +66,7 @@ export function transformLabourEfficiencyReportData(
   let newList: any[] = [];
   newList.push({
     isHeader: true,
-    meal: "BreakFast",
+    meal: "Breakfast",
   });
   newList = [...newList, ...breakFastData];
   newList.push({
@@ -368,10 +368,10 @@ export function transformLabourEfficiencyReportData(
   const grossLabor = grossPayroll + gm;
   const grossLaborPercentage = grossLabor / grandTtotalTotal;
 
-  newList.push({
-    isHeader: true,
-    meal: "Summery",
-  });
+  // newList.push({
+  //   isHeader: true,
+  //   meal: "",
+  // });
   newList.push({
     isHeader: false,
     meal: "",

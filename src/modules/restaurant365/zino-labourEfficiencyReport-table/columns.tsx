@@ -232,10 +232,10 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
         <Box
           bg={"hsl(var(--foreground) / 0.095)"}
           pos={"absolute"}
-          h={"96%"}
+          h={"80%"}
           w={"96%"}
           left={"2%"}
-          top={"2%"}
+          top={"10%"}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -252,12 +252,8 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     },
   },
   {
-    accessorKey: "empty",
-    header: "",
-    size: 70,
-    cell: ({ row, cell }) => (
-      <CustomCell accessorKey="empty" row={row} cell={cell} />
-    ),
+    id: "empty",
+    size: 20,
   },
   {
     accessorKey: "sales",

@@ -689,6 +689,7 @@ function ZinoReport({
     },
   ]);
   const [customReportPeriodOptions] = useState<string[]>([
+    "PERIOD 5",
     "PERIOD 4",
     "PERIOD 3",
     "PERIOD 2",
