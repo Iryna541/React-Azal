@@ -66,9 +66,6 @@ const CustomCell = ({
     setIsEditActive(false);
   };
 
-  // isEditable={!(row.original.meal as string).includes('total')}
-  console.log({ row: row?.original as string });
-
   const disabledRows = [
     "breakfast-total",
     "lunch-total",
