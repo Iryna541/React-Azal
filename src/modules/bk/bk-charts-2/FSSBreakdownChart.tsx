@@ -175,10 +175,10 @@ export function FSSBreakdownChart({
             dataKey="score"
             position="center"
             offset={10}
-            fill="white"
+            fill="black"
             style={{
               fontSize: 12,
-              fontWeight: 800,
+              fontWeight: 500,
             }}
           />
         </Bar>

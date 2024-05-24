@@ -283,7 +283,7 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
                   <Grid>
                     <Grid.Col span={3}>
                       <Title order={6} fw={500}>
-                        Position
+                        Rank
                       </Title>
                       <Text>#{row.overall_ranking}</Text>
                     </Grid.Col>
@@ -421,7 +421,7 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
                     <Grid>
                       <Grid.Col span={3}>
                         <Title order={6} fw={500}>
-                          Position
+                          Rank
                         </Title>
                         <Text>#{row.store_rank}</Text>
                       </Grid.Col>
@@ -554,7 +554,7 @@ function ZinoSetup() {
           <ZenoInsightTable data={insightsData.insights_data} />
         )}
       </Box>
-{/* 
+      {/* 
       <Box
         style={{
           border: "1px solid hsl(var(--border))",
