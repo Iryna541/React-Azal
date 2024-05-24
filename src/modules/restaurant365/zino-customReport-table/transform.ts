@@ -51,8 +51,6 @@ export function transformData(data: GetRevenueCenterDataResponse["data"], locati
       firstRow = false;
     }
 
-    console.log({arr, data, groupedData});
-
     const row1: Record<string, number | string> = {},
       row2: Record<string, number | string> = {},
       row3: Record<string, number | string> = {},

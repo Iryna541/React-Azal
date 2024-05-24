@@ -49,7 +49,7 @@ export function transformLabourEfficiencyReportData(
   let dinnerData = data
     .filter((item) => item.meal === "dinner")
     .map((item) => ({ ...item, isHeader: false }));
-  dinnerData = lunchData.map((item) => ({
+  dinnerData = dinnerData.map((item) => ({
     ...item,
     store_id: storeId,
     estGuestsPerLH: item.expectedGuests
@@ -62,6 +62,8 @@ export function transformLabourEfficiencyReportData(
       ? item.sales / parseFloat(item?.total as string)
       : 0,
   }));
+
+  console.log({dinnerData, lunchData});
 
   let newList: any[] = [];
   newList.push({

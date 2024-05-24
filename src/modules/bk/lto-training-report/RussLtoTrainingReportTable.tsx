@@ -96,7 +96,6 @@ const RussLtoTrainingReportTable = ({
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row: any) => {
-              console.log({ row });
               return (
                 <>
                   <Table.Tr
