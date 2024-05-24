@@ -70,10 +70,20 @@ export function ZenoStoreRankingTable({ data }: ZenoStoreRankingTableProps) {
 
   return (
     <>
-      <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+      <Table horizontalSpacing="lg"
+          withColumnBorders
+          verticalSpacing={6}
+          fz={12}>
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Tr key={headerGroup.id}>
+            <Table.Tr key={headerGroup.id}
+            style={{
+              borderBottom: "2px solid hsl(var(--foreground) / 0.05) ",
+              background: "#336699",
+              color: "white",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}
+            >
               {headerGroup.headers.map((header) => {
                 return (
                   <Table.Th
@@ -82,6 +92,9 @@ export function ZenoStoreRankingTable({ data }: ZenoStoreRankingTableProps) {
                       width: header.column.getSize(),
                       minWidth: header.column.getSize(),
                       maxWidth: header.column.getSize(),
+                      borderBottom:
+                          "2px solid hsl(var(--foreground) / 0.05) ",
+                        borderColor: "rgba(255, 255, 255, 0.2)",
                     }}
                   >
                     {header.isPlaceholder
@@ -121,6 +134,7 @@ export function ZenoStoreRankingTable({ data }: ZenoStoreRankingTableProps) {
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          verticalAlign: "middle"
                         }}
                       >
                         {flexRender(

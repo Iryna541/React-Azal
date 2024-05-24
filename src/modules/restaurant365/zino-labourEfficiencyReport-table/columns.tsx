@@ -265,7 +265,10 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     accessorKey: "empty",
     id: "empty",
     size: 20,
-    header: ""
+    header: "",
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="empty" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "sales",
