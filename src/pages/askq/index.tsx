@@ -606,7 +606,7 @@ function ZinoSetup() {
                     <Title order={6} fw={500}>
                       Store
                     </Title>
-                    <Text>{row.store_id}</Text>
+                    <Text>{row.store_name}</Text>
                   </Grid.Col>
                   <Grid.Col span={3}>
                     <Title order={6} fw={500}>
