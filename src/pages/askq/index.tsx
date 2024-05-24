@@ -618,7 +618,7 @@ function ZinoSetup() {
                     <Title order={6} fw={500}>
                       Sales growth (VS LW)
                     </Title>
-                    <Text>{formatter.format(row.sales_growth)}</Text>
+                    <Text>{row.sales_growth}%</Text>
                   </Grid.Col>
                 </Grid>
               );

@@ -84,15 +84,21 @@ export default function InsightsPage() {
         <InsightsProvider>
           <Flex align="center" gap="sm" mb="lg" justify={"space-between"}>
             <Flex align="center" gap="sm" mb="lg">
-              <Title order={3}>Insights</Title>
-              <Tooltip
-                position="bottom"
-                label={`You're viewing insights for ${dateInformation}`}
-              >
-                <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
-                  {dateInformation}
-                </Badge>
-              </Tooltip>
+              {user?.company_id !== 214 ? (
+                <Title order={3}>Insights</Title>
+              ) : (
+                <Title order={3}>Weekly Flash</Title>
+              )}
+              {user?.company_id !== 214 && (
+                <Tooltip
+                  position="bottom"
+                  label={`You're viewing insights for ${dateInformation}`}
+                >
+                  <Badge variant="azalio-ui-secondary" size="lg" fw={600}>
+                    {dateInformation}
+                  </Badge>
+                </Tooltip>
+              )}
             </Flex>
             {user?.company_id === 210 && (
               <Box>
