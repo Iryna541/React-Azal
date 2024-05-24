@@ -1,12 +1,23 @@
 import { Box, NumberInput } from "@mantine/core";
 import { ColumnDef } from "@tanstack/react-table";
-import { useUpdateLabourEfficiencyAggregateData, useUpdateLabourEfficiencyData } from "./api/useLabourEfficiencyReportData";
+import {
+  useUpdateLabourEfficiencyAggregateData,
+  useUpdateLabourEfficiencyData,
+} from "./api/useLabourEfficiencyReportData";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const CustomCell = ({accessorKey, row, cell}:{accessorKey: string, row: any, cell: any}) => {
+const CustomCell = ({
+  accessorKey,
+  row,
+  cell,
+}: {
+  accessorKey: string;
+  row: any;
+  cell: any;
+}) => {
   const [inputValue, setInputValue] = useState(cell.getValue());
-  const [isEditActive, setIsEditActive] =useState(false);
+  const [isEditActive, setIsEditActive] = useState(false);
   const queryClient = useQueryClient();
   const { mutate: handleUpdate } = useUpdateLabourEfficiencyData({
     config: {
@@ -18,58 +29,66 @@ const CustomCell = ({accessorKey, row, cell}:{accessorKey: string, row: any, cel
       },
     },
   });
-  const { mutate: handleUpdateAggregateDatta } = useUpdateLabourEfficiencyAggregateData({
-    config: {
-      onSuccess: () => {
-        queryClient.refetchQueries({
-          queryKey: ["zeno-insight-labour-efficiency-table"],
-        });
-        // showSuccessNotification("Successfully Updated!");
+  const { mutate: handleUpdateAggregateDatta } =
+    useUpdateLabourEfficiencyAggregateData({
+      config: {
+        onSuccess: () => {
+          queryClient.refetchQueries({
+            queryKey: ["zeno-insight-labour-efficiency-table"],
+          });
+          // showSuccessNotification("Successfully Updated!");
+        },
       },
-    },
-  });
+    });
 
   const handleValueUpdate = (val: number | string) => {
     setInputValue(val as number);
-  }
+  };
 
   const handleBlur = () => {
-    if(row.original.meal?.includes('bottom-')) {
-      const key = row.original.meal?.split('-')[1];
+    if (row.original.meal?.includes("bottom-")) {
+      const key = row.original.meal?.split("-")[1];
       handleUpdateAggregateDatta({
-        id: row.original.id, 
-        store_id: row.original.store_id, 
-        date: row.original.date, 
+        id: row.original.id,
+        store_id: row.original.store_id,
+        date: row.original.date,
         [key]: inputValue,
       });
     } else {
-      const data = {...row.original};
+      const data = { ...row.original };
       delete data.isHeader;
       delete data.total;
       delete data.hour;
       delete data.meal;
 
-      handleUpdate({...data, [accessorKey]: inputValue});
+      handleUpdate({ ...data, [accessorKey]: inputValue });
     }
     setIsEditActive(false);
-  }
+  };
 
   // isEditable={!(row.original.meal as string).includes('total')}
-console.log({"row": row?.original as string});
+  console.log({ row: row?.original as string });
   return (
-    <Box onClick={() => setIsEditActive(true)} h={30}>
-      {
-        isEditActive ? (
-          (
-            (row.original.meal as string) !== "breakfast-total"
-            && (row.original.meal as string) !== "lunch-total"
-            && (row.original.meal as string) !== "dinner-total"
-            && (row.original.meal as string) !== "grand-total"
-            && accessorKey !== "total"
-            && (row.original.meal as string) !== ""
-            && (accessorKey !== "empty" || (accessorKey === "empty" && (row.original.meal as string).includes("bottom-")))
-          ) ? (
-            <NumberInput
+    <Box
+      onClick={() => setIsEditActive(true)}
+      h={22}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {isEditActive ? (
+        (row.original.meal as string) !== "breakfast-total" &&
+        (row.original.meal as string) !== "lunch-total" &&
+        (row.original.meal as string) !== "dinner-total" &&
+        (row.original.meal as string) !== "grand-total" &&
+        accessorKey !== "total" &&
+        (row.original.meal as string) !== "" &&
+        (accessorKey !== "empty" ||
+          (accessorKey === "empty" &&
+            (row.original.meal as string).includes("bottom-"))) ? (
+          <NumberInput
             onChange={handleValueUpdate}
             onBlur={handleBlur}
             value={inputValue}
@@ -77,33 +96,36 @@ console.log({"row": row?.original as string});
             autoFocus
             styles={{
               input: {
-                minHeight: 30,
-                height: 30,
-                textAlign: 'center',
-                fontSize: 'inherit',
-                padding: 2
-              }
+                minHeight: 22,
+                height: 22,
+                textAlign: "center",
+                fontSize: "inherit",
+                padding: 2,
+              },
             }}
           />
-          ) : cell.getValue()
-        ) : cell.getValue()
-      }
+        ) : (
+          cell.getValue()
+        )
+      ) : (
+        cell.getValue()
+      )}
     </Box>
-  )
-}
+  );
+};
 
 export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "id",
-    header: "Id"
+    header: "Id",
   },
   {
     accessorKey: "date",
-    header: "Date"
+    header: "Date",
   },
   {
     accessorKey: "store_id",
-    header: "Store Id"
+    header: "Store Id",
   },
   {
     accessorKey: "isHeader",
@@ -125,8 +147,8 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   {
     accessorKey: "actualGuests",
     header: "Actual Guests",
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="actualGuests" row={row} cell={cell}/>
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="actualGuests" row={row} cell={cell} />
     ),
     size: 80,
   },
@@ -134,55 +156,55 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     accessorKey: "manager",
     header: "Manager",
     size: 80,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="manager" row={row} cell={cell}/>
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="manager" row={row} cell={cell} />
     ),
   },
   {
     accessorKey: "shiftLeader",
     header: "Shift Leader",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="shiftLeader" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="shiftLeader" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "nuggetPrep",
     header: "Nugget Prep",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="nuggetPrep" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="nuggetPrep" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "portion",
     header: "Portion",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="portion" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="portion" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "lineCook",
     header: "Line Cook",
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="lineCook" row={row} cell={cell}/>
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="lineCook" row={row} cell={cell} />
     ),
     size: 70,
   },
   {
     accessorKey: "lateNight",
     header: "Late Night",
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="lateNight" row={row} cell={cell}/>
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="lateNight" row={row} cell={cell} />
     ),
     size: 70,
   },
   {
     accessorKey: "dish",
     header: "Dish",
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="dish" row={row} cell={cell}/>
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="dish" row={row} cell={cell} />
     ),
     size: 70,
   },
@@ -190,16 +212,17 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
     accessorKey: "cashier",
     header: "Cashier",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="cashier" row={row} cell={cell}/>
-  )},
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="cashier" row={row} cell={cell} />
+    ),
+  },
   {
     accessorKey: "cashier2",
     header: "Cashier 2",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="cashier2" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="cashier2" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "total",
@@ -222,7 +245,7 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
             fontSize: "inherit",
           }}
         >
-          <CustomCell accessorKey="total" row={row} cell={cell}/>
+          <CustomCell accessorKey="total" row={row} cell={cell} />
           {/* {cell.getValue() as string} */}
         </Box>
       );
@@ -230,43 +253,55 @@ export const columns: ColumnDef<Record<string, number | string | boolean>>[] = [
   },
   {
     accessorKey: "empty",
-    header: '',
+    header: "",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="empty" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="empty" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "sales",
     header: "Sales",
     size: 70,
-    cell: ({row, cell}) => (
-      <CustomCell accessorKey="sales" row={row} cell={cell}/>
-    )
+    cell: ({ row, cell }) => (
+      <CustomCell accessorKey="sales" row={row} cell={cell} />
+    ),
   },
   {
     accessorKey: "estGuestsPerLH",
     header: "Est. Guests per L/H",
     size: 70,
-    cell: ({cell}) => (
-      <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
+    cell: ({ cell }) => (
+      <span>
+        {cell.getValue()
+          ? `${parseFloat(cell.getValue() as string).toFixed(1)}`
+          : null}{" "}
+      </span>
       // <span>${parseFloat(cell.getValue() as string).toFixed(1)}</span>
-    )
+    ),
   },
   {
     accessorKey: "actualGuestsPerLH",
     header: "Actual Guests per L/H",
     size: 70,
-    cell: ({cell}) => (
-      <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
-    )
+    cell: ({ cell }) => (
+      <span>
+        {cell.getValue()
+          ? `${parseFloat(cell.getValue() as string).toFixed(1)}`
+          : null}{" "}
+      </span>
+    ),
   },
   {
     accessorKey: "actualSalesPerLH",
     header: "Actual Sales per L/H",
     size: 70,
-    cell: ({cell}) => (
-      <span>{cell.getValue() ? `${parseFloat(cell.getValue() as string).toFixed(1)}` : null } </span>
-    )
+    cell: ({ cell }) => (
+      <span>
+        {cell.getValue()
+          ? `${parseFloat(cell.getValue() as string).toFixed(1)}`
+          : null}{" "}
+      </span>
+    ),
   },
 ];

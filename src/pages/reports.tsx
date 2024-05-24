@@ -47,7 +47,8 @@ const ReportsPage = () => {
   const [zinoSelectedReport, setZenoSelectedReport] = useState<
     "revenue-center" | "labor-efficiency"
   >("revenue-center");
-  const [russSelectedReport, setRussSelectedReport] = useState<string>("lto-training");
+  const [russSelectedReport, setRussSelectedReport] =
+    useState<string>("lto-training");
   const { user } = useUser();
   return (
     <ProtectedRoute>
@@ -125,7 +126,9 @@ const ReportsPage = () => {
             {value === "example2" && <ZinoExample />}
           </>
         )}
-        {user?.company_id === 211 && <RussReport selectedReport={russSelectedReport} />}
+        {user?.company_id === 211 && (
+          <RussReport selectedReport={russSelectedReport} />
+        )}
         {user?.company_id === 214 && (
           <ZinoReport selectedReport={zinoSelectedReport} />
         )}
@@ -375,14 +378,22 @@ function ZinoExample() {
   );
 }
 
-function RussReport({selectedReport}: {selectedReport: string}) {
-  const [laborViolationSelectedDate, setLaborViolationSelectedDate] = useState<Date | null>(new Date());
-  const [laborViolationSelectedStoreId, setLaborViolationSelectedStoreId] = useState<string>("");
+function RussReport({ selectedReport }: { selectedReport: string }) {
+  const [laborViolationSelectedDate, setLaborViolationSelectedDate] =
+    useState<Date | null>(new Date());
+  const [laborViolationSelectedStoreId, setLaborViolationSelectedStoreId] =
+    useState<string>("");
 
   const { data: stores } = useStoreRanking();
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
-  const { data: laborViolationReport, isLoading: isLoadingLaborViolation } = useRussLaborViolationReports({params: {date: moment(laborViolationSelectedDate).format("YYYY-MM-DD"), store_id: laborViolationSelectedStoreId}});
-  
+  const { data: laborViolationReport, isLoading: isLoadingLaborViolation } =
+    useRussLaborViolationReports({
+      params: {
+        date: moment(laborViolationSelectedDate).format("YYYY-MM-DD"),
+        store_id: laborViolationSelectedStoreId,
+      },
+    });
+
   const [storeWiseData, setStoreWiseData] = useState<any[]>([]);
   const [dtlWiseData, setDtlWiseData] = useState<any[]>([]);
 
@@ -454,8 +465,7 @@ function RussReport({selectedReport}: {selectedReport: string}) {
 
   return (
     <>
-    {
-      selectedReport === "lto-training" ? (
+      {selectedReport === "lto-training" ? (
         <>
           <Box
             mt="xl"
@@ -464,12 +474,19 @@ function RussReport({selectedReport}: {selectedReport: string}) {
               borderRadius: 8,
             }}
           >
-<Flex justify="space-between">
+            <Flex justify="space-between">
               <Box px="lg" py="md">
                 <Title order={5} fw={500} fz={16}>
                   Store LTO Training Data
                 </Title>
-                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
+                <Title
+                  component="p"
+                  order={6}
+                  fz={14}
+                  fw={500}
+                  size="sm"
+                  lh={1.5}
+                >
                   {ltoTrainingReport?.course_name}
                 </Title>
               </Box>
@@ -498,7 +515,7 @@ function RussReport({selectedReport}: {selectedReport: string}) {
                 colVisibility={{}}
               />
             )}
-        </Box>
+          </Box>
           <Box
             mt="xl"
             style={{
@@ -511,8 +528,15 @@ function RussReport({selectedReport}: {selectedReport: string}) {
                 <Title order={5} fw={500} fz={16}>
                   DTL LTO Training Data
                 </Title>
-                <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-                {ltoTrainingReport?.course_name}
+                <Title
+                  component="p"
+                  order={6}
+                  fz={14}
+                  fw={500}
+                  size="sm"
+                  lh={1.5}
+                >
+                  {ltoTrainingReport?.course_name}
                 </Title>
               </Box>
               <Anchor href="https://demo-be.azal.io/api/analytics/exportLTOReport">
@@ -541,73 +565,77 @@ function RussReport({selectedReport}: {selectedReport: string}) {
               />
             )}
           </Box>
-        
         </>
-      ) : ( 
+      ) : (
         <Box
-        mt="xl"
-        style={{
-          border: "1px solid hsl(var(--border))",
-          borderRadius: 8,
-        }}
-      >
-        <Flex justify="space-between">
-          <Box px="lg" py="md">
-            <Title order={5} fw={500} fz={16}>
-              Labor Violation Data
-            </Title>
-            <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              See store's minor law violation information
-            </Title>
-          </Box>
-          <Flex columnGap={20} justify={"space-between"} align={"center"}>
-
-            <Select
+          mt="xl"
+          style={{
+            border: "1px solid hsl(var(--border))",
+            borderRadius: 8,
+          }}
+        >
+          <Flex justify="space-between">
+            <Box px="lg" py="md">
+              <Title order={5} fw={500} fz={16}>
+                Labor Violation Data
+              </Title>
+              <Title
+                component="p"
+                order={6}
+                fz={14}
+                fw={500}
+                size="sm"
+                lh={1.5}
+              >
+                See store's minor law violation information
+              </Title>
+            </Box>
+            <Flex columnGap={20} justify={"space-between"} align={"center"}>
+              <Select
                 placeholder="Pick value"
                 data={storeOptions}
                 defaultValue={storeOptions?.[0].value || ""}
                 onChange={handleRussLaborViolationStoreChange}
                 allowDeselect={false}
               />
-            <DatePickerInput
-              bg="white"
-              minDate={moment('2024-05-01').toDate()}
-              maxDate={moment().toDate()}
-              value={laborViolationSelectedDate}
-              w={"200px"}
-              placeholder="Select Date"
-              onChange={(value) => setLaborViolationSelectedDate(value)}
-            />
-            <Anchor href="https://demo-be.azal.io/api/analytics/exportLaborViolationsReport">
-              <Button
-                variant="azalio-ui-dark"
-                my={"sm"}
-                size="xl"
-                style={{ fontSize: "14px" }}
-                leftSection={<IconFileExport />}
-              >
-                Export
-              </Button>
-            </Anchor>
+              <DatePickerInput
+                bg="white"
+                minDate={moment("2024-05-01").toDate()}
+                maxDate={moment().toDate()}
+                value={laborViolationSelectedDate}
+                w={"200px"}
+                placeholder="Select Date"
+                onChange={(value) => setLaborViolationSelectedDate(value)}
+              />
+              <Anchor href="https://demo-be.azal.io/api/analytics/exportLaborViolationsReport">
+                <Button
+                  variant="azalio-ui-dark"
+                  my={"sm"}
+                  size="xl"
+                  style={{ fontSize: "14px" }}
+                  leftSection={<IconFileExport />}
+                >
+                  Export
+                </Button>
+              </Anchor>
+            </Flex>
           </Flex>
-        </Flex>
-        <Divider />
-        {isLoadingLaborViolation && (
-          <Center h={500}>
-            <Loader size="lg" />
-          </Center>
-        )}
-        {laborViolationReport && (
-          <RussLaborViolationReportTable
-            data={laborViolationReport}
-            colVisibility={{
-              color: false
-            }}
-          />
-        )}
-      </Box>
-      )
-     }
+          <Divider />
+          {isLoadingLaborViolation && (
+            <Center h={500}>
+              <Loader size="lg" />
+            </Center>
+          )}
+          {laborViolationReport && (
+            <RussLaborViolationReportTable
+              data={laborViolationReport}
+              colVisibility={{
+                color: false,
+              }}
+            />
+          )}
+        </Box>
+      )}
     </>
   );
 }
@@ -852,7 +880,10 @@ function ZinoReport({
           )}
           {customTableData && (
             <ZenoCustomReportTable
-              data={transformData(customTableData["data"], customTableData["locations"])}
+              data={transformData(
+                customTableData["data"],
+                customTableData["locations"]
+              )}
             />
           )}
         </Box>
