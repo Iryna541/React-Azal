@@ -386,7 +386,7 @@ export function transformLabourEfficiencyReportData(
   newList.push({
     isHeader: false,
     meal: "",
-    total: "Salared Hours",
+    total: "Salaried Hours",
     empty: salariedHours,
     estGuestsPerLH: "",
     actualGuestsPerLH: "",

@@ -8,7 +8,7 @@ import {
   Checkbox,
   Divider,
   Flex,
-  // Grid,
+  Grid,
   Loader,
   Select,
   SimpleGrid,
@@ -16,7 +16,7 @@ import {
   Text,
   TextInput,
   Title,
-  // TypographyStylesProvider,
+  TypographyStylesProvider,
 } from "@mantine/core";
 import { IconFileExport, IconSend } from "@tabler/icons-react";
 import { LayoutWithSidebar } from "~/components/LayoutWithSidebar";
@@ -62,14 +62,14 @@ import jsPDF from "jspdf";
 import moment from "moment";
 import { useGetUsersPic } from "~/modules/bk/bk-manager-ranking-table/api/useGetUsersPic";
 import { useZenoStoreRanking } from "~/modules/restaurant365/zeno-ranking/api/useZenoStoreRanking";
-// import { InsightsList } from "~/revamp/components/InsightsList";
-// import { marked } from "marked";
+import { InsightsList } from "~/revamp/components/InsightsList";
+import { marked } from "marked";
 import { LukeLobsterTopStoreRanking } from "~/modules/luke-lobster/luke-lobster-top-store-ranking/LukeLobsterTopStoreRanking";
 import {
   LukeLobsterStoreRankingData,
   useLukeLobsterStoreRanking,
 } from "~/modules/luke-lobster/luke-lobster-store-ranking/api/useLukeLobsterStoreRanking";
-import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
+// import { ZenoStoreRankingTable } from "~/modules/restaurant365/zeno-ranking/ZenoStoreRankingTable";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -556,10 +556,10 @@ function ZinoSetup() {
   const { data, isLoading } = useZenoStoreRanking();
   const { user } = useUser();
 
-  // const formatter = new Intl.NumberFormat("en-US", {
-  //   style: "currency",
-  //   currency: "USD",
-  // });
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   return (
     <Layout>
@@ -571,7 +571,7 @@ function ZinoSetup() {
           <Loader size="lg" />
         </Center>
       )}
-      <Box
+      {/* <Box
         style={{
           border: "1px solid hsl(var(--border))",
           borderRadius: 8,
@@ -588,8 +588,8 @@ function ZinoSetup() {
         <Divider />
 
         {data && <ZenoStoreRankingTable data={data} />}
-      </Box>
-      {/* {data && (
+      </Box> */}
+      {data && (
         <Box>
           <InsightsList
             data={data}
@@ -647,7 +647,7 @@ function ZinoSetup() {
             }}
           />
         </Box>
-      )} */}
+      )}
     </Layout>
   );
 }
