@@ -78,10 +78,17 @@ export function ZenoInsightTable({ data }: ZenoInsightTableProps) {
   return (
     <>
       <ScrollArea w="calc(100vw - 330px)" scrollbars="x">
-      <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+      <Table horizontalSpacing="lg"
+          withColumnBorders
+          verticalSpacing={10}
+          fz={12}>
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Tr key={headerGroup.id}>
+            <Table.Tr key={headerGroup.id} style={{
+              background: "#336699",
+              color: "white",
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}>
               {headerGroup.headers.map((header) => {
                 return (
                   <Table.Th
@@ -90,6 +97,9 @@ export function ZenoInsightTable({ data }: ZenoInsightTableProps) {
                       width: header.column.getSize(),
                       minWidth: header.column.getSize(),
                       maxWidth: header.column.getSize(),
+                      borderBottom:
+                      "2px solid hsl(var(--foreground) / 0.05) ",
+                      borderColor: "rgba(255, 255, 255, 0.2)",
                     }}
                   >
                     {header.isPlaceholder
@@ -129,6 +139,8 @@ export function ZenoInsightTable({ data }: ZenoInsightTableProps) {
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          textAlign: "center",
+                          fontWeight: 500,
                         }}
                       >
                         {flexRender(

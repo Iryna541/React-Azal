@@ -522,10 +522,10 @@ function ZinoSetup() {
         <Flex justify="space-between">
           <Box px="lg" py="md">
             <Title order={5} fw={500} fz={16}>
-              Weekly highlights
+              Weekly Flash
             </Title>
             <Title component="p" order={6} fz={14} fw={500} size="sm" lh={1.5}>
-              Weekly highlights for all your stores
+              Weekly flash for all your stores
             </Title>
           </Box>
 

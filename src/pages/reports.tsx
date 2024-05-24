@@ -78,6 +78,7 @@ const ReportsPage = () => {
 
           {user?.company_id === 214 && (
             <Select
+              w={'210px'}
               data={[
                 {
                   value: "revenue-center",
