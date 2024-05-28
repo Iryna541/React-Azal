@@ -78,7 +78,7 @@ const ReportsPage = () => {
 
           {user?.company_id === 214 && (
             <Select
-              w={'210px'}
+              w={"210px"}
               data={[
                 {
                   value: "revenue-center",
@@ -772,7 +772,13 @@ function ZinoReport({
           <Flex justify="space-between">
             <Box px="lg" py="md">
               <Title order={5} fw={500} fz={16}>
-                Labour Efficiency Report
+                Labour Efficiency Report (
+                {
+                  labourEfficiencyData?.dates.filter(
+                    (el) => el.day === labourEfficiencyData.day
+                  )[0].date
+                }
+                )
               </Title>
               <Title
                 component="p"
