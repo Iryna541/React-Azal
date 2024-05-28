@@ -1,4 +1,9 @@
-import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  UseQueryOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { axios } from "~/lib/axios";
 
 export type GetRevenueCenterDataResponse = {
@@ -36,7 +41,7 @@ export type GetRevenueCenterDataResponse = {
 
 export async function fetchRevenueCenterData(
   period: string,
-  storeId: number,
+  storeId: number | null
 ): Promise<GetRevenueCenterDataResponse> {
   try {
     const response = await axios.get(
@@ -50,7 +55,7 @@ export async function fetchRevenueCenterData(
 
 export type UseRevenueCenterDataOptions = {
   period: string;
-  storeId: number;
+  storeId: number | null;
   config?: UseQueryOptions<GetRevenueCenterDataResponse>;
 };
 
@@ -67,29 +72,43 @@ export function useRevenueCenterData({
 }
 
 export type UpdateRevenueCenterDataPayload = {
-  "store_id": number,
-  "category_id": number,
-  "week_start_date": string,
-  "net_sales": number,
-  "percentage": number,
-  "tickets": number,
-  "average_ticket_size": number
-}
+  store_id: number;
+  category_id: number;
+  week_start_date: string;
+  net_sales: number;
+  percentage: number;
+  tickets: number;
+  average_ticket_size: number;
+};
 
 export type UpdateRevenueCenterDataError = {
   message: string;
 };
 
-export const updateRevenueCenterData = async (body: UpdateRevenueCenterDataPayload) => {
-  return axios.post("/analytics/updateRevenueCenterData", body).then((res) => res.data);
+export const updateRevenueCenterData = async (
+  body: UpdateRevenueCenterDataPayload
+) => {
+  return axios
+    .post("/analytics/updateRevenueCenterData", body)
+    .then((res) => res.data);
 };
 
 type UseLoginOptions = {
-  config?: UseMutationOptions<any, UpdateRevenueCenterDataError, UpdateRevenueCenterDataPayload>;
+  config?: UseMutationOptions<
+    any,
+    UpdateRevenueCenterDataError,
+    UpdateRevenueCenterDataPayload
+  >;
 };
 
-export const useUpdateRevenueCenterData = ({ config }: UseLoginOptions = {}) => {
-  return useMutation<any, UpdateRevenueCenterDataError, UpdateRevenueCenterDataPayload>({
+export const useUpdateRevenueCenterData = ({
+  config,
+}: UseLoginOptions = {}) => {
+  return useMutation<
+    any,
+    UpdateRevenueCenterDataError,
+    UpdateRevenueCenterDataPayload
+  >({
     mutationFn: (values) => updateRevenueCenterData(values),
     ...config,
   });
