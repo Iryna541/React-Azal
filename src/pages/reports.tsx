@@ -657,6 +657,10 @@ function ZinoReport({
     { label: string; value: string }[]
   >([
     {
+      label: "All",
+      value: "",
+    },
+    {
       label: "Black Rock",
       value: "1",
     },
@@ -690,6 +694,7 @@ function ZinoReport({
     },
   ]);
   const [customReportPeriodOptions] = useState<string[]>([
+    "PERIOD 6",
     "PERIOD 5",
     "PERIOD 4",
     "PERIOD 3",
@@ -699,7 +704,7 @@ function ZinoReport({
   const [customReportFilterStoreId, setCustomReportFilterStoreId] =
     useState<string>("1");
   const [customReportFilterPeriod, setCustomReportFilterPeriod] =
-    useState<string>("PERIOD 4");
+    useState<string>("PERIOD 5");
 
   const handleCustomReportPeriodChange = (value: string | null) => {
     if (value === null) {
@@ -719,7 +724,10 @@ function ZinoReport({
 
   const { data: customTableData, isLoading: isLoadingRevenueCenterData } =
     useRevenueCenterData({
-      storeId: Number(customReportFilterStoreId),
+      storeId:
+        customReportFilterStoreId == ""
+          ? null
+          : Number(customReportFilterStoreId),
       period: customReportFilterPeriod,
     });
 
