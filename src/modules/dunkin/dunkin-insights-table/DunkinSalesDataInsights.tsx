@@ -52,27 +52,7 @@ export function DunkinSalesDataInsightsTable({
     },
   });
   const setHeaderColor = (id: string) => {
-    if (id === "Sales") return "red.2";
-    else if (id === "net_sales") return "red.2";
-    else if (id === "growth") return "red.2";
-    else if (id === "v.LY $/Rank") return "red.2";
-    else if (id === "Transactions") return "blue.2";
-    else if (id === "transactions") return "blue.2";
-    else if (id === "transactions_growth_percentage") return "blue.2";
-    else if (id === "ly_transactions") return "blue.2";
-    else if (id === "v.LY /Rank") return "blue.2";
-    else if (id === "v.LY % /Rank") return "blue.2";
-    else if (id === "Avarage Ticket") return "green.2";
-    else if (id === "average_ticket_size") return "green.2";
-    else if (id === "AT/Rank") return "green.2";
-    else if (id === "ly_average_ticket_size") return "green.2";
-    else if (id === "ticket_size_percentage") return "green.2";
-    else if (id === "$v.LY/Rank") return "green.2";
-    else if (id === "%v.LY/Rank") return "green.2";
-    else if (id === "store_name") return "blue.1";
-    else if (id === "0_store_name") return "blue.1";
-
-    return "white";
+    return "#789ccc";
   };
   const setCellColor = (id: string) => {
     if (id.includes("store_name")) return "blue.1";

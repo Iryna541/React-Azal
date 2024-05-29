@@ -13,7 +13,7 @@ export function Avatar({
     <MantineAvatar
       styles={{
         placeholder: {
-          backgroundColor: "hsl(var(--primary))",
+          backgroundColor: "#789ccc",
           color: "hsl(var(--primary-foreground))",
         },
       }}
