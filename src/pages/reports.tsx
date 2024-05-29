@@ -381,10 +381,14 @@ function ZinoExample() {
 
 function RussReport({ selectedReport }: { selectedReport: string }) {
   const [laborViolationSelectedDate, setLaborViolationSelectedDate] =
-    useState<Date | null>(new Date());
+    useState<Date | null>(
+      new Date(new Date().setDate(new Date().getDate() - 1))
+    );
   const [laborViolationSelectedStoreId, setLaborViolationSelectedStoreId] =
     useState<string>("");
 
+  const today = new Date();
+  const yesterday = new Date(today.setDate(today.getDate() - 1));
   const { data: stores } = useStoreRanking();
   const { data: ltoTrainingReport, isLoading } = useRussLtoTrainingReports({});
   const { data: laborViolationReport, isLoading: isLoadingLaborViolation } =
@@ -602,13 +606,15 @@ function RussReport({ selectedReport }: { selectedReport: string }) {
               <DatePickerInput
                 bg="white"
                 minDate={moment("2024-05-01").toDate()}
-                maxDate={moment().toDate()}
+                maxDate={yesterday}
                 value={laborViolationSelectedDate}
                 w={"200px"}
                 placeholder="Select Date"
                 onChange={(value) => setLaborViolationSelectedDate(value)}
               />
-              <Anchor href="https://demo-be.azal.io/api/analytics/exportLaborViolationsReport">
+              <Anchor
+                href={`https://demo-be.azal.io/api/analytics/exportLaborViolationsReport?date=${laborViolationSelectedDate?.toLocaleDateString("en-CA")}`}
+              >
                 <Button
                   variant="azalio-ui-dark"
                   my={"sm"}
