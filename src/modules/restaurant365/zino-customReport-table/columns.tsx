@@ -63,6 +63,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     header: "1",
     size: 150,
     cell: ({ row }) => {
+      console.log("b--->", row.original.B);
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
