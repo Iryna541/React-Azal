@@ -15,8 +15,11 @@ function groupBy<
   );
 }
 
-export function transformData(data: GetRevenueCenterDataResponse["data"], locations: GetRevenueCenterDataResponse["locations"]) {
-  if(!data){
+export function transformData(
+  data: GetRevenueCenterDataResponse["data"],
+  locations: GetRevenueCenterDataResponse["locations"]
+) {
+  if (!data) {
     return [];
   }
   const groupedData = groupBy(data, "category_id");
@@ -65,8 +68,7 @@ export function transformData(data: GetRevenueCenterDataResponse["data"], locati
       row2[String.fromCharCode("A".charCodeAt(0) + i + 1)] = parseFloat(
         arr[i].percentage
       );
-      row3[String.fromCharCode("A".charCodeAt(0) + i + 1)] =
-        arr[i].total_tickets;
+      row3[String.fromCharCode("A".charCodeAt(0) + i + 1)] = arr[i].tickets;
       row4[String.fromCharCode("A".charCodeAt(0) + i + 1)] = parseFloat(
         arr[i].average_ticket_size
       );
@@ -78,13 +80,18 @@ export function transformData(data: GetRevenueCenterDataResponse["data"], locati
     row4["F"] = arr.reduce((a, b) => a + parseFloat(b.average_ticket_size), 0);
     row4["F"] = row4["F"] / 4.0;
 
-    row1["G"] = arr[0].prev_period_total_diff ? `${arr[0].prev_period_total_diff}` : "";
+    row1["G"] = arr[0].prev_period_total_diff
+      ? `${arr[0].prev_period_total_diff}`
+      : "";
     row3["G"] = arr[0].prev_period_ticket_diff || "";
-    row4["G"] = arr[0].prev_period_avg_ticket_diff ? `${arr[0].prev_period_avg_ticket_diff}` : "";
-    
+    row4["G"] = arr[0].prev_period_avg_ticket_diff
+      ? `${arr[0].prev_period_avg_ticket_diff}`
+      : "";
+
     // setting store_id, category_id, weekStartDate
     row1["store_id"] = arr[0].store_id;
-    row1["store_name"] = locations?.find(item => item.store_id === arr[0].store_id)?.name || "";
+    row1["store_name"] =
+      locations?.find((item) => item.store_id === arr[0].store_id)?.name || "";
 
     row1["category_id"] = arr[0].category_id;
     row2["category_id"] = arr[0].category_id;
@@ -92,10 +99,10 @@ export function transformData(data: GetRevenueCenterDataResponse["data"], locati
     row4["category_id"] = arr[0].category_id;
 
     for (let i = 0; i < 4; ++i) {
-      row1[`week_${i+1}_start_date`] = arr[i].week_start_date;
-      row2[`week_${i+1}_start_date`] = arr[i].week_start_date;
-      row3[`week_${i+1}_start_date`] = arr[i].week_start_date;
-      row4[`week_${i+1}_start_date`] = arr[i].week_start_date;
+      row1[`week_${i + 1}_start_date`] = arr[i].week_start_date;
+      row2[`week_${i + 1}_start_date`] = arr[i].week_start_date;
+      row3[`week_${i + 1}_start_date`] = arr[i].week_start_date;
+      row4[`week_${i + 1}_start_date`] = arr[i].week_start_date;
     }
 
     returnArr.push(row1);
