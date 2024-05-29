@@ -453,15 +453,23 @@ function RussReport({ selectedReport }: { selectedReport: string }) {
     }
   }, [ltoTrainingReport]);
 
-  const storeOptions = stores?.map((item) => {
-    return {
-      value: item.store_id.toString(),
-      label: item.general_managers,
-    };
-  });
+  const storeOptions = [
+    {
+      value: "all",
+      label: "All",
+    },
+    ...(stores
+      ? stores.map((item) => {
+          return {
+            value: item.store_id.toString(),
+            label: item.general_managers,
+          };
+        })
+      : []),
+  ];
 
   const handleRussLaborViolationStoreChange = (value: string | null) => {
-    if (value === null) {
+    if (value === null || value === "all") {
       setLaborViolationSelectedStoreId("");
     } else {
       setLaborViolationSelectedStoreId(value);

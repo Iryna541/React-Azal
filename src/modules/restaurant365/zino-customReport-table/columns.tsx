@@ -18,6 +18,11 @@ import { showSuccessNotification } from "~/utils/notifications";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 
+const isNull = (value: unknown) => {
+  if (value === null) return true;
+  else return false;
+};
+
 export const columns: ColumnDef<Record<string, number | string>>[] = [
   {
     accessorKey: "A",
@@ -25,12 +30,16 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     size: 280,
     cell: ({ row }) => {
       if (row.original.A === -1)
-        return <Text opacity={0}>{row.original.A}</Text>;
+        return (
+          <Text opacity={0}>
+            {isNull(row.original.A) ? "" : row.original.A}
+          </Text>
+        );
 
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.A}
+            {isNull(row.original.A) ? "" : row.original.A}
           </Text>
         );
       }
@@ -42,7 +51,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="gray.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.A}
+            {isNull(row.original.A) ? "" : row.original.A}
           </Text>
         );
       }
@@ -57,7 +66,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.B}
+            {isNull(row.original.B) ? "" : row.original.B}
           </Text>
         );
       }
@@ -69,7 +78,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         return (
           <Flex bg="green.1" justify={"center"} align={"center"}>
             <Text style={{ fontSize: "inherit" }} fw={500}>
-              {row.original.B}
+              {isNull(row.original.B) ? "" : row.original.B}
             </Text>
           </Flex>
         );
@@ -163,7 +172,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (row.original.F === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.A}
+            {isNull(row.original.A) ? "" : row.original.A}
           </Text>
         );
       }
