@@ -7,7 +7,7 @@
 
 .navbar {
   &[data-variant="azalio-ui"] {
-    background-color: hsl(var(--accent));
+    background-color: #17345e;
     color: hsl(var(--accent-foreground));
     border: 0;
   }
