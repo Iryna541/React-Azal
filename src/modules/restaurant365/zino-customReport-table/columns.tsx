@@ -23,6 +23,22 @@ const isNull = (value: unknown) => {
   else return false;
 };
 
+const formatValue = (value: string | number) => {
+  const noValues = ["TICKETS", "-1"]; // Note: -1 is converted to a string
+  const percentValues = ["%"];
+
+  // Convert the value to a string for comparison
+  const valueStr = value.toString();
+
+  if (percentValues.includes(valueStr)) {
+    return "%";
+  } else if (noValues.includes(valueStr)) {
+    return "";
+  } else {
+    return "$";
+  }
+};
+
 export const columns: ColumnDef<Record<string, number | string>>[] = [
   {
     accessorKey: "A",
@@ -63,11 +79,10 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     header: "1",
     size: 150,
     cell: ({ row }) => {
-      console.log("b--->", row.original.B);
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {isNull(row.original.B) ? "" : row.original.B}
+            ${isNull(row.original.B) ? "" : row.original.B}
           </Text>
         );
       }
@@ -79,6 +94,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
         return (
           <Flex bg="green.1" justify={"center"} align={"center"}>
             <Text style={{ fontSize: "inherit" }} fw={500}>
+              {row.original.A !== -1 && row.original.A !== "TICKETS" && "$"}
               {isNull(row.original.B) ? "" : row.original.B}
             </Text>
           </Flex>
@@ -95,7 +111,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.C}
+            ${row.original.C}
           </Text>
         );
       }
@@ -106,6 +122,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
+            {row.original.A !== -1 && row.original.A !== "TICKETS" && "$"}
             {row.original.C}
           </Text>
         );
@@ -121,7 +138,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.D}
+            ${row.original.D}
           </Text>
         );
       }
@@ -132,6 +149,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
+            {row.original.A !== -1 && row.original.A !== "TICKETS" && "$"}
             {row.original.D}
           </Text>
         );
@@ -147,7 +165,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {row.original.E}
+            ${row.original.E}
           </Text>
         );
       }
@@ -158,6 +176,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
+            {row.original.A !== -1 && row.original.A !== "TICKETS" && "$"}
             {row.original.E}
           </Text>
         );
@@ -180,7 +199,9 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       if (typeof row.original.F === "number")
         return (
           <Text bg="gray.1" style={{ fontSize: "inherit" }} fw={500}>
+            {formatValue(row.original.A) === "$" && "$"}
             {row.original.F.toFixed(2)}
+            {formatValue(row.original.A) === "%" && "%"}
           </Text>
         );
       return "";

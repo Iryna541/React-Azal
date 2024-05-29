@@ -65,13 +65,11 @@ export function transformData(
     for (let i = 0; i < 4; ++i) {
       row1[String.fromCharCode("A".charCodeAt(0) + i + 1)] =
         arr[i].category_total;
-      row2[String.fromCharCode("A".charCodeAt(0) + i + 1)] = parseFloat(
-        arr[i].percentage
-      );
+      row2[String.fromCharCode("A".charCodeAt(0) + i + 1)] =
+        parseFloat(arr[i].percentage) + "%";
       row3[String.fromCharCode("A".charCodeAt(0) + i + 1)] = arr[i].tickets;
-      row4[String.fromCharCode("A".charCodeAt(0) + i + 1)] = parseFloat(
-        arr[i].average_ticket_size
-      );
+      row4[String.fromCharCode("A".charCodeAt(0) + i + 1)] =
+        "$" + parseFloat(arr[i].average_ticket_size);
     }
     row1["F"] = arr.reduce((a, b) => a + b.category_total, 0);
     row2["F"] = arr.reduce((a, b) => a + parseFloat(b.percentage), 0);
