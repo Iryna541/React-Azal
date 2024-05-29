@@ -462,7 +462,7 @@ function RussReport({ selectedReport }: { selectedReport: string }) {
       ? stores.map((item) => {
           return {
             value: item.store_id.toString(),
-            label: item.store_id,
+            label: item.general_managers,
           };
         })
       : []),
