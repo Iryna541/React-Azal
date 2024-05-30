@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
+import { ScrollArea, Box, Table } from "@mantine/core";
 import { salesBuildingColumns } from "./columns";
 
 import { useState } from "react";
@@ -53,25 +53,18 @@ export function DunkinSalesBuildingInsightsTable({
       sorting,
     },
   });
-  const setHeaderColor = (id: string) => {
-    if (id === "Sales") return "red.2";
-    else if (id === "total_digital_sales_percentage") return "orange.2";
-    else if (id === "store_name") return "blue.1";
-    else if (id === "total_mobile_transactions_percentage") return "violet.2";
-    else if (id === "loyalty_sales_percentage") return "blue.2";
-    else if (id === "delivery_sales_percentage") return "red.2";
-
-    return "white";
+  const setHeaderColor = () => {
+    return "#789ccc";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return "#f2f2f2";
 
     return "white";
   };
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
+        <Box w={730}>
           <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -79,7 +72,7 @@ export function DunkinSalesBuildingInsightsTable({
                   {headerGroup.headers.map((header) => {
                     return (
                       <Table.Th
-                        bg={setHeaderColor(header.column.id)}
+                        bg={setHeaderColor()}
                         key={header.id}
                         style={{
                           width: header.column.getSize(),
@@ -90,9 +83,9 @@ export function DunkinSalesBuildingInsightsTable({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </Table.Th>
                     );
                   })}
@@ -114,6 +107,8 @@ export function DunkinSalesBuildingInsightsTable({
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          padding: 10,
+                          fontWeight: 700,
                         }}
                       >
                         {flexRender(
@@ -136,7 +131,7 @@ export function DunkinSalesBuildingInsightsTable({
               )}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </Box>
       </ScrollArea>
     </>
   );
