@@ -718,11 +718,10 @@ function ZinoReport({
   const [customReportFilterStoreId, setCustomReportFilterStoreId] =
     useState<string>("1");
   const [customReportFilterPeriod, setCustomReportFilterPeriod] =
-    useState<string>("PERIOD 5");
+    useState<string>("PERIOD 6");
 
   const handleCustomReportPeriodChange = (value: string | null) => {
     if (value === null) {
-      console.log("null");
     } else {
       setCustomReportFilterPeriod(value);
     }
@@ -730,7 +729,6 @@ function ZinoReport({
 
   const handleCustomReportStoreChange = (value: string | null) => {
     if (value === null) {
-      console.log("null");
     } else {
       setCustomReportFilterStoreId(value);
     }
@@ -755,7 +753,6 @@ function ZinoReport({
 
   const handleLabourReportStoreChange = (value: string | null) => {
     if (value === null) {
-      console.log("null");
     } else {
       setLabourReportSelectedStore(value);
     }
@@ -763,7 +760,6 @@ function ZinoReport({
 
   const handleLabourReportDayChange = (value: string | null) => {
     if (value === null) {
-      console.log("null");
     } else {
       setLabourReportSelectedDate(value);
     }

@@ -74,7 +74,7 @@ export function transformData(
     row1["F"] = arr.reduce((a, b) => a + b.category_total, 0);
     row2["F"] = arr.reduce((a, b) => a + parseFloat(b.percentage), 0);
     row2["F"] = row2["F"] / 4.0;
-    row3["F"] = arr.reduce((a, b) => a + b.total_tickets, 0);
+    row3["F"] = arr.reduce((a, b) => a + b.tickets, 0);
     row4["F"] = arr.reduce((a, b) => a + parseFloat(b.average_ticket_size), 0);
     row4["F"] = row4["F"] / 4.0;
 
@@ -126,6 +126,7 @@ export function transformData(
   let totalNetSales3 = 0;
   let totalNetSales4 = 0;
   let totalNetSales5 = 0;
+
   for (let i = 0; i < result.length; ++i) {
     if ((i - 2) % 5 === 0) {
       totalNetSales1 += result[i].B as number;
@@ -134,6 +135,7 @@ export function transformData(
       totalNetSales4 += result[i].E as number;
     }
   }
+
   totalNetSales5 =
     totalNetSales1 + totalNetSales2 + totalNetSales3 + totalNetSales4;
 
@@ -148,6 +150,31 @@ export function transformData(
     E: totalNetSales4,
     F: totalNetSales5,
   });
+
+  // Define the new row data based on total_tickets
+
+  const totalTicketsRow = {
+    A: "TOTAL TICKETS",
+    B: data?.[0]?.total_week_net_tickets ?? 0,
+    C: data?.[1]?.total_week_net_tickets ?? 0,
+    D: data?.[2]?.total_week_net_tickets ?? 0,
+    E: data?.[3]?.total_week_net_tickets ?? 0,
+    F:
+      (data?.[0]?.total_week_net_tickets ?? 0) +
+      (data?.[1]?.total_week_net_tickets ?? 0) +
+      (data?.[2]?.total_week_net_tickets ?? 0) +
+      (data?.[3]?.total_week_net_tickets ?? 0),
+  };
+
+  // Find the position of the "TOTAL NET SALES" row and insert the new row after it
+
+  const totalNetSalesIndex = newResult.findIndex(
+    (row) => row.A === "TOTAL NET SALES"
+  );
+
+  if (totalNetSalesIndex !== -1) {
+    newResult.splice(totalNetSalesIndex + 1, 0, totalTicketsRow);
+  }
 
   for (let i = 1; i < result.length; ++i) {
     newResult.push(result[i]);
