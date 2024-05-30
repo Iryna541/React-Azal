@@ -28,7 +28,7 @@ export const salesColumns: ColumnDef<SalesData>[] = [
     >
       Store
     </Text>,
-    size: 200,
+    size: 150,
   },
   {
     accessorKey: "net_sales",
@@ -45,13 +45,16 @@ export const salesColumns: ColumnDef<SalesData>[] = [
     columns: [
       {
         accessorKey: "net_sales",
-        size: 200,
+        size: 110,
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex
+            justify={"space-between"}
+            style={{ paddingInline: 0, padding: 0 }}
+          >
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Sales
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
@@ -64,28 +67,27 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
-            </Flex>
+            </Flex >
           );
         },
       },
       {
         accessorKey: "growth",
-        size: 200,
+        size: 110,
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "70%", textAlign: "center" }} fw={700} c="white">
               v.LY $
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "30%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
@@ -98,13 +100,13 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
+              style={{ paddingInline: 0, padding: 0 }}
               px={"lg"}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "70%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "30%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -119,7 +121,7 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       <Text
         fw={700}
         size="md"
-        style={{ textAlign: "center", fontSize: "14px" }}
+        style={{ textAlign: "center", fontSize: "14px", width: "50%"}}
         c="white"
       >
         Transactions
@@ -129,17 +131,17 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "transactions",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"}  style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               TC
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
 
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.transactions;
           const rank = row.original.transaction_rank;
@@ -147,11 +149,10 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }}>{sales}</Text>
-              <Text style={{ fontSize: "14px" }}>{rank}</Text>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }}>{sales}</Text>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }}>{rank}</Text>
             </Flex>
           );
         },
@@ -159,17 +160,17 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "ly_transactions",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               v.LY
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
 
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.ly_transactions;
           const rank = row.original.ly_transaction_rank;
@@ -177,13 +178,12 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -193,16 +193,16 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "transactions_growth_percentage",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               v.LY %
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.transactions_growth_percentage;
           const rank = row.original.transactions_growth_percentage_rank;
@@ -210,13 +210,12 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -231,7 +230,7 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       <Text
         fw={700}
         size="sm"
-        style={{ textAlign: "center", fontSize: "14px" }}
+        style={{ textAlign: "center", fontSize: "14px", width: "50%" }}
         c="white"
       >
         Avarage Ticket
@@ -242,17 +241,17 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "average_ticket_size",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               AT
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
 
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.average_ticket_size;
           const rank = row.original.ticket_size_rank;
@@ -260,13 +259,12 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -276,17 +274,17 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "ly_average_ticket_size",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               $v.LY
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
 
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.ly_average_ticket_size;
           const rank = row.original.ly_average_ticket_size_rank;
@@ -294,13 +292,12 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -310,16 +307,16 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "ticket_size_percentage",
         header: () => (
-          <Flex justify={"space-between"} gap={2} px={"sm"}>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               %v.LY
             </Text>
-            <Text style={{ fontSize: "14px" }} fw={700} c="white">
+            <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               Rank
             </Text>
           </Flex>
         ),
-        size: 200,
+        size: 100,
         cell: ({ row }) => {
           const sales = row.original.ticket_size_percentage;
           const rank = row.original.ticket_size_percentage_rank;
@@ -327,13 +324,12 @@ export const salesColumns: ColumnDef<SalesData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -354,7 +350,7 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
     accessorKey: "total_digital_sales_percentage",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
+        <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
           <Text style={{ fontSize: "14px" }} fw={700} size="md">
             Digital
           </Text>

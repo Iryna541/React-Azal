@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
+import { ScrollArea, Box, Table } from "@mantine/core";
 import { salesColumns } from "./columns";
 
 import { useState } from "react";
@@ -51,18 +51,18 @@ export function DunkinSalesDataInsightsTable({
       sorting,
     },
   });
-  const setHeaderColor = (id: string) => {
+  const setHeaderColor = () => {
     return "#789ccc";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return "#f2f2f2";
 
     return "white";
   };
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
+        <Box w={1200}>
           <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -76,8 +76,9 @@ export function DunkinSalesDataInsightsTable({
                           minWidth: header.column.getSize(),
 
                           maxWidth: header.column.getSize(),
+                          padding: 5
                         }}
-                        bg={setHeaderColor(header.column.id)}
+                        bg={setHeaderColor()}
                         key={header.id}
                         colSpan={header.colSpan}
                       >
@@ -85,7 +86,7 @@ export function DunkinSalesDataInsightsTable({
                           <div>
                             {header.column.getCanGroup()
                               ? // If the header can be grouped, let's add a toggle
-                                null
+                              null
                               : null}{" "}
                             {flexRender(
                               header.column.columnDef.header,
@@ -110,6 +111,8 @@ export function DunkinSalesDataInsightsTable({
                           {...{
                             key: cell.id,
                             style: {
+                              padding: 10,
+                              fontWeight: 700,
                               background: cell.getIsGrouped()
                                 ? "#0aff0082"
                                 : cell.getIsAggregated()
@@ -146,7 +149,7 @@ export function DunkinSalesDataInsightsTable({
                             // renderer for cell
                             flexRender(
                               cell.column.columnDef.aggregatedCell ??
-                                cell.column.columnDef.cell,
+                              cell.column.columnDef.cell,
                               cell.getContext()
                             )
                           ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
@@ -164,7 +167,7 @@ export function DunkinSalesDataInsightsTable({
               })}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </Box>
       </ScrollArea>
     </>
   );
