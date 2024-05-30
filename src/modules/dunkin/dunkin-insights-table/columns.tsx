@@ -121,7 +121,7 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       <Text
         fw={700}
         size="md"
-        style={{ textAlign: "center", fontSize: "14px", width: "50%"}}
+        style={{ textAlign: "center", fontSize: "14px", width: "50%" }}
         c="white"
       >
         Transactions
@@ -131,7 +131,7 @@ export const salesColumns: ColumnDef<SalesData>[] = [
       {
         accessorKey: "transactions",
         header: () => (
-          <Flex justify={"space-between"}  style={{ paddingInline: 0, padding: 0 }}>
+          <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
             <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
               TC
             </Text>
@@ -343,33 +343,40 @@ export const salesColumns: ColumnDef<SalesData>[] = [
 export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
   {
     accessorKey: "store_name",
-    header: "Store",
-    size: 200,
+    header: () => <Text
+      fw={700}
+      size="md"
+      style={{ textAlign: "center", fontSize: "14px", color: "white" }}
+      c="white"
+    >
+      Store
+    </Text>,
+    size: 150,
   },
   {
     accessorKey: "total_digital_sales_percentage",
     header: () => {
       return (
         <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Digital
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Rank
           </Text>
         </Flex>
       );
     },
-    size: 200,
+    size: 110,
     cell: ({ row }) => {
       const sales = row.original.total_digital_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.total_digital_sales_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
             {sales}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -380,26 +387,26 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
     accessorKey: "total_mobile_transactions_percentage",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Mobile
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Rank
           </Text>
         </Flex>
       );
     },
-    size: 200,
+    size: 110,
     cell: ({ row }) => {
       const sales = row.original.total_mobile_transactions_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.total_mobile_transactions_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
             {sales}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -410,26 +417,26 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
     accessorKey: "loyalty_sales_percentage",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Loyality
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Rank
           </Text>
         </Flex>
       );
     },
-    size: 200,
+    size: 110,
     cell: ({ row }) => {
       const sales = row.original.loyalty_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.loyalty_sales_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
             {sales}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -440,29 +447,29 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
     accessorKey: "delivery_sales_percentage",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Delivery
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} size="md" c="white">
             Rank
           </Text>
         </Flex>
       );
     },
-    size: 200,
+    size: 110,
     cell: ({ row }) => {
       const sales = row.original.delivery_sales_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.delivery_sales_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
           <Text
-            style={{ fontSize: "14px" }}
+            style={{ fontSize: "14px", width: "50%", textAlign: "center" }}
             c={sales && sales < 0 ? "red.5" : ""}
           >
             {sales}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
