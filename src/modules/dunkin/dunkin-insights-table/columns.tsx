@@ -507,7 +507,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "lane_total",
         header: () => {
           return (
-            <Flex justify={"space-between"}>
+            <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Time
               </Text>
@@ -525,6 +525,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
@@ -540,7 +541,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "ly_lane_total",
         header: () => {
           return (
-            <Flex justify={"space-between"}>
+            <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 v.LY
               </Text>
@@ -558,6 +559,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
@@ -573,7 +575,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "average_daily_count",
         header: () => {
           return (
-            <Flex justify={"space-between"} gap={2} px={"sm"}>
+            <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 ADC
               </Text>
@@ -591,6 +593,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
@@ -606,7 +609,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "ly_adc_total",
         header: () => {
           return (
-            <Flex justify={"space-between"}>
+            <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 v.LY
               </Text>
@@ -624,6 +627,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
+              style={{ paddingInline: 0, padding: 0 }}
             >
               <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
@@ -642,27 +646,32 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
 export const costDataColumns: ColumnDef<CostData>[] = [
   {
     accessorKey: "store_name",
-    header: "Store",
-    size: 200,
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px", color: "white" }}
+      c="white"
+    >
+      Store
+    </Text>,
+    size: 180,
   },
   {
     accessorKey: "cml_cost_percentage",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
             CML
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
             Food
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
             Paper
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
             Prem
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
             payroll
           </Text>
         </Flex>
@@ -677,12 +686,12 @@ export const costDataColumns: ColumnDef<CostData>[] = [
       const payroll = row.original.payroll_cost_percentage;
 
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }}>{cml}%</Text>
-          <Text style={{ fontSize: "14px" }}>{food}%</Text>
-          <Text style={{ fontSize: "14px" }}>{paper}%</Text>
-          <Text style={{ fontSize: "14px" }}>{prem}%</Text>
-          <Text style={{ fontSize: "14px" }}>{payroll}%</Text>
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }}>{cml}%</Text>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }}>{food}%</Text>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }}>{paper}%</Text>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }}>{prem}%</Text>
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }}>{payroll}%</Text>
         </Flex>
       );
     },
@@ -690,16 +699,23 @@ export const costDataColumns: ColumnDef<CostData>[] = [
 
   {
     accessorKey: "total_cogs_percentage",
-    header: "COGS/Rank",
+    header: () => <Flex justify={"space-between"}>
+      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+        CORS
+      </Text>
+      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+        Rank
+      </Text>
+    </Flex>,
     cell: ({ row }) => {
       const sales = row.original.total_cogs_percentage; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.cogs_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
             {sales}%
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -709,14 +725,19 @@ export const costDataColumns: ColumnDef<CostData>[] = [
 
   {
     accessorKey: "target",
-    header: "+/-Target$",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px", color: "white" }}
+      c="white"
+    >
+      +/-Target$
+    </Text>,
     size: 100,
     cell: ({ row }) => {
       const target = row.original.target;
 
       return (
         <Text
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: "14px", textAlign: "center" }}
           c={target < 0 ? "red.5" : ""}
           bg={target > 0 ? "red.5" : ""}
         >
@@ -729,34 +750,34 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     accessorKey: "labor_total_hours",
     header: () => {
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
             TTL Hours
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
             OT Hours
           </Text>
-          <Text style={{ fontSize: "14px" }} fw={700} size="md">
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
             GC/LH
           </Text>
         </Flex>
       );
     },
-    size: 300,
+    size: 250,
     cell: ({ row }) => {
       const ttl = row.original.labor_total_hours;
       const ot = row.original.labor_overtime_hours;
       const gc = row.original.gc_over_lh;
 
       return (
-        <Flex justify={"space-between"} gap={2} px={"sm"}>
-          <Text style={{ fontSize: "14px" }} c={ttl < 0 ? "red.5" : ""}>
+        <Flex justify={"space-between"}>
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c={ttl < 0 ? "red.5" : ""}>
             {ttl}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={ot < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c={ot < 0 ? "red.5" : ""}>
             {ot}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={gc < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c={gc < 0 ? "red.5" : ""}>
             {gc}
           </Text>
         </Flex>
