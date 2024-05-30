@@ -24,6 +24,7 @@ export type GetRevenueCenterDataResponse = {
     prev_period_total_diff: any;
     prev_period_ticket_diff: any;
     prev_period_avg_ticket_diff: any;
+    total_week_net_tickets: number;
   }>;
   categories: Array<string>;
   periods: Array<{
