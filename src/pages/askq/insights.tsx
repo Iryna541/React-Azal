@@ -68,7 +68,7 @@ export default function InsightsPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
-    "Company 1"
+    "Burger King"
   );
   console.log(setSelectedDemoOption);
 
@@ -105,7 +105,7 @@ export default function InsightsPage() {
                 <Select
                   value={selectedDemoOption}
                   placeholder="Pick value"
-                  data={["Company 1", "Company 2", "Company 3"]}
+                  data={["Burger King", "Dunkin’ Donuts", "Subway"]}
                   m={"sm"}
                   onChange={(value) => setSelectedDemoOption(value)}
                   allowDeselect={false}
@@ -114,9 +114,9 @@ export default function InsightsPage() {
             )}
           </Flex>
           {user?.company_id === 210 ? (
-            selectedDemoOption === "Company 2" ? (
+            selectedDemoOption === "Dunkin’ Donuts" ? (
               <ShawnSetup withAccordion />
-            ) : selectedDemoOption === "Company 1" ? (
+            ) : selectedDemoOption === "Burger King" ? (
               <RussSetup withAccordion />
             ) : (
               <NewRussSetup />
@@ -378,16 +378,6 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
-            <SimpleGrid cols={2} spacing="xl">
-              <DunkinTopStoreRanking
-                title="Top 5 Best Stores"
-                data={topStores.slice(0, 5)}
-              />
-              <DunkinTopStoreRanking
-                title="Top 5 Worst Stores"
-                data={topStores.reverse().slice(0, 5)}
-              />
-            </SimpleGrid>
             {!withAccordion && (
               <Box
                 style={{
