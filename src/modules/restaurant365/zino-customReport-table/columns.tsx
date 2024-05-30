@@ -19,7 +19,13 @@ import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 
 const isNull = (value: unknown) => {
-  return value === null || value === undefined;
+  return (
+    value === null ||
+    value === undefined ||
+    value === "$NaN" ||
+    value === "NaN%" ||
+    value === "NaN"
+  );
 };
 
 const formatValue = (value: string | number) => {
@@ -110,6 +116,7 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     size: 150,
     cell: ({ row }) => {
       const value = isNull(row.original.C) ? "" : row.original.C;
+
       if (
         row.original.A === "TOTAL NET SALES" ||
         row.original.A === "TOTAL TICKETS"
@@ -161,7 +168,9 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
-            {formatValue(row.original.A) === "$" && "$"}
+            {formatValue(row.original.A) === "$" && value.toString().length
+              ? "$"
+              : ""}
             {value}
             {formatValue(row.original.A) === "%" && "%"}
           </Text>
@@ -194,7 +203,9 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
       ) {
         return (
           <Text bg="green.1" style={{ fontSize: "inherit" }} fw={500}>
-            {formatValue(row.original.A) === "$" && "$"}
+            {formatValue(row.original.A) === "$" && value.toString().length
+              ? "$"
+              : ""}
             {value}
             {formatValue(row.original.A) === "%" && "%"}
           </Text>
@@ -208,12 +219,12 @@ export const columns: ColumnDef<Record<string, number | string>>[] = [
     header: "TOTALS",
     size: 150,
     cell: ({ row }) => {
-      const value = row.original.F;
+      const value = isNull(row.original.F) ? "" : row.original.F;
 
       if (row.original.A === "TOTAL NET SALES") {
         return (
           <Text bg="yellow.1" style={{ fontSize: "inherit" }} fw={600}>
-            {isNull(value) ? "" : value}
+            {value}
           </Text>
         );
       }
