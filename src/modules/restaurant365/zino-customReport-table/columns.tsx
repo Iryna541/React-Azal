@@ -24,7 +24,7 @@ const isNull = (value: unknown) => {
     value === undefined ||
     value === "$NaN" ||
     value === "NaN%" ||
-    value === "NaN"
+    (typeof value === "number" && isNaN(value))
   );
 };
 

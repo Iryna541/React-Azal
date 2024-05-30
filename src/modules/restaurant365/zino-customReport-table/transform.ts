@@ -72,10 +72,17 @@ export function transformData(
         "$" + parseFloat(arr[i].average_ticket_size);
     }
     row1["F"] = arr.reduce((a, b) => a + b.category_total, 0);
-    row2["F"] = arr.reduce((a, b) => a + parseFloat(b.percentage), 0);
+    const validPercentages = arr
+      .map((item) => parseFloat(item.percentage))
+      .filter((val) => !isNaN(val));
+    row2["F"] = validPercentages.reduce((a, b) => a + b, 0);
     row2["F"] = row2["F"] / 4.0;
     row3["F"] = arr.reduce((a, b) => a + b.tickets, 0);
-    row4["F"] = arr.reduce((a, b) => a + parseFloat(b.average_ticket_size), 0);
+
+    const validTicketSizes = arr
+      .map((item) => parseFloat(item.average_ticket_size))
+      .filter((val) => !isNaN(val));
+    row4["F"] = validTicketSizes.reduce((a, b) => a + b, 0);
     row4["F"] = row4["F"] / 4.0;
 
     row1["G"] = arr[0].prev_period_total_diff
@@ -127,12 +134,30 @@ export function transformData(
   let totalNetSales4 = 0;
   let totalNetSales5 = 0;
 
+  let totalTickets1 = 0;
+
+  let totalTickets2 = 0;
+
+  let totalTickets3 = 0;
+
+  let totalTickets4 = 0;
+
+  let totalTickets5 = 0;
+
   for (let i = 0; i < result.length; ++i) {
     if ((i - 2) % 5 === 0) {
-      totalNetSales1 += result[i].B as number;
-      totalNetSales2 += result[i].C as number;
-      totalNetSales3 += result[i].D as number;
-      totalNetSales4 += result[i].E as number;
+      totalNetSales1 += isNaN(result[i].B as number)
+        ? 0
+        : (result[i].B as number);
+      totalNetSales2 += isNaN(result[i].C as number)
+        ? 0
+        : (result[i].C as number);
+      totalNetSales3 += isNaN(result[i].D as number)
+        ? 0
+        : (result[i].D as number);
+      totalNetSales4 += isNaN(result[i].E as number)
+        ? 0
+        : (result[i].E as number);
     }
   }
 
@@ -151,55 +176,77 @@ export function transformData(
     F: totalNetSales5,
   });
 
-  // Define the new row data based on total_tickets
+  // Calculate total tickets for each week
 
-  const totalTicketsRow = {
+  for (let i = 0; i < result.length; ++i) {
+    if ((i - 2) % 5 === 0) {
+      totalTickets1 += result[i].B as number;
+
+      totalTickets2 += result[i].C as number;
+
+      totalTickets3 += result[i].D as number;
+
+      totalTickets4 += result[i].E as number;
+    }
+  }
+
+  totalTickets5 = totalTickets1 + totalTickets2 + totalTickets3 + totalTickets4;
+
+  // Add TOTAL TICKETS row
+
+  newResult.push({
     A: "TOTAL TICKETS",
-    B:
-      data.find(
-        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-13"
-      )?.total_week_net_tickets ??
-      data?.[0]?.total_week_net_tickets ??
-      0,
-    C:
-      data.find(
-        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-20"
-      )?.total_week_net_tickets ??
-      data?.[1]?.total_week_net_tickets ??
-      0,
-    D:
-      data.find(
-        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-27"
-      )?.total_week_net_tickets ??
-      data?.[2]?.total_week_net_tickets ??
-      0,
-    E:
-      data.find(
-        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-06-03"
-      )?.total_week_net_tickets ??
-      data?.[3]?.total_week_net_tickets ??
-      0,
-    F: data[0].total_net_tickets,
-  };
+
+    B: totalTickets1,
+
+    C: totalTickets2,
+
+    D: totalTickets3,
+
+    E: totalTickets4,
+
+    F: totalTickets5,
+  });
+  // Define the new row data based on total_tickets
 
   // const totalTicketsRow = {
   //   A: "TOTAL TICKETS",
-  //   B: totalNetTickets1,
-  //   C: totalNetTickets2,
-  //   D: totalNetTickets3,
-  //   E: totalNetTickets4,
-  //   F: totalNetTickets5,
+  //   B:
+  //     data.find(
+  //       (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-13"
+  //     )?.total_week_net_tickets ??
+  //     data?.[0]?.total_week_net_tickets ??
+  //     0,
+  //   C:
+  //     data.find(
+  //       (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-20"
+  //     )?.total_week_net_tickets ??
+  //     data?.[1]?.total_week_net_tickets ??
+  //     0,
+  //   D:
+  //     data.find(
+  //       (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-27"
+  //     )?.total_week_net_tickets ??
+  //     data?.[2]?.total_week_net_tickets ??
+  //     0,
+  //   E:
+  //     data.find(
+  //       (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-06-03"
+  //     )?.total_week_net_tickets ??
+  //     data?.[3]?.total_week_net_tickets ??
+  //     0,
+  //   F: data[0].total_net_tickets,
   // };
 
   // Find the position of the "TOTAL NET SALES" row and insert the new row after it
 
-  const totalNetSalesIndex = newResult.findIndex(
-    (row) => row.A === "TOTAL NET SALES"
-  );
+  // const totalNetSalesIndex = newResult.findIndex(
+  //   (row) => row.A === "TOTAL NET SALES"
+  // );
 
-  if (totalNetSalesIndex !== -1) {
-    newResult.splice(totalNetSalesIndex + 1, 0, totalTicketsRow);
-  }
+  // if (totalNetSalesIndex !== -1) {
+  //   newResult.splice(totalNetSalesIndex + 1, 0, totalTicketsRow);
+  // }
 
   for (let i = 1; i < result.length; ++i) {
     newResult.push(result[i]);
