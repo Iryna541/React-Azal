@@ -481,8 +481,13 @@ export const salesBuildingColumns: ColumnDef<SalesBuildingData>[] = [
 export const driveThruColumns: ColumnDef<DriveThruData>[] = [
   {
     accessorKey: "store_name",
-    header: "Store",
-    size: 200,
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px", color: "white" }}
+      c="white"
+    >
+      Store
+    </Text>,
+    size: 150,
   },
   {
     accessorKey: "lane_total",
@@ -490,9 +495,8 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
     header: () => {
       return (
         <Text
-          fw={700}
-          size="md"
           style={{ textAlign: "center", fontSize: "14px" }}
+          c="white"
         >
           Weekly{" "}
         </Text>
@@ -503,16 +507,17 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "lane_total",
         header: () => {
           return (
-            <Flex justify={"space-between"} gap={2} px={"sm"}>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+            <Flex justify={"space-between"}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Time
               </Text>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Rank
               </Text>
             </Flex>
           );
         },
+        size: 110,
         cell: ({ row }) => {
           const sales = row.original.lane_total;
           const rank = row.original.lane_total_rank;
@@ -520,13 +525,11 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -537,16 +540,17 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "ly_lane_total",
         header: () => {
           return (
-            <Flex justify={"space-between"} gap={2} px={"sm"}>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+            <Flex justify={"space-between"}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 v.LY
               </Text>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Rank
               </Text>
             </Flex>
           );
         },
+        size: 110,
         cell: ({ row }) => {
           const sales = row.original.ly_lane_total;
           const rank = row.original.ly_lane_total_rank;
@@ -554,13 +558,11 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -572,15 +574,16 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         header: () => {
           return (
             <Flex justify={"space-between"} gap={2} px={"sm"}>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 ADC
               </Text>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Rank
               </Text>
             </Flex>
           );
         },
+        size: 110,
         cell: ({ row }) => {
           const sales = row.original.average_daily_count;
           const rank = row.original.average_daily_count_rank;
@@ -588,13 +591,11 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
@@ -605,16 +606,17 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         accessorKey: "ly_adc_total",
         header: () => {
           return (
-            <Flex justify={"space-between"} gap={2} px={"sm"}>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+            <Flex justify={"space-between"}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 v.LY
               </Text>
-              <Text style={{ fontSize: "14px" }} fw={700} size="md">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
                 Rank
               </Text>
             </Flex>
           );
         },
+        size: 110,
         cell: ({ row }) => {
           const sales = row.original.ly_adc_total;
           const rank = row.original.ly_adc_total_rank;
@@ -622,13 +624,11 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
             <Flex
               bg={cellColor(rank)}
               justify={"space-between"}
-              gap={2}
-              px={"lg"}
             >
-              <Text style={{ fontSize: "14px" }} c={sales < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={sales < 0 ? "red.5" : ""}>
                 {sales}
               </Text>
-              <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
                 {rank}
               </Text>
             </Flex>
