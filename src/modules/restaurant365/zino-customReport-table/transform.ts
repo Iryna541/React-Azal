@@ -155,16 +155,41 @@ export function transformData(
 
   const totalTicketsRow = {
     A: "TOTAL TICKETS",
-    B: data?.[0]?.total_week_net_tickets ?? 0,
-    C: data?.[1]?.total_week_net_tickets ?? 0,
-    D: data?.[2]?.total_week_net_tickets ?? 0,
-    E: data?.[3]?.total_week_net_tickets ?? 0,
-    F:
-      (data?.[0]?.total_week_net_tickets ?? 0) +
-      (data?.[1]?.total_week_net_tickets ?? 0) +
-      (data?.[2]?.total_week_net_tickets ?? 0) +
-      (data?.[3]?.total_week_net_tickets ?? 0),
+    B:
+      data.find(
+        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-13"
+      )?.total_week_net_tickets ??
+      data?.[0]?.total_week_net_tickets ??
+      0,
+    C:
+      data.find(
+        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-20"
+      )?.total_week_net_tickets ??
+      data?.[1]?.total_week_net_tickets ??
+      0,
+    D:
+      data.find(
+        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-05-27"
+      )?.total_week_net_tickets ??
+      data?.[2]?.total_week_net_tickets ??
+      0,
+    E:
+      data.find(
+        (d) => d.period === "PERIOD 6" && d.week_start_date === "2024-06-03"
+      )?.total_week_net_tickets ??
+      data?.[3]?.total_week_net_tickets ??
+      0,
+    F: data[0].total_net_tickets,
   };
+
+  // const totalTicketsRow = {
+  //   A: "TOTAL TICKETS",
+  //   B: totalNetTickets1,
+  //   C: totalNetTickets2,
+  //   D: totalNetTickets3,
+  //   E: totalNetTickets4,
+  //   F: totalNetTickets5,
+  // };
 
   // Find the position of the "TOTAL NET SALES" row and insert the new row after it
 
