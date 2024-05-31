@@ -867,17 +867,22 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
 export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "store_name",
-    header: "Store",
-    size: 200,
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px", color: "white" }}
+      c="white"
+    >
+      Store
+    </Text>,
+    size: 180,
   },
   {
     accessorKey: "overall_experience_percent",
     header: () => (
-      <Flex justify={"space-between"} gap={2} px={"sm"}>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+      <Flex justify={"space-between"}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           OSAT
         </Text>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           Rank
         </Text>
       </Flex>
@@ -888,11 +893,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const rank = row.original.overall_experience_rank;
 
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={osat < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={osat < 0 ? "red.5" : ""}>
             {osat}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -903,11 +908,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "friendly_percent",
     header: () => (
-      <Flex justify={"space-between"} gap={2} px={"sm"}>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+      <Flex justify={"space-between"}>
+        <Text style={{ fontSize: "14px", width: "70%", textAlign: "center" }} fw={700} c="white">
           Friendlyness
         </Text>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+        <Text style={{ fontSize: "14px", width: "30%", textAlign: "center" }} fw={700} c="white">
           Rank
         </Text>
       </Flex>
@@ -916,14 +921,14 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const friendlyness = row.original.friendly_percent; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.friendly_percent_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
           <Text
-            style={{ fontSize: "14px" }}
+            style={{ fontSize: "14px", width: "70%", textAlign: "center" }}
             c={friendlyness < 0 ? "red.5" : ""}
           >
             {friendlyness}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "30%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -934,11 +939,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "order_accuracy_percent",
     header: () => (
-      <Flex justify={"space-between"} gap={2} px={"sm"}>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+      <Flex justify={"space-between"}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           Accuracy
         </Text>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           Rank
         </Text>
       </Flex>
@@ -948,11 +953,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const accuracy = row.original.order_accuracy_percent; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.order_accuracy_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={accuracy < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={accuracy < 0 ? "red.5" : ""}>
             {accuracy}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>
@@ -963,11 +968,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
   {
     accessorKey: "speed_of_service_percent",
     header: () => (
-      <Flex justify={"space-between"} gap={2} px={"sm"}>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+      <Flex justify={"space-between"}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           Speed
         </Text>
-        <Text style={{ fontSize: "14px" }} fw={700}>
+        <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} fw={700} c="white">
           Rank
         </Text>
       </Flex>
@@ -977,11 +982,11 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
       const speed = row.original.speed_of_service_percent; //jaleel:need to confirm from jaleel what should be the value
       const rank = row.original.speed_of_service_rank;
       return (
-        <Flex bg={cellColor(rank)} justify={"space-between"} gap={2} px={"lg"}>
-          <Text style={{ fontSize: "14px" }} c={speed < 0 ? "red.5" : ""}>
+        <Flex bg={cellColor(rank)} justify={"space-between"}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={speed < 0 ? "red.5" : ""}>
             {speed}
           </Text>
-          <Text style={{ fontSize: "14px" }} c={rank < 0 ? "red.5" : ""}>
+          <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c={rank < 0 ? "red.5" : ""}>
             {rank}
           </Text>
         </Flex>

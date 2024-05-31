@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
+import { ScrollArea, Box, Table } from "@mantine/core";
 import { guestSatisfactionColumns } from "./columns";
 
 import { useState } from "react";
@@ -51,20 +51,18 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
       sorting,
     },
   });
-  const setHeaderColor = (id: string) => {
-    if (id === "store_name") return "blue.1";
-
-    return "orange.2";
+  const setHeaderColor = () => {
+    return "#789ccc";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return "#f2f2f2";
 
     return "white";
   };
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
+        <Box w={700}>
           <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -72,20 +70,21 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
                   {headerGroup.headers.map((header) => {
                     return (
                       <Table.Th
-                        bg={setHeaderColor(header.column.id)}
+                        bg={setHeaderColor()}
                         key={header.id}
                         style={{
                           width: header.column.getSize(),
                           minWidth: header.column.getSize(),
                           maxWidth: header.column.getSize(),
+                          padding: 10
                         }}
                       >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </Table.Th>
                     );
                   })}
@@ -107,6 +106,8 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          padding: 10,
+                          fontWeight: 700,
                         }}
                       >
                         {flexRender(
@@ -129,7 +130,7 @@ export function DunkinGuestInsightsTable({ data }: DunkinInsightsTableProps) {
               )}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </Box>
       </ScrollArea>
     </>
   );
