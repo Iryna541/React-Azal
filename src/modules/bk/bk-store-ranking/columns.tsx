@@ -421,10 +421,6 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   const [data, setData] = useState<any>();
   const queryClient = useQueryClient();
 
-  const test = queryClient?.getQueriesData({
-    queryKey: ["bk-analytics-charts"],
-  })?.[0]?.[1];
-
   useEffect(() => {
     setData(
       queryClient?.getQueriesData({
