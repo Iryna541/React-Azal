@@ -484,6 +484,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px", color: "white" }}
       c="white"
+      fw={700}
     >
       Store
     </Text>,
@@ -497,6 +498,7 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         <Text
           style={{ textAlign: "center", fontSize: "14px" }}
           c="white"
+          fw={700}
         >
           Weekly{" "}
         </Text>
@@ -508,10 +510,10 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         header: () => {
           return (
             <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 Time
               </Text>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 Rank
               </Text>
             </Flex>
@@ -542,10 +544,10 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         header: () => {
           return (
             <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 v.LY
               </Text>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 Rank
               </Text>
             </Flex>
@@ -576,10 +578,10 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         header: () => {
           return (
             <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 ADC
               </Text>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 Rank
               </Text>
             </Flex>
@@ -610,10 +612,10 @@ export const driveThruColumns: ColumnDef<DriveThruData>[] = [
         header: () => {
           return (
             <Flex justify={"space-between"} style={{ paddingInline: 0, padding: 0 }}>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 v.LY
               </Text>
-              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+              <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
                 Rank
               </Text>
             </Flex>
@@ -649,6 +651,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px", color: "white" }}
       c="white"
+      fw={700}
     >
       Store
     </Text>,
@@ -659,19 +662,19 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     header: () => {
       return (
         <Flex justify={"space-between"}>
-          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white" fw={700}>
             CML
           </Text>
-          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white" fw={700}>
             Food
           </Text>
-          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white" fw={700}>
             Paper
           </Text>
-          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white" fw={700}>
             Prem
           </Text>
-          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white">
+          <Text style={{ fontSize: "14px", width: "20%", textAlign: "center" }} c="white" fw={700}>
             payroll
           </Text>
         </Flex>
@@ -700,10 +703,10 @@ export const costDataColumns: ColumnDef<CostData>[] = [
   {
     accessorKey: "total_cogs_percentage",
     header: () => <Flex justify={"space-between"}>
-      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
         CORS
       </Text>
-      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white">
+      <Text style={{ fontSize: "14px", width: "50%", textAlign: "center" }} c="white" fw={700}>
         Rank
       </Text>
     </Flex>,
@@ -728,6 +731,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px", color: "white" }}
       c="white"
+      fw={700}
     >
       +/-Target$
     </Text>,
@@ -740,6 +744,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
           style={{ fontSize: "14px", textAlign: "center" }}
           c={target < 0 ? "red.5" : ""}
           bg={target > 0 ? "red.5" : ""}
+          fw={700}
         >
           {target}
         </Text>
@@ -751,13 +756,13 @@ export const costDataColumns: ColumnDef<CostData>[] = [
     header: () => {
       return (
         <Flex justify={"space-between"}>
-          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white" fw={700} >
             TTL Hours
           </Text>
-          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white" fw={700}>
             OT Hours
           </Text>
-          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white">
+          <Text style={{ fontSize: "14px", textAlign: "center", width: "33.33%" }} c="white" fw={700}>
             GC/LH
           </Text>
         </Flex>
@@ -792,6 +797,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       Store
     </Text>,
@@ -802,6 +808,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       T Hrs
     </Text>,
@@ -812,6 +819,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       OT Hrs
     </Text>,
@@ -822,6 +830,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       Salary Hrs
     </Text>,
@@ -832,6 +841,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       TTL Hrs
     </Text>,
@@ -842,6 +852,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       GC/LH
     </Text>,
@@ -852,6 +863,7 @@ export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px" }}
       c="white"
+      fw={700}
     >
       $/LH
     </Text>,
@@ -870,6 +882,7 @@ export const guestSatisfactionColumns: ColumnDef<GuestSatisfactionData>[] = [
     header: () => <Text
       style={{ textAlign: "center", fontSize: "14px", color: "white" }}
       c="white"
+      fw={700}
     >
       Store
     </Text>,
