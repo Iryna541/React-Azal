@@ -128,10 +128,9 @@ const ReportsPage = () => {
             {value === "example2" && <ZinoExample />}
           </>
         )}
-        {user?.company_id === 211 ||
-          (user?.company_id === 221 && (
-            <RussReport selectedReport={russSelectedReport} />
-          ))}
+        {(user?.company_id === 211 || user?.company_id === 221) && (
+          <RussReport selectedReport={russSelectedReport} />
+        )}
         {user?.company_id === 214 && (
           <ZinoReport selectedReport={zinoSelectedReport} />
         )}
