@@ -77,7 +77,8 @@ export default function DashboardPage() {
     <ProtectedRoute>
       {user?.company_id === 211 ||
       user?.company_id === 210 ||
-      user?.company_id === 218 ? (
+      user?.company_id === 218 ||
+      user?.company_id === 221 ? (
         <InsightsProvider>
           <RussSetup />
         </InsightsProvider>
