@@ -70,12 +70,11 @@ export default function InsightsPage() {
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
     "Company 1"
   );
-  console.log(setSelectedDemoOption);
 
   const dateInformation = currentDateRange
-    ? currentDateRange[0].data_frequency === "Weekly"
-      ? `${dayjs.utc(currentDateRange[0].week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0].week_end_date).format("LL")}`
-      : `${dayjs.utc(currentDateRange[0].date).format("LL")}`
+    ? currentDateRange[0]?.data_frequency === "Weekly"
+      ? `${dayjs.utc(currentDateRange[0]?.week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0]?.week_end_date).format("LL")}`
+      : `${dayjs.utc(currentDateRange[0]?.date).format("LL")}`
     : null;
 
   return (
@@ -123,9 +122,10 @@ export default function InsightsPage() {
             )
           ) : (
             <>
-              {(user?.company_id === 211 || user?.company_id === 218) && (
-                <RussSetup />
-              )}
+              {(user?.company_id === 211 ||
+                user?.company_id === 218 ||
+                user?.company_id === 221) && <RussSetup />}
+
               {(user?.company_id === 212 || user?.company_id === 215) && (
                 <ShawnSetup />
               )}

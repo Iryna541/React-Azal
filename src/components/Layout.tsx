@@ -141,7 +141,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
           user?.company_id === 210 ||
           user?.company_id === 214 ||
           user?.company_id === 216 ||
-          user?.company_id === 218)
+          user?.company_id === 218 ||
+          user?.company_id === 221)
       ) {
         return { ...link, isLocked: false };
       }
