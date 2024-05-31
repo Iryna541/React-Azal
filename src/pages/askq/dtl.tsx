@@ -64,7 +64,7 @@ import { InsightsList } from "~/revamp/components/InsightsList";
 import { marked } from "marked";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
 
-export default function InsightsPage() {
+export default function DtlPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
@@ -119,7 +119,7 @@ export default function InsightsPage() {
             ) : selectedDemoOption === "Burger King" ? (
               <RussSetup withAccordion />
             ) : (
-              <NewRussSetup forInsightsAction={true} />
+              <NewRussSetup forInsightsAction={false} />
             )
           ) : (
             <>
@@ -226,10 +226,13 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
     });
 
   return (
-    <Tabs variant="pills" radius="xs" defaultValue="store">
+    <Tabs variant="pills" radius="xs" defaultValue="manager">
       <Flex align="center" justify="space-between">
         <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
+          {/* <Tabs.Tab value="store">Store</Tabs.Tab> */}
+          {(user?.company_id === 210 || user?.company_id === 211) && (
+            <Tabs.Tab value="manager">DTL</Tabs.Tab>
+          )} {/*Remove this*/}
           {user?.company_id === 211 && (
             <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
           )}
@@ -368,9 +371,10 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
 
   return (
     <Box mt="lg">
-      <Tabs variant="pills" radius="xs" defaultValue="store">
+      <Tabs variant="pills" radius="xs" defaultValue="manager">
         <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
+          {/* <Tabs.Tab value="store">Store</Tabs.Tab> */}
+          <Tabs.Tab value="manager">Manager</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>

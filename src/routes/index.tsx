@@ -8,6 +8,7 @@ import { storage } from "~/lib/storage";
 import OscarGptPage from "~/pages/oscar-gpt";
 import OrganizationPage from "~/pages/organization";
 import InsightsPage from "~/pages/askq/insights";
+import DtlPage from "~/pages/askq/dtl";
 import AnalyticsPage from "~/pages/askq/analytics";
 import CommunicationPage from "~/pages/communication";
 import DashboardPage from "~/pages/askq";
@@ -22,6 +23,7 @@ export const getRoutes = (): RouteObject[] => {
     defineRoute("/askq", <DashboardPage />),
     defineRoute("/askq/analytics", <AnalyticsPage />),
     defineRoute("/askq/insights", <InsightsPage />),
+    defineRoute("/askq/dtl", <DtlPage />),
     defineRoute("/communication", <CommunicationPage />),
     defineRoute("/oscar-gpt", <OscarGptPage />),
     defineRoute("/auth/login", <LoginPage />),
