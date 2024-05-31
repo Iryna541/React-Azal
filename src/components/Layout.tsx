@@ -150,7 +150,11 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
       return link;
     })
     .filter((item) => {
-      if (item.label === "OscarGPT" && user?.company_id === 216) return false;
+      if (
+        item.label === "OscarGPT" &&
+        (user?.company_id === 216 || user?.company_id === 221)
+      )
+        return false;
       if (item.label === "Analytics" && user?.company_id === 216) {
         analyticsExists = true;
         return false;

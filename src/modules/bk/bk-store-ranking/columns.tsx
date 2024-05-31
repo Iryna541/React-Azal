@@ -142,6 +142,12 @@ export function ModalContent({ storeId }: { storeId: string }) {
   const [data, setData] = useState<any>();
   const queryClient = useQueryClient();
 
+  const testData = queryClient.getQueriesData({
+    queryKey: ["bk-analytics-charts"],
+  })[0][1];
+
+  console.log("test==>", testData);
+
   useEffect(() => {
     setData(
       queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
@@ -423,6 +429,12 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   const [data, setData] = useState<any>();
   const queryClient = useQueryClient();
 
+  const test = queryClient.getQueriesData({
+    queryKey: ["bk-analytics-charts"],
+  });
+
+  console.log("test:==>", test);
+
   useEffect(() => {
     setData(
       queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
@@ -439,8 +451,9 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   });
 
   const filteredData =
-    data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) ||
-    [];
+    data?.chart3?.filter(
+      (item: any) => item?.store_id === storeId.toString()
+    ) || [];
 
   const financialData = filteredData[0]?.data || [];
 
