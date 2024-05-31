@@ -47,7 +47,6 @@ async function getLtoTrainingReportDetails({
   storeId,
   managerId,
 }: GetLtoTrainingReportDetailsParams) {
-  console.log({ managerId });
   let url = "";
   if (storeId) {
     url = `/analytics/getLTODetails?store_id=${storeId}`;

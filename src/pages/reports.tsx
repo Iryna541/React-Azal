@@ -100,26 +100,27 @@ const ReportsPage = () => {
               }}
             />
           )}
-          {user?.company_id === 211 && (
-            <Select
-              data={[
-                {
-                  value: "lto-training",
-                  label: "LTO Training",
-                },
-                {
-                  value: "labor-violation",
-                  label: "Labor Violation",
-                },
-              ]}
-              value={russSelectedReport}
-              onChange={(val) => {
-                if (val) {
-                  setRussSelectedReport(val);
-                }
-              }}
-            />
-          )}
+          {user?.company_id === 211 ||
+            (user?.company_id === 221 && (
+              <Select
+                data={[
+                  {
+                    value: "lto-training",
+                    label: "LTO Training",
+                  },
+                  {
+                    value: "labor-violation",
+                    label: "Labor Violation",
+                  },
+                ]}
+                value={russSelectedReport}
+                onChange={(val) => {
+                  if (val) {
+                    setRussSelectedReport(val);
+                  }
+                }}
+              />
+            ))}
         </Flex>
         {user?.company_id === 210 && (
           <>
@@ -127,9 +128,10 @@ const ReportsPage = () => {
             {value === "example2" && <ZinoExample />}
           </>
         )}
-        {user?.company_id === 211 && (
-          <RussReport selectedReport={russSelectedReport} />
-        )}
+        {user?.company_id === 211 ||
+          (user?.company_id === 221 && (
+            <RussReport selectedReport={russSelectedReport} />
+          ))}
         {user?.company_id === 214 && (
           <ZinoReport selectedReport={zinoSelectedReport} />
         )}

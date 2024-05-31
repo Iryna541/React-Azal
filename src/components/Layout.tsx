@@ -169,7 +169,8 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
     !(
       user?.company_id === 210 ||
       user?.company_id === 211 ||
-      user?.company_id === 214
+      user?.company_id === 214 ||
+      user?.company_id === 221
     )
   ) {
     links = [...links].filter((item) => item.label != "Reports");
