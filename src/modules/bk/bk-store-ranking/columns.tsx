@@ -442,7 +442,7 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
     data?.chart3?.filter((item: any) => item.store_id === storeId.toString()) ||
     [];
 
-  const financialData = filteredData[0]?.data;
+  const financialData = filteredData[0]?.data || [];
 
   return (
     <Stack gap="sm">
@@ -450,9 +450,12 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
         financialData.map((item: any) => {
           return (
             <Flex justify="space-between" py={4}>
-              <Text size="sm">{item.label}</Text>
+              <Text size="sm">{item?.label}</Text>
               <Text size="sm" fw={600}>
-                {USDollar.format(item.value)}
+                {item?.label.includes("%")
+                  ? `${item?.value}%`
+                  : USDollar.format(item?.value)}
+                {/* {item.value} */}
               </Text>
             </Flex>
           );
