@@ -56,6 +56,12 @@ const NAVBAR_LINKS = [
     isLocked: false,
   },
   {
+    label: "DTL",
+    href: "/askq/dtl",
+    Icon: <IconAutomation />,
+    isLocked: false,
+  },
+  {
     label: "Analytics",
     href: "/askq/analytics",
     Icon: <IconAnalytics height={ICON_SIZE} width={ICON_SIZE} />,
