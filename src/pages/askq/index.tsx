@@ -110,7 +110,7 @@ function RussSetup() {
 
   const [selectedFilter, setSelectedFilter] = useState<
     "weekly" | "monthly" | "periodically"
-  >("monthly");
+  >("periodically");
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("YYYY-MM-DD")
   );
