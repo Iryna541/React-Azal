@@ -142,12 +142,6 @@ export function ModalContent({ storeId }: { storeId: string }) {
   const [data, setData] = useState<any>();
   const queryClient = useQueryClient();
 
-  const testData = queryClient.getQueriesData({
-    queryKey: ["bk-analytics-charts"],
-  })[0][1];
-
-  console.log("test==>", testData);
-
   useEffect(() => {
     setData(
       queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
@@ -178,8 +172,6 @@ export function ModalContent({ storeId }: { storeId: string }) {
   };
 
   if (data) {
-    console.log(data.chart2[0].stores);
-
     storeRatings.acr =
       data.chart2[0].stores.find(
         (item: any) => item.store_id.toString() === storeId.toString()
@@ -429,15 +421,15 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   const [data, setData] = useState<any>();
   const queryClient = useQueryClient();
 
-  const test = queryClient.getQueriesData({
+  const test = queryClient?.getQueriesData({
     queryKey: ["bk-analytics-charts"],
-  });
-
-  console.log("test:==>", test);
+  })?.[0]?.[1];
 
   useEffect(() => {
     setData(
-      queryClient.getQueriesData({ queryKey: ["bk-analytics-charts"] })[0][1]
+      queryClient?.getQueriesData({
+        queryKey: ["bk-analytics-charts"],
+      })?.[0]?.[1]
     );
   }, [queryClient]);
   // const { data: data } = useBkAnalyticsCharts({
@@ -452,7 +444,7 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
 
   const filteredData =
     data?.chart3?.filter(
-      (item: any) => item?.store_id === storeId.toString()
+      (item: any) => item?.store_id.toString() === storeId.toString()
     ) || [];
 
   const financialData = filteredData[0]?.data || [];
