@@ -789,32 +789,73 @@ export const costDataColumns: ColumnDef<CostData>[] = [
 export const laborInfoColumns: ColumnDef<LaborInfoData>[] = [
   {
     accessorKey: "store_name",
-    header: "Store",
-    size: 200,
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      Store
+    </Text>,
+    size: 180,
   },
   {
     accessorKey: "total_hours",
-    header: "T Hrs",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      T Hrs
+    </Text>,
+    size: 110,
   },
   {
     accessorKey: "labor_overtime_hours",
-    header: " OT Hrs",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      OT Hrs
+    </Text>,
+    size: 110,
   },
   {
     accessorKey: "salary_hours",
-    header: "Salary Hrs",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      Salary Hrs
+    </Text>,
+    size: 110,
   },
   {
     accessorKey: "labor_total_hours",
-    header: "TTL Hrs",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      TTL Hrs
+    </Text>,
+    size: 110,
   },
   {
     accessorKey: "gc_over_lh",
-    header: "GC/LH",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      GC/LH
+    </Text>,
+    size: 110,
   },
   {
     accessorKey: "labor_per_hour_rate",
-    header: "$/LH",
+    header: () => <Text
+      style={{ textAlign: "center", fontSize: "14px" }}
+      c="white"
+    >
+      $/LH
+    </Text>,
+    size: 110,
     cell: ({ getValue }) => {
       const value = getValue() as string;
 

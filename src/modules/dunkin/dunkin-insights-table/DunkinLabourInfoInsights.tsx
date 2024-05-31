@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
+import { ScrollArea, Box, Table } from "@mantine/core";
 import { laborInfoColumns } from "./columns";
 
 import { useState } from "react";
@@ -54,17 +54,17 @@ export function DunkinLabourInfoInsightsTable({
     },
   });
   const setHeaderColor = () => {
-    return "blue.1";
+    return "#789ccc";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return "#f2f2f2";
 
     return "white";
   };
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
+        <Box w={120}>
           <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -83,9 +83,9 @@ export function DunkinLabourInfoInsightsTable({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </Table.Th>
                     );
                   })}
@@ -99,7 +99,7 @@ export function DunkinLabourInfoInsightsTable({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell, index) => (
                       <Table.Td
                         bg={setCellColor(cell.id)}
                         key={cell.id}
@@ -107,6 +107,8 @@ export function DunkinLabourInfoInsightsTable({
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          fontWeight: index == 0 ? 700 : undefined,
+                          textAlign: index == 0 ? undefined : "center"
                         }}
                       >
                         {flexRender(
@@ -129,7 +131,7 @@ export function DunkinLabourInfoInsightsTable({
               )}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </Box>
       </ScrollArea>
     </>
   );
