@@ -65,7 +65,7 @@ export function DunkinDriveThruInsightsTable({
     <>
       <ScrollArea scrollbars="x">
         <Box w={730}>
-          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" style={{ borderRight: "1px solid #f0f0f0" }}>
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Table.Tr key={headerGroup.id}>

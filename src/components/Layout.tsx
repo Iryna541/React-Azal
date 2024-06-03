@@ -18,7 +18,7 @@ import {
   IconBubble,
   IconDashboard,
   BarchartBig,
-  IconCommunication,
+  IconActionPlan
 } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
@@ -56,9 +56,10 @@ const NAVBAR_LINKS = [
     isLocked: false,
   },
   {
-    label: "DTL",
+    label: "Action Plan",
     href: "/askq/dtl",
-    Icon: <IconAutomation />,
+    Icon: <IconActionPlan fill="#fff" />,
+    selectedIcon: <IconActionPlan fill="#5d91f9" />,
     isLocked: false,
   },
   {
@@ -284,7 +285,7 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
               to={link.href}
               component={Link}
               active={isActive}
-              leftSection={link.Icon}
+              leftSection={isActive && link.selectedIcon ? link.selectedIcon : link.Icon}
               label={link.label}
             />
           );
