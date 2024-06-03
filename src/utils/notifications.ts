@@ -19,6 +19,6 @@ export function showErrorNotification(message: string) {
     message: message,
   });
 }
-export function formatNumber(number: number = 0, length: number = 2) {
+export function formatNumber(number: any = 0, length: number = 2) {
   return number.toString().padStart(length, '0');
 }

@@ -19,7 +19,7 @@ export function InsightsList<TData>({
   return (
     <Grid>
       <Grid.Col span={4}>
-        <Stack style={{ backgroundColor: "#ECEEF2", borderColor: "#D5D9E2", padding: "16px", borderRadius: 16 }} gap="md">
+        <Stack style={{ backgroundColor: "#ECEEF2", borderColor: "#D5D9E2", padding: "16px", borderRadius: 16/*, maxHeight: "1024px", overflow: "auto" */}} gap="md">
           {data.map((row, i) => {
             return (
               <SimpleGrid cols={2} style={{ cursor: "pointer", backgroundColor: (i == selectedIndex ? "#EDFAFF" : "#fff"), borderColor: (i == selectedIndex ? "#0A93FF" : "#D5D9E2"), borderStyle: "solid", borderWidth: 2, padding: "16px", borderRadius: 16 }} spacing="md" verticalSpacing="xl" onClick={() => setSelectedIndex(i)} key={i}>
@@ -30,7 +30,7 @@ export function InsightsList<TData>({
         </Stack>
       </Grid.Col>
       <Grid.Col span={8}>
-        <TypographyStylesProvider p="16" m="0" style={{ border: "2px solid #e0e3e9", borderRadius: 16 }}>
+        <TypographyStylesProvider p="16" m="0" style={{ border: "2px solid #e0e3e9", borderRadius: 16, maxHeight: "1024px", overflow: "auto" }}>
           {createElement(panel, { row: data[selectedIndex] })}
         </TypographyStylesProvider>
 
