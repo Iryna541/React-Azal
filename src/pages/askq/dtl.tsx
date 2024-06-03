@@ -85,7 +85,7 @@ export default function DtlPage() {
           <Flex align="center" gap="sm" mb="lg" justify={"space-between"}>
             <Flex align="center" gap="sm" mb="lg">
               {user?.company_id !== 214 ? (
-                <Title order={3}>Insights</Title>
+                <Title order={3}>Action Plan</Title>
               ) : (
                 <Title order={3}>Weekly Flash</Title>
               )}
@@ -231,7 +231,7 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
         <Tabs.List mb="lg">
           {/* <Tabs.Tab value="store">Store</Tabs.Tab> */}
           {(user?.company_id === 210 || user?.company_id === 211) && (
-            <Tabs.Tab value="manager">DTL</Tabs.Tab>
+            <Tabs.Tab value="manager">Action Plan</Tabs.Tab>
           )} {/*Remove this*/}
           {user?.company_id === 211 && (
             <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>

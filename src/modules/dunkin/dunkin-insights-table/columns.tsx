@@ -742,7 +742,7 @@ export const costDataColumns: ColumnDef<CostData>[] = [
       return (
         <Text
           style={{ fontSize: "14px", textAlign: "center" }}
-          c={target < 0 ? "red.5" : ""}
+          c={target < 0 ? "green.5" : ""}
           bg={target > 0 ? "red.5" : ""}
           fw={700}
         >
