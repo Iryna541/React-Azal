@@ -27,6 +27,8 @@ import { modals } from "@mantine/modals";
 // import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useBkAnalyticsCharts } from "../bk-charts-2/api/useBkAnalyticsCharts";
+import moment from "moment";
 
 export const columns: ColumnDef<StoreInsights>[] = [
   {
@@ -431,6 +433,16 @@ export function FinancialModalContent({ storeId }: { storeId: string }) {
   // const { data: data } = useBkAnalyticsCharts({
   //   isMystores: false,
   // });
+
+  const { data: chartData } = useBkAnalyticsCharts({
+    isMystores: false,
+    startDate: moment().startOf("week").format("YYYY-MM-DD"),
+    endDate: moment().endOf("week").format("YYYY-MM-DD"),
+  });
+
+  console.log("start date:", moment().startOf("week").format("YYYY-MM-DD"));
+  console.log("end date:", moment().endOf("week").format("YYYY-MM-DD"));
+  console.log("chart data:", chartData);
 
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
