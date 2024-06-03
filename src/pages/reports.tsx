@@ -100,27 +100,26 @@ const ReportsPage = () => {
               }}
             />
           )}
-          {user?.company_id === 211 ||
-            (user?.company_id === 221 && (
-              <Select
-                data={[
-                  {
-                    value: "lto-training",
-                    label: "LTO Training",
-                  },
-                  {
-                    value: "labor-violation",
-                    label: "Labor Violation",
-                  },
-                ]}
-                value={russSelectedReport}
-                onChange={(val) => {
-                  if (val) {
-                    setRussSelectedReport(val);
-                  }
-                }}
-              />
-            ))}
+          {user?.company_id === 211 && (
+            <Select
+              data={[
+                {
+                  value: "lto-training",
+                  label: "LTO Training",
+                },
+                {
+                  value: "labor-violation",
+                  label: "Labor Violation",
+                },
+              ]}
+              value={russSelectedReport}
+              onChange={(val) => {
+                if (val) {
+                  setRussSelectedReport(val);
+                }
+              }}
+            />
+          )}
         </Flex>
         {user?.company_id === 210 && (
           <>
