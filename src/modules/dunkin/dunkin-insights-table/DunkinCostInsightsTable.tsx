@@ -10,10 +10,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
-import { costDataColumns } from "./columns";
+import { ScrollArea, Stack, Box, Table } from "@mantine/core";
+import { costDataColumns, costDataColumnsForDemo } from "./columns";
 import { useState } from "react";
-
+import { useUser } from "~/modules/auth/hooks/useUser";
 import { CostData } from "./api/useGetInsights";
 
 interface DunkinInsightsTableProps {
@@ -24,10 +24,12 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const { user } = useUser();
+  const isDemoAccount = user?.company_id == 210;
 
   const table = useReactTable({
     data,
-    columns: costDataColumns,
+    columns: isDemoAccount ? costDataColumnsForDemo : costDataColumns,
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
 
@@ -51,6 +53,7 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
     },
   });
   const setHeaderColor = (id: string) => {
+    if (isDemoAccount) return "#789ccc";
     if (id === "store_name") return "blue.1";
     else if (id === "cml_cost_percentage") return "green.1";
     else if (id === "total_cogs_percentage") return "teal.5";
@@ -60,15 +63,18 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
     return "white";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return isDemoAccount ? "#f2f2f2" : "blue.1";
 
     return "white";
   };
+
+  const WrapperComponent = isDemoAccount ? Box : Stack;
+  const w = isDemoAccount ? 730 : undefined;
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
-          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+        <WrapperComponent w={w}>
+          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" style={isDemoAccount ? { borderRight: "1px solid #f0f0f0" } : undefined}>
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Table.Tr key={headerGroup.id}>
@@ -81,14 +87,15 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
                           width: header.column.getSize(),
                           minWidth: header.column.getSize(),
                           maxWidth: header.column.getSize(),
+                          padding: isDemoAccount ? 10 : undefined,
                         }}
                       >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </Table.Th>
                     );
                   })}
@@ -110,6 +117,8 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          padding: isDemoAccount ? 10 : undefined,
+                          fontWeight: isDemoAccount ? 700 : undefined,
                         }}
                       >
                         {flexRender(
@@ -132,7 +141,7 @@ export function DunkinCostInsightsTable({ data }: DunkinInsightsTableProps) {
               )}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </WrapperComponent>
       </ScrollArea>
     </>
   );

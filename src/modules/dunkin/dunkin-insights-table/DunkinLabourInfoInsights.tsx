@@ -10,13 +10,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ScrollArea, Stack, Table } from "@mantine/core";
-import { laborInfoColumns } from "./columns";
+import { ScrollArea, Stack, Box, Table } from "@mantine/core";
+import { laborInfoColumns, laborInfoColumnsForDemo } from "./columns";
 
 import { useState } from "react";
 
 import { LaborInfoData } from "./api/useGetInsights";
-
+import { useUser } from "~/modules/auth/hooks/useUser";
 interface DunkinInsightsTableProps {
   data: LaborInfoData[]; // Ensure this matches the expected structure
 }
@@ -27,10 +27,12 @@ export function DunkinLabourInfoInsightsTable({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const { user } = useUser();
+  const isDemoAccount = user?.company_id == 210;
 
   const table = useReactTable({
     data,
-    columns: laborInfoColumns,
+    columns: isDemoAccount ? laborInfoColumnsForDemo : laborInfoColumns,
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
 
@@ -54,18 +56,20 @@ export function DunkinLabourInfoInsightsTable({
     },
   });
   const setHeaderColor = () => {
-    return "blue.1";
+    return isDemoAccount ? "#789ccc" : "blue.1";
   };
   const setCellColor = (id: string) => {
-    if (id.includes("store_name")) return "blue.1";
+    if (id.includes("store_name")) return isDemoAccount ? "#f2f2f2" : "blue.1";
 
     return "white";
   };
+  const WrapperComponent = isDemoAccount ? Box : Stack;
+  const w = isDemoAccount ? 730 : undefined;
   return (
     <>
       <ScrollArea scrollbars="x">
-        <Stack>
-          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs">
+        <WrapperComponent w={w}>
+          <Table horizontalSpacing="lg" withColumnBorders verticalSpacing="xs" style={{ borderRight: "1px solid #f0f0f0" }}>
             <Table.Thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Table.Tr key={headerGroup.id}>
@@ -83,9 +87,9 @@ export function DunkinLabourInfoInsightsTable({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </Table.Th>
                     );
                   })}
@@ -99,7 +103,7 @@ export function DunkinLabourInfoInsightsTable({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell, index) => (
                       <Table.Td
                         bg={setCellColor(cell.id)}
                         key={cell.id}
@@ -107,6 +111,8 @@ export function DunkinLabourInfoInsightsTable({
                           width: cell.column.getSize(),
                           minWidth: cell.column.getSize(),
                           maxWidth: cell.column.getSize(),
+                          fontWeight: index == 0 && isDemoAccount ? 700 : undefined,
+                          textAlign: index == 0 || !isDemoAccount ? undefined : "center"
                         }}
                       >
                         {flexRender(
@@ -129,7 +135,7 @@ export function DunkinLabourInfoInsightsTable({
               )}
             </Table.Tbody>
           </Table>
-        </Stack>
+        </WrapperComponent>
       </ScrollArea>
     </>
   );

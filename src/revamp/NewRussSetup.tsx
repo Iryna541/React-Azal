@@ -11,12 +11,12 @@ import {
 import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussManagerSchedules";
 import { SubwayInsights } from "./subway/SubwayInsights";
 
-export function NewRussSetup() {
+export function NewRussSetup({ forInsightsAction }) {
   const { configurations, user } = useUser();
   const { data } = useStoreRanking({
     companyId: user?.company_id.toString(),
   });
-
+  
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
     data || []
   );
@@ -75,17 +75,18 @@ export function NewRussSetup() {
   const filteredManagerData = isAdmin
     ? managerData
     : managerData?.filter((item) => {
-        return item.managers_name === user?.name;
-      });
+      return item.managers_name === user?.name;
+    });
 
   return (
-    <Tabs variant="pills" radius="xs" defaultValue="store">
+    <Tabs variant="pills" radius="xs" defaultValue={forInsightsAction ? "store" : "manager"}>
       <Flex align="center" justify="space-between">
         <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
-          {(user?.company_id === 210 || user?.company_id === 211) && (
-            <Tabs.Tab value="manager">DTL</Tabs.Tab>
-          )}
+          {
+            forInsightsAction ? (<Tabs.Tab value="store">Store</Tabs.Tab>) : (user?.company_id === 210 || user?.company_id === 211) && (
+              <Tabs.Tab value="manager">Action Plan</Tabs.Tab>
+            )
+          }
           {user?.company_id === 211 && (
             <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
           )}

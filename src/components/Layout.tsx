@@ -19,6 +19,7 @@ import {
   IconDashboard,
   BarchartBig,
   IconCommunication,
+  IconActionPlan
 } from "~/assets";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "./Avatar";
@@ -53,6 +54,13 @@ const NAVBAR_LINKS = [
     label: "Insights",
     href: "/askq/insights",
     Icon: <IconAutomation />,
+    isLocked: false,
+  },
+  {
+    label: "Action Plan",
+    href: "/askq/dtl",
+    Icon: <IconActionPlan fill="#fff" />,
+    selectedIcon: <IconActionPlan fill="#5d91f9" />,
     isLocked: false,
   },
   {
@@ -123,8 +131,14 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const { user, configurations } = useUser();
 
   let links = isAdmin ? NAVBAR_ADMIN_LINKS : NAVBAR_LINKS;
+  if (user?.company_id == 210) {
+    // Remove Communication tab and Move "DTL" to "Action Plan" tab
+    links = links.filter(link => link.label != "Communication");
+  } else {
+    links = links.filter(link => link.label != "Action Plan");
+  }
 
-  let analyticsExists = false;
+  let analyticsExists = false, analyticsLink = null;
   links = links
     .map((link) => {
       if (
@@ -157,13 +171,14 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
         return false;
       if (item.label === "Analytics" && user?.company_id === 216) {
         analyticsExists = true;
+        analyticsLink = item;
         return false;
       }
       return true;
     });
 
   if (user?.company_id === 216 && analyticsExists)
-    links.unshift(NAVBAR_LINKS[3]);
+    links.unshift(analyticsLink);
 
   if (user?.company_id === 210 || user?.company_id === 214) {
     links = [...links].filter((item) => item.label != "OscarGPT");
@@ -277,14 +292,13 @@ export function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             configurations?.role.role_id !== 2
           )
             return;
-
           return (
             <NavLink
               key={index}
               to={link.href}
               component={Link}
               active={isActive}
-              leftSection={link.Icon}
+              leftSection={isActive && link.selectedIcon ? link.selectedIcon : link.Icon}
               label={link.label}
             />
           );

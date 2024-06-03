@@ -12,13 +12,9 @@ import {
   Loader,
   Center,
   Grid,
-  Group,
   Text,
   TypographyStylesProvider,
 } from "@mantine/core";
-
-import { IconFirstPlace, IconSecondPlace, IconThirdPlace } from "~/assets";
-
 import { Layout } from "~/components/Layout";
 import {
   GetStoreRankingResponse,
@@ -66,20 +62,20 @@ import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussMa
 import { NewRussSetup } from "~/revamp/NewRussSetup";
 import { InsightsList } from "~/revamp/components/InsightsList";
 import { marked } from "marked";
-import { formatNumber } from "~/utils/notifications";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
 
-export default function InsightsPage() {
+export default function DtlPage() {
   const { user } = useUser();
   const { data: currentDateRange } = useCurrentDateRange();
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
     "Burger King"
   );
+  console.log(setSelectedDemoOption);
 
   const dateInformation = currentDateRange
-    ? currentDateRange[0]?.data_frequency === "Weekly"
-      ? `${dayjs.utc(currentDateRange[0]?.week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0]?.week_end_date).format("LL")}`
-      : `${dayjs.utc(currentDateRange[0]?.date).format("LL")}`
+    ? currentDateRange[0].data_frequency === "Weekly"
+      ? `${dayjs.utc(currentDateRange[0].week_start_date).format("LL")} — ${dayjs.utc(currentDateRange[0].week_end_date).format("LL")}`
+      : `${dayjs.utc(currentDateRange[0].date).format("LL")}`
     : null;
 
   return (
@@ -89,7 +85,7 @@ export default function InsightsPage() {
           <Flex align="center" gap="sm" mb="lg" justify={"space-between"}>
             <Flex align="center" gap="sm" mb="lg">
               {user?.company_id !== 214 ? (
-                <Title order={3}>Insights</Title>
+                <Title order={3}>Action Plan</Title>
               ) : (
                 <Title order={3}>Weekly Flash</Title>
               )}
@@ -123,14 +119,13 @@ export default function InsightsPage() {
             ) : selectedDemoOption === "Burger King" ? (
               <RussSetup withAccordion />
             ) : (
-              <NewRussSetup forInsightsAction={true} />
+              <NewRussSetup forInsightsAction={false} />
             )
           ) : (
             <>
-              {(user?.company_id === 211 ||
-                user?.company_id === 218 ||
-                user?.company_id === 221) && <RussSetup />}
-
+              {(user?.company_id === 211 || user?.company_id === 218) && (
+                <RussSetup />
+              )}
               {(user?.company_id === 212 || user?.company_id === 215) && (
                 <ShawnSetup />
               )}
@@ -231,13 +226,13 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
     });
 
   return (
-    <Tabs variant="pills" radius="xs" defaultValue="store">
+    <Tabs variant="pills" radius="xs" defaultValue="manager">
       <Flex align="center" justify="space-between">
         <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
-          {(user?.company_id === 211) && (
-            <Tabs.Tab value="manager">DTL</Tabs.Tab>
-          )}
+          {/* <Tabs.Tab value="store">Store</Tabs.Tab> */}
+          {(user?.company_id === 210 || user?.company_id === 211) && (
+            <Tabs.Tab value="manager">Action Plan</Tabs.Tab>
+          )} {/*Remove this*/}
           {user?.company_id === 211 && (
             <Tabs.Tab value="manager-schedules">Manager Schedules</Tabs.Tab>
           )}
@@ -287,80 +282,37 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
               data={data}
               control={({ row }) => {
                 return (
-                  user?.company_id == 210 ? (
-                    <>
-                      <Stack>
-                        <Group>
-                          {row.overall_ranking == "1" ? <IconFirstPlace /> : row.overall_ranking == "2" ? <IconSecondPlace /> : row.overall_ranking == "3" ? <IconThirdPlace /> : <></>}
-                          <Title order={6}>{formatNumber(row.overall_ranking)}</Title>
-                        </Group>
-
-                        <Text>
-                          &nbsp;
-                        </Text>
-                      </Stack>
-
-                      <Stack>
-                        <Group style={{ position: "relative" }}>
-                          <Title order={6}>Store</Title>
-                          <Text style={{ position: "absolute", right: "10px", color: "#0A93FF", fontSize: 25, top: -10 }}> &gt;</Text>
-                        </Group>
-
-                        <Text>
-                          {row.store_id}
-                        </Text>
-                      </Stack>
-                      <Stack>
-                        <Title order={6}>FSS Ranking</Title>
-                        <Text>
-                          {formatNumber(row.fss_ranking)}
-                        </Text>
-                      </Stack>
-                      <Stack>
-                        <Title order={6}>Manager Profile Ranking</Title>
-                        <Text>
-                          {formatNumber(row.mgr_profit_ranking)}
-                        </Text>
-                      </Stack>
-                    </>) : (
-                    <Grid>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Rank
-                        </Title>
-                        <Text>#{row.overall_ranking}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Store Id
-                        </Title>
-                        <Text>{row.store_id}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          FSS Ranking
-                        </Title>
-                        <Text>{row.fss_ranking}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Manager Profit Ranking
-                        </Title>
-                        <Text>{row.mgr_profit_ranking}</Text>
-                      </Grid.Col>
-                    </Grid>
-                  )
-
+                  <Grid>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Rank
+                      </Title>
+                      <Text>#{row.overall_ranking}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Store Id
+                      </Title>
+                      <Text>{row.store_id}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        FSS Ranking
+                      </Title>
+                      <Text>{row.fss_ranking}</Text>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Title order={6} fw={500}>
+                        Manager Profit Ranking
+                      </Title>
+                      <Text>{row.mgr_profit_ranking}</Text>
+                    </Grid.Col>
+                  </Grid>
                 );
               }}
               panel={({ row }) => {
                 const html = marked(row.insights) as string;
-                return user?.company_id == 210 ? (
-                  <div
-                    style={{ fontSize: 14 }}
-                    dangerouslySetInnerHTML={{ __html: html! }}
-                  />
-                ) : (
+                return (
                   <Stack
                     style={{ borderTop: "1px solid hsl(var(--border))" }}
                     py="md"
@@ -419,27 +371,13 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
 
   return (
     <Box mt="lg">
-      <Tabs variant="pills" radius="xs" defaultValue="store">
+      <Tabs variant="pills" radius="xs" defaultValue="manager">
         <Tabs.List mb="lg">
-          <Tabs.Tab value="store">Store</Tabs.Tab>
-          {user?.company_id != 210 &&
-            <Tabs.Tab value="manager">Manager</Tabs.Tab>
-          }
+          {/* <Tabs.Tab value="store">Store</Tabs.Tab> */}
+          <Tabs.Tab value="manager">Manager</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="store">
           <Stack gap={40}>
-            {user?.company_id != 210 && (
-              <SimpleGrid cols={2} spacing="xl">
-                <DunkinTopStoreRanking
-                  title="Top 5 Best Stores"
-                  data={topStores.slice(0, 5)}
-                />
-                <DunkinTopStoreRanking
-                  title="Top 5 Worst Stores"
-                  data={topStores.reverse().slice(0, 5)}
-                />
-              </SimpleGrid>
-            )}
             {!withAccordion && (
               <Box
                 style={{
@@ -471,43 +409,7 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
               <InsightsList
                 data={data}
                 control={({ row }) => {
-                  return user?.company_id == 210 ? (
-                    <>
-                      <Stack>
-                        <Group>
-                          {row.store_rank == 1 ? <IconFirstPlace /> : row.store_rank == 2 ? <IconSecondPlace /> : row.store_rank == 3 ? <IconThirdPlace /> : <></>}
-                          <Title order={6}>{formatNumber(row.store_rank)}</Title>
-                        </Group>
-
-                        <Text>
-                          &nbsp;
-                        </Text>
-                      </Stack>
-
-                      <Stack>
-                        <Group style={{ position: "relative" }}>
-                          <Title order={6}>Store</Title>
-                          <Text style={{ position: "absolute", right: "10px", color: "#0A93FF", fontSize: 25, top: -10 }}> &gt;</Text>
-                        </Group>
-
-                        <Text>
-                          {row.store_id}
-                        </Text>
-                      </Stack>
-                      <Stack>
-                        <Title order={6}>Net Sales Current</Title>
-                        <Text>
-                          {formatNumber(row.net_sales_current)}
-                        </Text>
-                      </Stack>
-                      <Stack>
-                        <Title order={6}>Net Sales Previous</Title>
-                        <Text>
-                          {formatNumber(row.net_sales_previous)}
-                        </Text>
-                      </Stack>
-                    </>
-                  ) : (
+                  return (
                     <Grid>
                       <Grid.Col span={3}>
                         <Title order={6} fw={500}>
@@ -538,12 +440,7 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
                 }}
                 panel={({ row }) => {
                   const html = marked(row.insights) as string;
-                  return user?.company_id == 210 ? (
-                    <div
-                      style={{ fontSize: 14 }}
-                      dangerouslySetInnerHTML={{ __html: html! }}
-                    />
-                  ) : (
+                  return (
                     <Stack
                       style={{ borderTop: "1px solid hsl(var(--border))" }}
                       py="md"

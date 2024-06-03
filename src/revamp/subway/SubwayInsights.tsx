@@ -7,10 +7,14 @@ import {
   Text,
   Title,
   TypographyStylesProvider,
+  Group
 } from "@mantine/core";
+import { IconFirstPlace, IconSecondPlace, IconThirdPlace } from "~/assets";
 import { marked } from "marked";
 import { InsightsList } from "../components/InsightsList";
 import { BarChart } from "@mantine/charts";
+import { formatNumber } from "~/utils/notifications";
+import { useUser } from "~/modules/auth/hooks/useUser";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -18,11 +22,46 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 export function SubwayInsights() {
+  const { user } = useUser();
+  const isDemoAccount = user?.company_id == 210;
   return (
     <InsightsList
       data={data}
       control={({ row }) => {
-        return (
+        return isDemoAccount ? (
+          <>
+            <Stack>
+              <Group>
+                {row.overall_ranking == 1 ? <IconFirstPlace /> : row.overall_ranking == 2 ? <IconSecondPlace /> : row.overall_ranking == 3 ? <IconThirdPlace /> : <></>}
+                <Title order={6}>{formatNumber(row.overall_ranking)}</Title>
+              </Group>
+
+              <Text>
+                &nbsp;
+              </Text>
+            </Stack>
+
+            <Stack>
+              <Group style={{ position: "relative" }}>
+                <Title order={6}>Store</Title>
+                <Text style={{ position: "absolute", right: "10px", color: "#0A93FF", fontSize: 25, top: -10 }}> &gt;</Text>
+              </Group>
+
+              <Text>
+                {row.store_id}
+              </Text>
+            </Stack>
+            <Stack>
+
+            </Stack>
+            <Stack>
+              <Title order={6}>Total Sales</Title>
+              <Text>
+                {formatter.format(row.total_sales)}
+              </Text>
+            </Stack>
+          </>
+        ) : (
           <Grid>
             <Grid.Col span={4}>
               <Title order={6} fw={500}>
@@ -50,7 +89,7 @@ export function SubwayInsights() {
         const summaryHtml = marked(row.summary) as string;
         const headingHtml = marked(row.heading) as string;
         return (
-          <Stack style={{ borderTop: "1px solid hsl(var(--border))" }} py="md">
+          <Stack style={isDemoAccount ? undefined : { borderTop: "1px solid hsl(var(--border))" }} py="md">
             <Box>
               <TypographyStylesProvider p="0" m="0">
                 <div
