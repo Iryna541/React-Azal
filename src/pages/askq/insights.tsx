@@ -3,7 +3,6 @@ import {
   Box,
   Divider,
   Flex,
-  SimpleGrid,
   Stack,
   Tabs,
   Title,
@@ -12,9 +11,13 @@ import {
   Loader,
   Center,
   Grid,
+  Group,
   Text,
   TypographyStylesProvider,
 } from "@mantine/core";
+
+import { IconFirstPlace, IconSecondPlace, IconThirdPlace } from "~/assets";
+
 import { Layout } from "~/components/Layout";
 import {
   GetStoreRankingResponse,
@@ -62,6 +65,7 @@ import { RussManagerSchedules } from "~/modules/bk/russ-manager-schedules/RussMa
 import { NewRussSetup } from "~/revamp/NewRussSetup";
 import { InsightsList } from "~/revamp/components/InsightsList";
 import { marked } from "marked";
+import { formatNumber } from "~/utils/notifications";
 // import { NewRussSetup } from "~/revamp/NewRussSetup";
 
 export default function InsightsPage() {
@@ -70,6 +74,7 @@ export default function InsightsPage() {
   const [selectedDemoOption, setSelectedDemoOption] = useState<string | null>(
     "Burger King"
   );
+  //console.log(setSelectedDemoOption);
 
   const dateInformation = currentDateRange
     ? currentDateRange[0]?.data_frequency === "Weekly"
@@ -279,48 +284,51 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
               data={data}
               control={({ row }) => {
                 return (
-                  <Grid>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Rank
-                      </Title>
-                      <Text>#{row.overall_ranking}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Store Id
-                      </Title>
-                      <Text>{row.store_id}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        FSS Ranking
-                      </Title>
-                      <Text>{row.fss_ranking}</Text>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Title order={6} fw={500}>
-                        Manager Profit Ranking
-                      </Title>
-                      <Text>{row.mgr_profit_ranking}</Text>
-                    </Grid.Col>
-                  </Grid>
+                  <>
+                    <Stack>
+                      <Group>
+                        {row.overall_ranking == 1 ? <IconFirstPlace /> : row.overall_ranking == 2 ? <IconSecondPlace /> : row.overall_ranking == 3 ? <IconThirdPlace /> : <></>}
+                        <Title order={6}>{formatNumber(row.overall_ranking)}</Title>
+                      </Group>
+
+                      <Text>
+                        &nbsp;
+                      </Text>
+                    </Stack>
+
+                    <Stack>
+                      <Group style={{ position: "relative" }}>
+                        <Title order={6}>Store</Title>
+                        <Text style={{ position: "absolute", right: "10px", color: "#0A93FF", fontSize: 25, top: -10 }}> &gt;</Text>
+                      </Group>
+
+                      <Text>
+                        {row.store_id}
+                      </Text>
+                    </Stack>
+                    <Stack>
+                      <Title order={6}>FSS Ranking</Title>
+                      <Text>
+                        {formatNumber(row.fss_ranking)}
+                      </Text>
+                    </Stack>
+                    <Stack>
+                      <Title order={6}>Manager Profile Ranking</Title>
+                      <Text>
+                        {formatNumber(row.mgr_profit_ranking)}
+                      </Text>
+                    </Stack>
+                  </>
+
                 );
               }}
               panel={({ row }) => {
                 const html = marked(row.insights) as string;
                 return (
-                  <Stack
-                    style={{ borderTop: "1px solid hsl(var(--border))" }}
-                    py="md"
-                  >
-                    <TypographyStylesProvider p="0" m="0">
-                      <div
-                        style={{ fontSize: 14 }}
-                        dangerouslySetInnerHTML={{ __html: html! }}
-                      />
-                    </TypographyStylesProvider>
-                  </Stack>
+                  <div
+                    style={{ fontSize: 14 }}
+                    dangerouslySetInnerHTML={{ __html: html! }}
+                  />
                 );
               }}
             />
@@ -406,48 +414,50 @@ function ShawnSetup({ withAccordion = false }: { withAccordion?: boolean }) {
                 data={data}
                 control={({ row }) => {
                   return (
-                    <Grid>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Rank
-                        </Title>
-                        <Text>#{row.store_rank}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Store Id
-                        </Title>
-                        <Text>{row.store_id}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Net Sales Current
-                        </Title>
-                        <Text>{row.net_sales_current}</Text>
-                      </Grid.Col>
-                      <Grid.Col span={3}>
-                        <Title order={6} fw={500}>
-                          Net Sales Previous
-                        </Title>
-                        <Text>{row.net_sales_previous}</Text>
-                      </Grid.Col>
-                    </Grid>
+                    <>
+                      <Stack>
+                        <Group>
+                          {row.store_rank == 1 ? <IconFirstPlace /> : row.store_rank == 2 ? <IconSecondPlace /> : row.store_rank == 3 ? <IconThirdPlace /> : <></>}
+                          <Title order={6}>{formatNumber(row.store_rank)}</Title>
+                        </Group>
+
+                        <Text>
+                          &nbsp;
+                        </Text>
+                      </Stack>
+
+                      <Stack>
+                        <Group style={{ position: "relative" }}>
+                          <Title order={6}>Store</Title>
+                          <Text style={{ position: "absolute", right: "10px", color: "#0A93FF", fontSize: 25, top: -10 }}> &gt;</Text>
+                        </Group>
+
+                        <Text>
+                          {row.store_id}
+                        </Text>
+                      </Stack>
+                      <Stack>
+                        <Title order={6}>Net Sales Current</Title>
+                        <Text>
+                          {formatNumber(row.net_sales_current)}
+                        </Text>
+                      </Stack>
+                      <Stack>
+                        <Title order={6}>Net Sales Previous</Title>
+                        <Text>
+                          {formatNumber(row.net_sales_previous)}
+                        </Text>
+                      </Stack>
+                    </>
                   );
                 }}
                 panel={({ row }) => {
                   const html = marked(row.insights) as string;
                   return (
-                    <Stack
-                      style={{ borderTop: "1px solid hsl(var(--border))" }}
-                      py="md"
-                    >
-                      <TypographyStylesProvider p="0" m="0">
-                        <div
-                          style={{ fontSize: 14 }}
-                          dangerouslySetInnerHTML={{ __html: html! }}
-                        />
-                      </TypographyStylesProvider>
-                    </Stack>
+                    <div
+                      style={{ fontSize: 14 }}
+                      dangerouslySetInnerHTML={{ __html: html! }}
+                    />
                   );
                 }}
               />
