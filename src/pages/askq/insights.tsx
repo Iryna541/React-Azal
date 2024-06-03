@@ -29,7 +29,6 @@ import { ProtectedRoute } from "~/modules/auth/components/ProtectedRoute";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import {
   DunkinStoreRankingData,
-  DunkinTopStoreRanking,
 } from "~/modules/dunkin/dunkin-top-store-ranking/DunkinTopStoreRanking";
 import useDunkinStoreRanking from "~/modules/dunkin/dunkin-store-ranking/api/useDunkinStoreRanking";
 import { DunkinStoreRankingTable } from "~/modules/dunkin/dunkin-store-ranking/DunkinStoreRankingTable";
@@ -287,7 +286,7 @@ function RussSetup({ withAccordion = false }: { withAccordion?: boolean }) {
                   <>
                     <Stack>
                       <Group>
-                        {row.overall_ranking == 1 ? <IconFirstPlace /> : row.overall_ranking == 2 ? <IconSecondPlace /> : row.overall_ranking == 3 ? <IconThirdPlace /> : <></>}
+                        {row.overall_ranking == "1" ? <IconFirstPlace /> : row.overall_ranking == "2" ? <IconSecondPlace /> : row.overall_ranking == "3" ? <IconThirdPlace /> : <></>}
                         <Title order={6}>{formatNumber(row.overall_ranking)}</Title>
                       </Group>
 
