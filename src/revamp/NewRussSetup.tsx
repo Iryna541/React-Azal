@@ -16,7 +16,7 @@ export function NewRussSetup({ forInsightsAction }) {
   const { data } = useStoreRanking({
     companyId: user?.company_id.toString(),
   });
-
+  
   const [filteredData, setFilteredData] = useState<GetStoreRankingResponse>(
     data || []
   );
